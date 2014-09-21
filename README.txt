@@ -20,3 +20,5 @@ Import project (General -> Existing Projects into workspace -> browse (your proj
 Cilque droit sur le projet : Run as -> Run on server -> Manually define a new server (choose Apache -> Tomcat v8.0 Server) + path du repertoir tomcat que vous avez dl auparavant. (Sommet du repertoir tomcat à mettre seulement)
 
 Configurer Wamp, php Myadmin (noml utilisateur:  ‘root’ et mdp: ‘1234’) prendre le fichier initDB et l’importer sur la DB nommé : “project_handler”.
+
+test guigui
