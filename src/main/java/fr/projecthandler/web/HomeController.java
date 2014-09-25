@@ -1,9 +1,8 @@
 package fr.projecthandler.web;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.model.Address;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.UserService;
 
@@ -28,23 +27,11 @@ public class HomeController {
 	@Autowired
 	UserService userService;
 	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		System.out.println("Welcome home!");
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		
+	public ModelAndView home(Locale locale, Model model) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+				
 		User u = userService.getUserByEmail("bruce.wayne@batman.com");
-		System.out.println(u.getFirstName());
 
 		User newUser = new User();
 		newUser.setFirstName("FirstName");
@@ -54,8 +41,7 @@ public class HomeController {
 		newUser.setAddress(null);
 		userService.saveUser(newUser);
 		
-		
-		return "home";
+		myModel.put("user", u);
+		return new ModelAndView("home", myModel);
 	}
-	
 }
