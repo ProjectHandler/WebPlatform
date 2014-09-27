@@ -82,5 +82,14 @@ public class Address extends BaseEntity implements java.io.Serializable {
 
 	public void setUser(User user) {
 		this.user = user;
-	}		
+	}
+
+	@Override
+	public String toString() {
+		return "Address : " + streetNumber
+				+ " " + streetName
+				+ " " + zipCode
+				+ ", " + city
+				+ ", " + country;
+	}
 }

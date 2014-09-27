@@ -1,11 +1,15 @@
 package fr.projecthandler.dao;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.projecthandler.Util.PrinterUtils;
 import fr.projecthandler.Util.Utilities;
 import fr.projecthandler.model.Address;
+import fr.projecthandler.model.User;
 
 @Component
 public class AddressDaoImpl extends AbstractDao implements AddressDao {
@@ -13,13 +17,19 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 	@Override
 	@Transactional
 	public void save(Address address) {
-		this.em.persist(address);
+		em.persist(address);
 	}
 
 	@Override
 	public Address getAddressById(Long id) {
 		return (Address) Utilities.getSingleResultOrNull(
 				em.createQuery("FROM Address a WHERE a.id =:id").setParameter("id", id));
+	}
+
+	@Override
+	public List<Address> getAddressByUser(Long userId) {
+		return (List<Address>)em.createQuery("FROM Address a WHERE a.user.id = :userId")
+				.setParameter("userId", userId).getResultList();
 	}
 
 	@Override
@@ -30,7 +40,14 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 
 	@Override
 	public void deleteAddressById(Long id) {
-		em.createQuery("DELETE FROM Address c WHERE c.id =:id").setParameter("id", id).executeUpdate();
+		em.createQuery("DELETE FROM Address a WHERE a.id =:id").setParameter("id", id).executeUpdate();
+	}
+
+	@Override
+	@Transactional
+	public void deleteAddressByListIds(List<Long> addressesIdsList) {
+		em.createQuery("DELETE FROM Address a WHERE a.id IN :addressesIdsList")
+		.setParameter("addressesIdsList", addressesIdsList).executeUpdate();
 	}
 	
 }

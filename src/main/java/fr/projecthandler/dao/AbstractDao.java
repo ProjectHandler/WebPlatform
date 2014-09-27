@@ -16,13 +16,13 @@ public class AbstractDao {
 		super();
 	}
 
-	public Query getQuery(String nomQuery, Map<String, Object> parametres) {
-		Query q = em.createNamedQuery(nomQuery);
-		if (parametres != null) {
-			Set<String> keys = parametres.keySet();
+	public Query getQuery(String namedQuery, Map<String, Object> parameters) {
+		Query q = em.createNamedQuery(namedQuery);
+		if (parameters != null) {
+			Set<String> keys = parameters.keySet();
 			Object currentEntry;
 			for (String key : keys) {
-				currentEntry = parametres.get(key);
+				currentEntry = parameters.get(key);
 				q.setParameter(key, currentEntry);
 			}
 		}

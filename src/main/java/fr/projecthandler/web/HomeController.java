@@ -1,6 +1,7 @@
 package fr.projecthandler.web;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -13,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.projecthandler.Util.PrinterUtils;
+import fr.projecthandler.model.Address;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.AddressService;
 import fr.projecthandler.service.UserService;
 
 /**
@@ -28,7 +32,7 @@ public class HomeController {
 	UserService userService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView home(Locale locale, Model model) {
+		public ModelAndView home(Locale locale, Model model) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		User u = userService.getUserByEmail("bruce.wayne@batman.com");

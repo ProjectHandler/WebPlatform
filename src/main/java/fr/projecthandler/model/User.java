@@ -25,7 +25,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "password", length = 70)
 	private String password;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	@Column(name = "address", length = 50)
 	private Set<Address> address = new HashSet<Address>(0);
 
@@ -80,8 +80,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPhone() {
+public String getPhone() {
 		return phone;
 	}
 
@@ -96,4 +95,9 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-}
+@Override
+	public String toString() {
+		return "User is : [firstName=" + firstName + ", lastName=" + lastName
+				+ ", password=" + password + ", address=" + address
+				+ ", email=" + email + "]";
+	}}
