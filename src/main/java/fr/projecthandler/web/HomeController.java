@@ -1,7 +1,6 @@
 package fr.projecthandler.web;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.Util.PrinterUtils;
-import fr.projecthandler.model.Address;
 import fr.projecthandler.model.User;
-import fr.projecthandler.service.AddressService;
 import fr.projecthandler.service.UserService;
 
 /**

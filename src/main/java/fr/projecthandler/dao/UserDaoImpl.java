@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.projecthandler.Util.PrinterUtils;
 import fr.projecthandler.Util.Utilities;
 import fr.projecthandler.model.User;
 
