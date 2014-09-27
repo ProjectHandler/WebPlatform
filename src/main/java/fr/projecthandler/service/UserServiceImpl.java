@@ -22,4 +22,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.findByEmail(email);
 	}
 	
+	@Override
+	public User getUserById(Long userId) {
+		return userDao.findUserById(userId);
+	}
+	
 }

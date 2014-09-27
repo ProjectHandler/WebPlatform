@@ -31,6 +31,12 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "email", length = 30)
 	private String email;
+	
+	@Column(name = "phone", length = 10)
+	private String phone;
+	
+	@Column(name = "mobile_phone", length = 10)
+	private String mobilePhone;
 
 	public User() {
 	}
@@ -73,5 +79,21 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getMobilePhone() {
+		return mobilePhone;
+	}
+
+	public void setMobilePhone(String mobilePhone) {
+		this.mobilePhone = mobilePhone;
 	}
 }

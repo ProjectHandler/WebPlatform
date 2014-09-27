@@ -30,17 +30,9 @@ public class HomeController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView home(Locale locale, Model model) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-				
+
 		User u = userService.getUserByEmail("bruce.wayne@batman.com");
 
-		User newUser = new User();
-		newUser.setFirstName("FirstName");
-		newUser.setLastName("LastName");
-		newUser.setPassword("Password");
-		newUser.setEmail("Email");
-		newUser.setAddress(null);
-		userService.saveUser(newUser);
-		
 		myModel.put("user", u);
 		return new ModelAndView("home", myModel);
 	}

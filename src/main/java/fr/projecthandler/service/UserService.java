@@ -7,5 +7,7 @@ public interface UserService {
 	public Long saveUser(User user);
 	
 	public User getUserByEmail(String email);
+
+	public User getUserById(Long userId);
 	
 }
