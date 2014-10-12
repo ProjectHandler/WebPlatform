@@ -10,7 +10,6 @@ import javax.persistence.MappedSuperclass;
  * objects needing this property.
  * 
  */
-
 @MappedSuperclass
 public class BaseEntity {
 

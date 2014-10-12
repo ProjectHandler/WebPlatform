@@ -15,6 +15,6 @@ public interface UserDao {
 	public User findByEmail(String email);
 
 	public List<User> getAllUsers();
-	
+
 	public void deleteUserByListIds(List<Long> users);
 }

@@ -14,15 +14,15 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	UserDao userDao;
-	
+
 	@Autowired
 	AddressDao addressDao;
-	
+
 	@Override
 	public Long saveUser(User user) {
 		return userDao.saveUser(user);
 	}
-
+	
 	@Override
 	public User getUserByEmail(String email) {
 		return userDao.findByEmail(email);
@@ -32,16 +32,14 @@ public class UserServiceImpl implements UserService {
 	public void updateUser(User user) {
 		userDao.updateUser(user);
 	}
-	
+
 	@Override
 	public void deleteUserByIds(List<Long> usersList) {
 		userDao.deleteUserByListIds(usersList);
 	}
-
-	
 	@Override
-	public User getUserById(Long userId) {
+	public User findUserById(Long userId) {
 		return userDao.findUserById(userId);
 	}
-	
+
 }

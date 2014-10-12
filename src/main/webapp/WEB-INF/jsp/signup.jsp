@@ -6,8 +6,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-
-
 <html lang="fr">
 	<head>
 		<title>Inscription</title>
@@ -45,7 +43,7 @@
 					</c:forEach>
 					<span class="error" id="civilityError"></span>
 				</li>
-				<div class="clear"></div>
+		
 				<li>
 					<label><spring:message code="projecthandler.user.lastName"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="text" name="lastName" id="lastName"  value="${user.lastName}" maxlength="30"/>
@@ -56,7 +54,6 @@
 					<input type="text" name="firstName" id="firstName"  value="${user.firstName}" maxlength="30"/>
 					<span class="error" id="firstNameError"></span>
 				</li>
-				<div class="clear"></div>
 
 				<li>
 					<label><spring:message code="projecthandler.user.email"/><spring:message code="projecthandler.field.required"/></label>
@@ -71,8 +68,6 @@
 					
 				</li>
 				
-				<div class="clear"></div>
-				
 				<li>
 					<label><spring:message code="projecthandler.signup.phone"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="text" name="phone" id="phone"  maxlength="10"/>
@@ -83,8 +78,7 @@
 					<input type="text" name="mobilePhone" id="mobilePhone" maxlength="10"/>
 					<span class="error" id="mobilePhoneError"></span>
 				</li>
-				
-				<div class="clear"></div>
+
 				<li>
 					<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
@@ -95,19 +89,18 @@
 					<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
 					<span class="error" id="passwordConfirmError"></span>
 				</li>
-				<div class="clear"></div>
+				
 				<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
-				<div class="clear"></div>
   
 			</ul>
 
 		</form>
 		
-		<br>
+		<br/>
 		
 		<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
 		
-		<br>
+		<br/>
 
 		<a href="/projecthandler/"><spring:message code="projecthandler.signup.home"/></a>
 		

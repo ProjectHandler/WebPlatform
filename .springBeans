@@ -11,7 +11,6 @@
 	<autoconfigs>
 		<config>src/main/resources/spring/mvc-core-config.xml</config>
 		<config>src/main/resources/spring/business-config.xml</config>
-		<config>src/main/resources/spring/tools-config.xml</config>
 	</autoconfigs>
 	<configSets>
 	</configSets>

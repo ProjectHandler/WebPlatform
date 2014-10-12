@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.projecthandler.Util.Utilities;
 import fr.projecthandler.model.Address;
+import fr.projecthandler.util.Utilities;
 
 @Component
 public class AddressDaoImpl extends AbstractDao implements AddressDao {

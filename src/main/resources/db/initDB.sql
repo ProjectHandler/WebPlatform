@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 24, 2014 at 05:06 PM
+-- Generation Time: Oct 12, 2014 at 08:11 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -58,6 +58,10 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(70) CHARACTER SET utf8 NOT NULL,
   `email` varchar(30) CHARACTER SET utf8 NOT NULL,
   `address` bigint(20) DEFAULT NULL,
+  `phone` varchar(10) DEFAULT NULL,
+  `mobile_phone` varchar(10) DEFAULT NULL,
+  `user_role` int(11) NOT NULL DEFAULT '1',
+  `account_status` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `address` (`address`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
@@ -66,8 +70,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`) VALUES
-(1, 'Bruce', 'Wayne', '1234', 'bruce.wayne@batman.com', 1);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`) VALUES
+(1, 'Bruce', 'Wayne', '1234', 'bruce.wayne@batman.com', 1, NULL, NULL, 1, 0);
 
 --
 -- Constraints for dumped tables

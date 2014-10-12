@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import fr.projecthandler.enums.AccountStatus;
+import fr.projecthandler.enums.UserRole;
 
 @Entity
 @Table(name = "users")
@@ -25,8 +27,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "password", length = 70)
 	private String password;
 
+	@Column(name = "user_role")
+	private UserRole userRole;
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	@Column(name = "address", length = 50)
+	@Column(name = "address")
 	private Set<Address> address = new HashSet<Address>(0);
 
 	@Column(name = "email", length = 30)
@@ -37,6 +42,9 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	@Column(name = "mobile_phone", length = 10)
 	private String mobilePhone;
+	
+	@Column(name = "account_status")
+	private AccountStatus accountStatus;
 
 	public User() {
 	}
@@ -65,6 +73,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 		this.password = password;
 	}
 
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+
 	public Set<Address> getAddress() {
 		return address;
 	}
@@ -80,7 +96,16 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-public String getPhone() {
+
+	public AccountStatus getAccountStatus() {
+		return accountStatus;
+	}
+
+	public void setAccountStatus(AccountStatus accountStatus) {
+		this.accountStatus = accountStatus;
+	}
+
+	public String getPhone() {
 		return phone;
 	}
 
@@ -95,9 +120,11 @@ public String getPhone() {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
-@Override
+
+	@Override
 	public String toString() {
 		return "User is : [firstName=" + firstName + ", lastName=" + lastName
 				+ ", password=" + password + ", address=" + address
 				+ ", email=" + email + "]";
-	}}
+	}
+}
