@@ -30,22 +30,13 @@
 		<validation.version>1.0.0.GA</validation.version>
 		<mysql.version>5.1.23</mysql.version>
 
-		<maven-assembly-plugin.version>2.4</maven-assembly-plugin.version>
-		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
+
+		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
+		<maven-clean-plugin.version>2.6</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
-		<maven-dependency-plugin.version>2.6</maven-dependency-plugin.version>
-		<maven-deploy-plugin.version>2.7</maven-deploy-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
-		<maven-install-plugin.version>2.4</maven-install-plugin.version>
-		<maven-javadoc-plugin.version>2.9</maven-javadoc-plugin.version>
-		<maven-project-info-reports-plugin.version>2.6</maven-project-info-reports-plugin.version>
-		<maven-release-plugin.version>2.4</maven-release-plugin.version>
-		<maven-resources-plugin.version>2.6</maven-resources-plugin.version>
-		<maven-site-plugin.version>3.2</maven-site-plugin.version>
-		<maven-surefire-plugin.version>2.13</maven-surefire-plugin.version>
-		<maven-taglist-plugin.version>2.4</maven-taglist-plugin.version>
-		<maven-war-plugin.version>2.3</maven-war-plugin.version>
-		<maven-tomcat-plugin.version>2.1</maven-tomcat-plugin.version>
+		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+		<codehaus-mojo.version>1.2.1</codehaus-mojo.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -334,7 +325,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
-                <version>2.9</version>
+                <version>${maven-eclipse-plugin.version}</version>
                 <configuration>
                     <additionalProjectnatures>
                         <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
@@ -349,10 +340,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
+                	<version>${maven-compiler-plugin.version}</version>
                 <configuration>
-                    <source>1.6</source>
-                    <target>1.6</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <compilerArgument>-Xlint:all</compilerArgument>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
@@ -361,12 +352,43 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
+                <version>${codehaus-mojo.version}</version>
                 <configuration>
                     <mainClass>org.test.int1.Main</mainClass>
                 </configuration>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${maven-resources-plugin.version}</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>${maven-antrun-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<version>${maven-clean-plugin.version}</version>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>${project.basedir}</directory>
+							<includes>
+								<include>target</include>
+								<include>surefire*</include>
+							</includes>
+							<followSymlinks>false</followSymlinks>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
         </plugins>
+       
     </build>
 
 	<profiles>
@@ -378,7 +400,7 @@
 						<artifactId>maven-antrun-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>prepare-package</phase>
+								<phase>test</phase>
 								<goals>
 									<goal>run</goal>
 								</goals>
@@ -387,7 +409,7 @@
 										<delete>
 											<fileset dir="${project.build.directory}/classes/jdbc/" includes="jdbc.properties" />
 										</delete>
-										<copy file="${project.build.directory}/classes/jdbc/jdbc.properties.production" 
+										<copy file="${project.build.directory}/classes/jdbc/jdbc.properties.production"
 											tofile="${project.build.directory}/classes/jdbc/jdbc.properties" />
 									</target>
 								</configuration>
