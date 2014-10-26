@@ -37,24 +37,46 @@ public class AdminController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			
 			User u = userService.findUserById(userDetails.getId());
+			
 			myModel.put("user", u);
 		}
 
 		return new ModelAndView("signupSendMailService", myModel);
 	}
 	
+	//Here we will be testing if all mail are valid;
 	@RequestMapping(value = "checkEmailExists", method = RequestMethod.POST)
 	public @ResponseBody String checkEmailExists(HttpServletRequest request) {
-
+		
+		/*
+		 * TODO : here parse and valid for each mail	
+		 */
+		
+		//if email not valid return KO
+		
 		String email = request.getParameter("email");
 		System.out.println("verif email : " + email);
 		return "OK";
 	}
 
+	//here we send mail with token for each user by mail
+	//create user by mail and generate token then send email with token for each user
 	@RequestMapping(value = "admin/sendEmail", method = RequestMethod.POST)
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		String email = request.getParameter("email");
+		// for each mail
 		
+		/*
+		 * TODO : here create user
+		 */
+		
+		/*
+		 * TODO : here create Token and save both
+		 */
+		
+		/*
+		 * TODO : here send email with url + token inside
+		 */
 		System.out.println("ENFIN j'envoie: " + email);
 		
 		mailService.sendEmail("COUCOU", email, "test", "JUSTE POUR TEST");
