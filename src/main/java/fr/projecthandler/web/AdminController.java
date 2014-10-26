@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.CustomUserDetails;
+import fr.projecthandler.service.MailService;
 import fr.projecthandler.service.UserService;
 
 @Controller
@@ -24,6 +25,9 @@ public class AdminController {
 
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	MailService mailService;
 
 	@RequestMapping(value = "signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -49,8 +53,11 @@ public class AdminController {
 
 	@RequestMapping(value = "admin/sendEmail", method = RequestMethod.POST)
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-
-		System.out.println("ENFIN j'envoie: " + request.getParameter("email"));
+		String email = request.getParameter("email");
+		
+		System.out.println("ENFIN j'envoie: " + email);
+		
+		mailService.sendEmail("COUCOU", email, "test", "JUSTE POUR TEST");
 		
 		if (principal != null) {
 		//	CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
