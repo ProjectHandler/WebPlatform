@@ -16,6 +16,8 @@
 		${user.userRole}
 		<br/>
 		<br/>
-		<a href="<c:url value="/j_spring_security_logout"/>">logout</a>
+		<a href="<c:url value="/signupSendMailService"/>">signupSendMailService</a>
+		<br/>
+		<a href="<c:url value="/j_spring_security_logout"/>">logout</a>	
 	</body>
 </html>
