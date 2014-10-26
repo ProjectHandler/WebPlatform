@@ -19,7 +19,7 @@
 	<!-- Configurer that replaces ${...} placeholders with values from a properties file -->
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
 	<!-- (and Mail server related settings -->
-	<context:property-placeholder location="classpath:jdbc/jdbc.properties" />
+	<context:property-placeholder location="classpath:jdbc/jdbc.properties, classpath:mail.properties" />
 
 	<!-- import the dataSource definition -->
 	<import resource="../jdbc/datasource-config.xml" />
@@ -38,6 +38,25 @@
 
 	<task:annotation-driven executor="taskExecutor" />
 	<task:executor id="taskExecutor" pool-size="10" />
+
+	<!-- Mail sender configuration -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="${mail.host}" />
+		<property name="port" value="${mail.port}" />
+		<property name="username" value="${mail.username}" />
+		<property name="password" value="${mail.password}" />
+		<property name="javaMailProperties">
+			<props>
+				<!-- Use SMTP-AUTH to authenticate to SMTP server -->
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.debug">false</prop>
+				<prop key="mail.smtps.auth">${mail.ssl}</prop>
+				<prop key="mail.smtp.ssl.enable">${mail.ssl}</prop>
+				<!-- Use SMTP transport protocol -->
+				<prop key="mail.transport.protocol">${mail.protocol}</prop>
+			</props>
+		</property>
+	</bean>
 
 	<beans profile="jpa">
 		<!-- JPA EntityManagerFactory -->
