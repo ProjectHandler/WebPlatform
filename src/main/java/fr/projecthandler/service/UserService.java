@@ -8,7 +8,9 @@ public interface UserService {
 
 	public Long saveUser(User user);
 
-	public void updateUser(User user);	public User getUserByEmail(String email);
+	public void updateUser(User user);
+	
+	public User getUserByEmail(String email);
 
 	public User findUserById(Long userId);
 
