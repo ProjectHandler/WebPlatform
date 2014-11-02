@@ -16,7 +16,6 @@
 
 		<script type="text/javascript">
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
-
 		
 		$(document).ready(function() {
 			
@@ -26,11 +25,11 @@
 				type: "POST",
 				url:  CONTEXT_PATH+"/checkEmailExists?"+"email="+$("#email").val(),
 				success: function(data) {
-					if(data == "KO"){
-						$("#emailError").html('Un email existe déjà');
-					}else{
+					if(data == "OK"){
 						$("#emailError").html('Envoie en cours...');
 						sendEmails();
+					}else{
+						$("#emailError").html(data);
 					}
 				}, error: function (xhr, ajaxOptions, thrownError) {
 					alert(xhr.responseText);
