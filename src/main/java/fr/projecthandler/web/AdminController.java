@@ -1,7 +1,7 @@
 package fr.projecthandler.web;
 
 import java.security.Principal;
-import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +99,7 @@ public class AdminController {
 			//Handle user
 			User user = new User();
 			user.setEmail(parsedMail[i]);
-			user.setAccountStatus(AccountStatus.INACTIVE);
+			user.setAccountStatus(AccountStatus.ACTIVE);
 			user.setUserRole(UserRole.ROLE_SIMPLE_USER);
 			Long userId = userService.saveUser(user);
 			user.setId(userId);
