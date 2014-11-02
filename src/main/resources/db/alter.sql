@@ -14,7 +14,6 @@ CREATE TABLE IF NOT EXISTS `tokens` (
 -- Add field 'civility' in user table 
 -- 02/11/2014
 ALTER TABLE `users` ADD `civility` int(4) DEFAULT NULL;
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Table structure for table `users`
