@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.model.User;
-import fr.projecthandler.service.CustomUserDetails;
 import fr.projecthandler.service.MailService;
 import fr.projecthandler.service.UserService;
+import fr.projecthandler.session.CustomUserDetails;
 
 @Controller
 public class AdminController {

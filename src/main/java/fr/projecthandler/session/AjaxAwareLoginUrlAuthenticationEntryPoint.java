@@ -1,4 +1,4 @@
-package fr.projecthandler.web;
+package fr.projecthandler.session;
 
 import java.io.IOException;
 

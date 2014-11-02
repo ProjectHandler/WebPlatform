@@ -1,4 +1,4 @@
-package fr.projecthandler.dao;
+package fr.projecthandler.session;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.InteractiveAuthenticationSuccessEvent;

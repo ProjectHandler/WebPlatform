@@ -33,7 +33,7 @@
 	</authentication-manager>
 
 	<beans:bean id="ajaxAwareLoginUrlAuthenticationEntryPoint"
-		class="fr.projecthandler.web.AjaxAwareLoginUrlAuthenticationEntryPoint">
+		class="fr.projecthandler.session.AjaxAwareLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg value="/login" />
 	</beans:bean>
 

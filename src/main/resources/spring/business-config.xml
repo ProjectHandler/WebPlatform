@@ -94,7 +94,7 @@
 			be auto-translated due to @Repository. -->
 		<context:component-scan base-package="fr.projecthandler.dao" />
 		<context:component-scan base-package="fr.projecthandler.service" />
-
+		<context:component-scan base-package="fr.projecthandler.session" />
 	</beans>
 
 </beans>

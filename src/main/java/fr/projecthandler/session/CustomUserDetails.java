@@ -1,4 +1,4 @@
-package fr.projecthandler.service;
+package fr.projecthandler.session;
 
 import java.util.Collection;
 
