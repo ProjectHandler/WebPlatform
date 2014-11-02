@@ -11,7 +11,7 @@
 		</script>
 	</head>
 	<body>
-		<h1>welcome ${user.firstName} ${user.lastName}</h1> 
+		<h1>welcome ${user.civility} ${user.firstName} ${user.lastName}</h1> 
 		<br/>
 		${user.userRole}
 		<br/>

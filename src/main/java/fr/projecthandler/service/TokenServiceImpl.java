@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.TokenDao;
 import fr.projecthandler.model.Token;
+import fr.projecthandler.model.User;
 
 @Service	
 public class TokenServiceImpl implements TokenService {
@@ -25,6 +26,11 @@ public class TokenServiceImpl implements TokenService {
 	@Override
 	public void deleteTokenByUserId(Long userId) {
 		tokenDao.deleteTokenByUserId(userId);
+	}
+	
+	@Override
+	public User findUserByToken(String token) {
+		return tokenDao.findUserByToken(token);
 	}
 
 }

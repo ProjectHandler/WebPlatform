@@ -10,22 +10,36 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.CustomUserDetails;
+import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
+import fr.projecthandler.util.Utilities;
 
 @Controller
 public class UserController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	TokenService tokenService;
+	
+	@Autowired
+	private UserDetailsService customUserDetailsService;
 	
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -70,27 +84,57 @@ public class UserController {
 
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public ModelAndView redirectSignup() {
+	public ModelAndView redirectSignup(Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
+		
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+			myModel.put("user", u);
+		}
 
 		myModel.put("civility", Civility.values());
 		return new ModelAndView("signup", myModel);
 	}
 
-	@RequestMapping(value = "/saveUser", method = RequestMethod.GET)
+	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Principal principal, HttpServletRequest request) {
 
-		User u = new User();
-		
-		u.setFirstName(request.getParameter("firstName"));
-		u.setLastName(request.getParameter("lastName"));
-		u.setEmail(request.getParameter("email"));
-		u.setPhone(request.getParameter("phone"));
-		u.setMobilePhone(request.getParameter("mobilePhone"));
-		u.setPassword(request.getParameter("password"));
-		
-		userService.saveUser(u);
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+			
+			u.setCivility(Civility.findCivilityById(Integer.parseInt(Utilities.getRequestParameter(request, "civility"))));
+			u.setFirstName(Utilities.getRequestParameter(request, "firstName"));
+			u.setLastName(Utilities.getRequestParameter(request, "lastName"));
+			u.setEmail(Utilities.getRequestParameter(request, "email"));
+			u.setPhone(Utilities.getRequestParameter(request, "phone"));
+			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
+			u.setPassword(Utilities.getRequestParameter(request, "password"));
+
+			userService.updateUser(u);
+		}
 		
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
+	public ModelAndView verifyUserEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		String token = request.getParameter("token");
+		logoutUser(principal, request, response);
+		if (token != null && token.length() > 0) {
+			User user = tokenService.findUserByToken(token);
+			myModel.put("civility", Civility.values());
+			myModel.put("user", user);
+			
+			if (user != null) {
+				// login auto after mail validate
+				UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+				Authentication auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+				SecurityContextHolder.getContext().setAuthentication(auth);
+			}
+		}
+		return new ModelAndView("signup", myModel);
 	}
 }

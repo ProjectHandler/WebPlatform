@@ -3,6 +3,7 @@ package fr.projecthandler.util;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
 
 public class Utilities {
 
@@ -15,4 +16,10 @@ public class Utilities {
 		return list.get(0);
 	}
 	
+	public static String getRequestParameter(HttpServletRequest request, String parameter) {
+		if (request.getParameter(parameter) != null && !"undefined".equals(request.getParameter(parameter))) {
+			return request.getParameter(parameter);
+		}
+		return null;
+	}
 }

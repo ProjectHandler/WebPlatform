@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page session="false"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -9,6 +8,13 @@
 <html lang="fr">
 	<head>
 		<title>Inscription</title>
+		<spring:url value="/resources/js/jquery-1.11.1.js" var="jquery"/>
+		<script type="text/javascript" src="${jquery}"></script>
+		<spring:url value="/resources/js/jquery.inputmask.js" var="jqueryMask"/>
+		<script type="text/javascript" src="${jqueryMask}"></script>
+		<spring:url value="/resources/js/chosen.jquery.js" var="jqueryChosen"/>
+		<script type="text/javascript" src="${jqueryChosen}"></script>
+
 		<script type="text/javascript">
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
@@ -38,8 +44,13 @@
 			<ul class="form">
 				<li>
 					<label><spring:message code="projecthandler.signup.civility"/><spring:message code="projecthandler.field.required"/></label>
-					<c:forEach items="${civility}" var="civil">
+				<c:forEach items="${civility}" var="civil">
+					<c:if test="${user != null && user.civility.id eq civil.id}">
+						<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civil.value}" />
+					</c:if>
+					<c:if test="${user eq null || user.civility.id != civil.id}">
 						<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civil.value}" />
+					</c:if>
 					</c:forEach>
 					<span class="error" id="civilityError"></span>
 				</li>

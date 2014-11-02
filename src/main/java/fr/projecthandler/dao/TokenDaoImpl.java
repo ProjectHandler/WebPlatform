@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.model.Token;
+import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
 @Component
@@ -28,6 +29,12 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 	public void deleteTokenByUserId(Long userId) {
 		em.createQuery("DELETE FROM Token t WHERE t.user.id = :userId")
 		.setParameter("userId", userId).executeUpdate();
+	}
+	
+	@Override
+	public User findUserByToken(String token) {
+		return (User) Utilities.getSingleResultOrNull(em.createQuery("Select t.user from Token t where t.token = :token")
+				.setParameter("token", token));
 	}
 
 }
