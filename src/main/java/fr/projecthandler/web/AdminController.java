@@ -1,7 +1,10 @@
 package fr.projecthandler.web;
 
 import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -118,4 +122,53 @@ public class AdminController {
 		return "redirect:/signupSendMailService";
 	}
 	
+	@RequestMapping(value = "admin/users_management", method = RequestMethod.GET)
+	public ModelAndView userManagment(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		
+		List<User> users =  userService.getAllUsers();
+		myModel.put("users", users);
+			
+		myModel.put("user_role", UserRole.values());
+		myModel.put("account_status", AccountStatus.values());
+				
+		return new ModelAndView("admin/users_management", myModel);
+	}
+	
+	@RequestMapping(value = "admin/users_management/changeRole", method = RequestMethod.GET)
+	public @ResponseBody String changeRole(Principal principal, @RequestParam("userId") String userId,  @RequestParam("role") String role) {
+		try {
+			User user = userService.findUserById(Long.parseLong(userId));
+			user.setUserRole(UserRole.valueOf(role));
+			userService.updateUser(user);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
+	
+	@RequestMapping(value = "admin/users_management/changeStatus", method = RequestMethod.GET)
+	public @ResponseBody String changeStatus(Principal principal, @RequestParam("userId") String userId,  @RequestParam("status") String status) {
+		try {
+			User user = userService.findUserById(Long.parseLong(userId));
+			user.setAccountStatus(AccountStatus.valueOf(status));
+			userService.updateUser(user);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
+	
+	@RequestMapping(value = "admin/users_management/delete", method = RequestMethod.GET)
+	public @ResponseBody String deleteUser(Principal principal, @RequestParam("userId") String userId) {
+		try {
+			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
 }

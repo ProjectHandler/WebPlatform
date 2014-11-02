@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public enum UserRole implements Serializable {
 
-	ROLE_ADMIN(0), ROLE_SIMPLE_USER(1);
+	ROLE_ADMIN(0), ROLE_PROJECT_CHIEF(1), ROLE_MANAGER(2), ROLE_SIMPLE_USER(3);
 
 	private Integer id;
 

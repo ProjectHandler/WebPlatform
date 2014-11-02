@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.dao.UserDao;
+import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.model.User;
 
 @Service
@@ -32,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			e.printStackTrace();
 			throw new UsernameNotFoundException("The email " + email + " was not found!", e);
 		}
-		boolean enabled = true;
+		boolean enabled = user.getAccountStatus() == AccountStatus.ACTIVE ? true : false;
 		boolean accountNonExpired = true;
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
@@ -52,7 +53,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public List<String> getRoles(User user) {
 		List<String> roles = new ArrayList<String>();
 		roles.add(user.getUserRole().name());
-		roles.add(user.getAccountStatus().name());
+		//roles.add(user.getAccountStatus().name());
 		return roles;
 	}
 

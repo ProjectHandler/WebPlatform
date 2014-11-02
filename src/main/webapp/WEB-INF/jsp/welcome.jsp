@@ -18,6 +18,12 @@
 		<br/>
 		<a href="<c:url value="/signupSendMailService"/>">signupSendMailService</a>
 		<br/>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+			<a href="<c:url value="/admin/users_management"/>">user management</a>
+		</sec:authorize>
+		
+		<br/>
 		<a href="<c:url value="/j_spring_security_logout"/>">logout</a>	
 	</body>
 </html>
