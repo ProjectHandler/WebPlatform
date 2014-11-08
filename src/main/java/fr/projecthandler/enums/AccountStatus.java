@@ -2,7 +2,7 @@ package fr.projecthandler.enums;
 
 public enum AccountStatus {
 
-	INACTIVE(0, "inactif"), ACTIVE(1, "actif"), ;
+	INACTIVE(0, "inactif"), ACTIVE(1, "actif"), MAIL_VALIDATED(2, "email validé");
 
 	private Integer id;
 	private String value;
