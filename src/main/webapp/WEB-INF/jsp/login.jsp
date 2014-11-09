@@ -9,7 +9,7 @@
 		
 	</head>
 	<body onload='document.f.j_username.focus();'>
-	
+		<jsp:include page="template/header.jsp" />
 		<article class="login">
 			<h1>Login</h1>
 			<form name='f' action="j_spring_security_check" method="post">
@@ -39,6 +39,6 @@
 				</fieldset>
 			</form>
 		</article>
-		
+		<jsp:include page="template/footer.jsp" />
 	</body>
 </html>

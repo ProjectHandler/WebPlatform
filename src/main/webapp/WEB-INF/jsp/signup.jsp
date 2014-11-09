@@ -148,6 +148,7 @@
 		</script>
 	</head>
 	<body>
+		<jsp:include page="template/header.jsp" />
 		<form id="createAccount" name="createAccount" method="post">
 			<input type="hidden" name="userId" id="userId" value="${user.id}"/>
 				<h1><spring:message code="projecthandler.signup.form"/></h1>
@@ -214,5 +215,7 @@
 		<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
 		<br/>
 		<a href="/projecthandler/"><spring:message code="projecthandler.signup.home"/></a>
+		
+		<jsp:include page="template/footer.jsp" />
 	</body>
 </html>

@@ -33,7 +33,11 @@
 			
 			function deleteUser(user_id) {
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/delete", data: { userId: user_id}, 
-			    	success: function(data) {if (data == "KO") alert("error");}, 
+			    	success: function(data) {
+			    		if (data == "KO") 
+			    			alert("error"); 
+			    		else 
+			    			location.reload();}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
@@ -94,6 +98,7 @@
 			</tbody>
 		</table>
 		<br/>
-		<a href="<c:url value="/"/>">home</a>	
+		<a href="<c:url value="/"/>">home</a>
+		<jsp:include page="../template/footer.jsp" />
 	</body>
 </html>

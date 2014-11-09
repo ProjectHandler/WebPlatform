@@ -46,6 +46,9 @@
 		</script>
 	</head>
 	<body>
+		<jsp:include page="template/header.jsp" />
+		<jsp:include page="template/menu.jsp" />
+		
 		<h1>Insert email to send</h1> 
 		<br/>
 		here :
@@ -59,5 +62,6 @@
 		<a href="<c:url value="/"/>">welcome</a>
 		<br/>
 		<a href="<c:url value="/j_spring_security_logout"/>">logout</a>
+		<jsp:include page="template/footer.jsp" />
 	</body>
 </html>
