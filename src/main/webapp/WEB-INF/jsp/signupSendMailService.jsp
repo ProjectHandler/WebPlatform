@@ -56,12 +56,12 @@
 			<input type="text" name="email" id="email" value="${u.email}" maxlength="512"/>
 			<span class="error" id="emailError"></span>
 		</form>
-		<button id="btnSend">Envoyer Email</button>
+		<button id="btnSend"><spring:message code="projecthandler.admin.sendMailService.send"/></button>
 		<br/>
 		<br/>
-		<a href="<c:url value="/"/>">welcome</a>
+		<a href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a>
 		<br/>
-		<a href="<c:url value="/j_spring_security_logout"/>">logout</a>
+		<a href="<c:url value="/j_spring_security_logout"/>"><spring:message code="projecthandler.menu.logout"/></a>
 		<jsp:include page="template/footer.jsp" />
 	</body>
 </html>

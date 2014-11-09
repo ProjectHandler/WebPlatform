@@ -37,17 +37,17 @@
 <div style="position:absolute; top:0; right: 10px;">
 	<div style="position:relative; top: 20px; right: 0px">
 		${user.firstName} ${user.lastName}
-		<a href="<c:url value="/j_spring_security_logout"/>"> logout</a>	
+		<a href="<c:url value="/j_spring_security_logout"/>"><spring:message code="projecthandler.menu.logout"/></a>	
 	</div>
 	
 	<div id="horizontalmenu" style="position:relative; top: 10px; right: 0px">
        	<ul>
-        	<li><a href="#">Menu</a>
+        	<li><a href="#"><spring:message code="projecthandler.menu"/></a>
                 <ul> 
-	                <li><a href="<c:url value="/"/>">home</a></li> 
+	                <li><a href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a></li> 
 	                <sec:authorize access="hasRole('ROLE_ADMIN')">
-	                	<li><a href="<c:url value="/admin/users_management"/>">user management</a></li>
-	                	<li><a href="<c:url value="/signupSendMailService"/>">send mail</a></li>
+	                	<li><a href="<c:url value="/admin/users_management"/>"><spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
+	                	<li><a href="<c:url value="/signupSendMailService"/>"><spring:message code="projecthandler.admin.sendMailService"/></a></li>
 	                </sec:authorize>
                 </ul>
             </li>
