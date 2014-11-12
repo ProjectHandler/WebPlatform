@@ -14,7 +14,6 @@
 		<script type="text/javascript" src="${jqueryMask}"></script>
 		<spring:url value="/resources/js/chosen.jquery.js" var="jqueryChosen"/>
 		<script type="text/javascript" src="${jqueryChosen}"></script>
-
 		<script type="text/javascript">
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
@@ -144,7 +143,6 @@
 			return valid;
 		}
 		
-		
 		</script>
 	</head>
 	<body>
@@ -197,7 +195,6 @@
 					<input type="text" name="mobilePhone" id="mobilePhone" maxlength="10"/>
 					<span class="error" id="mobilePhoneError"></span>
 				</li>
-
 				<li>
 					<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>

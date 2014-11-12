@@ -96,8 +96,7 @@ public class UserController {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		if (principal != null) {
-			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal)
-					.getPrincipal();
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 			myModel.put("user", u);
 		}
@@ -109,18 +108,16 @@ public class UserController {
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Principal principal, HttpServletRequest request) {
 		if (principal != null) {
-			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal)
-					.getPrincipal();
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
-			u.setCivility(Civility.findCivilityById(Integer.parseInt(Utilities
-					.getRequestParameter(request, "civility"))));
+			u.setAccountStatus(AccountStatus.ACTIVE);
+			u.setCivility(Civility.findCivilityById(Integer.parseInt(Utilities.getRequestParameter(request, "civility"))));
 			u.setFirstName(Utilities.getRequestParameter(request, "firstName"));
 			u.setLastName(Utilities.getRequestParameter(request, "lastName"));
 			u.setEmail(Utilities.getRequestParameter(request, "email"));
 			u.setPhone(Utilities.getRequestParameter(request, "phone"));
-			u.setMobilePhone(Utilities.getRequestParameter(request,
-					"mobilePhone"));
+			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
 			u.setPassword(Utilities.getRequestParameter(request, "password"));
 
 			userService.updateUser(u);
@@ -149,18 +146,15 @@ public class UserController {
 
 			// Access denied if Token out of date.
 			Token t = tokenService.findTokenByUserId(user.getId());
-			if (TokenGenerator.checkTimestamp(t.getTimeStamp(),
-					maximumTokenValidity)) {
+			if (TokenGenerator.checkTimestamp(t.getTimeStamp(),	maximumTokenValidity)) {
 				// TODO : inform about the fact that the token expired in a
 				// proper page then delete token.
 				tokenService.deleteTokenByUserId(user.getId());
 				return new ModelAndView("accessDenied", null);
 			}
 			// login auto after mail validate
-			UserDetails userDetails = customUserDetailsService
-					.loadUserByUsername(user.getEmail());
-			Authentication auth = new PreAuthenticatedAuthenticationToken(
-					userDetails, null, userDetails.getAuthorities());
+			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+			Authentication auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		return new ModelAndView("signup", myModel);
