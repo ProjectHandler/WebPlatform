@@ -2,6 +2,7 @@ package fr.projecthandler.service;
 
 import java.util.List;
 
+import fr.projecthandler.model.Group;
 import fr.projecthandler.model.User;
 
 public interface UserService {
@@ -17,4 +18,10 @@ public interface UserService {
 	public void deleteUserByIds(List<Long> usersList);
 
 	public List<User> getAllUsers();
+	
+	public List<Group> getAllGroups();
+	
+	public String createGroup(String groupName);
+	
+	public void deleteGroupById(Long groupId);
 }

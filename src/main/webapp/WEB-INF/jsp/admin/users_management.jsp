@@ -45,6 +45,8 @@
 		</script>
 	</head>
 	<body>
+		<jsp:include page="../template/header.jsp" />
+		<jsp:include page="../template/menu.jsp" />
 		<h1><spring:message code="projecthandler.admin.userManagementTitle"/></h1> 
 		
 		<table id="usersTable">

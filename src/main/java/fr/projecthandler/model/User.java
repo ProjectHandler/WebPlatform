@@ -1,13 +1,18 @@
 package fr.projecthandler.model;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
 
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
@@ -49,6 +54,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	@Column(name = "account_status")
 	private AccountStatus accountStatus;
+
+	@ManyToMany
+	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
+	private List<Group> groups;
+
 
 	public User() {
 	}
@@ -132,7 +142,15 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setMobilePhone(String mobilePhone) {
 		this.mobilePhone = mobilePhone;
 	}
+
+	public List<Group> getGroups() {
+		return this.groups;
+	}
 	
+	public void setGroups(List<Group> groups) {
+		this.groups = groups;
+	}
+
 	@Override
 	public String toString() {
 		return "User is : [civility="+ civility +", firstName=" + firstName + ", lastName=" + lastName

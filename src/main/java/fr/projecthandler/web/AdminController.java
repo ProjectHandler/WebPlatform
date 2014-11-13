@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
+import fr.projecthandler.model.Group;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.MailService;
@@ -167,4 +168,30 @@ public class AdminController {
 			return "KO";
 		}
 	}
+	
+	@RequestMapping(value = "admin/groups_management", method = RequestMethod.GET)
+	public ModelAndView groupsManagment(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		List<Group> groups =  userService.getAllGroups();
+		myModel.put("groups", groups);
+		return new ModelAndView("admin/groups_management", myModel);
+	}
+	
+	@RequestMapping(value = "admin/groups_management/create", method = RequestMethod.GET)
+	public @ResponseBody String createGroup(Principal principal, @RequestParam("groupName") String groupName) {
+		return userService.createGroup(groupName);
+	}
+	
+	@RequestMapping(value = "admin/groups_management/delete", method = RequestMethod.GET)
+	public @ResponseBody String deleteGroup(Principal principal, @RequestParam("groupId") String groupId) {
+		try {
+			userService.deleteGroupById(Long.parseLong(groupId));
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
+	
+	
 }
