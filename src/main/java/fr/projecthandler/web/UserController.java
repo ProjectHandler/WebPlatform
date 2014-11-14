@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
@@ -44,23 +45,18 @@ public class UserController {
 	private static final Long maximumTokenValidity = 10368000l; // 2 jours ms
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView login(HttpServletRequest request,
-			HttpServletResponse response, Principal principal) {
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-
 		logoutUser(principal, request, response);
 
 		return new ModelAndView("login", myModel);
 	}
 
-	public void logoutUser(Principal principal, HttpServletRequest request,
-			HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+	public void logoutUser(Principal principal, HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null && principal != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
-			new PersistentTokenBasedRememberMeServices(null, null, null)
-					.logout(request, response, auth);
+			new PersistentTokenBasedRememberMeServices(null, null, null).logout(request, response, auth);
 		}
 	}
 
@@ -81,12 +77,10 @@ public class UserController {
 	@RequestMapping(value = "invalidateSession", method = RequestMethod.GET)
 	public String invalidateSession(HttpServletResponse response,
 			HttpServletRequest request) {
-		Authentication auth = SecurityContextHolder.getContext()
-				.getAuthentication();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
-			new PersistentTokenBasedRememberMeServices(null, null, null)
-					.logout(request, response, auth);
+			new PersistentTokenBasedRememberMeServices(null, null, null).logout(request, response, auth);
 		}
 		return "redirect:/login";
 	}
@@ -129,8 +123,7 @@ public class UserController {
 
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
-	public ModelAndView verifyUserEmail(HttpServletRequest request,
-			HttpServletResponse response, Principal principal) {
+	public ModelAndView verifyUserEmail(HttpServletRequest request,	HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
 		logoutUser(principal, request, response);

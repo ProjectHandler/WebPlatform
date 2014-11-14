@@ -7,3 +7,6 @@
 		<img src="${pageContext.request.contextPath}/resources/pictures/2016_logo_projecthandler.png" style="width:150px;height:100px" />
 	</a>
 </div>
+<script type="text/javascript">
+	var CONTEXT_PATH = "<%=request.getContextPath() %>";
+</script>

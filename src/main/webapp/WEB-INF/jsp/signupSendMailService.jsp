@@ -13,30 +13,52 @@
 		<script type="text/javascript" src="${jqueryMask}"></script>
 		<spring:url value="/resources/js/chosen.jquery.js" var="jqueryChosen"/>
 		<script type="text/javascript" src="${jqueryChosen}"></script>
+		<spring:url value="/resources/js/jquery.autosize.js" var="jqueryAutosize"/>
+		<script type="text/javascript" src="${jqueryAutosize}"></script>
 
-		<script type="text/javascript">
-		var CONTEXT_PATH = "<%=request.getContextPath() %>";
-		
+		<script type="text/javascript">		
 		$(document).ready(function() {
+			$('#email').autosize();
 			
-		$("#btnSend").click(function(e) {
-			$("#emailError").html("");
-			$.ajax({
-				type: "POST",
-				url:  CONTEXT_PATH+"/checkEmailExists?"+"email="+$("#email").val(),
-				success: function(data) {
-					if(data == "OK"){
-						$("#emailError").html('Envoie en cours...');
-						sendEmails();
-					}else{
-						$("#emailError").html(data);
-					}
-				}, error: function (xhr, ajaxOptions, thrownError) {
-					alert(xhr.responseText);
-				}
+			
+			$("#btnSend").click(function(e) {
+				if (checkInput())
+					$.ajax({
+						type: "POST",
+						url:  CONTEXT_PATH+"/checkEmailExists?"+"email="+$("#email").val(),
+						success: function(data) {
+							if(data == "OK"){
+								$("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.admin.sendMailService.sending"/>');
+								sendEmails();
+							}else{
+								$("#emailError").html(data);
+							}
+						}, error: function (xhr, ajaxOptions, thrownError) {
+							alert(xhr.responseText);
+						}
+					});
 			});
 		});
-	});
+		
+		
+		function checkInput() {
+			$("#emailError").html("");
+			
+			var email = $("#email").val();
+			if (email == null || email.length == 0) {
+				$("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.inputEmpty"/>');
+				return false;
+			}
+			var pattern = new RegExp(/^[^<>%$]*$/);	
+			if (!pattern.test(email)) {
+				$("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.characterNotAllowed"/>');
+				document.getElementById("btnSend").disabled = true; 
+				return false;
+			} else {
+				document.getElementById("btnSend").disabled = false;
+				return true;
+			}
+		}
 		
 		function sendEmails() {
 			$("#emailForm").attr("action", CONTEXT_PATH+"/admin/sendEmail");
@@ -49,11 +71,11 @@
 		<jsp:include page="template/header.jsp" />
 		<jsp:include page="template/menu.jsp" />
 		
-		<h1>Insert email to send</h1> 
+		<h1><spring:message code="projecthandler.admin.sendMailService.title"/></h1> 
 		<br/>
-		here :
+		<spring:message code="projecthandler.admin.sendMailService.here"/>
 		<form name="emailForm" id="emailForm" method="post" >
-			<input type="text" name="email" id="email" value="${u.email}" maxlength="512"/>
+			<textarea style="resize: none" rows="3" cols="102" name="email" id="email" maxlength="1024" onKeyUp="checkInput()"></textarea>
 			<span class="error" id="emailError"></span>
 		</form>
 		<button id="btnSend"><spring:message code="projecthandler.admin.sendMailService.send"/></button>
