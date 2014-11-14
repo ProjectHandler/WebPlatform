@@ -24,8 +24,17 @@ ALTER TABLE `users` CHANGE `last_name` `last_name` VARCHAR(30) CHARACTER SET utf
 ALTER TABLE `users` CHANGE `password` `password` VARCHAR(70) CHARACTER SET utf8 COLLATE utf8_general_ci NULL;
 
 
--- Table structure for table `users_groups`
+-- Table structure for table `groups`
 -- 14/11/2014
+
+CREATE TABLE IF NOT EXISTS `groups` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+-- Table structure for table `users_groups`
 
 CREATE TABLE IF NOT EXISTS `users_groups` (
   `users_id` bigint(20) NOT NULL,
