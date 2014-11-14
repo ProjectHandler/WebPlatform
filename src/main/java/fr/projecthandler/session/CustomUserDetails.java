@@ -32,7 +32,7 @@ public class CustomUserDetails implements UserDetails {
 		this.accountNonLocked = accountNonLocked;
 		this.credentialsNonExpired = credentialsNonExpired;
 		this.enabled = enabled;
-		this.password = password != null ? password.toLowerCase() : null;
+		this.password = password;
 		this.username = username;
 		this.fullname = fullname;
 		this.accountStatus = accountStatus;

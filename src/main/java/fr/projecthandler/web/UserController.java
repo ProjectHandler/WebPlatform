@@ -12,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
@@ -39,6 +40,9 @@ public class UserController {
 	@Autowired
 	TokenService tokenService;
 
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+	
 	@Autowired
 	private UserDetailsService customUserDetailsService;
 
@@ -112,8 +116,8 @@ public class UserController {
 			u.setEmail(Utilities.getRequestParameter(request, "email"));
 			u.setPhone(Utilities.getRequestParameter(request, "phone"));
 			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
-			u.setPassword(Utilities.getRequestParameter(request, "password"));
-
+			u.setPassword(passwordEncoder.encode(Utilities.getRequestParameter(request, "password")));
+			
 			userService.updateUser(u);
 			tokenService.deleteTokenByUserId(u.getId());
 		}

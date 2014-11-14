@@ -19,8 +19,7 @@
 		<logout logout-success-url="/logout" delete-cookies="JSESSIONID" />
 		
 		<access-denied-handler error-page="/accessDenied" />
-		
-		
+
 		<intercept-url pattern="/" access="permitAll" />
 		<intercept-url pattern="/login" access="permitAll" />
 		<intercept-url pattern="/welcome" access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
@@ -30,10 +29,13 @@
 
 	<authentication-manager id="userDatabase">
 		<authentication-provider user-service-ref="customUserDetailsService">
-			<!-- need to add a password encryption ! -->
+			<password-encoder ref="passwordEncoder" />
 		</authentication-provider>
 	</authentication-manager>
 
+	<beans:bean id="passwordEncoder"
+		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
+		
 	<beans:bean id="ajaxAwareLoginUrlAuthenticationEntryPoint"
 		class="fr.projecthandler.session.AjaxAwareLoginUrlAuthenticationEntryPoint">
 		<beans:constructor-arg value="/login" />
