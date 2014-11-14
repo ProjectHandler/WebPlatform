@@ -21,7 +21,11 @@ public interface UserService {
 	
 	public List<Group> getAllGroups();
 	
+	public Group findGroupById(Long groupId);
+	
 	public String createGroup(String groupName);
 	
 	public void deleteGroupById(Long groupId);
+	
+	public void changeGroup(Long userId, Long groupId, String action);
 }

@@ -55,7 +55,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "account_status")
 	private AccountStatus accountStatus;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
 
@@ -150,7 +150,15 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
-
+	
+	public void addGroup(Group group) {
+		this.groups.add(group);
+	}
+	
+	public void removeGroup(Group group) {
+		this.groups.remove(group);
+	}
+	
 	@Override
 	public String toString() {
 		return "User is : [civility="+ civility +", firstName=" + firstName + ", lastName=" + lastName

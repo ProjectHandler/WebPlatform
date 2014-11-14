@@ -58,16 +58,19 @@ public class UserServiceImpl implements UserService {
 		return groupDao.getAllGroups();
 	}
 	
+	@Override
+	public Group findGroupById(Long groupId) {
+		return groupDao.findGroupById(groupId);
+	}
+	
 	public String createGroup(String groupName) {
 		try {
 			if (groupDao.findGroupByName(groupName) == null) {
-				System.out.println("1");
 				Group group = new Group();
 				group.setName(groupName);
 				groupDao.saveGroup(group);
 				return "OK";
 			} else {
-				System.out.println("2");
 				return "The group called " + groupName + " already exists.";
 			}
 		} catch (Exception e) {
@@ -78,5 +81,15 @@ public class UserServiceImpl implements UserService {
 	
 	public void deleteGroupById(Long groupId) {
 		groupDao.deleteGroupById(groupId);
+	}
+	
+	public void changeGroup(Long userId, Long groupId, String action) {
+		User user = findUserById(userId);
+		Group group = findGroupById(groupId);
+		if (action.equals("add"))
+			user.addGroup(group);
+		else
+			user.removeGroup(group);
+		updateUser(user);
 	}
 }

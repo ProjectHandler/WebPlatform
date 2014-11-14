@@ -15,6 +15,14 @@
 			
 			$(document).ready(function() {
 				$("#usersTable").tablesorter();
+				
+				
+				$(".dropdown dt a").on('click', function () {
+			          $(".dropdown dd ul").slideToggle('fast');
+			    });
+				$(".dropdown dd ul li a").on('click', function () {
+				    $(".dropdown dd ul").hide();
+				});
 			});
 			
 			function changeRole(role, user_id) {
@@ -42,6 +50,24 @@
 			    });
 			}
 			
+			function changeGroup(checkbox , userId) {
+				var groupId = $(checkbox).val();
+				var url = CONTEXT_PATH + "/admin/users_management/changeGroup";
+				var action;
+				if (checkbox.checked)
+					action = "add";
+				else
+					action = "remove";
+				
+				 $.ajax({type: "GET", url: url, data: { userId: userId, groupId: groupId, action: action}, 
+				    	success: function(data) {
+				    		if (data == "KO") 
+				    			alert("error"); 
+				    	}, 
+				    	error: function(data) {alert("error: " + data);} 
+				    });
+			}
+			
 		</script>
 	</head>
 	<body>
@@ -57,7 +83,9 @@
 					<th><spring:message code="projecthandler.user.email"/></th>
 					<th><spring:message code="projecthandler.user.role"/></th>
 					<th><spring:message code="projecthandler.user.status"/></th>
-					<th>Action</th>
+					<th><spring:message code="projecthandler.user.action"/></th>
+					
+					<th>Group</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -95,6 +123,36 @@
 							</select>
 						</td>
 						<td><INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>' ONCLICK="deleteUser('${user.id}')"/></td>
+
+						<td>
+							<dl class="dropdown"> 
+								<dt>
+									<a href="#" style="background-color:#ececec; display:block; overflow: hidden; border:0; width:200px;">
+										<p class="multiSel"></p>
+									</a>
+								</dt>
+								<dd Style="position:relative;">
+									<div class="mutliSelect">
+										<ul style="background-color:#ececec; display:none; position:absolute; width:200px; list-style:none; overflow: auto;">
+											<c:forEach var='group' items='${groups}' >
+												<c:set var="found" value="false"/>
+												<c:if test="${user.groups != null}">
+													<c:forEach var="userGroup" items="${user.groups}">
+														<c:if test="${userGroup.id == group.id}">
+															<c:set var="found" value="true"/>
+															<li><input type="checkbox" value="${group.id}" onchange="changeGroup(this,${user.id})" checked/><c:out value='${group.name}'/></li>
+														</c:if>	
+													</c:forEach>
+												</c:if>
+												<c:if test="${user.groups == null || found eq false}">
+													<li><input type="checkbox" value="${group.id}" onchange="changeGroup(this,${user.id})" /><c:out value='${group.name}'/></li>
+												</c:if>			
+											</c:forEach>
+										</ul>
+									</div>
+								</dd>
+							</dl>
+						</td>
 					</tr>
 				 </c:forEach>
 			</tbody>

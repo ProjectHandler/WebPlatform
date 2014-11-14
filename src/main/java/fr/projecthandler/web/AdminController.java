@@ -127,11 +127,10 @@ public class AdminController {
 	public ModelAndView userManagment(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		
-		List<User> users =  userService.getAllUsers();
-		myModel.put("users", users);
+		myModel.put("users",  userService.getAllUsers());
 		myModel.put("user_role", UserRole.values());
 		myModel.put("account_status", AccountStatus.values());
-				
+		myModel.put("groups",  userService.getAllGroups());
 		return new ModelAndView("admin/users_management", myModel);
 	}
 	
@@ -196,5 +195,15 @@ public class AdminController {
 		}
 	}
 	
-	
+	@RequestMapping(value = "admin/users_management/changeGroup", method = RequestMethod.GET)
+	public @ResponseBody String changeGroup(Principal principal, @RequestParam("userId") String userId, @RequestParam("groupId") String groupId,
+			@RequestParam("action") String action) {
+		try {
+			userService.changeGroup(Long.parseLong(userId), Long.parseLong(groupId), action);
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
 }
