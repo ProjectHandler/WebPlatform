@@ -20,6 +20,12 @@ SET time_zone = "+00:00";
 -- Database: `project_handler`
 --
 
+DROP DATABASE IF EXISTS project_handler;
+
+CREATE DATABASE project_handler;
+
+USE project_handler;
+
 -- --------------------------------------------------------
 
 --
