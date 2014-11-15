@@ -1,0 +1,9 @@
+# Mail server properties
+mail.host=smtp.gmail.com
+mail.username=mail@gmail.com
+mail.password=PASSWORD
+mail.admin=mail@gmail.com
+mail.noreply=mail@gmail.com
+mail.port=465
+mail.ssl=true
+mail.protocol=smtps
