@@ -36,8 +36,10 @@
 
 <div style="position:absolute; top:0; right: 10px;">
 	<div style="position:relative; top: 20px; right: 0px">
-		${user.firstName} ${user.lastName}
-		<a href="<c:url value="/j_spring_security_logout"/>"><spring:message code="projecthandler.menu.logout"/></a>	
+		<sec:authorize access="isAuthenticated()">
+			<sec:authentication property="principal.fullname" />
+			<a href="<c:url value="/j_spring_security_logout" />"><spring:message code="projecthandler.menu.logout"/></a>
+		</sec:authorize>
 	</div>
 	
 	<div id="horizontalmenu" style="position:relative; top: 10px; right: 0px">
