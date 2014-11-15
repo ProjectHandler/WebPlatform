@@ -6,39 +6,39 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 	<head>
-		
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Project Handler</title>
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<link rel="icon" href="">
+		<spring:url value="/resources/css/home.css" var="homecss"/>
+		<link href="${homecss}" rel="stylesheet"/>
 	</head>
 	<body onload='document.f.j_username.focus();'>
-		<jsp:include page="template/header.jsp" />
-		<article class="login">
-			<h1>Login</h1>
-			<form name='f' action="j_spring_security_check" method="post">
-				<fieldset>
-					<table>
-						<tr>
-							<td>Email:</td>
-							<td><input type='text' name='j_username' value=''/></td>
-							<td>(bruce.wayne@batman.com)</td>
-						</tr>
-						<tr>
-							<td>Password:</td>
-							<td><input type='password' name='j_password' /></td>
-							<td>(1234)</td>
-						</tr>
-						<tr>
-							<td colspan='2'><button name="submit" type="submit">Connect</button></td>
-						</tr>
-						<tr>
-							<c:if test="${Message != null}">
-								<td></td>
-								<td></td>
-								<td>${Message}</td>
-							</c:if>
-						</tr>
-					</table>
-				</fieldset>
-			</form>
-		</article>
-		<jsp:include page="template/footer.jsp" />
+		<!-- <jsp:include page="template/header.jsp" /> -->
+		<div class="home_wrapper">		
+		<div class="home_wrapper_inner">
+			<article class="login">
+				<div class="login_wrapper">
+					<form name='f' action="j_spring_security_check" method="post">
+						<div class="row"><input type='email' name='j_username' value="" placeholder="Email" title="(bruce.wayne@batman.com)"/></div>
+						<div class="row"><input type='password' name='j_password' value="" placeholder="Password" title="(1234)"/></div>
+						<div class="row">
+							<div class="subrow"><a href="#">Forgot your password ?</a></div>
+							<div class="subrow"><button name="submit" type="submit">Login</button></div>
+						</div>
+						<div class="row">
+						<c:if test="${Message != null}">
+							<p>${Message}</p>
+						</c:if>
+						</div>
+					</form>
+				</div>
+			</article>
+		</div>
+		</div>
+<!-- 		<jsp:include page="template/footer.jsp" /> -->
 	</body>
 </html>
