@@ -16,12 +16,12 @@
 				<fieldset>
 					<table>
 						<tr>
-							<td>email:</td>
+							<td>Email:</td>
 							<td><input type='text' name='j_username' value=''/></td>
 							<td>(bruce.wayne@batman.com)</td>
 						</tr>
 						<tr>
-							<td>password:</td>
+							<td>Password:</td>
 							<td><input type='password' name='j_password' /></td>
 							<td>(1234)</td>
 						</tr>
