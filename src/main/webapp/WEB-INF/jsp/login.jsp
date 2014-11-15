@@ -23,8 +23,8 @@
 			<article class="login">
 				<div class="login_wrapper">
 					<form name='f' action="j_spring_security_check" method="post">
-						<div class="row"><input type='email' name='j_username' value="" placeholder="Email" title="(bruce.wayne@batman.com)"/></div>
-						<div class="row"><input type='password' name='j_password' value="" placeholder="Password" title="(1234)"/></div>
+						<div class="row"><input type='email' name='j_username' value="" placeholder="Email" title=""/></div>
+						<div class="row"><input type='password' name='j_password' value="" placeholder="Password" title=""/></div>
 						<div class="row">
 							<div class="subrow"><a href="#">Forgot your password ?</a></div>
 							<div class="subrow"><button name="submit" type="submit">Login</button></div>
