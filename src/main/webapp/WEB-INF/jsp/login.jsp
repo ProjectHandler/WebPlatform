@@ -13,8 +13,8 @@
 		<meta name="description" content="">
 		<meta name="author" content="">
 		<link rel="icon" href="">
-		<spring:url value="/resources/css/home.css" var="homecss"/>
-		<link href="${homecss}" rel="stylesheet"/>
+		<spring:url value="/resources/css/main.css" var="maincss"/>
+		<link href="${maincss}" rel="stylesheet"/>
 	</head>
 	<body onload='document.f.j_username.focus();'>
 		<!-- <jsp:include page="template/header.jsp" /> -->
