@@ -7,20 +7,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Project Handler</title>
-		<meta name="description" content="">
-		<meta name="author" content="">
-		<link rel="icon" href="">
 		<spring:url value="/resources/css/main.css" var="maincss"/>
 		<link href="${maincss}" rel="stylesheet"/>
 	</head>
 	<body onload='document.f.j_username.focus();'>
-		<!-- <jsp:include page="template/header.jsp" /> -->
-		<div class="home_wrapper">		
-		<div class="home_wrapper_inner">
-			<article class="login">
+		<div class="fullscreen_wrapper">		
+		<div class="fullscreen_wrapper_inner">
+			<jsp:include page="template/header.jsp" />
+			<section class="login">
 				<div class="login_wrapper">
 					<form name='f' action="j_spring_security_check" method="post">
 						<div class="row"><input type='email' name='j_username' value="" placeholder="Email" title=""/></div>
@@ -36,9 +32,9 @@
 						</div>
 					</form>
 				</div>
-			</article>
+			</section>
+			<!-- 		<jsp:include page="template/footer.jsp" /> -->
 		</div>
 		</div>
-<!-- 		<jsp:include page="template/footer.jsp" /> -->
 	</body>
 </html>
