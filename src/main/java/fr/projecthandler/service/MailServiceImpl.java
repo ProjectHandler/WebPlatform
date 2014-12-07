@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -16,6 +17,10 @@ public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private MailSender mailSender;
+	
+
+	@Autowired
+	private MessageSource messageSource;
 	
 	@Override
 	public void sendEmail(String from, String to, String subject, String msg) {
@@ -31,10 +36,11 @@ public class MailServiceImpl implements MailService {
 		}
 	}
 	
-	public void sendEmailUserCreation(User user, String url) {
+	public void sendEmailUserCreation(User user, String url) { // Locale locale
 		Locale locale = Locale.FRANCE;
 		/*
 		 * TODO found method to use local.FRANCE dynamically
+		 * messageSource.getMessage("selfmed.clientController.retreat", null, locale)
 		 */
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		String subject 	= 	bundle.getString("projecthandler.mail.subject.signup");

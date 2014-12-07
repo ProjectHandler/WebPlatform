@@ -52,6 +52,7 @@
 	                	<li><a href="<c:url value="/admin/groups_management"/>"><spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
 	                	<li><a href="<c:url value="/signupSendMailService"/>"><spring:message code="projecthandler.admin.sendMailService"/></a></li>
 	                </sec:authorize>
+	                <li><a href="<c:url value="/changePassword"/>"><spring:message code="projecthandler.menu.changePassword"/></a></li>
                 </ul>
             </li>
         </ul>

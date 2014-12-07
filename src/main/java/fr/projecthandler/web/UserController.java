@@ -124,6 +124,20 @@ public class UserController {
 
 		return "redirect:/";
 	}
+	
+	
+	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
+	public ModelAndView changePassword(Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+			myModel.put("user", u);
+		}
+
+		return new ModelAndView("user/changePassword", myModel);
+	}
 
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)

@@ -111,7 +111,9 @@ public class AdminController {
 			user.setUserRole(UserRole.ROLE_SIMPLE_USER);
 			Long userId = userService.saveUser(user);
 			user.setId(userId);
-			
+			/*
+			 * TODO user.setId ??? WTF
+			 */
 			//Handle Token
 			Token token = new Token();
 			token.setToken(TokenGenerator.generateToken());

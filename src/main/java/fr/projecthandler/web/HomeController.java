@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +28,10 @@ public class HomeController {
 	@Autowired
 	HttpSession httpSession;
 
-	@RequestMapping(value = "home", method = RequestMethod.GET)
-	public ModelAndView home(Principal principal) {
-		return new ModelAndView("home", null);
-	}
+//	@RequestMapping(value = "home", method = RequestMethod.GET)
+//	public ModelAndView home(Principal principal) {
+//		return new ModelAndView("home", null);
+//	}
 
 	@RequestMapping(value = "accessDenied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
@@ -45,7 +47,7 @@ public class HomeController {
 			User u = userService.findUserById(userDetails.getId());
 			myModel.put("user", u);
 		} else {
-			return new ModelAndView("home", null);
+			return new ModelAndView("login", null);
 		}
 		return new ModelAndView("welcome", myModel);
 	}
