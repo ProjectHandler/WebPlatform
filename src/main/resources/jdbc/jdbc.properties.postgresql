@@ -1,0 +1,19 @@
+# PostgreSQL Settings
+#	version: 64 bit v9.4.0-1
+#	port=5432
+#	http://localhost:8081/phpPgAdmin
+
+
+jdbc.driverClassName=org.postgresql.Driver
+
+jdbc.url=jdbc:postgresql://localhost:5432/project_handler
+jdbc.username=postgres
+jdbc.password=1234
+
+# Property that determines which Hibernate dialect to use
+# (only applied with "applicationContext-hibernate.xml")
+hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+
+# Property that determines which database to use with an AbstractJpaVendorAdapter
+jpa.database=POSTGRESQL
+jpa.showSql=false
