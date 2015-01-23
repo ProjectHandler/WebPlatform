@@ -165,7 +165,29 @@ public class AdminController {
 	@RequestMapping(value = "admin/users_management/delete", method = RequestMethod.GET)
 	public @ResponseBody String deleteUser(Principal principal, @RequestParam("userId") String userId) {
 		try {
+			User user = userService.findUserById(Long.parseLong(userId));
+			tokenService.deleteTokenByUserId(user.getId());
 			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
+			return "OK";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
+	
+	@RequestMapping(value = "admin/users_management/reSendEmail", method = RequestMethod.GET)
+	public @ResponseBody String reSendEmailToUser(Principal principal, HttpServletRequest request, @RequestParam("userId") String userId) {
+		try {
+			User user = userService.findUserById(Long.parseLong(userId));
+			tokenService.deleteTokenByUserId(user.getId());
+			
+			//Handle Token
+			Token token = new Token();
+			token.setToken(TokenGenerator.generateToken());
+			token.setTimeStamp(TokenGenerator.generateTimeStamp());
+			token.setUser(user);
+			tokenService.saveToken(token);
+			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();

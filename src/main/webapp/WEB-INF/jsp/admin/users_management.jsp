@@ -34,13 +34,28 @@
 			
 			function changeStatus(status, user_id) {
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeStatus", data: { userId: user_id, status: status.value }, 
-			    	success: function(data) {if (data == "KO") alert("error");}, 
+			    	success: function(data) {
+			    		if (data == "KO") 
+			    			alert("error");
+				    	else 
+			    			location.reload();}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
 			
 			function deleteUser(user_id) {
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/delete", data: { userId: user_id}, 
+			    	success: function(data) {
+			    		if (data == "KO") 
+			    			alert("error"); 
+			    		else 
+			    			location.reload();}, 
+			    	error: function(data) {alert("error: " + data);} 
+			    });
+			}
+			
+			function sendEmailUser(user_id) {
+				$.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/reSendEmail", data: { userId: user_id}, 
 			    	success: function(data) {
 			    		if (data == "KO") 
 			    			alert("error"); 
@@ -122,8 +137,12 @@
 								</c:forEach>
 							</select>
 						</td>
-						<td><INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>' ONCLICK="deleteUser('${user.id}')"/></td>
-
+						<td>
+							<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>' 	ONCLICK="deleteUser('${user.id}')"/>
+							<c:if test="${user.accountStatus == 'INACTIVE'}">
+								<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.reSendMail"/>' 	ONCLICK="sendEmailUser('${user.id}')"/>
+							</c:if>
+						</td>
 						<td>
 							<dl class="dropdown"> 
 								<dt>
