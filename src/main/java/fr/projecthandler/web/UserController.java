@@ -193,6 +193,9 @@ public class UserController {
 				tokenService.deleteTokenByUserId(user.getId());
 				return new ModelAndView("accessDenied", null);
 			}
+			user.setAccountStatus(AccountStatus.MAIL_VALIDATED);
+			userService.updateUser(user);
+			
 			// login auto after mail validate
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
 			Authentication auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
