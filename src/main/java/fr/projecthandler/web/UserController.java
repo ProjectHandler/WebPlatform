@@ -120,6 +120,11 @@ public class UserController {
 			
 			userService.updateUser(u);
 			tokenService.deleteTokenByUserId(u.getId());
+			
+			//Refresh his session to display his information
+			CustomUserDetails newUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(u.getEmail());
+			Authentication auth = new PreAuthenticatedAuthenticationToken(newUserDetails, null, newUserDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 
 		return "redirect:/";
