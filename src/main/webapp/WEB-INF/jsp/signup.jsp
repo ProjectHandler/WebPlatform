@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <%@ page contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -128,11 +129,13 @@
 				$("#civilityError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.civility"/>');
 			}
 			
-			if (!validatePassword())
-			valid = false;
-			
-			if (!validatePasswordConfirm())
+			if ($("#userStatus").val() != 'ACTIVE') {
+				if (!validatePassword())
 				valid = false;
+				
+				if (!validatePasswordConfirm())
+					valid = false;
+			}
 			
 			if (!validatePhone())
 				valid = false;
@@ -147,8 +150,10 @@
 	</head>
 	<body>
 		<jsp:include page="template/header.jsp" />
+		<jsp:include page="template/menu.jsp" />
 		<form id="createAccount" name="createAccount" method="post">
-			<input type="hidden" name="userId" id="userId" value="${user.id}"/>
+			<input type="hidden" name="userId" 		id="userId" 	value="${user.id}"/>
+			<input type="hidden" name="userStatus" 	id="userStatus" value="${user.accountStatus}"/>
 				<h1><spring:message code="projecthandler.signup.form"/></h1>
 				<br/>
 			<ul class="form">
@@ -181,31 +186,33 @@
 						<input type="hidden" name="email" id="email" value="${user.email}"/>
 					</c:if>
 					<c:if test="${user.email == null}">
-						<input type="text" name="email" id="email" value="${user.email}" maxlength="512"/>
+						<input type="text" name="email" id="email" maxlength="512"/>
 						<span class="error" id="emailError"></span>
 					</c:if>
 				</li>
 				<li>
 					<label><spring:message code="projecthandler.signup.phone"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="text" name="phone" id="phone"  maxlength="10"/>
+					<input type="text" name="phone" id="phone"  value="${user.phone}" maxlength="10"/>
 					<span class="error" id="phoneError"></span>
 				</li>
 				<li>
 					<label><spring:message code="projecthandler.signup.mobilePhone"/></label>
-					<input type="text" name="mobilePhone" id="mobilePhone" maxlength="10"/>
+					<input type="text" name="mobilePhone" id="mobilePhone" value="${user.mobilePhone}" maxlength="10"/>
 					<span class="error" id="mobilePhoneError"></span>
 				</li>
-				<li>
-					<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
-					<span class="error" id="passwordError"></span>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
-					<span class="error" id="passwordConfirmError"></span>
-				</li>
-				<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
+				 <c:if test="${user.accountStatus != 'ACTIVE'}">
+					<li>
+						<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
+						<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
+						<span class="error" id="passwordError"></span>
+					</li>
+					<li>
+						<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
+						<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+						<span class="error" id="passwordConfirmError"></span>
+					</li>
+					<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
+				 </c:if>
 			</ul>
 		</form>
 		<br/>

@@ -53,6 +53,7 @@
 	                	<li><a href="<c:url value="/signupSendMailService"/>"><spring:message code="projecthandler.admin.sendMailService"/></a></li>
 	                </sec:authorize>
 	                <li><a href="<c:url value="/changePassword"/>"><spring:message code="projecthandler.menu.changePassword"/></a></li>
+	               <li><a href="<c:url value="/signup"/>"><spring:message code="projecthandler.menu.personalInformation"/></a></li>
                 </ul>
             </li>
         </ul>

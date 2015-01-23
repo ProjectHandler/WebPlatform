@@ -106,17 +106,42 @@ public class UserController {
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Principal principal, HttpServletRequest request) {
 		if (principal != null) {
+			Boolean isValid = true;
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
-
-			u.setAccountStatus(AccountStatus.ACTIVE);
-			u.setCivility(Civility.findCivilityById(Integer.parseInt(Utilities.getRequestParameter(request, "civility"))));
-			u.setFirstName(Utilities.getRequestParameter(request, "firstName"));
-			u.setLastName(Utilities.getRequestParameter(request, "lastName"));
-			u.setEmail(Utilities.getRequestParameter(request, "email"));
-			u.setPhone(Utilities.getRequestParameter(request, "phone"));
+			
+			// mandatory information
+			String civility = Utilities.getRequestParameter(request, "civility");
+			if (civility != null && civility.length() > 0) {
+				u.setCivility(Civility.findCivilityById(Integer.parseInt(civility)));
+			} else 
+				isValid = false;
+			String firstName = Utilities.getRequestParameter(request, "firstName");
+			if (firstName != null && firstName.length() > 0) {
+				u.setFirstName(firstName);
+			} else 
+				isValid = false;
+			String lastName = Utilities.getRequestParameter(request, "lastName");
+			if (lastName != null && lastName.length() > 0) {
+				u.setLastName(lastName);
+			} else 
+				isValid = false;
+			String phone = Utilities.getRequestParameter(request, "phone");
+			if (phone != null && phone.length() > 0) {
+				u.setPhone(phone);
+			} else 
+				isValid = false;
+			String password = Utilities.getRequestParameter(request, "password");
+			if (u.getAccountStatus() != AccountStatus.ACTIVE && password != null && password.length() > 0) {
+				u.setPassword(passwordEncoder.encode(password));
+			} else if (u.getPassword() == null || u.getPassword().length() == 0)
+				isValid = false;
+			
+			// not required information
 			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
-			u.setPassword(passwordEncoder.encode(Utilities.getRequestParameter(request, "password")));
+			
+			if (isValid == true && u.getAccountStatus() != AccountStatus.ACTIVE)
+				u.setAccountStatus(AccountStatus.ACTIVE);
 			
 			userService.updateUser(u);
 			tokenService.deleteTokenByUserId(u.getId());
