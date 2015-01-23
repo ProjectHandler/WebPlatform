@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
   `last_name` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
   `password` varchar(70) CHARACTER SET utf8 DEFAULT NULL,
-  `email` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `email` varchar(50) CHARACTER SET utf8 NOT NULL,
   `address` bigint(20) DEFAULT NULL,
   `phone` varchar(10) DEFAULT NULL,
   `mobile_phone` varchar(10) DEFAULT NULL,

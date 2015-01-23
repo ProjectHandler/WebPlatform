@@ -13,7 +13,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
 import fr.projecthandler.enums.UserRole;
@@ -43,7 +42,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "address")
 	private Set<Address> address = new HashSet<Address>(0);
 
-	@Column(name = "email", length = 30)
+	@Column(name = "email", length = 50)
 	private String email;
 	
 	@Column(name = "phone", length = 10)

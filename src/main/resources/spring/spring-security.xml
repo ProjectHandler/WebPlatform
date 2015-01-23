@@ -30,6 +30,7 @@
 		<intercept-url pattern="/changePassword"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/calendar"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 	</http>
+	
 
 	<authentication-manager id="userDatabase">
 		<authentication-provider user-service-ref="customUserDetailsService">
@@ -37,6 +38,7 @@
 		</authentication-provider>
 	</authentication-manager>
 
+        
 	<beans:bean id="passwordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 		

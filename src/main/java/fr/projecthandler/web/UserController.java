@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -155,7 +157,6 @@ public class UserController {
 		return "redirect:/";
 	}
 	
-	
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public ModelAndView changePassword(Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
@@ -163,9 +164,11 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
-			myModel.put("user", u);
-		}
 
+			myModel.put("user", u);
+			myModel.put("isPasswordChanged", false);
+		}
+		
 		return new ModelAndView("user/changePassword", myModel);
 	}
 	
@@ -182,6 +185,23 @@ public class UserController {
 		return new ModelAndView("user/calendar", myModel);
 	}
 
+	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+	public ModelAndView changePassword(Principal principal, HttpServletRequest request) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+			u.setPassword(passwordEncoder.encode(Utilities.getRequestParameter(request, "password")));
+
+			userService.updateUser(u);
+			myModel.put("user", u);
+			myModel.put("isPasswordChanged", true);
+		}
+
+		return new ModelAndView("user/changePassword", myModel);	
+	}
+		
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
 	public ModelAndView verifyUserEmail(HttpServletRequest request,	HttpServletResponse response, Principal principal) {

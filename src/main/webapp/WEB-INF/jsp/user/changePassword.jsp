@@ -22,8 +22,8 @@
 			$("#btnSave").click(function(e) {
 				$("#emailError").html("");
 				if(checkDataBeforeSaveUser() && confirm("Etes-vous sûr de vouloir modifier votre mot de passe ?")) {
-// 					$("#createAccount").attr("action", CONTEXT_PATH+"/changePassword");
-// 					$("#createAccount").submit();
+ 					$("#passwordForm").attr("action", CONTEXT_PATH+"/changePassword");
+ 					$("#passwordForm").submit();
 				}
 			});
 
@@ -80,13 +80,16 @@
 	<body>
 		<jsp:include page="../template/header.jsp" />
 		<jsp:include page="../template/menu.jsp" />
-		<form id="createAccount" name="createAccount" method="post">
+		<h1>Changement de mot de passe</h1>
+		<br/>
+		<c:if test="${isPasswordChanged == true}">
+			<p>Votre mot de passe a bien été enregistré.<p>
+		</c:if>
+		<form id="passwordForm" name="passwordForm" method="post">
 			<input type="hidden" name="userId" id="userId" value="${user.id}"/>
-				<h1><spring:message code="projecthandler.signup.form"/></h1>
-				<br/>
 			<ul class="form">
 				<li>
-					<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
+					<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
 					<span class="error" id="passwordError"></span>
 					<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
