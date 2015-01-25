@@ -20,12 +20,13 @@
 		
 		<access-denied-handler error-page="/accessDenied" />
 
-		<intercept-url pattern="/" 							access="permitAll" />
-		<intercept-url pattern="/login" 					access="permitAll" />
-		<intercept-url pattern="/welcome" 					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/admin/users_management" 	access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/admin/groups_management" 	access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/signup"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/" 								access="permitAll" />
+		<intercept-url pattern="/login" 						access="permitAll" />
+		<intercept-url pattern="/welcome" 						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
+		<intercept-url pattern="/admin/users_management" 		access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/groups_management" 		access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/signupSendMailService" 	access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/signup"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 	</http>
 
 	<authentication-manager id="userDatabase">

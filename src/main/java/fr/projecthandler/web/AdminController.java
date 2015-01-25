@@ -34,32 +34,36 @@ import fr.projecthandler.util.TokenGenerator;
 public class AdminController {
 
 	@Autowired
-	UserService userService;
+	UserService					userService;
 
 	@Autowired
-	MailService mailService;
-	
+	MailService					mailService;
+
 	@Autowired
-	TokenService tokenService;
+	TokenService				tokenService;
 
-	// domainName and urlToGo will be merged once a conf file is made to get domain name on server start. 
-	private final static String urlToGo = "verifyUser?token=";
+	// domainName and urlToGo will be merged once a conf file is made to get
+	// domain name on server start.
+	private final static String	urlToGo	= "verifyUser?token=";
 
-	@RequestMapping(value = "signupSendMailService", method = RequestMethod.GET)
+	@RequestMapping(value = "admin/signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-		// TODO CHECK IF USER IS ADMIN
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return new ModelAndView("accessDenied", null);
+
 			User u = userService.findUserById(userDetails.getId());
 			myModel.put("user", u);
-		}
+		} else
+			return new ModelAndView("accessDenied", null);
 
-		return new ModelAndView("signupSendMailService", myModel);
+		return new ModelAndView("admin/signupSendMailService", myModel);
 	}
-	
-	//Here we will be testing if all mail are valid;
+
+	// Here we will be testing if all mail are valid;
 	@RequestMapping(value = "checkEmailExists", method = RequestMethod.POST)
 	public @ResponseBody String checkEmailExists(HttpServletRequest request) {
 		String email = request.getParameter("email");
@@ -81,7 +85,7 @@ public class AdminController {
 			return errorMail.toString();
 		return "OK";
 	}
-	
+
 	private String buildTokenUrl(HttpServletRequest request, User user, Token token) {
 		StringBuilder url = new StringBuilder();
 		String serverName = request.getServerName();
@@ -95,23 +99,31 @@ public class AdminController {
 		return url.toString();
 	}
 
-	//here we send mail with token for each user by mail
-	//create user by mail and generate token then send email with token for each user
+	// here we send mail with token for each user by mail
+	// create user by mail and generate token then send email with token for
+	// each user
 	@RequestMapping(value = "admin/sendEmail", method = RequestMethod.POST)
 	public String sendEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		String email = request.getParameter("email");
 		String[] parsedMail = email.split("[,; ]");
 
 		// for each mail
-		for (int i = 0; i < parsedMail.length; i++) {		
-			//Handle user
+		for (int i = 0; i < parsedMail.length; i++) {
+			// Handle user
 			User user = new User();
 			user.setEmail(parsedMail[i]);
 			user.setAccountStatus(AccountStatus.INACTIVE);
 			user.setUserRole(UserRole.ROLE_SIMPLE_USER);
-			Long userId = userService.saveUser(user);
-			
-			//Handle Token
+			userService.saveUser(user);
+
+			// Handle Token
 			Token token = new Token();
 			token.setToken(TokenGenerator.generateToken());
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
@@ -119,22 +131,36 @@ public class AdminController {
 			tokenService.saveToken(token);
 			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
 		}
-		return "redirect:/signupSendMailService";
+		return "redirect:/admin/signupSendMailService";
 	}
-	
+
 	@RequestMapping(value = "admin/users_management", method = RequestMethod.GET)
 	public ModelAndView userManagment(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return new ModelAndView("accessDenied", null);
+		} else
+			return new ModelAndView("accessDenied", null);
+
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		
-		myModel.put("users",  userService.getAllUsers());
+
+		myModel.put("users", userService.getAllUsers());
 		myModel.put("user_role", UserRole.values());
 		myModel.put("account_status", AccountStatus.values());
-		myModel.put("groups",  userService.getAllGroups());
+		myModel.put("groups", userService.getAllGroups());
 		return new ModelAndView("admin/users_management", myModel);
 	}
-	
+
 	@RequestMapping(value = "admin/users_management/changeRole", method = RequestMethod.GET)
-	public @ResponseBody String changeRole(Principal principal, @RequestParam("userId") String userId,  @RequestParam("role") String role) {
+	public @ResponseBody String changeRole(Principal principal, @RequestParam("userId") String userId, @RequestParam("role") String role) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
 			user.setUserRole(UserRole.valueOf(role));
@@ -145,9 +171,16 @@ public class AdminController {
 			return "KO";
 		}
 	}
-	
+
 	@RequestMapping(value = "admin/users_management/changeStatus", method = RequestMethod.GET)
-	public @ResponseBody String changeStatus(Principal principal, @RequestParam("userId") String userId,  @RequestParam("status") String status) {
+	public @ResponseBody String changeStatus(Principal principal, @RequestParam("userId") String userId, @RequestParam("status") String status) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
 			user.setAccountStatus(AccountStatus.valueOf(status));
@@ -158,9 +191,16 @@ public class AdminController {
 			return "KO";
 		}
 	}
-	
+
 	@RequestMapping(value = "admin/users_management/delete", method = RequestMethod.GET)
 	public @ResponseBody String deleteUser(Principal principal, @RequestParam("userId") String userId) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
 			tokenService.deleteTokenByUserId(user.getId());
@@ -171,14 +211,21 @@ public class AdminController {
 			return "KO";
 		}
 	}
-	
+
 	@RequestMapping(value = "admin/users_management/reSendEmail", method = RequestMethod.GET)
 	public @ResponseBody String reSendEmailToUser(Principal principal, HttpServletRequest request, @RequestParam("userId") String userId) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
 			tokenService.deleteTokenByUserId(user.getId());
-			
-			//Handle Token
+
+			// Handle Token
 			Token token = new Token();
 			token.setToken(TokenGenerator.generateToken());
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
@@ -191,22 +238,43 @@ public class AdminController {
 			return "KO";
 		}
 	}
-	
+
 	@RequestMapping(value = "admin/groups_management", method = RequestMethod.GET)
 	public ModelAndView groupsManagment(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return new ModelAndView("accessDenied", null);
+		} else
+			return new ModelAndView("accessDenied", null);
+
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		List<Group> groups =  userService.getAllGroups();
+		List<Group> groups = userService.getAllGroups();
 		myModel.put("groups", groups);
 		return new ModelAndView("admin/groups_management", myModel);
 	}
-	
+
 	@RequestMapping(value = "admin/groups_management/create", method = RequestMethod.GET)
 	public @ResponseBody String createGroup(Principal principal, @RequestParam("groupName") String groupName) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		return userService.createGroup(groupName);
 	}
-	
+
 	@RequestMapping(value = "admin/groups_management/delete", method = RequestMethod.GET)
 	public @ResponseBody String deleteGroup(Principal principal, @RequestParam("groupId") String groupId) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			userService.deleteGroupById(Long.parseLong(groupId));
 			return "OK";
@@ -215,10 +283,16 @@ public class AdminController {
 			return "KO";
 		}
 	}
-	
+
 	@RequestMapping(value = "admin/users_management/changeGroup", method = RequestMethod.GET)
-	public @ResponseBody String changeGroup(Principal principal, @RequestParam("userId") String userId, @RequestParam("groupId") String groupId,
-			@RequestParam("action") String action) {
+	public @ResponseBody String changeGroup(Principal principal, @RequestParam("userId") String userId, @RequestParam("groupId") String groupId, @RequestParam("action") String action) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return "redirect:/accessDenied";
+		} else
+			return "redirect:/accessDenied";
+
 		try {
 			userService.changeGroup(Long.parseLong(userId), Long.parseLong(groupId), action);
 			return "OK";

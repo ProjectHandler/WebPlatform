@@ -68,8 +68,8 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="template/header.jsp" />
-		<jsp:include page="template/menu.jsp" />
+		<jsp:include page="../template/header.jsp" />
+		<jsp:include page="../template/menu.jsp" />
 		
 		<h1><spring:message code="projecthandler.admin.sendMailService.title"/></h1> 
 		<br/>
@@ -84,6 +84,6 @@
 		<a href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a>
 		<br/>
 		<a href="<c:url value="/j_spring_security_logout"/>"><spring:message code="projecthandler.menu.logout"/></a>
-		<jsp:include page="template/footer.jsp" />
+		<jsp:include page="../template/footer.jsp" />
 	</body>
 </html>

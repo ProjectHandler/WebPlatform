@@ -48,12 +48,12 @@
                 <ul> 
 	                <li><a href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a></li> 
 	                <sec:authorize access="hasRole('ROLE_ADMIN')">
-	                	<li><a href="<c:url value="/admin/users_management"/>"><spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
-	                	<li><a href="<c:url value="/admin/groups_management"/>"><spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
-	                	<li><a href="<c:url value="/signupSendMailService"/>"><spring:message code="projecthandler.admin.sendMailService"/></a></li>
+	                	<li><a href="<c:url value="/admin/users_management"/>">			<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
+	                	<li><a href="<c:url value="/admin/groups_management"/>">		<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
+	                	<li><a href="<c:url value="/admin/signupSendMailService"/>">	<spring:message code="projecthandler.admin.sendMailService"/></a></li>
 	                </sec:authorize>
-	                <li><a href="<c:url value="/changePassword"/>"><spring:message code="projecthandler.menu.changePassword"/></a></li>
-	               <li><a href="<c:url value="/signup"/>"><spring:message code="projecthandler.menu.personalInformation"/></a></li>
+	                <li><a href="<c:url value="/changePassword"/>">						<spring:message code="projecthandler.menu.changePassword"/></a></li>
+	               <li><a href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
                 </ul>
             </li>
         </ul>
