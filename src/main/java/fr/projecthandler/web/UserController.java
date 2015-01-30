@@ -168,6 +168,19 @@ public class UserController {
 
 		return new ModelAndView("user/changePassword", myModel);
 	}
+	
+	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
+	public ModelAndView calendar(Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+			myModel.put("user", u);
+		}
+
+		return new ModelAndView("user/calendar", myModel);
+	}
 
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
