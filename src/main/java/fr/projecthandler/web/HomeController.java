@@ -4,8 +4,6 @@ import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +50,8 @@ public class HomeController {
 		return new ModelAndView("welcome", myModel);
 	}
 
-
+	@RequestMapping(value = "/gantt", method = RequestMethod.GET)
+	public ModelAndView gantt() {
+		return new ModelAndView("gantt/gantt");
+	}
 }

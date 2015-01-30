@@ -5,7 +5,7 @@
 <header>
 	<div class="brandwrapper">
 		<a href="${siteWebUrl}">
-			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png"/>
+			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png"  height="40%" width="40%"/>
 		</a>
 	</div>
 </header>
