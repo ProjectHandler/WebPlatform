@@ -28,6 +28,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	GroupDao groupDao;
 	
+	@Autowired
+	ProjectDao projectDao;
+	
 	@Override
 	public Long saveUser(User user) {
 		return userDao.saveUser(user);
@@ -97,5 +100,10 @@ public class UserServiceImpl implements UserService {
 		else
 			user.removeGroup(group);
 		updateUser(user);
+	}
+
+	@Override
+	public Project loadGantt(Long projectId) {
+		return projectDao.findProjectById(projectId);
 	}
 }

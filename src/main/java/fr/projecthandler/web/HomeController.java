@@ -49,9 +49,4 @@ public class HomeController {
 		}
 		return new ModelAndView("welcome", myModel);
 	}
-
-	@RequestMapping(value = "/gantt", method = RequestMethod.GET)
-	public ModelAndView gantt() {
-		return new ModelAndView("gantt/gantt");
-	}
 }

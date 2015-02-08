@@ -98,32 +98,25 @@
 		
 		
 		function loadGanttFromServer(taskId, callback) {
-		
-		  //this is a simulation: load data from the local storage if you have already played with the demo or a textarea with starting demo data
-		  loadFromLocalStorage();
-		
-		  //this is the real implementation
-		  /*
+
 		  //var taskId = $("#taskSelector").val();
 		  var prof = new Profiler("loadServerSide");
 		  prof.reset();
 		
-		  $.getJSON("ganttAjaxController.jsp", {CM:"LOADPROJECT",taskId:taskId}, function(response) {
-		    //console.debug(response);
-		    if (response.ok) {
-		      prof.stop();
-		
-		      ge.loadProject(response.project);
-		      ge.checkpoint(); //empty the undo stack
-		
-		      if (typeof(callback)=="function") {
-		        callback(response);
-		      }
-		    } else {
-		      jsonErrorHandling(response);
-		    }
-		  });
-		  */
+			$.ajax({type: "POST", url:  CONTEXT_PATH+"/gantt/load?"+"projectId=1",
+				success: function(data) {
+					prof.stop();
+					 
+					//loadFromLocalStorage();
+					ge.loadProject(data);
+					ge.checkpoint(); //empty the undo stack
+					
+					if (typeof(callback)=="function") {
+					  callback(data);
+					}
+				
+				}, error: function(data) {alert("error: " + data);}
+			});
 		}
 		
 		
@@ -252,53 +245,6 @@
 		  /*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
 		   neww=window.open(uriContent,"dl");*/
 		}
-		
-		
-		//-------------------------------------------  LOCAL STORAGE MANAGEMENT (for this demo only) ------------------------------------------------------
-		Storage.prototype.setObject = function(key, value) {
-		  this.setItem(key, JSON.stringify(value));
-		};
-		
-		
-		Storage.prototype.getObject = function(key) {
-		  return this.getItem(key) && JSON.parse(this.getItem(key));
-		};
-		
-		
-		function loadFromLocalStorage() {
-		  var ret;
-		  if (localStorage) {
-		    if (localStorage.getObject("teamworkGantDemo")) {
-		      ret = localStorage.getObject("teamworkGantDemo");
-		    }
-		  } else {
-		    $("#taZone").show();
-		  }
-		  if (!ret || !ret.tasks || ret.tasks.length == 0){
-		    ret = JSON.parse($("#ta").val());
-		
-		
-		    //actualiza data
-		    var offset=new Date().getTime()-ret.tasks[0].start;
-		    for (var i=0;i<ret.tasks.length;i++)
-		      ret.tasks[i].start=ret.tasks[i].start+offset;
-		
-		
-		  }
-		  ge.loadProject(ret);
-		  ge.checkpoint(); //empty the undo stack
-		}
-		
-		
-		function saveInLocalStorage() {
-		  var prj = ge.saveProject();
-		  if (localStorage) {
-		    localStorage.setObject("teamworkGantDemo", prj);
-		  } else {
-		    $("#ta").val(JSON.stringify(prj));
-		  }
-		}
-		
 		
 		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
 		
