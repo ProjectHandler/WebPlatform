@@ -1,7 +1,10 @@
 package fr.projecthandler.web;
 
+import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,10 +26,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonIOException;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import fr.projecthandler.dto.CalendarDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
+import fr.projecthandler.model.Calendar;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.CalendarService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -37,18 +49,21 @@ import fr.projecthandler.util.Utilities;
 public class UserController {
 
 	@Autowired
-	UserService userService;
+	UserService					userService;
 
 	@Autowired
-	TokenService tokenService;
+	TokenService				tokenService;
 
 	@Autowired
-	BCryptPasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UserDetailsService customUserDetailsService;
+	CalendarService				calendarService;
 
-	private static final Long maximumTokenValidity = 10368000l; // 2 jours ms
+	@Autowired
+	BCryptPasswordEncoder		passwordEncoder;
+
+	@Autowired
+	private UserDetailsService	customUserDetailsService;
+
+	private static final Long	maximumTokenValidity	= 10368000l;	// 2 jours ms
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -81,8 +96,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "invalidateSession", method = RequestMethod.GET)
-	public String invalidateSession(HttpServletResponse response,
-			HttpServletRequest request) {
+	public String invalidateSession(HttpServletResponse response, HttpServletRequest request) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
 			new SecurityContextLogoutHandler().logout(request, response, auth);
@@ -111,43 +125,43 @@ public class UserController {
 			Boolean isValid = true;
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
-			
+
 			// mandatory information
 			String civility = Utilities.getRequestParameter(request, "civility");
 			if (civility != null && civility.length() > 0) {
 				u.setCivility(Civility.findCivilityById(Integer.parseInt(civility)));
-			} else 
+			} else
 				isValid = false;
 			String firstName = Utilities.getRequestParameter(request, "firstName");
 			if (firstName != null && firstName.length() > 0) {
 				u.setFirstName(firstName);
-			} else 
+			} else
 				isValid = false;
 			String lastName = Utilities.getRequestParameter(request, "lastName");
 			if (lastName != null && lastName.length() > 0) {
 				u.setLastName(lastName);
-			} else 
+			} else
 				isValid = false;
 			String phone = Utilities.getRequestParameter(request, "phone");
 			if (phone != null && phone.length() > 0) {
 				u.setPhone(phone);
-			} else 
+			} else
 				isValid = false;
 			String password = Utilities.getRequestParameter(request, "password");
 			if (u.getAccountStatus() != AccountStatus.ACTIVE && password != null && password.length() > 0) {
 				u.setPassword(passwordEncoder.encode(password));
 			} else if (u.getPassword() == null || u.getPassword().length() == 0)
 				isValid = false;
-			
+
 			// not required information
 			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
-			
+
 			if (isValid == true && u.getAccountStatus() != AccountStatus.ACTIVE)
 				u.setAccountStatus(AccountStatus.ACTIVE);
-			
+
 			userService.updateUser(u);
 			tokenService.deleteTokenByUserId(u.getId());
-			
+
 			//Refresh his session to display his information
 			CustomUserDetails newUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(u.getEmail());
 			Authentication auth = new PreAuthenticatedAuthenticationToken(newUserDetails, null, newUserDetails.getAuthorities());
@@ -157,6 +171,7 @@ public class UserController {
 		return "redirect:/";
 	}
 	
+
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public ModelAndView changePassword(Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
@@ -171,9 +186,40 @@ public class UserController {
 		
 		return new ModelAndView("user/changePassword", myModel);
 	}
-	
+
+	@RequestMapping(value = "/calendarDetails", method = RequestMethod.GET)
+	public void calendarDetails(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
+
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+
+			//Get the entire list of appointments available by user
+			List<Calendar> listTask = calendarService.getAllTaskByUser(u);
+			//Convert appointment to FullCalendar (A class I created to facilitate the JSON)
+			List<CalendarDTO> newlistTask = new ArrayList<>();
+
+			for (Calendar list : listTask)
+				newlistTask.add(new CalendarDTO(list));
+
+			//Convert FullCalendar from Java to JSON
+			Gson gson = new Gson();
+			String jsonAppointment = gson.toJson(newlistTask);
+
+			//Printout the JSON
+			respsonse.setContentType("application/json");
+			respsonse.setCharacterEncoding("UTF-8");
+			try {
+				respsonse.getWriter().write(jsonAppointment);
+			} catch (IOException e) {
+				//      e.printStackTrace();
+			}
+		}
+
+	}
+
 	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
-	public ModelAndView calendar(Principal principal) {
+	public ModelAndView calendar(Principal principal, HttpServletRequest request) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		if (principal != null) {
@@ -202,16 +248,45 @@ public class UserController {
 		return new ModelAndView("user/changePassword", myModel);	
 	}
 		
+	public JsonObject getIntoJson(List<Calendar> listTask) {
+		try {
+			JsonObject jsonResponse = new JsonObject();
+
+			jsonResponse.addProperty("iTotalRecords", listTask.size());
+			jsonResponse.addProperty("iTotalDisplayRecords", listTask.size());
+
+			JsonArray data = new JsonArray();
+
+			for (Calendar list : listTask) {
+				JsonArray row = new JsonArray();
+				row.add(new JsonPrimitive("title: '" + list.getTitle() + "'"));
+				row.add(new JsonPrimitive("text: '" + list.getText() + "'"));
+				row.add(new JsonPrimitive("start: '" + list.getStart().toString() + "'"));
+				row.add(new JsonPrimitive("end: '" + list.getEnd().toString() + "'"));
+				row.add(new JsonPrimitive("id: '" + list.getUser().getId() + "'"));
+				data.add(row);
+			}
+
+			jsonResponse.add("aaData", data);
+
+			System.out.println("JSON: " + jsonResponse.toString());
+			return jsonResponse;
+
+		} catch (JsonIOException e) {
+			return new JsonObject();
+		}
+	}
+
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
-	public ModelAndView verifyUserEmail(HttpServletRequest request,	HttpServletResponse response, Principal principal) {
+	public ModelAndView verifyUserEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
 		logoutUser(principal, request, response);
 
 		if (token != null && token.length() > 0) {
 			User user = tokenService.findUserByToken(token);
-			
+
 			if (user == null)
 				return new ModelAndView("accessDenied", null);
 
@@ -220,7 +295,7 @@ public class UserController {
 
 			// Access denied if Token out of date.
 			Token t = tokenService.findTokenByUserId(user.getId());
-			if (TokenGenerator.checkTimestamp(t.getTimeStamp(),	maximumTokenValidity)) {
+			if (TokenGenerator.checkTimestamp(t.getTimeStamp(), maximumTokenValidity)) {
 				// TODO : inform about the fact that the token expired in a
 				// proper page then delete token.
 				tokenService.deleteTokenByUserId(user.getId());

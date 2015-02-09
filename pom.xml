@@ -14,7 +14,7 @@
 		<ehcache.version>2.6.9</ehcache.version>
 		<hibernate-jpa.version>1.0.1.Final</hibernate-jpa.version>
 		<hibernate-validator.version>4.3.0.Final</hibernate-validator.version>
-		<hibernate.version>4.1.9.Final</hibernate.version>		
+		<hibernate.version>4.1.9.Final</hibernate.version>
 		<jadira-usertype-core.version>3.1.0.CR11</jadira-usertype-core.version>
 		<javassist.version>3.18.2-GA</javassist.version>
 		<javax-el.version>2.2</javax-el.version>
@@ -26,7 +26,7 @@
 		<jta.version>1.1</jta.version>
 		<junit.version>4.11</junit.version>
 		<servlet.version>2.5</servlet.version>
-		
+
 		<spring-data-jpa.version>1.7.0.RELEASE</spring-data-jpa.version>
 		<spring-framework.version>4.1.1.RELEASE</spring-framework.version>
 		<spring.security.version>3.2.5.RELEASE</spring.security.version>
@@ -77,6 +77,19 @@
 			<artifactId>tomcat-jdbc</artifactId>
 			<version>8.0.9</version>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 
 		<!-- MySQL JDBC Connector -->
@@ -330,12 +343,12 @@
 		</dependency>
 
 		<!-- Java Mail API -->
-    	<dependency>
-	    	<groupId>javax.mail</groupId>
-	    	<artifactId>mail</artifactId>
-	    	<version>${javax.mail.version}</version>
-    	</dependency>
-    	
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${javax.mail.version}</version>
+		</dependency>
+
 		<!-- Webjars (static dependencies distributed as JAR files) -->
 		<dependency>
 			<groupId>org.webjars</groupId>
@@ -350,58 +363,51 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
-		
-		<!-- log uncomment for activate the debug log--> 
-		<!-- <dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.9</version>
-		</dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-core</artifactId>
-			<version>1.0.9</version>
-		</dependency> -->
 
-	</dependencies>	
-			
-	  <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-eclipse-plugin</artifactId>
-                <version>${maven-eclipse-plugin.version}</version>
-                <configuration>
-                    <additionalProjectnatures>
-                        <projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-                    </additionalProjectnatures>
-                    <additionalBuildcommands>
-                        <buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
-                    </additionalBuildcommands>
-                    <downloadSources>true</downloadSources>
-                    <downloadJavadocs>true</downloadJavadocs>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                	<version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                    <compilerArgument>-Xlint:all</compilerArgument>
-                    <showWarnings>true</showWarnings>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${codehaus-mojo.version}</version>
-                <configuration>
-                    <mainClass>org.test.int1.Main</mainClass>
-                </configuration>
-            </plugin>
-            <plugin>
+		<!-- log uncomment for activate the debug log -->
+		<!-- <dependency> <groupId>ch.qos.logback</groupId> <artifactId>logback-classic</artifactId> 
+			<version>1.0.9</version> </dependency> <dependency> <groupId>ch.qos.logback</groupId> 
+			<artifactId>logback-core</artifactId> <version>1.0.9</version> </dependency> -->
+
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>${maven-eclipse-plugin.version}</version>
+				<configuration>
+					<additionalProjectnatures>
+						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+					</additionalProjectnatures>
+					<additionalBuildcommands>
+						<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+					</additionalBuildcommands>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler-plugin.version}</version>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<compilerArgument>-Xlint:all</compilerArgument>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${codehaus-mojo.version}</version>
+				<configuration>
+					<mainClass>org.test.int1.Main</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
 				<version>${maven-resources-plugin.version}</version>
@@ -431,13 +437,13 @@
 					</filesets>
 				</configuration>
 			</plugin>
-        </plugins>
-       
-    </build>
+		</plugins>
+
+	</build>
 
 	<profiles>
-    	<profile>
-    		<id>production</id>
+		<profile>
+			<id>production</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -451,9 +457,11 @@
 								<configuration>
 									<target>
 										<delete>
-											<fileset dir="${project.build.directory}/classes/jdbc/" includes="jdbc.properties" />
+											<fileset dir="${project.build.directory}/classes/jdbc/"
+												includes="jdbc.properties" />
 										</delete>
-										<copy file="${project.build.directory}/classes/jdbc/jdbc.properties.production"
+										<copy
+											file="${project.build.directory}/classes/jdbc/jdbc.properties.production"
 											tofile="${project.build.directory}/classes/jdbc/jdbc.properties" />
 									</target>
 								</configuration>
@@ -462,6 +470,6 @@
 					</plugin>
 				</plugins>
 			</build>
-    	</profile>
-    </profiles>
+		</profile>
+	</profiles>
 </project>
