@@ -1,4 +1,4 @@
-package fr.projecthanlder.dto;
+package fr.projecthandler.dto;
 
 public class GanttResourceDTO {
 

@@ -18,10 +18,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.JsonParser;
 
+import fr.projecthandler.dto.GanttProjectDTO;
+import fr.projecthandler.dto.GanttTaskDTO;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.service.UserService;
-import fr.projecthanlder.dto.GanttProjectDTO;
-import fr.projecthanlder.dto.GanttTaskDTO;
 
 @Controller
 public class GanttController {
