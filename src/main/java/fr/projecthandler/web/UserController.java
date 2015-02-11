@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -118,7 +116,7 @@ public class UserController {
 		myModel.put("civility", Civility.values());
 		return new ModelAndView("signup", myModel);
 	}
-
+	
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Principal principal, HttpServletRequest request) {
 		if (principal != null) {

@@ -31,3 +31,39 @@ CREATE TABLE IF NOT EXISTS `calendar` (
   `end` datetime NOT NULL,
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tickets`
+--
+
+CREATE TABLE IF NOT EXISTS `tickets` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `text` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `project_id` bigint(20) DEFAULT NULL,
+  `task_id` bigint(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`),
+  KEY `project_id` (`project_id`),
+  KEY `task_id` (`task_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+
+
+--
+-- Constraints for table `tickets`
+--
+-- TODO réfléchir s'il faut cascade ou pas pour user et task
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `fk_ticket_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `fk_ticket_task` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE;
+  
+ALTER TABLE `users` MODIFY `email` VARCHAR(50);

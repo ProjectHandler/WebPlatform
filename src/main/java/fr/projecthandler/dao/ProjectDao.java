@@ -14,4 +14,6 @@ public interface ProjectDao {
 	public Long saveProject(Project project);
 
 	public void deleteProjectByListIds(List<Long> projectIds);
+
+	public List<Project> getAllProjects();
 }
