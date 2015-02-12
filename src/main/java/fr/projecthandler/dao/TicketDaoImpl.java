@@ -19,7 +19,7 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 	}
 
 	@Override
-	public Ticket getTicketById(Long id) {
+	public Ticket findTicketById(Long id) {
 		return (Ticket) Utilities.getSingleResultOrNull(
 				em.createQuery("FROM Ticket t WHERE t.id =:id").setParameter("id", id));
 	}
@@ -49,4 +49,9 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 		.setParameter("ticketsIdsList", ticketsIdsList).executeUpdate();
 	}
 	
+	public List<Ticket> findTicketsByProjectId(Long projectId) {
+		return (List<Ticket>)em.createQuery("FROM Ticket t WHERE t.project.id = :projectId")
+				.setParameter("projectId", projectId)
+				.getResultList();
+	}
 }

@@ -8,7 +8,7 @@ public interface TicketDao {
 
 	public void save(Ticket Ticket);
 
-	public Ticket getTicketById(Long id);
+	public Ticket findTicketById(Long id);
 	
 	public List<Ticket> getTicketByUser(Long id);
 
@@ -17,4 +17,6 @@ public interface TicketDao {
 	public void deleteTicketById(Long id);
 	
 	public void deleteTicketByListIds(List<Long> TicketesIdsList);
+	
+	public List<Ticket> findTicketsByProjectId(Long projectId);
 }

@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 
 
-<div style="position:absolute; bottom:0; width:100%;">
+<div style="position:fixed; bottom:0; width:100%;">
 	<spring:eval expression="@applicationProps['site.web.url']" var="siteWebUrl"/>
 	<table  align="center">
 		<tr>

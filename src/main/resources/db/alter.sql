@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `title` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `text` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
   `user_id` bigint(20) DEFAULT NULL,
-  `project_id` bigint(20) DEFAULT NULL,
+  `project_id` bigint(20) NOT NULL,
   `task_id` bigint(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
@@ -72,3 +72,23 @@ ALTER TABLE `users` MODIFY `email` VARCHAR(50);
 
 -- change in calendar start & end by start_date & end_date for PostgreSql (12/02/2015)
 ALTER TABLE `calendar` CHANGE `start` `start_date` DATETIME NOT NULL, CHANGE `end` `end_date` DATETIME NOT NULL;
+
+-- messages table (13/02/2015)
+CREATE TABLE IF NOT EXISTS `ticket_messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `ticket_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) DEFAULT NULL,
+  `created_at` timestamp NOT NULL,
+  `updated_at` timestamp NOT NULL,
+  `text` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ticket_id` (`ticket_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `ticket_messages`
+  ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+ALTER TABLE `tickets` CHANGE `project_id` `project_id` BIGINT(20) NOT NULL;

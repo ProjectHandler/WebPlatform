@@ -12,7 +12,7 @@
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
 	<h1>Nouveau ticket</h1>
-	<form:form method="POST" action="/projecthandler/ticket/save" modelAttribute="ticket">
+	<form:form method="POST" action="${pageContext.request.contextPath}/ticket/save" modelAttribute="ticket">
 		<table>
 			<tbody>
 				<tr>
@@ -40,14 +40,6 @@
 			</tbody>
 		</table>
 	</form:form>
-
-	<%--    		<form action="<%=request.getContextPath() %>/ticket/save" th:object="${ticket}" method="post">
-	    	<p>Title: <input type="text" th:field="*{title}" /></p>
-	        <p>Message: <input type="text" th:field="*{text}" /></p>
-	        
-	        <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-        </form>
- --%>
  	<jsp:include page="../template/footer.jsp" />
 </body>
 </html>

@@ -14,28 +14,18 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "tickets")
-public class Ticket extends BaseEntity implements java.io.Serializable, TimestampEntity  {
+@Table(name = "ticket_messages")
+public class TicketMessage extends BaseEntity implements java.io.Serializable, TimestampEntity  {
 
 	private static final long serialVersionUID = 254665316357554236L;
 
-	@Column(name = "title", length = 100)
-	private String title;
-	
-	@Column(name = "text", length = 500)
-	private String text;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ticket_id", nullable = false)
+	private Ticket ticket;
+
+    @ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "project_id", nullable = false)
-	private Project project;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "task_id")
-	private Project task;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable=false)
@@ -44,11 +34,22 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
-    	
-	public Ticket() {
+    
+	@Column(name = "text", length = 500)
+	private String text;
+    
+	public TicketMessage() {
 	}
 	
-    @PrePersist
+    public Ticket getTicket() {
+		return ticket;
+	}
+
+	public void setTicket(Ticket ticket) {
+		this.ticket = ticket;
+	}
+
+	@PrePersist
     protected void createAtTimestamp() {
     	updatedAt = createdAt = new Date();
     }
@@ -57,14 +58,6 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
     protected void updateAtTimestamp() {
     	updatedAt = new Date();
     }
-    
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
 
 	public String getText() {
 		return text;
@@ -72,6 +65,14 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public Date getCreatedAt() {
@@ -88,29 +89,5 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setUpdatedAt(Date updatedAt) {
 		this.updatedAt = updatedAt;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public Project getProject() {
-		return project;
-	}
-
-	public void setProject(Project project) {
-		this.project = project;
-	}
-
-	public Project getTask() {
-		return task;
-	}
-
-	public void setTask(Project task) {
-		this.task = task;
 	}
 }

@@ -1,24 +1,12 @@
-package fr.projecthandler.service;
+package fr.projecthandler.dao;
 
 import java.util.List;
 
-import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
+import fr.projecthandler.model.User;
 
-public interface TicketService {
+public interface TicketMessageDao {
 	
-	public void saveTicket(Ticket newTicket);
-	
-	public Ticket findTicketById(Long id);
-	
-	public List<Ticket> getTicketByUser(Long id);
-	
-	public void updateTicket(Ticket t);
-	
-	public void deleteTicketByIds(List<Long> ticketsIdsList);
-	
-	public List<Ticket> findTicketsByProjectId(Long projectId);
-
 	public Long saveTicketMessage(TicketMessage ticketMessage);
 
 	public void updateTicketMessage(TicketMessage ticketMessage);
