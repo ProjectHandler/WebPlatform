@@ -92,6 +92,48 @@ CREATE TABLE IF NOT EXISTS users_groups (
 );
 
 --
+-- Table structure for table project
+--
+
+CREATE TABLE IF NOT EXISTS project (
+  id BIGSERIAL,
+  name varchar(30) NOT NULL,
+  description varchar(500) DEFAULT NULL,
+  date_begin date DEFAULT NULL,
+  date_end date DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+--
+-- Table structure for table task
+--
+
+CREATE TABLE IF NOT EXISTS task (
+  id BIGSERIAL,
+  name varchar(30) NOT NULL,
+  description varchar(500) DEFAULT NULL,
+  starting_date date DEFAULT NULL,
+  ending_date date DEFAULT NULL,
+  status varchar(30) DEFAULT NULL,
+  project_id BIGSERIAL,
+  PRIMARY KEY (id)
+);
+
+--
+-- Table structure for table calendar
+--
+
+CREATE TABLE IF NOT EXISTS calendar (
+  id BIGSERIAL,
+  user_id BIGSERIAL NOT NULL,
+  title varchar(255) NOT NULL,
+  text text NOT NULL,
+  start_date date NOT NULL,
+  end_date date NOT NULL,
+  PRIMARY KEY (id)
+);
+
+--
 -- Constraints for dumped tables
 --
 
@@ -113,3 +155,8 @@ ALTER TABLE users
 ALTER TABLE users_groups
   ADD CONSTRAINT users_groups_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT users_groups_ibfk_2 FOREIGN KEY (groups_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table task
+-- 
+ALTER TABLE task ADD CONSTRAINT projectKey FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE;

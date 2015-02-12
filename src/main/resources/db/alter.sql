@@ -67,3 +67,8 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_ticket_task` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE;
   
 ALTER TABLE `users` MODIFY `email` VARCHAR(50);
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+
+-- change in calendar start & end by start_date & end_date for PostgreSql (12/02/2015)
+ALTER TABLE `calendar` CHANGE `start` `start_date` DATETIME NOT NULL, CHANGE `end` `end_date` DATETIME NOT NULL;

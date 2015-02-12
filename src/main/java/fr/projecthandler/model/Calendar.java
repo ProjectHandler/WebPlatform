@@ -28,11 +28,11 @@ public class  Calendar extends BaseEntity implements java.io.Serializable {
 	private String text;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "start", length = 10)
+	@Column(name = "start_date", length = 10)
 	private Date start;
 	
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "end", length = 10)
+	@Column(name = "end_date", length = 10)
 	private Date end;
 
 	public User getUser() {
