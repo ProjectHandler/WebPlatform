@@ -6,7 +6,7 @@ import fr.projecthandler.model.Address;
 
 public interface AddressDao {
 
-	public void save(Address address);
+	public Long save(Address address);
 
 	public Address getAddressById(Long id);
 	

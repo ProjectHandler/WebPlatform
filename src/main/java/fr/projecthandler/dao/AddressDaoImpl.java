@@ -14,8 +14,10 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 
 	@Override
 	@Transactional
-	public void save(Address address) {
+	public Long save(Address address) {
 		em.persist(address);
+		
+		return address.getId();
 	}
 
 	@Override
