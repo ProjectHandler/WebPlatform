@@ -13,7 +13,12 @@
 		<script type="text/javascript">
 		$(document).ready(function()
 			    {
-			        $("#ticketTable").tablesorter();
+			        $("#ticketTable").tablesorter({
+/* 			        	dateFormat : "ddmmyyyy",
+			            headers: {
+			                2: { sorter: "shortDate" }
+			              }
+ */			        });
 			    }
 		);
 		</script>
@@ -49,7 +54,7 @@
 					<tr>
 						<td><a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">${ticket.title}</a></td>
 						<td>${ticket.user.firstName}  ${ticket.user.lastName}</td>
-						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" /></td>
+						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="MM-dd-yyyy HH:mm" /></td>
 						<td><spring:message javaScriptEscape="true" code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
 					</tr>
 				</c:forEach>
