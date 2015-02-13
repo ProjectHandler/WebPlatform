@@ -62,7 +62,7 @@
 <body>
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
-	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a><span>
+	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a></span>
 	<h1>Ticket</h1>
 	<h2>${ticket.title}</h2>
 	<p class="ticket-message-fisrt">

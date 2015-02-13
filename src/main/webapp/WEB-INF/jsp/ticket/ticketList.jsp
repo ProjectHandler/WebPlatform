@@ -17,12 +17,14 @@
 						<th>Titre</th>
 						<th>Auteur</th>
 						<th>Date</th>
+						<th>Statut</th>
 		</tr>
 			<c:forEach items="${ticketList}" var="ticket">
 				<tr>
 					<td><a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">${ticket.title}</a></td>
-					<td>${ticket.user.firstName}  ${ticket.user.lastName}</td></td>
+					<td>${ticket.user.firstName}  ${ticket.user.lastName}</td>
 					<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" /></td>
+					<td><spring:message javaScriptEscape="true" code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
 					</tr>
 			</c:forEach>
 	</table>

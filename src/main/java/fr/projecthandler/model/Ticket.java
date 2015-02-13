@@ -13,6 +13,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
 
 @Entity
@@ -26,6 +27,9 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	
 	@Column(name = "text", length = 500)
 	private String text;
+	
+	@Column(name = "ticket_status", nullable = false)
+	TicketStatus ticketStatus;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
@@ -46,8 +50,9 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
-    	
+    
 	public Ticket() {
+		this.setTicketStatus(TicketStatus.OPEN);
 	}
 	
     @PrePersist
@@ -74,6 +79,14 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public TicketStatus getTicketStatus() {
+		return ticketStatus;
+	}
+
+	public void setTicketStatus(TicketStatus ticketStatus) {
+		this.ticketStatus = ticketStatus;
 	}
 
 	public Date getCreatedAt() {

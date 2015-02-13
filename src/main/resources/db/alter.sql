@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   KEY `user_id` (`user_id`),
   KEY `project_id` (`project_id`),
   KEY `task_id` (`task_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
 --
@@ -67,8 +67,6 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_ticket_task` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE;
   
 ALTER TABLE `users` MODIFY `email` VARCHAR(50);
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
 
 -- change in calendar start & end by start_date & end_date for PostgreSql (12/02/2015)
 ALTER TABLE `calendar` CHANGE `start` `start_date` DATETIME NOT NULL, CHANGE `end` `end_date` DATETIME NOT NULL;
@@ -91,4 +89,8 @@ ALTER TABLE `ticket_messages`
 ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
+-- alter table `tickets` to make `project_id` not null (13/02/2015)
 ALTER TABLE `tickets` CHANGE `project_id` `project_id` BIGINT(20) NOT NULL;
+
+-- add ticket status to tickets (13/02/2015)
+ALTER TABLE `tickets` ADD `ticket_status` int(11) NOT NULL DEFAULT '1';

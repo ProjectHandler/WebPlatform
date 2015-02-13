@@ -1,3 +1,5 @@
+package fr.projecthandler.test.enums;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -7,7 +9,6 @@ import fr.projecthandler.enums.Civility;
 
 public class CivilityTest {
 	
-	//Test useless
 	@Test
 	public void testGet() {
 		Civility role = Civility.M;
@@ -18,5 +19,11 @@ public class CivilityTest {
 		role = Civility.MME;
 		assertEquals((Integer)1, role.getId());
 		assertEquals("Mme.", role.getValue());
+	}
+	
+	@Test
+	public void testFindCivilityById () {
+		assertEquals(Civility.M, Civility.findCivilityById(0));
+		assertEquals(Civility.MME, Civility.findCivilityById(1));
 	}
 }
