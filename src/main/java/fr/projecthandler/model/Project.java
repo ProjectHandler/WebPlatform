@@ -2,11 +2,15 @@ package fr.projecthandler.model;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -30,6 +34,10 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
 	private Set<Task> tasks = new HashSet<Task>(0);
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
+	private List<User> users;
 	
 	public Project() {
 	}
@@ -72,6 +80,14 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 
 	public void setTasks(Set<Task> tasks) {
 		this.tasks = tasks;
+	}
+	
+	public List<User> getUsers() {
+		return this.users;
+	}
+	
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 }

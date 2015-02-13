@@ -31,4 +31,6 @@ public interface UserService {
 	public void changeGroup(Long userId, Long groupId, String action);
 	
 	public Project loadGantt(Long projectId);
+
+	public List<Project> findAllProjectByUserId(Long userId);
 }

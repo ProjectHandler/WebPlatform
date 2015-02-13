@@ -106,4 +106,9 @@ public class UserServiceImpl implements UserService {
 	public Project loadGantt(Long projectId) {
 		return projectDao.findProjectById(projectId);
 	}
+	
+	@Override
+	public List<Project> findAllProjectByUserId(Long userId) {
+		return userDao.findAllProjectByUserId(userId);
+	}
 }

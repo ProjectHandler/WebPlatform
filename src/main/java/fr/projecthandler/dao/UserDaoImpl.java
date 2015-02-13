@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
@@ -46,6 +47,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	public void deleteUserByListIds(List<Long> usersIdsList) {
 		em.createQuery("DELETE FROM User u WHERE u.id IN (:usersIdsList)")
 		.setParameter("usersIdsList", usersIdsList).executeUpdate();
+	}
+	
+	@Override
+	public List<Project> findAllProjectByUserId(Long userId) {
+		return (List<Project>) em.createQuery("SELECT projects FROM User u WHERE u.id = :userId")
+				.setParameter("userId", userId).getResultList();
 	}
 
 }

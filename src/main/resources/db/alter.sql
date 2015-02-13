@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS `task` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
-ALTER TABLE `task` ADD CONSTRAINT `projectKey` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ;
+-- ALTER TABLE `task` ADD CONSTRAINT `projectKey` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE ;
 
 -- tables calendar (06/02/2014) ----------------------------- temp table
 CREATE TABLE IF NOT EXISTS `calendar` (
@@ -94,3 +94,16 @@ ALTER TABLE `tickets` CHANGE `project_id` `project_id` BIGINT(20) NOT NULL;
 
 -- add ticket status to tickets (13/02/2015)
 ALTER TABLE `tickets` ADD `ticket_status` int(11) NOT NULL DEFAULT '1';
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_projects`
+--
+
+CREATE TABLE IF NOT EXISTS `users_projects` (
+  `user_id` bigint(20) NOT NULL,
+  `project_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`user_id`,`project_id`),
+  KEY `users_projects_ibfk_2` (`project_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;

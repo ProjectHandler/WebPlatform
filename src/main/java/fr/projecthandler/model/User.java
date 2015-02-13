@@ -58,7 +58,10 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
 
-
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") })
+	private List<Project> projects;
+	
 	public User() {
 	}
 
@@ -156,6 +159,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	public void removeGroup(Group group) {
 		this.groups.remove(group);
+	}
+	
+	public List<Project> getProjects() {
+		return this.projects;
+	}
+	
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
 	}
 	
 	@Override

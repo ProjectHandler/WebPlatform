@@ -2,6 +2,7 @@ package fr.projecthandler.dao;
 
 import java.util.List;
 
+import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 
 public interface UserDao {
@@ -17,4 +18,6 @@ public interface UserDao {
 	public List<User> getAllUsers();
 
 	public void deleteUserByListIds(List<Long> users);
+
+	public List<Project> findAllProjectByUserId(Long userId);
 }
