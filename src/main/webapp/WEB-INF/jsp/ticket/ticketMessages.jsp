@@ -6,7 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
-		<title>Nouveau ticket</title>
+		<title>Ticket</title>
 		<style>
 			.ticket-message-fisrt {
 			border: solid 5px #262529;
@@ -48,6 +48,9 @@
 			display: block;
 			margin-bottom:20px;
 		}
+		.ticket-new-message:focus {
+			outline:0px none transparent;
+		}
 		.ticket-message-info {
 			margin-top:4px;
 			text-align:right;
@@ -64,7 +67,7 @@
 	<jsp:include page="../template/menu.jsp" />
 	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a></span>
 	<h1>Ticket</h1>
-	<h2>${ticket.title}</h2>
+	<h2>Titre: ${ticket.title}</h2>
 	<p class="ticket-message-fisrt">
 		${ticket.text}
 		<span class="ticket-message-info">

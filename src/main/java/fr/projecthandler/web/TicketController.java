@@ -84,7 +84,7 @@ public class TicketController {
 			return new ModelAndView("accessDenied", null);
 		}
 
-		return new ModelAndView("redirect:" + "/ticket/new");
+		return new ModelAndView("redirect:" + "/ticket/" + ticket.getId() + "/messages");
 	}
 	
 	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
