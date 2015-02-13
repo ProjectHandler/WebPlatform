@@ -20,7 +20,7 @@
 #horizontalmenu li ul {
     display:none;
 	position:absolute;
-	right: 0px;"
+	right: 0px;
 }
 
 #horizontalmenu li:hover ul{
@@ -57,6 +57,7 @@
 	               	<li><a href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
 	               	<li><a href="<c:url value="/project/projectHome"/>">test projects</a></li>
 					<li><a href="<c:url value="/gantt"/>">test Gantt</a></li>
+					<li><a href="${pageContext.request.contextPath}/ticket/new">Créer un nouveau ticket</a></li>
                 </ul>
             </li>
         </ul>
