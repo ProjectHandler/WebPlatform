@@ -13,6 +13,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import fr.projecthandler.util.TimestampEntity;
+
 @Entity
 @Table(name = "ticket_messages")
 public class TicketMessage extends BaseEntity implements java.io.Serializable, TimestampEntity  {

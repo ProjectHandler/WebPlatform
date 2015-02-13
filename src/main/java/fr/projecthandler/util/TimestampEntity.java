@@ -1,4 +1,4 @@
-package fr.projecthandler.model;
+package fr.projecthandler.util;
 
 import java.util.Date;
 
