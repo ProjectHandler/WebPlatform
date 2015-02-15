@@ -21,7 +21,7 @@ public class TicketServiceImpl implements TicketService {
 
 	@Override
 	public void saveTicket(Ticket newTicket) {
-		ticketDao.save(newTicket);
+		ticketDao.saveTicket(newTicket);
 	}
 
 	public Ticket findTicketById(Long id) {
@@ -38,8 +38,8 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.updateTicket(a);
 	}
 
-	public List<Ticket> findTicketsByProjectId(Long projectId) {
-		return ticketDao.findTicketsByProjectId(projectId);
+	public List<Ticket> getTicketsByProjectId(Long projectId) {
+		return ticketDao.getTicketsByProjectId(projectId);
 	}
 
 	@Override
@@ -59,8 +59,8 @@ public class TicketServiceImpl implements TicketService {
 		return ticketMessageDao.findTicketMessageById(ticketMessageId);
 	}
 
-	public List<TicketMessage> findTicketMessagesByTicketId(Long ticketId){
-		return ticketMessageDao.findTicketMessagesByTicketId(ticketId);
+	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId){
+		return ticketMessageDao.getTicketMessagesByTicketId(ticketId);
 	}
 
 	public List<TicketMessage> getAllTicketMessages(){

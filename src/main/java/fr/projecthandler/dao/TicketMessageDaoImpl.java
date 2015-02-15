@@ -12,12 +12,6 @@ import fr.projecthandler.util.Utilities;
 public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDao {
 
 	@Override
-	public TicketMessage findTicketMessageById(Long ticketMessageId) {
-		return (TicketMessage) Utilities.getSingleResultOrNull(em.createQuery("Select tm from TicketMessage tm where tm.id = :ticketMessageId")
-				.setParameter("ticketMessageId", ticketMessageId));
-	}
-
-	@Override
 	@Transactional
 	public void updateTicketMessage(TicketMessage ticketMessage) {
 		em.merge(ticketMessage);
@@ -32,19 +26,6 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 	}
 
 	@Override
-	public List<TicketMessage> findTicketMessagesByTicketId(Long ticketId) {
-		return (List<TicketMessage>)em.createQuery("FROM TicketMessage tm WHERE tm.ticket.id = :ticketId")
-				.setParameter("ticketId", ticketId)
-				.getResultList();
-	}
-
-	@Override
-	public List<TicketMessage> getAllTicketMessages() {
-		return (List<TicketMessage>)em.createQuery("SELECT tm FROM TicketMessage tm")
-				.getResultList();
-	}
-
-	@Override
 	@Transactional
 	public void deleteTicketMessageByListIds(List<Long> ticketMessagesIdsList) {
 		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id IN (:ticketMessagesIdsList)")
@@ -55,9 +36,27 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 	@Override
 	@Transactional
 	public void deleteTicketMessageById(Long ticketMessageId) {
-		em.createQuery("DELETE FROM TicketMessage tm where tm.id = :ticketMessageId")
+		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id = :ticketMessageId")
 		.setParameter("ticketMessageId", ticketMessageId)
 		.executeUpdate();
+	}
+	@Override
+	public TicketMessage findTicketMessageById(Long ticketMessageId) {
+		return (TicketMessage) Utilities.getSingleResultOrNull(em.createQuery("SELECT tm FROM TicketMessage tm WHERE tm.id = :ticketMessageId")
+				.setParameter("ticketMessageId", ticketMessageId));
+	}
+
+	@Override
+	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId) {
+		return (List<TicketMessage>)em.createQuery("FROM TicketMessage tm WHERE tm.ticket.id = :ticketId")
+				.setParameter("ticketId", ticketId)
+				.getResultList();
+	}
+
+	@Override
+	public List<TicketMessage> getAllTicketMessages() {
+		return (List<TicketMessage>)em.createQuery("SELECT tm FROM TicketMessage tm")
+				.getResultList();
 	}
 
 }

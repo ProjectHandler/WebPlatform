@@ -17,7 +17,6 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 		return token.getId();
 	}
 
-
 	@Override
 	public Token findTokenByUserId(Long userId) {
 		return (Token) Utilities.getSingleResultOrNull( em.createQuery("SELECT t FROM Token t WHERE t.user.id = :userId")
@@ -30,11 +29,10 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 		em.createQuery("DELETE FROM Token t WHERE t.user.id = :userId")
 		.setParameter("userId", userId).executeUpdate();
 	}
-	
+
 	@Override
 	public User findUserByToken(String token) {
-		return (User) Utilities.getSingleResultOrNull(em.createQuery("Select t.user from Token t where t.token = :token")
+		return (User) Utilities.getSingleResultOrNull(em.createQuery("SELECT t.user FROM Token t WHERE t.token = :token")
 				.setParameter("token", token));
 	}
-
 }

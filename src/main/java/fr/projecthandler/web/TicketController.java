@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.dao.ProjectDao;
-import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
@@ -28,7 +26,6 @@ import fr.projecthandler.model.User;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
-import fr.projecthandler.util.Utilities;
 
 @Controller
 @RequestMapping("/ticket")
@@ -103,7 +100,7 @@ public class TicketController {
 			TicketMessage ticketMessage = new TicketMessage();
 
 			myModel.put("user", u);
-			List<TicketMessage> ticketMessages = ticketService.findTicketMessagesByTicketId(ticketId);
+			List<TicketMessage> ticketMessages = ticketService.getTicketMessagesByTicketId(ticketId);
 			myModel.put("ticket", ticket);
 			myModel.put("ticketMessage", ticketMessage);
 			myModel.put("ticketMessages", ticketMessages);
@@ -151,7 +148,7 @@ public class TicketController {
 			User u = userService.findUserById(userDetails.getId());
 
 			myModel.put("user", u);
-			List<Ticket> ticketList = ticketService.findTicketsByProjectId(projectId);
+			List<Ticket> ticketList = ticketService.getTicketsByProjectId(projectId);
 			myModel.put("ticketList", ticketList);
 		} else {
 			//TODO redirect to login

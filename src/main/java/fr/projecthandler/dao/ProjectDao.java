@@ -7,13 +7,13 @@ import fr.projecthandler.model.Project;
 
 public interface ProjectDao {
 
-	public Project findProjectById(Long projectId);
+	public Long saveProject(Project project);
 
 	public void updateProject(Project project);
 
-	public Long saveProject(Project project);
-
 	public void deleteProjectByListIds(List<Long> projectIds);
+	
+	public Project findProjectById(Long projectId);
 
 	public List<Project> getAllProjects();
 }

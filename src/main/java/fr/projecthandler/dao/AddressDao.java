@@ -6,15 +6,15 @@ import fr.projecthandler.model.Address;
 
 public interface AddressDao {
 
-	public Long save(Address address);
-
-	public Address getAddressById(Long id);
+	public Long saveAddress(Address address);
 	
-	public List<Address> getAddressByUser(Long id);
-
 	public void updateAddress(Address address);
 
 	public void deleteAddressById(Long id);
+
+	public Address findAddressById(Long id);
 	
-	public void deleteAddressByListIds(List<Long> addressesIdsList);
+	public List<Address> getAddressByUser(Long id);
+
+	public void deleteAddressByIds(List<Long> addressesIdsList);
 }

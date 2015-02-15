@@ -38,7 +38,7 @@ public class ProjectController {
 			User u = userService.findUserById(userDetails.getId());
 
 			myModel.put("user", u);
-			List<Project> projectList = userService.findAllProjectByUserId(u.getId());
+			List<Project> projectList = userService.getProjectsByUserId(u.getId());
 			myModel.put("projectList", projectList);
 			
 			System.out.println("Projects:");

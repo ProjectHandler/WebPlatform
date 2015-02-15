@@ -7,17 +7,17 @@ import fr.projecthandler.model.User;
 
 public interface UserDao {
 
-	public User findUserById(Long userId);
+	public Long saveUser(User user);
 
 	public void updateUser(User user);
 
-	public Long saveUser(User user);
+	public void deleteUserByListIds(List<Long> users);
+
+	public User findUserById(Long userId);
 
 	public User findByEmail(String email);
 
 	public List<User> getAllUsers();
 
-	public void deleteUserByListIds(List<Long> users);
-
-	public List<Project> findAllProjectByUserId(Long userId);
+	public List<Project> getProjectsByUserId(Long userId);
 }

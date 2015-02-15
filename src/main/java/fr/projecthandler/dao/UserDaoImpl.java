@@ -12,10 +12,12 @@ import fr.projecthandler.util.Utilities;
 @Component
 public class UserDaoImpl extends AbstractDao implements UserDao {
 
+
 	@Override
-	public User findUserById(Long userId) {
-		return (User) Utilities.getSingleResultOrNull(em.createQuery("Select u from User u where u.id = :userId")
-				.setParameter("userId", userId));
+	@Transactional
+	public Long saveUser(User user) {
+		em.persist(user);
+		return user.getId();
 	}
 
 	@Override
@@ -26,9 +28,15 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
 	@Override
 	@Transactional
-	public Long saveUser(User user) {
-		em.persist(user);
-		return user.getId();
+	public void deleteUserByListIds(List<Long> usersIdsList) {
+		em.createQuery("DELETE FROM User u WHERE u.id IN (:usersIdsList)")
+		.setParameter("usersIdsList", usersIdsList).executeUpdate();
+	}
+
+	@Override
+	public User findUserById(Long userId) {
+		return (User) Utilities.getSingleResultOrNull(em.createQuery("Select u from User u where u.id = :userId")
+				.setParameter("userId", userId));
 	}
 
 	@Override
@@ -43,16 +51,8 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	}
 
 	@Override
-	@Transactional
-	public void deleteUserByListIds(List<Long> usersIdsList) {
-		em.createQuery("DELETE FROM User u WHERE u.id IN (:usersIdsList)")
-		.setParameter("usersIdsList", usersIdsList).executeUpdate();
-	}
-	
-	@Override
-	public List<Project> findAllProjectByUserId(Long userId) {
+	public List<Project> getProjectsByUserId(Long userId) {
 		return (List<Project>) em.createQuery("SELECT projects FROM User u WHERE u.id = :userId")
 				.setParameter("userId", userId).getResultList();
 	}
-
 }

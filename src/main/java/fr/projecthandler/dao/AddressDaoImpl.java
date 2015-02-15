@@ -14,24 +14,12 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 
 	@Override
 	@Transactional
-	public Long save(Address address) {
+	public Long saveAddress(Address address) {
 		em.persist(address);
 		
 		return address.getId();
 	}
-
-	@Override
-	public Address getAddressById(Long id) {
-		return (Address) Utilities.getSingleResultOrNull(
-				em.createQuery("FROM Address a WHERE a.id =:id").setParameter("id", id));
-	}
-
-	@Override
-	public List<Address> getAddressByUser(Long userId) {
-		return (List<Address>)em.createQuery("FROM Address a WHERE a.user.id = :userId")
-				.setParameter("userId", userId).getResultList();
-	}
-
+	
 	@Override
 	@Transactional
 	public void updateAddress(Address address) {
@@ -44,8 +32,20 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 	}
 
 	@Override
+	public Address findAddressById(Long id) {
+		return (Address) Utilities.getSingleResultOrNull(
+				em.createQuery("FROM Address a WHERE a.id =:id").setParameter("id", id));
+	}
+
+	@Override
+	public List<Address> getAddressByUser(Long userId) {
+		return (List<Address>)em.createQuery("FROM Address a WHERE a.user.id = :userId")
+				.setParameter("userId", userId).getResultList();
+	}
+
+	@Override
 	@Transactional
-	public void deleteAddressByListIds(List<Long> addressesIdsList) {
+	public void deleteAddressByIds(List<Long> addressesIdsList) {
 		em.createQuery("DELETE FROM Address a WHERE a.id IN :addressesIdsList")
 		.setParameter("addressesIdsList", addressesIdsList).executeUpdate();
 	}

@@ -16,12 +16,12 @@ public class AddressServiceImpl implements AddressService {
 
 	@Override
 	public void saveAddress(Address newAddress) {
-		addressDao.save(newAddress);
+		addressDao.saveAddress(newAddress);
 	}
 
 	@Override
 	public void deleteAddressByIds(List<Long> addressesIdsList) {
-		addressDao.deleteAddressByListIds(addressesIdsList);
+		addressDao.deleteAddressByIds(addressesIdsList);
 	}
 	
 	@Override

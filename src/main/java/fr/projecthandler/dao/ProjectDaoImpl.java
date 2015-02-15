@@ -10,12 +10,6 @@ import fr.projecthandler.util.Utilities;
 
 @Component
 public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
-	
-	@Override
-	public  Project findProjectById(Long projectId) {
-		return (Project) Utilities.getSingleResultOrNull(em.createQuery("Select p from Project p where p.id = :projectId")
-				.setParameter("projectId", projectId));
-	}
 
 	@Override
 	@Transactional
@@ -36,7 +30,13 @@ public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
 		em.createQuery("DELETE FROM Project p WHERE p.id IN (:projectIds)")
 		.setParameter("projectIds", projectIds).executeUpdate();
 	}
-	
+
+	@Override
+	public  Project findProjectById(Long projectId) {
+		return (Project) Utilities.getSingleResultOrNull(em.createQuery("SELECT p FROM Project p WHERE p.id = :projectId")
+				.setParameter("projectId", projectId));
+	}
+
 	@Override
 	public List<Project> getAllProjects() {
 		return (List<Project>)em.createQuery("FROM Project p").getResultList();

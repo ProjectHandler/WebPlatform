@@ -17,7 +17,7 @@ public interface TicketService {
 	
 	public void deleteTicketByIds(List<Long> ticketsIdsList);
 	
-	public List<Ticket> findTicketsByProjectId(Long projectId);
+	public List<Ticket> getTicketsByProjectId(Long projectId);
 
 	public Long saveTicketMessage(TicketMessage ticketMessage);
 
@@ -25,7 +25,7 @@ public interface TicketService {
 
 	public TicketMessage findTicketMessageById(Long ticketMessageId);
 
-	public List<TicketMessage> findTicketMessagesByTicketId(Long ticketId);
+	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId);
 
 	public List<TicketMessage> getAllTicketMessages();
 

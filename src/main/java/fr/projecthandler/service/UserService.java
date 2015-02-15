@@ -32,5 +32,5 @@ public interface UserService {
 	
 	public Project loadGantt(Long projectId);
 
-	public List<Project> findAllProjectByUserId(Long userId);
+	public List<Project> getProjectsByUserId(Long userId);
 }

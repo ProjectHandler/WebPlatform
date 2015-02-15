@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public List<Project> findAllProjectByUserId(Long userId) {
-		return userDao.findAllProjectByUserId(userId);
+	public List<Project> getProjectsByUserId(Long userId) {
+		return userDao.getProjectsByUserId(userId);
 	}
 }

@@ -14,21 +14,8 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 
 	@Override
 	@Transactional
-	public void save(Ticket ticket) {
+	public void saveTicket(Ticket ticket) {
 		em.persist(ticket);
-	}
-
-	@Override
-	public Ticket findTicketById(Long id) {
-		return (Ticket) Utilities.getSingleResultOrNull(
-				em.createQuery("FROM Ticket t WHERE t.id =:id").setParameter("id", id));
-	}
-
-	@Override
-	public List<Ticket> getTicketByUser(Long userId) {
-		return (List<Ticket>)em.createQuery("FROM Ticket t WHERE t.user.id = :userId")
-				.setParameter("userId", userId)
-				.getResultList();
 	}
 
 	@Override
@@ -48,8 +35,21 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 		em.createQuery("DELETE FROM Ticket t WHERE t.id IN :ticketsIdsList")
 		.setParameter("ticketsIdsList", ticketsIdsList).executeUpdate();
 	}
-	
-	public List<Ticket> findTicketsByProjectId(Long projectId) {
+
+	@Override
+	public Ticket findTicketById(Long id) {
+		return (Ticket) Utilities.getSingleResultOrNull(
+				em.createQuery("FROM Ticket t WHERE t.id =:id").setParameter("id", id));
+	}
+
+	@Override
+	public List<Ticket> getTicketByUser(Long userId) {
+		return (List<Ticket>)em.createQuery("FROM Ticket t WHERE t.user.id = :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+	}
+
+	public List<Ticket> getTicketsByProjectId(Long projectId) {
 		return (List<Ticket>)em.createQuery("FROM Ticket t WHERE t.project.id = :projectId")
 				.setParameter("projectId", projectId)
 				.getResultList();

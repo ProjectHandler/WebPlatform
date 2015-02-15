@@ -3,7 +3,6 @@ package fr.projecthandler.dao;
 import java.util.List;
 
 import fr.projecthandler.model.TicketMessage;
-import fr.projecthandler.model.User;
 
 public interface TicketMessageDao {
 	
@@ -11,13 +10,13 @@ public interface TicketMessageDao {
 
 	public void updateTicketMessage(TicketMessage ticketMessage);
 
-	public TicketMessage findTicketMessageById(Long ticketMessageId);
-
-	public List<TicketMessage> findTicketMessagesByTicketId(Long ticketId);
-
-	public List<TicketMessage> getAllTicketMessages();
-
 	public void deleteTicketMessageById(Long ticketMessageId);
 
 	public void deleteTicketMessageByListIds(List<Long> ticketMessages);
+
+	public TicketMessage findTicketMessageById(Long ticketMessageId);
+
+	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId);
+
+	public List<TicketMessage> getAllTicketMessages();
 }

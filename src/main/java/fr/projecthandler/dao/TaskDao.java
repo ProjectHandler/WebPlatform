@@ -7,13 +7,13 @@ import fr.projecthandler.model.Task;
 
 public interface TaskDao {
 
-	public Task findTaskById(Long taskId);
+	public Long saveTask(Task task);
 
 	public void updateTask(Task task);
 
-	public Long saveTask(Task task);
+	public void deleteTasksByListIds(List<Long> tasksIds);
 
-	public void deleteTaskByListIds(List<Long> tasksIds);
-	
-	public Set<Task> findAllTasksByProjectId(Long projectId);
+	public Task findTaskById(Long taskId);
+
+	public Set<Task> getTasksByProjectId(Long projectId);
 }
