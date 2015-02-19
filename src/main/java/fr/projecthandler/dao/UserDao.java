@@ -18,6 +18,4 @@ public interface UserDao {
 	public User findByEmail(String email);
 
 	public List<User> getAllUsers();
-
-	public List<Project> getProjectsByUserId(Long userId);
 }

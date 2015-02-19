@@ -1,5 +1,6 @@
 package fr.projecthandler.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -14,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 @Entity
 @Table(name = "project")
 public class  Project extends BaseEntity implements java.io.Serializable {
@@ -27,9 +30,11 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	private String description;
 	
 	@Column(name = "date_begin")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateBegin;
 	
 	@Column(name = "date_end")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateEnd;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
@@ -37,7 +42,7 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
-	private List<User> users;
+	private List<User> users = new ArrayList<User>();
 	
 	public Project() {
 	}
@@ -88,6 +93,14 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public void addUser(User user) {
+		this.users.add(user);
+	}
+	
+	public boolean  removeUser(User user) {
+		return this.users.remove(user);
 	}
 
 }

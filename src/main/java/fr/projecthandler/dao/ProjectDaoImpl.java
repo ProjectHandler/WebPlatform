@@ -41,4 +41,10 @@ public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
 	public List<Project> getAllProjects() {
 		return (List<Project>)em.createQuery("FROM Project p").getResultList();
 	}
+	
+	@Override
+	public List<Project> getProjectsByUserId(Long userId) {
+		return (List<Project>) em.createQuery("SELECT projects FROM User u WHERE u.id = :userId")
+				.setParameter("userId", userId).getResultList();
+	}
 }

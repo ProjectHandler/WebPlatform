@@ -16,4 +16,6 @@ public interface ProjectDao {
 	public Project findProjectById(Long projectId);
 
 	public List<Project> getAllProjects();
+	
+	public List<Project> getProjectsByUserId(Long userId);
 }

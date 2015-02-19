@@ -40,6 +40,7 @@ public class TicketController {
 	@Autowired
 	HttpSession httpSession;
 	
+	//TODO replace by service
 	@Autowired
 	ProjectDao projectService;
 
@@ -60,18 +61,15 @@ public class TicketController {
 			return new ModelAndView("accessDenied", null);
 		}
 
-		return new ModelAndView("ticket/newTicket", myModel);
+		return new ModelAndView("ticket/addTicket", myModel);
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveTicket(Principal principal, @ModelAttribute("ticket") Ticket ticket, BindingResult result, @RequestParam("project")String project) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
-		
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
-			myModel.put("user", u);
 			ticket.setUser(u);
 			//TODO un truc propre
 			ticket.setProject(projectService.findProjectById(Long.parseLong(project)));
@@ -113,8 +111,7 @@ public class TicketController {
 	}
 	
 	@RequestMapping(value = "/{ticketId}/message/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(Principal principal, @ModelAttribute("ticketMessage") TicketMessage ticketMessage, BindingResult result,	@PathVariable Long ticketId) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
+	public ModelAndView saveTicket(Principal principal, @ModelAttribute("ticketMessage") TicketMessage ticketMessage, BindingResult result, @PathVariable Long ticketId) {
 		Ticket ticket = ticketService.findTicketById(ticketId);
 		
 		//TODO ajouter les autres tests pour confirmer que ce User peut écrire sur ce ticket
@@ -126,7 +123,6 @@ public class TicketController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
-			myModel.put("user", u);
 			ticketMessage.setUser(u);
 			ticketMessage.setTicket(ticket);
 			ticketService.saveTicketMessage(ticketMessage);
