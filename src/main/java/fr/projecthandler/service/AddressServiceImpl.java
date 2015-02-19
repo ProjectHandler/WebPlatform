@@ -30,8 +30,8 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public List<Address> getAddressByUser(Long id) {
-		return addressDao.getAddressByUser(id);
+	public List<Address> getAddressesByUser(Long id) {
+		return addressDao.getAddressesByUser(id);
 	}
 	
 }

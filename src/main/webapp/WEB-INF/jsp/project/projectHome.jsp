@@ -29,6 +29,7 @@
 	                <th>Nom</th>
 	                <th>Date de début</th>
 	                <th>Date de fin</th>
+	                <th></th>
 	            </tr>
             </thead>
             <tbody>
@@ -37,6 +38,7 @@
 	                    <td><c:out value="${project.name}" /></td>
 	                    <td><c:out value="${project.dateBegin}" /></td>
 	                    <td><c:out value="${project.dateEnd}" /></td>
+						<td><a href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">List des tickets du projet</a></td>
 	                </tr>
 	            </c:forEach>
             </tbody>

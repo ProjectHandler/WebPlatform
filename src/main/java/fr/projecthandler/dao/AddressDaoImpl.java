@@ -38,7 +38,7 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 	}
 
 	@Override
-	public List<Address> getAddressByUser(Long userId) {
+	public List<Address> getAddressesByUser(Long userId) {
 		return (List<Address>)em.createQuery("FROM Address a WHERE a.user.id = :userId")
 				.setParameter("userId", userId).getResultList();
 	}

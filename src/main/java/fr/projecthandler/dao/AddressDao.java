@@ -14,7 +14,7 @@ public interface AddressDao {
 
 	public Address findAddressById(Long id);
 	
-	public List<Address> getAddressByUser(Long id);
+	public List<Address> getAddressesByUser(Long id);
 
 	public void deleteAddressByIds(List<Long> addressesIdsList);
 }

@@ -8,7 +8,7 @@ public interface AddressService {
 	
 	public void saveAddress(Address newAddress);
 	
-	public List<Address> getAddressByUser(Long id);
+	public List<Address> getAddressesByUser(Long id);
 	
 	public void updateAddress(Address a);
 	

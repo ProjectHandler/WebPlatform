@@ -45,22 +45,22 @@ public class AddressDaoTest {
 	
 	@Test
 	@Transactional
-	public void testSave() {
+	public void testSaveAddress() {
 		Address address = new Address();
 		
 		setAddressData(address);		
-		addressDao.save(address);
+		addressDao.saveAddress(address);
 	}
 	
 	@Test
 	@Transactional
 	//Test if the saved fields are equal to the loaded fields.
-	public void testSaveAndGetAddressById() {
+	public void testSaveAndFindAddressById() {
 		Address address = new Address();
 
 		setAddressData(address);
-		Long id = addressDao.save(address);
-		Address result = addressDao.getAddressById(id);
+		Long id = addressDao.saveAddress(address);
+		Address result = addressDao.findAddressById(id);
 		assertNotNull("getAddressById: excepted an Address Object but was null", result);
 		assertEquals(result.getId(), id);
 		assertEquals(result.getStreetName(), streetName);
@@ -72,15 +72,15 @@ public class AddressDaoTest {
 	
 	@Test
 	@Transactional
-	public void testGetAddressByUser() {
+	public void testGetAddressesByUser() {
 		Address address = new Address();
 
 		List<User> userList = userService.getAllUsers();
 		User user = userList.get(0);
 		setAddressData(address);
 		address.setUser(user);
-		addressDao.save(address);
-		List<Address> addressList = addressDao.getAddressByUser(user.getId());
+		addressDao.saveAddress(address);
+		List<Address> addressList = addressDao.getAddressesByUser(user.getId());
 		assertTrue(addressList.size() == 1);
 	}
 	
@@ -90,9 +90,9 @@ public class AddressDaoTest {
 		Address address = new Address();
 
 		setAddressData(address);
-		Long addressId = addressDao.save(address);
+		Long addressId = addressDao.saveAddress(address);
 		addressDao.deleteAddressById(addressId);
-		Address result = addressDao.getAddressById(addressId);
+		Address result = addressDao.findAddressById(addressId);
 		assertNull(result);
 	}
 }
