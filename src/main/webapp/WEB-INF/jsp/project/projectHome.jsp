@@ -22,6 +22,7 @@
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
 	<h1>Mes Projets</h1>
+	<a href="${pageContext.request.contextPath}/project/new">Créer un nouveau projet</a>
 	<div align="left" style="width:40%; min-width:400px">
         <table id="projectTable" class="tablesorter" border="1">
             <thead>

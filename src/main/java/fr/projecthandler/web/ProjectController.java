@@ -37,7 +37,7 @@ public class ProjectController {
 	@Autowired
 	HttpSession httpSession;
 
-	@RequestMapping(value = "project/projectHome", method = RequestMethod.GET)
+	@RequestMapping(value = "/project/projectHome", method = RequestMethod.GET)
 	public ModelAndView projectHome(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
