@@ -45,7 +45,7 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 
 	@Override
 	@Transactional
-	public void deleteAddressByIds(List<Long> addressesIdsList) {
+	public void deleteAddressesByIds(List<Long> addressesIdsList) {
 		em.createQuery("DELETE FROM Address a WHERE a.id IN :addressesIdsList")
 		.setParameter("addressesIdsList", addressesIdsList).executeUpdate();
 	}

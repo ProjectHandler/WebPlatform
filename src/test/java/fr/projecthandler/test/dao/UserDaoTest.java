@@ -97,7 +97,7 @@ public class UserDaoTest {
 	
 	@Test
 	@Transactional
-	public void testDeleteUserByListIds() {
+	public void testDeleteUsersByIds() {
 		List<Long> userIdList = new ArrayList<Long>(); ;
 		
 		for (int i = 0; i < 10; i++) {
@@ -106,7 +106,7 @@ public class UserDaoTest {
 			userIdList.add(userDao.saveUser(user));
 		}
 		
-		userDao.deleteUserByListIds(userIdList);
+		userDao.deleteUsersByIds(userIdList);
 		for (Long userId : userIdList) {
 			User result = userDao.findUserById(userId);
 			assertNull(result);

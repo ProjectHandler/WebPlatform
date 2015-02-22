@@ -12,7 +12,7 @@ public interface TicketDao {
 
 	public void deleteTicketById(Long id);
 
-	public void deleteTicketByListIds(List<Long> TicketesIdsList);
+	public void deleteTicketsByIds(List<Long> TicketesIdsList);
 
 	public Ticket findTicketById(Long id);
 

@@ -26,7 +26,7 @@ public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
 
 	@Override
 	@Transactional
-	public void deleteProjectByListIds(List<Long> projectIds) {
+	public void deleteProjectsByIds(List<Long> projectIds) {
 		em.createQuery("DELETE FROM Project p WHERE p.id IN (:projectIds)")
 		.setParameter("projectIds", projectIds).executeUpdate();
 	}

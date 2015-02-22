@@ -27,7 +27,7 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 
 	@Override
 	@Transactional
-	public void deleteTicketMessageByListIds(List<Long> ticketMessagesIdsList) {
+	public void deleteTicketMessagesByIds(List<Long> ticketMessagesIdsList) {
 		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id IN (:ticketMessagesIdsList)")
 		.setParameter("ticketMessagesIdsList", ticketMessagesIdsList)
 		.executeUpdate();

@@ -12,7 +12,7 @@ public interface TicketMessageDao {
 
 	public void deleteTicketMessageById(Long ticketMessageId);
 
-	public void deleteTicketMessageByListIds(List<Long> ticketMessages);
+	public void deleteTicketMessagesByIds(List<Long> ticketMessages);
 
 	public TicketMessage findTicketMessageById(Long ticketMessageId);
 

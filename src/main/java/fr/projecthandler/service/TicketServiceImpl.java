@@ -30,7 +30,7 @@ public class TicketServiceImpl implements TicketService {
 	
 	@Override
 	public void deleteTicketByIds(List<Long> ticketsIdsList) {
-		ticketDao.deleteTicketByListIds(ticketsIdsList);
+		ticketDao.deleteTicketsByIds(ticketsIdsList);
 	}
 	
 	@Override
@@ -71,7 +71,7 @@ public class TicketServiceImpl implements TicketService {
 		ticketMessageDao.deleteTicketMessageById(ticketMessageId);
 	}
 
-	public void deleteTicketMessageByListIds(List<Long> ticketMessages){
-		ticketMessageDao.deleteTicketMessageByListIds(ticketMessages);
+	public void deleteTicketMessagesByIds(List<Long> ticketMessages){
+		ticketMessageDao.deleteTicketMessagesByIds(ticketMessages);
 	}
 }

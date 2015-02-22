@@ -20,8 +20,8 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@Override
-	public void deleteAddressByIds(List<Long> addressesIdsList) {
-		addressDao.deleteAddressByIds(addressesIdsList);
+	public void deleteAddressesByIds(List<Long> addressesIdsList) {
+		addressDao.deleteAddressesByIds(addressesIdsList);
 	}
 	
 	@Override

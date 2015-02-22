@@ -31,7 +31,7 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 
 	@Override
 	@Transactional
-	public void deleteTicketByListIds(List<Long> ticketsIdsList) {
+	public void deleteTicketsByIds(List<Long> ticketsIdsList) {
 		em.createQuery("DELETE FROM Ticket t WHERE t.id IN :ticketsIdsList")
 		.setParameter("ticketsIdsList", ticketsIdsList).executeUpdate();
 	}

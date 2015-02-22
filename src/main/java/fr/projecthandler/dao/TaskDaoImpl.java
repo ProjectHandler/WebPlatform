@@ -28,7 +28,7 @@ public class TaskDaoImpl  extends AbstractDao implements TaskDao {
 
 	@Override
 	@Transactional
-	public void deleteTasksByListIds(List<Long> tasksIds) {
+	public void deleteTasksByIds(List<Long> tasksIds) {
 		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)")
 		.setParameter("tasksIds", tasksIds).executeUpdate();
 	}

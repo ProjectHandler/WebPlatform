@@ -27,15 +27,15 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	GroupDao groupDao;
-	
+
 	@Autowired
 	ProjectDao projectDao;
-	
+
 	@Override
 	public Long saveUser(User user) {
 		return userDao.saveUser(user);
 	}
-	
+
 	@Override
 	public User getUserByEmail(String email) {
 		return userDao.findByEmail(email);
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public void deleteUserByIds(List<Long> usersList) {
-		userDao.deleteUserByListIds(usersList);
+		userDao.deleteUsersByIds(usersList);
 	}
 	
 	

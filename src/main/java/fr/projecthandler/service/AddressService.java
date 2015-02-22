@@ -12,5 +12,5 @@ public interface AddressService {
 	
 	public void updateAddress(Address a);
 	
-	public void deleteAddressByIds(List<Long> addressesIdsList);
+	public void deleteAddressesByIds(List<Long> addressesIdsList);
 }

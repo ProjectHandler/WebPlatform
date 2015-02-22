@@ -28,7 +28,7 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 
 	@Override
 	@Transactional
-	public void deleteUserByListIds(List<Long> usersIdsList) {
+	public void deleteUsersByIds(List<Long> usersIdsList) {
 		em.createQuery("DELETE FROM User u WHERE u.id IN (:usersIdsList)")
 		.setParameter("usersIdsList", usersIdsList).executeUpdate();
 	}
