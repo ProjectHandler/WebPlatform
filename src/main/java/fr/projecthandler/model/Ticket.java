@@ -1,11 +1,15 @@
 package fr.projecthandler.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.PrePersist;
@@ -31,6 +35,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@Column(name = "ticket_status", nullable = false)
 	TicketStatus ticketStatus;
 	
+	//Author
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -40,9 +45,18 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	private Project project;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "task_id")
-	private Project task;
+	@JoinColumn(name = "ticket_tracker_id")
+	private TicketTracker ticketTracker;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "ticket_priority_id")
+	private TicketPriority ticketPriority;
+
+	//List of recipients
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_tickets", joinColumns = { @JoinColumn(name = "ticket_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
+	private List<User> users = new ArrayList<User>();;
+	
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable=false)
     private Date createdAt;
@@ -119,13 +133,5 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setProject(Project project) {
 		this.project = project;
-	}
-
-	public Project getTask() {
-		return task;
-	}
-
-	public void setTask(Project task) {
-		this.task = task;
 	}
 }

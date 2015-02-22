@@ -1,6 +1,5 @@
 package fr.projecthandler.dao;
 
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -40,6 +39,14 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 	public Ticket findTicketById(Long id) {
 		return (Ticket) Utilities.getSingleResultOrNull(
 				em.createQuery("FROM Ticket t WHERE t.id =:id").setParameter("id", id));
+	}
+	
+	//TODO tester la fonction
+	@Override
+	public Ticket findTicketByIdAndFetchUsers(Long id) {
+		return (Ticket) Utilities.getSingleResultOrNull(
+				em.createQuery("FROM Ticket t JOIN FETCH t.users WHERE t.id =:id")
+				.setParameter("id", id));
 	}
 
 	@Override

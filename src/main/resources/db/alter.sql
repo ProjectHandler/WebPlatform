@@ -43,15 +43,18 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `title` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   `text` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  `ticket_status` int(11) NOT NULL DEFAULT '1',
   `user_id` bigint(20) DEFAULT NULL,
   `project_id` bigint(20) NOT NULL,
-  `task_id` bigint(20) DEFAULT NULL,
+  `ticket_priority_id` bigint(20) DEFAULT NULL,
+  `ticket_tracker_id` bigint(20) DEFAULT NULL,
   `created_at` timestamp NOT NULL,
   `updated_at` timestamp NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `project_id` (`project_id`),
-  KEY `task_id` (`task_id`)
+  KEY `ticket_priority_id` (`ticket_priority_id`)
+  KEY `ticket_tracker_id` (`ticket_tracker_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 
@@ -63,9 +66,7 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 ALTER TABLE `tickets`
   ADD CONSTRAINT `fk_ticket_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
-ALTER TABLE `tickets`
-  ADD CONSTRAINT `fk_ticket_task` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`) ON DELETE CASCADE;
-  
+
 ALTER TABLE `users` MODIFY `email` VARCHAR(50);
 
 -- change in calendar start & end by start_date & end_date for PostgreSql (12/02/2015)
@@ -86,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
 
 ALTER TABLE `ticket_messages`
   ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
-ALTER TABLE `tickets`
+ALTER TABLE `ticket_messages`
   ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 -- alter table `tickets` to make `project_id` not null (13/02/2015)
@@ -107,3 +108,55 @@ CREATE TABLE IF NOT EXISTS `users_projects` (
   PRIMARY KEY (`user_id`,`project_id`),
   KEY `users_projects_ibfk_2` (`project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_tickets` (22/02/2015)
+--
+
+CREATE TABLE IF NOT EXISTS `users_tickets` (
+  `user_id` bigint(20) NOT NULL,
+  `ticket_id` bigint(20) NOT NULL,
+  CONSTRAINT users_tickets_pk PRIMARY KEY (`user_id`,`ticket_id`),
+  CONSTRAINT users_tickets_ibfk_1
+    FOREIGN KEY (user_id) REFERENCES users (id),
+  CONSTRAINT users_tickets_ibfk_2
+    FOREIGN KEY (ticket_id) REFERENCES tickets (id)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_priority` (22/02/2015)
+--
+CREATE TABLE IF NOT EXISTS `ticket_priority` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_tracker` (22/02/2015)
+--
+CREATE TABLE IF NOT EXISTS `ticket_tracker` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+-- new fields for table `tickets`
+ALTER TABLE `tickets`
+  ADD `ticket_priority_id` bigint(20) DEFAULT NULL;
+ALTER TABLE `tickets`
+  ADD `ticket_tracker_id` bigint(20) DEFAULT NULL;
+
+-- new constraints for table `tickets` (22/02/2015)
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`);
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`);
