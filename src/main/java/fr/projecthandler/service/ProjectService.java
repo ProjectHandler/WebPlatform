@@ -1,11 +1,10 @@
-package fr.projecthandler.dao;
+package fr.projecthandler.service;
 
 import java.util.List;
 
 import fr.projecthandler.model.Project;
 
-
-public interface ProjectDao {
+public interface ProjectService {
 
 	public Long saveProject(Project project);
 
@@ -20,4 +19,6 @@ public interface ProjectDao {
 	public List<Project> getProjectsByUserId(Long userId);
 	
 	public void deleteProjectById(Long projectId);
+	
+	public Project loadGantt(Long projectId);
 }

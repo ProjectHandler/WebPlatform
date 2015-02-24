@@ -16,6 +16,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
@@ -26,6 +28,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	private static final long serialVersionUID = 254665316357554236L;
 
+	@Size(min=1, max=100)
 	@Column(name = "title", length = 100)
 	private String title;
 	
@@ -42,6 +45,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id", nullable = false)
+	@Valid
 	private Project project;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -133,5 +137,38 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public TicketTracker getTicketTracker() {
+		return ticketTracker;
+	}
+
+	public void setTicketTracker(TicketTracker ticketTracker) {
+		this.ticketTracker = ticketTracker;
+	}
+
+	public TicketPriority getTicketPriority() {
+		return ticketPriority;
+	}
+
+	public void setTicketPriority(TicketPriority ticketPriority) {
+		this.ticketPriority = ticketPriority;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
+
+	@Override
+	public String toString() {
+		return "Ticket [title=" + title + ", text=" + text + ", ticketStatus="
+				+ ticketStatus + ", user=" + user + ", project=" + project
+				+ ", ticketTracker=" + ticketTracker + ", ticketPriority="
+				+ ticketPriority + ", users=" + users + ", createdAt="
+				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }

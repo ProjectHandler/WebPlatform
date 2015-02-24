@@ -50,7 +50,7 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 	}
 
 	@Override
-	public List<Ticket> getTicketByUser(Long userId) {
+	public List<Ticket> getTicketsByUser(Long userId) {
 		return (List<Ticket>)em.createQuery("FROM Ticket t WHERE t.user.id = :userId")
 				.setParameter("userId", userId)
 				.getResultList();

@@ -3,7 +3,6 @@ package fr.projecthandler.service;
 import java.util.List;
 
 import fr.projecthandler.model.Group;
-import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 
 public interface UserService {
@@ -29,8 +28,4 @@ public interface UserService {
 	public void deleteGroupById(Long groupId);
 	
 	public void changeGroup(Long userId, Long groupId, String action);
-	
-	public Project loadGantt(Long projectId);
-
-	public List<Project> getProjectsByUserId(Long userId);
 }

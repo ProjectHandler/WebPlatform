@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -15,14 +16,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.dao.ProjectDao;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
+import fr.projecthandler.model.TicketTracker;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -36,13 +37,12 @@ public class TicketController {
 
 	@Autowired
 	TicketService ticketService;
-	
+
 	@Autowired
 	HttpSession httpSession;
-	
-	//TODO replace by service
+
 	@Autowired
-	ProjectDao projectService;
+	ProjectService projectService;
 
 	@RequestMapping(value = "/new", method = RequestMethod.GET)
 	public ModelAndView addTicket(Principal principal) {
@@ -53,9 +53,12 @@ public class TicketController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 			List<Project> projectList = projectService.getAllProjects();
+			List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
+
 			myModel.put("user", u);
 			myModel.put("ticket", ticket);
 			myModel.put("projectList", projectList);
+			myModel.put("ticketTrackerList", ticketTrackerList);
 		} else {
 			//TODO redirect to login
 			return new ModelAndView("accessDenied", null);
@@ -65,14 +68,12 @@ public class TicketController {
 	}
 	
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(Principal principal, @ModelAttribute("ticket") Ticket ticket, BindingResult result, @RequestParam("project")String project) {
+	public ModelAndView saveTicket(Principal principal, @ModelAttribute("ticket") @Valid Ticket ticket, BindingResult result) {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-			User u = userService.findUserById(userDetails.getId());
+			User user = userService.findUserById(userDetails.getId());
 
-			ticket.setUser(u);
-			//TODO un truc propre
-			ticket.setProject(projectService.findProjectById(Long.parseLong(project)));
+			ticket.setUser(user);
 			ticketService.saveTicket(ticket);
 		} else {
 			//TODO redirect to login
@@ -96,9 +97,9 @@ public class TicketController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 			TicketMessage ticketMessage = new TicketMessage();
+			List<TicketMessage> ticketMessages = ticketService.getTicketMessagesByTicketId(ticketId);
 
 			myModel.put("user", u);
-			List<TicketMessage> ticketMessages = ticketService.getTicketMessagesByTicketId(ticketId);
 			myModel.put("ticket", ticket);
 			myModel.put("ticketMessage", ticketMessage);
 			myModel.put("ticketMessages", ticketMessages);

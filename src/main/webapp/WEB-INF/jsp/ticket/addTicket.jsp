@@ -6,7 +6,15 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tokeninput.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/tokeninput/token-input-facebook.css">
 		<title>Nouveau ticket</title>
+		<script type="text/javascript">
+		$(document).ready(function () {
+		    $("#my-text-input").tokenInput("/url/to/your/script/");
+		});
+		</script>
 	</head>
 <body>
 	<jsp:include page="../template/header.jsp" />
@@ -23,9 +31,16 @@
 					<td><form:label path="project">Projet</form:label></td>
 					<td>
 						<form:select path="project">
-							<c:forEach items="${projectList}" var="proj">
-								<form:option value="${proj.id}">${proj.name}</form:option>
-							</c:forEach>
+							<form:options items="${projectList}" itemValue="id" itemLabel="name" />
+						</form:select>
+						<span class="help-inline"><form:errors path="project" /></span>
+					</td>
+				</tr>
+				<tr>
+					<td><form:label path="ticketTracker">Tracker</form:label></td>
+					<td>
+						<form:select path="ticketTracker">
+						    <form:options items="${ticketTrackerList}" itemValue="id" itemLabel="name" />
 						</form:select>
 					</td>
 				</tr>

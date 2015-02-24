@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.dao.ProjectDao;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
 
@@ -30,9 +30,8 @@ public class ProjectController {
 	@Autowired
 	UserService userService;
 	
-	//TODO replace by service
 	@Autowired
-	ProjectDao projectService;
+	ProjectService projectService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -46,7 +45,7 @@ public class ProjectController {
 			User u = userService.findUserById(userDetails.getId());
 
 			myModel.put("user", u);
-			List<Project> projectList = userService.getProjectsByUserId(u.getId());
+			List<Project> projectList = projectService.getProjectsByUserId(u.getId());
 			myModel.put("projectList", projectList);
 			
 			System.out.println("Projects:");

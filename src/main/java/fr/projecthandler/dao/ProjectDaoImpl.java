@@ -28,7 +28,8 @@ public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
 	@Transactional
 	public void deleteProjectsByIds(List<Long> projectIds) {
 		em.createQuery("DELETE FROM Project p WHERE p.id IN (:projectIds)")
-		.setParameter("projectIds", projectIds).executeUpdate();
+				.setParameter("projectIds", projectIds)
+				.executeUpdate();
 	}
 
 	@Override
@@ -44,7 +45,15 @@ public class ProjectDaoImpl  extends AbstractDao implements ProjectDao {
 	
 	@Override
 	public List<Project> getProjectsByUserId(Long userId) {
-		return (List<Project>) em.createQuery("SELECT projects FROM User u WHERE u.id = :userId")
-				.setParameter("userId", userId).getResultList();
+		return (List<Project>)em.createQuery("SELECT projects FROM User u WHERE u.id = :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+	}
+	
+	@Override
+	public void deleteProjectById(Long id) {
+		em.createQuery("DELETE FROM Project p WHERE p.id =:id")
+				.setParameter("id", id)
+				.executeUpdate();
 	}
 }

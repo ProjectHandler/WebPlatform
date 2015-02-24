@@ -21,13 +21,17 @@ import com.google.gson.JsonParser;
 import fr.projecthandler.dto.GanttProjectDTO;
 import fr.projecthandler.dto.GanttTaskDTO;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.UserService;
 
 @Controller
 public class GanttController {
 
 	@Autowired
-	UserService	userService;
+	UserService userService;
+
+	@Autowired
+	ProjectService projectService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -40,7 +44,7 @@ public class GanttController {
 	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
 	public @ResponseBody Object loadGantt(HttpServletRequest request, Principal principal) {
 		try {
-			Project project = userService.loadGantt(Long.parseLong(request.getParameter("projectId"), 10));
+			Project project = projectService.loadGantt(Long.parseLong(request.getParameter("projectId"), 10));
 			GanttTaskDTO taskDTO = new GanttTaskDTO(project);
 			GanttProjectDTO prorojectDTO = new GanttProjectDTO();
 			List<GanttTaskDTO> listTaskDTO = new ArrayList<GanttTaskDTO>();
