@@ -18,13 +18,11 @@ public class ProjectFormatter implements Formatter<Project> {
 	
     @Override
     public String print(Project project, Locale locale) {
-		System.out.println("formatter print");
         return project.getName().toString();
     }
 
     @Override
     public Project parse(String projectId, Locale locale) throws ParseException {
-		System.out.println("formatter parse");
         return projectService.findProjectById(Long.parseLong(projectId));
     }
 }

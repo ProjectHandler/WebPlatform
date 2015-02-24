@@ -18,13 +18,11 @@ public class TicketTrackerFormatter implements Formatter<TicketTracker> {
 	
     @Override
     public String print(TicketTracker project, Locale locale) {
-		System.out.println("formatter print");
         return project.getId().toString();
     }
 
     @Override
     public TicketTracker parse(String projectId, Locale locale) throws ParseException {
-		System.out.println("formatter parse");
         return ticketService.findTicketTrackerById(Long.parseLong(projectId));
     }
 }
