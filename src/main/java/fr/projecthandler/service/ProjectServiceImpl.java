@@ -56,4 +56,9 @@ public class ProjectServiceImpl implements ProjectService {
 	public Project loadGantt(Long projectId) {
 		return projectDao.findProjectById(projectId);
 	}
+
+	public List<User> getUsersByProjectId(Long projectId) {
+		return projectDao.getUsersByProjectId(projectId);
+	}
+
 }

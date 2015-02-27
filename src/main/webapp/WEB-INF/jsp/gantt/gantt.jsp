@@ -101,9 +101,11 @@
 
 		  //var taskId = $("#taskSelector").val();
 		  var prof = new Profiler("loadServerSide");
-		  prof.reset();
-		
-			$.ajax({type: "POST", url:  CONTEXT_PATH+"/gantt/load?"+"projectId=1",
+		  prof.reset();		
+		  
+		  var url = CONTEXT_PATH+"/gantt/load?"+"projectId="+ $("#selectProject option:selected").val();
+
+		  $.ajax({type: "POST", url:  url,
 				success: function(data) {
 					prof.stop();
 					 
@@ -127,7 +129,6 @@
 		
 		  //this is a simulation: save data to the local storage or to the textarea
 		  saveInLocalStorage();
-		
 		
 		  /*
 		  var prj = ge.saveProject();
@@ -350,8 +351,7 @@
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
 
-	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>
-	
+	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>	
 	<div id="taZone" style="display:none;" class="noprint">
 	   <textarea rows="8" cols="150" id="ta">
 	     {"tasks":[
@@ -367,6 +367,11 @@
 	<div id="gantEditorTemplates" style="display:none;">
 	  <div class="__template__" type="GANTBUTTONS"><!--
 	  <div class="ganttButtonBar noprint">
+		<select id="selectProject" onchange="loadGanttFromServer()">
+			<c:forEach var="project" items="${projects}">
+				 <option value="${project.id}">${project.name}</option>
+			</c:forEach>
+		</select> 
 	    <div class="buttons">
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="undo"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="redo"><span class="teamworkIcon">&middot;</span></button>
@@ -467,7 +472,6 @@
 	      <div class="taskStatus cvcColorSquare" status="STATUS_UNDEFINED" title="undefined"></div>
 	    </div>
 	  --></div>
-	
 	
 	  <div class="__template__" type="TASK_EDITOR"><!--
 	  <div class="ganttTaskEditor">

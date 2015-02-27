@@ -1,5 +1,6 @@
 package fr.projecthandler.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -98,4 +99,9 @@ public class UserServiceImpl implements UserService {
 			user.removeGroup(group);
 		updateUser(user);
 	}
+
+	public User findUserByIdAndFetchProjects(Long userId) {
+		return userDao.findUserByIdAndFetchProjects(userId);
+	}
+
 }

@@ -16,6 +16,14 @@ public class Utilities {
 		return list.get(0);
 	}
 	
+	public static <T> T getSingleResultOrNullWithoutSettingMaxResults(Query query) {
+		List<T> list = query.getResultList();
+		if (list.isEmpty()) {
+			return null;
+		}
+		return list.get(0);
+	}
+
 	public static String getRequestParameter(HttpServletRequest request, String parameter) {
 		if (request.getParameter(parameter) != null && !"undefined".equals(request.getParameter(parameter))) {
 			return request.getParameter(parameter);

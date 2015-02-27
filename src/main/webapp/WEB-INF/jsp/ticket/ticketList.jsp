@@ -37,7 +37,7 @@
 <body>
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
-	<a href="${pageContext.request.contextPath}/ticket/new">Créer un nouveau ticket</a>
+	<a href="${pageContext.request.contextPath}/ticket/new/${projectId}">Créer un nouveau ticket</a>
 	<h1>Liste des tickets du projet</h1>
 	<div class="center">
 		<table id="ticketTable"  class="tablesorter" style="">

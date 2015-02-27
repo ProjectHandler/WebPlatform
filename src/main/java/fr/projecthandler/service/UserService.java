@@ -10,7 +10,7 @@ public interface UserService {
 	public Long saveUser(User user);
 
 	public void updateUser(User user);
-	
+
 	public User getUserByEmail(String email);
 
 	public User findUserById(Long userId);
@@ -18,14 +18,16 @@ public interface UserService {
 	public void deleteUserByIds(List<Long> usersList);
 
 	public List<User> getAllUsers();
-	
+
 	public List<Group> getAllGroups();
-	
+
 	public Group findGroupById(Long groupId);
-	
+
 	public String createGroup(String groupName);
-	
+
 	public void deleteGroupById(Long groupId);
-	
+
 	public void changeGroup(Long userId, Long groupId, String action);
+
+	public User findUserByIdAndFetchProjects(Long userId);
 }

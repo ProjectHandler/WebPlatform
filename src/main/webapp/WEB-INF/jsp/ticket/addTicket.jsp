@@ -12,7 +12,11 @@
 		<title>Nouveau ticket</title>
 		<script type="text/javascript">
 		$(document).ready(function () {
-		    $("#my-text-input").tokenInput("/url/to/your/script/");
+		    $("#users").tokenInput("${pageContext.request.contextPath}/ajax/search/${ticket.project.id}/user", {
+                theme: "facebook",
+                excludeCurrent: true,
+                enableHTML:true
+            });
 		});
 		</script>
 	</head>
@@ -27,7 +31,7 @@
 					<td><form:label path="title">Titre</form:label></td>
 					<td><form:input path="title"></form:input></td>
 				</tr>
-				<tr>
+<%-- 				<tr>
 					<td><form:label path="project">Projet</form:label></td>
 					<td>
 						<form:select path="project">
@@ -36,13 +40,19 @@
 						<span class="help-inline"><form:errors path="project" /></span>
 					</td>
 				</tr>
-				<tr>
+ --%>
+				<form:hidden path="project" />
+ 				<tr>
 					<td><form:label path="ticketTracker">Tracker</form:label></td>
 					<td>
 						<form:select path="ticketTracker">
 						    <form:options items="${ticketTrackerList}" itemValue="id" itemLabel="name" />
 						</form:select>
 					</td>
+				</tr>
+				<tr>
+					<td><form:label path="users">Users</form:label></td>
+					<td><form:input path="users"></form:input></td>
 				</tr>
 				<tr>
 					<td><form:label path="text">Message</form:label></td>

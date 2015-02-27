@@ -1,11 +1,9 @@
 package fr.projecthandler.dao;
 
 import java.util.List;
-
+import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
@@ -48,5 +46,12 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	@Override
 	public List<User> getAllUsers() {
 		return (List<User>)em.createQuery("SELECT u FROM User u").getResultList();
+	}
+
+	public User findUserByIdAndFetchProjects(Long userId) {
+		Query query = em.createQuery("Select u from User u JOIN FETCH u.projects where u.id = :userId")
+				.setParameter("userId", userId);
+
+		return Utilities.getSingleResultOrNullWithoutSettingMaxResults(query);
 	}
 }

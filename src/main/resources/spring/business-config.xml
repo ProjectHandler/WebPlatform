@@ -20,6 +20,7 @@
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
 	<!-- (and Mail server related settings -->
 	<context:property-placeholder location="classpath:jdbc/jdbc.properties, classpath:mail.properties" />
+	<!-- <context:property-placeholder location="classpath:jdbc/jdbc.properties.postgresql, classpath:mail.properties" />-->
 
 	<!-- import the dataSource definition -->
 	<import resource="../jdbc/datasource-config.xml" />

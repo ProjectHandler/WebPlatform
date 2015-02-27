@@ -20,8 +20,12 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -30,13 +34,17 @@ import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
+import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
 import fr.projecthandler.model.Calendar;
+import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.CalendarService;
+import fr.projecthandler.service.InputAutocompleteService;
+import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -56,7 +64,13 @@ public class UserController {
 	CalendarService				calendarService;
 
 	@Autowired
+	ProjectService				projectService;
+
+	@Autowired
 	BCryptPasswordEncoder		passwordEncoder;
+
+	@Autowired
+	InputAutocompleteService	inputAutocompleteService;
 
 	@Autowired
 	private UserDetailsService	customUserDetailsService;
@@ -308,5 +322,30 @@ public class UserController {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		return new ModelAndView("signup", myModel);
+	}
+
+	@RequestMapping(value = "/ajax/search/{projectId}/user", method = RequestMethod.GET)
+	public @ResponseBody String userSearch(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @RequestParam String q) {
+		if (userDetails == null) {
+			return "[]";
+		}
+		List<Project> projectList = projectService.getProjectsByUserId(userDetails.getId());
+		Project project = null;
+
+		// Checks if the projectId corresponds to one of the user's project
+		// TODO use spring permissions
+		for (int i = 0; i < projectList.size(); ++i) {
+			if (projectList.get(i).getId() == projectId) {
+				project = projectList.get(i);
+			}
+		}
+		if (project == null) {
+			return "[]";
+		}
+
+		//TODO une requète pour la recherche (enabled users seulement ?)
+		List<User> userList = inputAutocompleteService.getMatchingUsers(projectService.getUsersByProjectId(projectId), q);
+
+		return inputAutocompleteService.userListToJson(userList);
 	}
 }

@@ -33,6 +33,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 			e.printStackTrace();
 			throw new UsernameNotFoundException("The email " + email + " was not found!", e);
 		}
+		if (user == null) {
+			throw new UsernameNotFoundException("The email " + email + " was not found!");
+		}
 		boolean enabled = user.getAccountStatus() == AccountStatus.ACTIVE ? true : false;
 		boolean accountNonExpired = true;
 		boolean credentialsNonExpired = true;

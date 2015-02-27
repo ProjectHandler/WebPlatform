@@ -18,7 +18,7 @@ public class ProjectFormatter implements Formatter<Project> {
 	
     @Override
     public String print(Project project, Locale locale) {
-        return project.getName().toString();
+        return project.getId().toString();
     }
 
     @Override
