@@ -2,7 +2,9 @@ package fr.projecthandler.web;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -38,7 +40,11 @@ public class GanttController {
 	
 	@RequestMapping(value = "/gantt", method = RequestMethod.GET)
 	public ModelAndView gantt() {
-		return new ModelAndView("gantt/gantt");
+		
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		myModel.put("projects", projectService.getAllProjects());
+		
+		return new ModelAndView("gantt/gantt", myModel);
 	}
 	
 	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
