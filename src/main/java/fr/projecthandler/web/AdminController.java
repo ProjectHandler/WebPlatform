@@ -42,10 +42,6 @@ public class AdminController {
 	@Autowired
 	TokenService				tokenService;
 
-	// domainName and urlToGo will be merged once a conf file is made to get
-	// domain name on server start.
-	private final static String	urlToGo	= "verifyUser?token=";
-
 	@RequestMapping(value = "admin/signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();

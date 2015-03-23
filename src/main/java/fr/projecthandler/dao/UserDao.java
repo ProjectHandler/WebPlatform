@@ -2,7 +2,6 @@ package fr.projecthandler.dao;
 
 import java.util.List;
 
-import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 
 public interface UserDao {

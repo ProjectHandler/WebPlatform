@@ -29,7 +29,7 @@ import fr.projecthandler.session.CustomUserDetails;
 public class ProjectController {
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	ProjectService projectService;
 
@@ -47,7 +47,7 @@ public class ProjectController {
 			myModel.put("user", u);
 			List<Project> projectList = projectService.getProjectsByUserId(u.getId());
 			myModel.put("projectList", projectList);
-			
+
 			System.out.println("Projects:");
 			for (Project project : projectList) {
 				System.out.println("name: " + project.getName());
@@ -59,13 +59,13 @@ public class ProjectController {
 
 		return new ModelAndView("project/projectHome", myModel);
 	}
-	
+
 	@RequestMapping(value = "/project/new", method = RequestMethod.GET)
 	public ModelAndView addProject(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		
-		//TODO vérifier que c'est un manager
-		//TODO validation des données, date de fin après le début
+
+		// TODO vérifier que c'est un manager
+		// TODO validation des données, date de fin après le début
 		if (principal != null) {
 			Project project = new Project();
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -81,10 +81,10 @@ public class ProjectController {
 
 		return new ModelAndView("project/addProject", myModel);
 	}
-	
+
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
 	public ModelAndView saveTicket(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
-		//TODO vérifier que c'est un manager
+		// TODO vérifier que c'est un manager
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());

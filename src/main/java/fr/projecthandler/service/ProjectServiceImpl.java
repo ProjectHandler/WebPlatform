@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.ProjectDao;
-import fr.projecthandler.dao.TokenDao;
 import fr.projecthandler.model.Project;
-import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 
 @Service

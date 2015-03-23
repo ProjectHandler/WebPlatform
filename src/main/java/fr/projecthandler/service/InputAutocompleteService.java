@@ -2,7 +2,6 @@ package fr.projecthandler.service;
 
 import java.util.List;
 
-import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 
 public interface InputAutocompleteService {

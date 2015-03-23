@@ -11,7 +11,7 @@ import fr.projecthandler.model.Task;
 import fr.projecthandler.util.Utilities;
 
 @Component
-public class TaskDaoImpl  extends AbstractDao implements TaskDao {
+public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
 	@Override
 	@Transactional
@@ -29,21 +29,18 @@ public class TaskDaoImpl  extends AbstractDao implements TaskDao {
 	@Override
 	@Transactional
 	public void deleteTasksByIds(List<Long> tasksIds) {
-		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)")
-		.setParameter("tasksIds", tasksIds).executeUpdate();
+		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)").setParameter("tasksIds", tasksIds).executeUpdate();
 	}
 
 	@Override
-	public  Task findTaskById(Long taskId) {
-		return (Task) Utilities.getSingleResultOrNull(em.createQuery("SELECT t FROM Task t WHERE t.id = :taskId")
-				.setParameter("taskId", taskId));
+	public Task findTaskById(Long taskId) {
+		return (Task) Utilities.getSingleResultOrNull(em.createQuery("SELECT t FROM Task t WHERE t.id = :taskId").setParameter("taskId", taskId));
 	}
-	
+
 	@Override
 	public Set<Task> getTasksByProjectId(Long projectId) {
 		Set<Task> result = new HashSet<Task>();
-		result.addAll( em.createQuery("SELECT t FROM Task t WHERE t.project.id = :projectId")
-				.setParameter("projectId", projectId).getResultList());
+		result.addAll(em.createQuery("SELECT t FROM Task t WHERE t.project.id = :projectId").setParameter("projectId", projectId).getResultList());
 		return result;
 	}
 }

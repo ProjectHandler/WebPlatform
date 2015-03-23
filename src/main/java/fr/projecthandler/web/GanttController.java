@@ -43,19 +43,19 @@ public class GanttController {
 
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	HttpSession httpSession;
-	
+
 	@RequestMapping(value = "/gantt", method = RequestMethod.GET)
 	public ModelAndView gantt() {
-		
+
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		myModel.put("projects", projectService.getAllProjects());
-		
+
 		return new ModelAndView("gantt/gantt", myModel);
 	}
-	
+
 	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
 	public @ResponseBody Object loadGantt(HttpServletRequest request, Principal principal) {
 		try {
@@ -65,58 +65,57 @@ public class GanttController {
 			GanttProjectDTO prorojectDTO = new GanttProjectDTO();
 			List<GanttTaskDTO> listTaskDTO = new ArrayList<GanttTaskDTO>();
 			listTaskDTO.add(projDTO);
-			
+
 			Set<Task> tasks = taskService.getTasksByProjectId(id);
-			for (Task t: tasks) {
+			for (Task t : tasks) {
 				GanttTaskDTO gt = new GanttTaskDTO(t);
 				listTaskDTO.add(gt);
 			}
-			
+
 			prorojectDTO.setTasks(listTaskDTO);
-			
+
 			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			String json = null;
-			
+
 			json = ow.writeValueAsString(prorojectDTO);
-				
+
 			return new JsonParser().parse(json);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
-	
+
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
-	public void saveGantt(HttpServletRequest request, Principal principal) {	
-		Gson gson = new Gson(); 
+	public void saveGantt(HttpServletRequest request, Principal principal) {
+		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(request.getParameter("prj"), GanttProjectDTO.class);
-	
+
 		List<Task> lstTask = new ArrayList<Task>();
 		Project newProject = null;
-		List<GanttTaskDTO> listTaskDTO =  prj.getTasks();
-		
-		for (GanttTaskDTO taskDTO : listTaskDTO) {			
-			if (taskDTO.getLevel() == 0) {	//project
+		List<GanttTaskDTO> listTaskDTO = prj.getTasks();
+
+		for (GanttTaskDTO taskDTO : listTaskDTO) {
+			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
-			} else {				
+			} else {
 				Task t = new Task(taskDTO);
 				t.setProject(newProject);
-				
+
 				if (taskDTO.getId().startsWith("tmp")) {
 					taskService.saveTask(t);
 				}
 				taskService.updateTask(t);
 				lstTask.add(t);
 			}
-		}	
-		
-		Set<Task> oldTasks = taskService.getTasksByProjectId(newProject.getId());		
+		}
+
+		Set<Task> oldTasks = taskService.getTasksByProjectId(newProject.getId());
 		for (Task old : oldTasks) {
 			if (!lstTask.contains(old))
 				taskService.deleteTasksByIds(Arrays.asList(old.getId()));
 		}
-		
+
 		Set<Task> setTasks = new HashSet<>();
 		setTasks.addAll(lstTask);
 		newProject.setTasks(setTasks);

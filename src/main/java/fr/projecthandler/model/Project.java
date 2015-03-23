@@ -21,16 +21,16 @@ import fr.projecthandler.dto.GanttTaskDTO;
 
 @Entity
 @Table(name = "project")
-public class  Project extends BaseEntity implements java.io.Serializable {
+public class Project extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4903605340425810423L;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "progress")
 	private Long progress;
-	
+
 	@Column(name = "description")
 	private String description;
 
@@ -40,21 +40,21 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	@Column(name = "date_begin")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateBegin;
-	
+
 	@Column(name = "date_end")
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dateEnd;
-	
+
 	@Column(name = "status", length = 30)
 	private String status;
-	
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
 	private Set<Task> tasks = new HashSet<Task>(0);
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private List<User> users = new ArrayList<User>();
-	
+
 	public Project() {
 	}
 
@@ -65,10 +65,10 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 		this.description = taskDTO.getDescription();
 		this.duration = taskDTO.getDuration();
 		this.dateBegin = new Date(taskDTO.getStart());
-		this.dateEnd =  new Date(taskDTO.getEnd());
+		this.dateEnd = new Date(taskDTO.getEnd());
 		this.status = taskDTO.getStatus();
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -144,10 +144,9 @@ public class  Project extends BaseEntity implements java.io.Serializable {
 	public void addUser(User user) {
 		this.users.add(user);
 	}
-	
-	public boolean  removeUser(User user) {
+
+	public boolean removeUser(User user) {
 		return this.users.remove(user);
 	}
 
 }
-
