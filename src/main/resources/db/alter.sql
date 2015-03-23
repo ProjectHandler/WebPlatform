@@ -160,3 +160,11 @@ ALTER TABLE `tickets`
   ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`);
 ALTER TABLE `tickets`
   ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`);
+  
+-- new columns duration and level in task (23/03/2015)
+ALTER TABLE `task` ADD `duration` BIGINT(20) NOT NULL DEFAULT '1' AFTER `description`;
+ALTER TABLE `task` ADD `level` BIGINT(20) NOT NULL AFTER `description`;
+ALTER TABLE `task` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
+ALTER TABLE `project` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
+ALTER TABLE `project` ADD `duration` BIGINT(20) NOT NULL AFTER `description`;
+ALTER TABLE `project` ADD `status` VARCHAR(30) NOT NULL AFTER `date_end`;

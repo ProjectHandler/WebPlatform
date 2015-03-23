@@ -1,20 +1,14 @@
 package fr.projecthandler.service;
 
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.AddressDao;
 import fr.projecthandler.dao.GroupDao;
-import fr.projecthandler.dao.ProjectDao;
-import fr.projecthandler.dao.TaskDao;
 import fr.projecthandler.dao.UserDao;
 import fr.projecthandler.model.Group;
-import fr.projecthandler.model.Project;
-import fr.projecthandler.model.Task;
 import fr.projecthandler.model.User;
 
 @Service

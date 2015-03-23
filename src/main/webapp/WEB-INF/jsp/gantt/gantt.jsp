@@ -60,10 +60,15 @@
 		  ge.init(workSpace);
 		
 		  //inject some buttons (for this demo only)
-		  $(".ganttButtonBar div").append("<button onclick='clearGantt();' class='button'>clear</button>")
+		  $(".ganttButtonBar div").append("")//"<button onclick='clearGantt();' class='button'>clear</button>")
 		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-		          .append("<button onclick='getFile();' class='button'>export</button>");
+		          .append("<button onclick='getFile();' class='button'><spring:message code='projecthandler.gantt.export'/></button>")
+		          .append("<button onclick='saveGanttOnServer();' class='button'><spring:message code='projecthandler.gantt.save'/></button>");
 		  $(".ganttButtonBar div").addClass('buttons');
+		  
+		  
+		  //<spring:message code="projecthandler.gantt.export"/>
+		  
 		  //overwrite with localized ones
 		  loadI18n();
 		
@@ -121,16 +126,14 @@
 			});
 		}
 		
-		
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		function saveGanttOnServer() {
 		  if(!ge.canWrite)
 		    return;
 		
-		
 		  //this is a simulation: save data to the local storage or to the textarea
-		  saveInLocalStorage();
+		  //saveInLocalStorage();
 		
-		  /*
 		  var prj = ge.saveProject();
 		
 		  delete prj.resources;
@@ -145,7 +148,14 @@
 		    }
 		  }
 		
-		  $.ajax("ganttAjaxController.jsp", {
+		  var url = CONTEXT_PATH+"/gantt/save";
+		  $.ajax({type: "POST", url: url, data: {
+			  CM:"SVPROJECT",prj:JSON.stringify(prj), projectId: $("#selectProject option:selected").val()
+			  }
+		  });
+		  
+		  
+		  /*$.ajax("ganttAjaxController.jsp", {
 		    dataType:"json",
 		    data: {CM:"SVPROJECT",prj:JSON.stringify(prj)},
 		    type:"POST",
@@ -172,8 +182,8 @@
 		      }
 		    }
 		
-		  });
-		  */
+		  });*/
+		  
 		}
 		
 		
@@ -365,39 +375,39 @@
 	<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden" name="prj" id="gimBaPrj"></form>
 
 	<div id="gantEditorTemplates" style="display:none;">
-	  <div class="__template__" type="GANTBUTTONS"><!--
+	  <div class="__template__" type="GANTBUTTONS">
 	  <div class="ganttButtonBar noprint">
 		<select id="selectProject" onchange="loadGanttFromServer()">
 			<c:forEach var="project" items="${projects}">
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
-		</select> 
+		</select>
 	    <div class="buttons">
-	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="undo"><span class="teamworkIcon">&#39;</span></button>
-	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="redo"><span class="teamworkIcon">&middot;</span></button>
+	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.undo"/>"><span class="teamworkIcon">&#39;</span></button>
+	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.redo"/>"><span class="teamworkIcon">&middot;</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="$('#workSpace').trigger('addAboveCurrentTask.gantt');" class="button textual" title="insert above"><span class="teamworkIcon">l</span></button>
-	    <button onclick="$('#workSpace').trigger('addBelowCurrentTask.gantt');" class="button textual" title="insert below"><span class="teamworkIcon">X</span></button>
+	    <button onclick="$('#workSpace').trigger('addAboveCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.insertAbove"/>"><span class="teamworkIcon">l</span></button>
+	    <button onclick="$('#workSpace').trigger('addBelowCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.insertBelow"/>"><span class="teamworkIcon">X</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="$('#workSpace').trigger('indentCurrentTask.gantt');" class="button textual" title="indent task"><span class="teamworkIcon">.</span></button>
-	    <button onclick="$('#workSpace').trigger('outdentCurrentTask.gantt');" class="button textual" title="unindent task"><span class="teamworkIcon">:</span></button>
+	    <button onclick="$('#workSpace').trigger('indentCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.indentTask"/>"><span class="teamworkIcon">.</span></button>
+	    <button onclick="$('#workSpace').trigger('outdentCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.unindentTask"/>"><span class="teamworkIcon">:</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="$('#workSpace').trigger('moveUpCurrentTask.gantt');" class="button textual" title="move up"><span class="teamworkIcon">k</span></button>
-	    <button onclick="$('#workSpace').trigger('moveDownCurrentTask.gantt');" class="button textual" title="move down"><span class="teamworkIcon">j</span></button>
+	    <button onclick="$('#workSpace').trigger('moveUpCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.moveUp"/>"><span class="teamworkIcon">k</span></button>
+	    <button onclick="$('#workSpace').trigger('moveDownCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.moveDown"/>"><span class="teamworkIcon">j</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="$('#workSpace').trigger('zoomMinus.gantt');" class="button textual" title="zoom out"><span class="teamworkIcon">)</span></button>
-	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="zoom in"><span class="teamworkIcon">(</span></button>
+	    <button onclick="$('#workSpace').trigger('zoomMinus.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.zoomOut"/>"><span class="teamworkIcon">)</span></button>
+	    <button onclick="$('#workSpace').trigger('zoomPlus.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.zoomIn"/>"><span class="teamworkIcon">(</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="delete"><span class="teamworkIcon">&cent;</span></button>
+	    <button onclick="$('#workSpace').trigger('deleteCurrentTask.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.delete"/>"><span class="teamworkIcon">&cent;</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="print();" class="button textual" title="print"><span class="teamworkIcon">p</span></button>
+	    <button onclick="print();" class="button textual" title="<spring:message code="projecthandler.gantt.print"/>"><span class="teamworkIcon">p</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="ge.gantt.showCriticalPath=!ge.gantt.showCriticalPath; ge.redraw();" class="button textual" title="Critical Path"><span class="teamworkIcon">&pound;</span></button>
+	    <button onclick="ge.gantt.showCriticalPath=!ge.gantt.showCriticalPath; ge.redraw();" class="button textual" title="<spring:message code="projecthandler.gantt.criticalPath"/>"><span class="teamworkIcon">&pound;</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick="editResources();" class="button textual" title="edit resources"><span class="teamworkIcon">M</span></button>
+	    <button onclick="editResources();" class="button textual" title="<spring:message code="projecthandler.gantt.editResources"/>"><span class="teamworkIcon">M</span></button>
 	      &nbsp; &nbsp; &nbsp; &nbsp;
 	    </div></div>
-	  --></div>
+	  </div>
 	
 	  <div class="__template__" type="TASKSEDITHEAD"><!--
 	  <table class="gdfTable" cellspacing="0" cellpadding="0">
@@ -405,14 +415,14 @@
 	    <tr style="height:40px">
 	      <th class="gdfColHeader" style="width:35px;"></th>
 	      <th class="gdfColHeader" style="width:25px;"></th>
-	      <th class="gdfColHeader gdfResizable" style="width:30px;">code/short name</th>
+	      <th class="gdfColHeader gdfResizable" style="width:30px;"><spring:message code="projecthandler.gantt.code"/></th>
 	
-	      <th class="gdfColHeader gdfResizable" style="width:300px;">name</th>
-	      <th class="gdfColHeader gdfResizable" style="width:80px;">start</th>
-	      <th class="gdfColHeader gdfResizable" style="width:80px;">end</th>
-	      <th class="gdfColHeader gdfResizable" style="width:50px;">dur.</th>
-	      <th class="gdfColHeader gdfResizable" style="width:50px;">dep.</th>
-	      <th class="gdfColHeader gdfResizable" style="width:200px;">assignees</th>
+	      <th class="gdfColHeader gdfResizable" style="width:300px;"><spring:message code="projecthandler.gantt.name"/></th>
+	      <th class="gdfColHeader gdfResizable" style="width:80px;"><spring:message code="projecthandler.gantt.start"/></th>
+	      <th class="gdfColHeader gdfResizable" style="width:80px;"><spring:message code="projecthandler.gantt.end"/></th>
+	      <th class="gdfColHeader gdfResizable" style="width:50px;"><spring:message code="projecthandler.gantt.dur"/></th>
+	      <th class="gdfColHeader gdfResizable" style="width:50px;"><spring:message code="projecthandler.gantt.dep"/></th>
+	      <th class="gdfColHeader gdfResizable" style="width:200px;"><spring:message code="projecthandler.gantt.assignees"/></th>
 	    </tr>
 	    </thead>
 	  </table>

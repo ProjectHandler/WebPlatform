@@ -4,7 +4,7 @@ import java.util.List;
 import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import fr.projecthandler.model.User;
+import fr.projecthandler.model.Project;import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
 @Component
