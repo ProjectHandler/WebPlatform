@@ -90,6 +90,13 @@ public class ProjectController {
 			User u = userService.findUserById(userDetails.getId());
 
 			project.addUser(u);
+			
+			long diff = project.getDateEnd().getTime() - project.getDateBegin().getTime();
+			float duration = (float) diff / (24 * 60 * 60 * 1000);
+			project.setDuration((long)Math.floor(duration));
+			project.setProgress(0l);
+			project.setStatus("STATUS_ACTIVE");
+			
 			projectService.saveProject(project);
 		} else {
 			return new ModelAndView("redirect:" + "/");
