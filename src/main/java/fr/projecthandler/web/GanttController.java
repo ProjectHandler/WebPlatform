@@ -101,22 +101,23 @@ public class GanttController {
 			} else {
 				Task t = new Task(taskDTO);
 				t.setProject(newProject);
-
+				
 				if (taskDTO.getId().startsWith("tmp")) {
 					taskService.saveTask(t);
+					taskDTO.setId(t.getId().toString());
+				} else {
+					t.setId(Long.parseLong(taskDTO.getId(), 10));
+					taskService.updateTask(t);
 				}
-				taskService.updateTask(t);
+			
 				lstTask.add(t);
 			}
 		}
-
-		Set<Task> oldTasks = taskService.getTasksByProjectId(newProject.getId());
-		for (Task old : oldTasks) {
-			if (!lstTask.contains(old))
-				taskService.deleteTasksByIds(Arrays.asList(old.getId()));
-		}
-
-		Set<Task> setTasks = new HashSet<>();
+		
+		for (String taskId : prj.getDeletedTaskIds())
+			taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId)));
+		
+		Set<Task> setTasks = new HashSet<Task>();
 		setTasks.addAll(lstTask);
 		newProject.setTasks(setTasks);
 		projectService.updateProject(newProject);
