@@ -168,3 +168,4 @@ ALTER TABLE `task` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
 ALTER TABLE `project` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
 ALTER TABLE `project` ADD `duration` BIGINT(20) NOT NULL AFTER `description`;
 ALTER TABLE `project` ADD `status` VARCHAR(30) NOT NULL AFTER `date_end`;
+
