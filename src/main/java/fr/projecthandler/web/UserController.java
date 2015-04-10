@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,11 +41,12 @@ import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
 import fr.projecthandler.model.Calendar;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
-import fr.projecthandler.service.CalendarService;
 import fr.projecthandler.service.InputAutocompleteService;
 import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -60,7 +63,7 @@ public class UserController {
 	TokenService				tokenService;
 
 	@Autowired
-	CalendarService				calendarService;
+	TaskService 				taskService;
 
 	@Autowired
 	ProjectService				projectService;
@@ -206,17 +209,21 @@ public class UserController {
 			User u = userService.findUserById(userDetails.getId());
 
 			//Get the entire list of appointments available by user
-			List<Calendar> listTask = calendarService.getAllTaskByUser(u);
+			//List<Calendar> listTask = calendarService.getAllTaskByUser(u);
+			Set<Task> listTask = new HashSet<Task>();
+			try {
+				listTask = taskService.getTasksByUserAndFetchUsers(u.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
 			//Convert appointment to FullCalendar (A class I created to facilitate the JSON)
 			List<CalendarDTO> newlistTask = new ArrayList<>();
-
-			for (Calendar list : listTask)
-				newlistTask.add(new CalendarDTO(list));
+			for (Task task : listTask)
+				newlistTask.add(new CalendarDTO(task));
 
 			//Convert FullCalendar from Java to JSON
-			Gson gson = new Gson();
-			String jsonAppointment = gson.toJson(newlistTask);
-
+			String jsonAppointment = new Gson().toJson(newlistTask);
 			//Printout the JSON
 			respsonse.setContentType("application/json");
 			respsonse.setCharacterEncoding("UTF-8");
@@ -259,34 +266,34 @@ public class UserController {
 		return new ModelAndView("user/changePassword", myModel);	
 	}
 		
-	public JsonObject getIntoJson(List<Calendar> listTask) {
-		try {
-			JsonObject jsonResponse = new JsonObject();
-
-			jsonResponse.addProperty("iTotalRecords", listTask.size());
-			jsonResponse.addProperty("iTotalDisplayRecords", listTask.size());
-
-			JsonArray data = new JsonArray();
-
-			for (Calendar list : listTask) {
-				JsonArray row = new JsonArray();
-				row.add(new JsonPrimitive("title: '" + list.getTitle() + "'"));
-				row.add(new JsonPrimitive("text: '" + list.getText() + "'"));
-				row.add(new JsonPrimitive("start: '" + list.getStart().toString() + "'"));
-				row.add(new JsonPrimitive("end: '" + list.getEnd().toString() + "'"));
-				row.add(new JsonPrimitive("id: '" + list.getUser().getId() + "'"));
-				data.add(row);
-			}
-
-			jsonResponse.add("aaData", data);
-
-			System.out.println("JSON: " + jsonResponse.toString());
-			return jsonResponse;
-
-		} catch (JsonIOException e) {
-			return new JsonObject();
-		}
-	}
+//	public JsonObject getIntoJson(List<Calendar> listTask) {
+//		try {
+//			JsonObject jsonResponse = new JsonObject();
+//
+//			jsonResponse.addProperty("iTotalRecords", listTask.size());
+//			jsonResponse.addProperty("iTotalDisplayRecords", listTask.size());
+//
+//			JsonArray data = new JsonArray();
+//
+//			for (Calendar list : listTask) {
+//				JsonArray row = new JsonArray();
+//				row.add(new JsonPrimitive("title: '" + list.getTitle() + "'"));
+//				row.add(new JsonPrimitive("description: '" + list.getText() + "'"));
+//				row.add(new JsonPrimitive("start: '" + list.getStart().toString() + "'"));
+//				row.add(new JsonPrimitive("end: '" + list.getEnd().toString() + "'"));
+//				row.add(new JsonPrimitive("id: '" + list.getUser().getId() + "'"));
+//				data.add(row);
+//			}
+//
+//			jsonResponse.add("aaData", data);
+//
+//			System.out.println("JSON: " + jsonResponse.toString());
+//			return jsonResponse;
+//
+//		} catch (JsonIOException e) {
+//			return new JsonObject();
+//		}
+//	}
 
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)

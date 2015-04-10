@@ -52,4 +52,11 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 				.setParameter("projectId", projectId).getResultList());
 		return result;
 	}
+	
+	@Override
+	public Set<Task> getTasksByUserAndFetchUsers(Long userId){
+		Set<Task> result = new HashSet<Task>();
+		result.addAll(em.createQuery("SELECT t FROM Task t JOIN FETCH t.users u WHERE :userId IN (u.id)").setParameter("userId", userId).getResultList());
+		return result;
+	}
 }

@@ -62,6 +62,10 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") })
 	private List<Project> projects;
 	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") })
+	private List<Task> tasks;
+	
 	public User() {
 	}
 
@@ -167,6 +171,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+	
+	public List<Task> getTasks() {
+		return this.tasks;
+	}
+	
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
 	}
 	
 	@Override

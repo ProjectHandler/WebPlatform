@@ -18,4 +18,6 @@ public interface TaskDao {
 	public Set<Task> getTasksByProjectId(Long projectId);
 	
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
+	
+	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 }

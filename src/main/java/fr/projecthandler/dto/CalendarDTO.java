@@ -1,24 +1,23 @@
 package fr.projecthandler.dto;
 
 import java.util.Date;
-import fr.projecthandler.model.Calendar;
+
+import fr.projecthandler.model.Task;
 
 public class  CalendarDTO {
 
 	private Long id;
-	private Long userId;
 	private String title;
-	private String text;
+	private String description;
 	private Date start;
 	private Date end;
 		
-	public CalendarDTO(Calendar calendar) {
-		this.id = calendar.getId();
-		this.userId = calendar.getUser().getId();
-		this.title = calendar.getTitle();
-		this.text = calendar.getText();
-		this.start = calendar.getStart();
-		this.end = calendar.getEnd();
+	public CalendarDTO(Task task) {
+		this.id = task.getId();
+		this.title = task.getName();
+		this.description = task.getDescription();
+		this.start = task.getStartingDate();
+		this.end = task.getEndingDate();
 	}
 
 	public Long getId() {
@@ -29,14 +28,6 @@ public class  CalendarDTO {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
-
 	public String getTitle() {
 		return title;
 	}
@@ -45,12 +36,12 @@ public class  CalendarDTO {
 		this.title = title;
 	}
 
-	public String getText() {
-		return text;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setText(String text) {
-		this.text = text;
+	public void setDescription(String text) {
+		this.description = text;
 	}
 
 	public Date getStart() {
@@ -71,7 +62,7 @@ public class  CalendarDTO {
 
 	@Override
 	public String toString() {
-		return "Calendar [userId=" + userId + ", title=" + title + ", text=" + text + ", start=" + start + ", end=" + end + "]";
+		return "Calendar [title=" + title + ", description=" + description + ", start=" + start + ", end=" + end + "]";
 	}
 	
 }

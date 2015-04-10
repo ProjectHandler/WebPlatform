@@ -1,6 +1,7 @@
 package fr.projecthandler.model;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -44,6 +45,10 @@ public class Task extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "status", length = 30)
 	private String status;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
+	private List<User> users;
 
 	//@Column(name = "row")
 	@Transient
@@ -72,6 +77,14 @@ public class Task extends BaseEntity implements java.io.Serializable {
 		this.startingDate = new Date(taskDTO.getStart());
 		this.endingDate = new Date(taskDTO.getEnd());
 		this.status = taskDTO.getStatus();
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 	public String getName() {

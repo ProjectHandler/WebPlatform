@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `project_id` (`project_id`),
-  KEY `ticket_priority_id` (`ticket_priority_id`)
+  KEY `ticket_priority_id` (`ticket_priority_id`),
   KEY `ticket_tracker_id` (`ticket_tracker_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -179,3 +179,18 @@ CREATE TABLE IF NOT EXISTS `depend_tasks` (
 ALTER TABLE `depend_tasks`
   ADD CONSTRAINT `depend_tasks_ibfk_1` FOREIGN KEY (`task_id1`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `depend_tasks_ibfk_2` FOREIGN KEY (`task_id2`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- new table to link user and task (10/04/2015)
+CREATE TABLE IF NOT EXISTS `users_tasks` (
+  `users_id` bigint(20) NOT NULL,
+  `tasks_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`users_id`,`tasks_id`),
+  KEY `users_tasks_ibfk_2` (`tasks_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `users_tasks`
+  ADD CONSTRAINT `users_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_tasks_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  
+-- drop table calendar (10/04/2015)
+DROP TABLE IF EXISTS `calendar`;

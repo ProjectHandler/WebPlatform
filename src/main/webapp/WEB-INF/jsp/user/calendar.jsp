@@ -59,7 +59,6 @@
                             calendar.fullCalendar('unselect');
                         },
                                 editable: true,
-
                                 eventSources: [
                                     {
                                             url: CONTEXT_PATH+'/calendarDetails',
@@ -68,14 +67,18 @@
                                                 start: 'start',
                                                 end: 'end',
                                                 id: 'id',
-                                                title: 'title'
+                                                title: 'title',
+                                                description: 'description'
                                              //   allDay: 'allDay'
                                             },
                                             error: function () {
                                                 alert('there was an error while fetching events!');
                                             }
                                     }
-                            ]         
+                            ],
+                        eventRender: function(event, element) { 
+                            element.find('.fc-title').append("<br/>" + event.description); 
+                        } 
                     });
             });
 		</script>
