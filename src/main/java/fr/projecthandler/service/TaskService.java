@@ -16,4 +16,6 @@ public interface TaskService {
 	public void deleteTasksByIds(List<Long> TasksIdsList);
 
 	public Set<Task> getTasksByProjectId(Long projectId);
+	
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
 }

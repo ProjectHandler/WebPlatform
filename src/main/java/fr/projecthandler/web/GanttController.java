@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,13 +68,31 @@ public class GanttController {
 			listTaskDTO.add(projDTO);
 
 			Set<Task> tasks = taskService.getTasksByProjectId(id);
-			for (Task t : tasks) {
-				GanttTaskDTO gt = new GanttTaskDTO(t);
-				listTaskDTO.add(gt);
+			if (tasks != null) {		
+				Map<Long, Integer> rowId = new HashMap<Long, Integer>();
+				Integer row = 2;//1 = project
+				for (Task t : tasks) {
+					rowId.put(t.getId(), row);
+					++row;
+				}	
+				
+				for (Task t : tasks) {
+					GanttTaskDTO gt = new GanttTaskDTO(t);
+					
+					Set<Task> depends = taskService.getTasksByProjectIdWithDepends(t.getId());
+					StringBuilder sb = new StringBuilder();
+					for (Task depend : depends)
+						sb.append(rowId.get(depend.getId()).toString() + ",");
+					if (sb.length() != 0)
+						gt.setDepends(sb.substring(0, sb.length()-1));
+					else
+						gt.setDepends("");
+
+					listTaskDTO.add(gt);
+				}
 			}
-
 			prorojectDTO.setTasks(listTaskDTO);
-
+			
 			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 			String json = null;
 
@@ -88,6 +107,7 @@ public class GanttController {
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
 	public void saveGantt(HttpServletRequest request, Principal principal) {
+		System.out.println(request.getParameter("prj"));
 		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(request.getParameter("prj"), GanttProjectDTO.class);
 
@@ -95,13 +115,17 @@ public class GanttController {
 		Project newProject = null;
 		List<GanttTaskDTO> listTaskDTO = prj.getTasks();
 
+		Map<Integer, Long> rowId = new HashMap<Integer, Long>();
+		int row = 0;
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
+			System.out.println("task: " +  taskDTO.getName());
+			
 			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
 			} else {
 				Task t = new Task(taskDTO);
 				t.setProject(newProject);
-				
+
 				if (taskDTO.getId().startsWith("tmp")) {
 					taskService.saveTask(t);
 					taskDTO.setId(t.getId().toString());
@@ -109,8 +133,32 @@ public class GanttController {
 					t.setId(Long.parseLong(taskDTO.getId(), 10));
 					taskService.updateTask(t);
 				}
-			
+				rowId.put(row, t.getId());
 				lstTask.add(t);
+			}
+			++row;
+		}
+
+		for (GanttTaskDTO taskDTO : listTaskDTO) {
+			if (taskDTO.getLevel() != 0) {
+				String depends = taskDTO.getDepends();
+				Set<Task> depend = new HashSet<Task>();
+				
+				if (StringUtils.isEmpty(depends) == false) {
+					String[] tokens = depends.split(",");
+					if (tokens.length !=0) {
+						for (String s : tokens) {
+							int rowNb = Integer.parseInt(s);
+							depend.add(taskService.findTaskById(rowId.get(rowNb-1)));
+						}
+					}
+					else {
+						depend.add(taskService.findTaskById(Long.parseLong(depends)));
+					}
+				}
+				Task updateTask = taskService.findTaskById((Long.parseLong(taskDTO.getId())));
+				updateTask.setDepend(depend);
+				taskService.updateTask(updateTask);
 			}
 		}
 		

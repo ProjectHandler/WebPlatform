@@ -1,13 +1,17 @@
 package fr.projecthandler.model;
 
 import java.util.Date;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import fr.projecthandler.dto.GanttTaskDTO;
 
@@ -41,16 +45,25 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@Column(name = "status", length = 30)
 	private String status;
 
+	//@Column(name = "row")
+	@Transient
+	private Long row;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id")
 	private Project project;
 
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "depend_Tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, 
+			inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })
+	private Set<Task> dependtasks;
+	
 	public Task() {
 	}
 
 	public Task(GanttTaskDTO taskDTO) {
-		if (taskDTO.getId() != null)
-			this.id = Long.parseLong(taskDTO.getId(), 10);
+		//if (taskDTO.getId() != null)
+		//	this.id = Long.parseLong(taskDTO.getId(), 10);
 		this.name = taskDTO.getName();
 		this.progress = taskDTO.getProgress();
 		this.description = taskDTO.getDescription();
@@ -125,11 +138,29 @@ public class Task extends BaseEntity implements java.io.Serializable {
 		this.status = status;
 	}
 
+	public Long getRow() {
+		return row;
+	}
+
+	public void setRow(Long row) {
+		this.row = row;
+	}
+
 	public Project getProject() {
 		return project;
 	}
-
+	
 	public void setProject(Project project) {
 		this.project = project;
 	}
+
+	public Set<Task> getDepend() {
+		return dependtasks;
+	}
+
+	public void setDepend(Set<Task> depend) {
+		this.dependtasks = depend;
+	}
+	
+	
 }

@@ -161,7 +161,7 @@ ALTER TABLE `tickets`
 ALTER TABLE `tickets`
   ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`);
   
--- new columns duration and level in task (23/03/2015)
+-- new columns duration and level in task (10/04/2015)
 ALTER TABLE `task` ADD `duration` BIGINT(20) NOT NULL DEFAULT '1' AFTER `description`;
 ALTER TABLE `task` ADD `level` BIGINT(20) NOT NULL AFTER `description`;
 ALTER TABLE `task` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
@@ -169,3 +169,13 @@ ALTER TABLE `project` ADD `progress` BIGINT(20) NOT NULL AFTER `name`;
 ALTER TABLE `project` ADD `duration` BIGINT(20) NOT NULL AFTER `description`;
 ALTER TABLE `project` ADD `status` VARCHAR(30) NOT NULL AFTER `date_end`;
 
+CREATE TABLE IF NOT EXISTS `depend_tasks` (
+  `task_id1` bigint(20) NOT NULL,
+  `task_id2` bigint(20) NOT NULL,
+  PRIMARY KEY (`task_id1`,`task_id2`),
+  KEY `task_id2` (`task_id2`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `depend_tasks`
+  ADD CONSTRAINT `depend_tasks_ibfk_1` FOREIGN KEY (`task_id1`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `depend_tasks_ibfk_2` FOREIGN KEY (`task_id2`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;

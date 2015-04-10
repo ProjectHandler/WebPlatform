@@ -43,4 +43,13 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		result.addAll(em.createQuery("SELECT t FROM Task t WHERE t.project.id = :projectId").setParameter("projectId", projectId).getResultList());
 		return result;
 	}
+	
+	@Override
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId){
+		Set<Task> result = new HashSet<Task>();
+		result.addAll(
+				em.createQuery("SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :projectId ")
+				.setParameter("projectId", projectId).getResultList());
+		return result;
+	}
 }
