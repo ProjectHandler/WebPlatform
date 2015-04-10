@@ -107,7 +107,7 @@ public class GanttController {
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
 	public void saveGantt(HttpServletRequest request, Principal principal) {
-		System.out.println(request.getParameter("prj"));
+		//System.out.println(request.getParameter("prj"));
 		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(request.getParameter("prj"), GanttProjectDTO.class);
 
@@ -118,7 +118,7 @@ public class GanttController {
 		Map<Integer, Long> rowId = new HashMap<Integer, Long>();
 		int row = 0;
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
-			System.out.println("task: " +  taskDTO.getName());
+			//System.out.println("task: " +  taskDTO.getName());
 			
 			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
