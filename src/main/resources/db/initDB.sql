@@ -96,7 +96,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `mobile_phone` varchar(10) DEFAULT NULL,
   `user_role` int(11) NOT NULL DEFAULT '1',
   `account_status` int(11) NOT NULL DEFAULT '0',
-  `civility` int(4) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `address` (`address`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
@@ -105,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility`) VALUES
-(11, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, 0);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`) VALUES
+(11, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1);
 
 -- --------------------------------------------------------
 

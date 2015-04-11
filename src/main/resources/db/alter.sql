@@ -93,9 +93,6 @@ ALTER TABLE `ticket_messages`
 -- alter table `tickets` to make `project_id` not null (13/02/2015)
 ALTER TABLE `tickets` CHANGE `project_id` `project_id` BIGINT(20) NOT NULL;
 
--- add ticket status to tickets (13/02/2015)
-ALTER TABLE `tickets` ADD `ticket_status` int(11) NOT NULL DEFAULT '1';
-
 -- --------------------------------------------------------
 
 --
@@ -149,12 +146,6 @@ CREATE TABLE IF NOT EXISTS `ticket_tracker` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
--- new fields for table `tickets`
-ALTER TABLE `tickets`
-  ADD `ticket_priority_id` bigint(20) DEFAULT NULL;
-ALTER TABLE `tickets`
-  ADD `ticket_tracker_id` bigint(20) DEFAULT NULL;
-
 -- new constraints for table `tickets` (22/02/2015)
 ALTER TABLE `tickets`
   ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`);
@@ -191,6 +182,23 @@ CREATE TABLE IF NOT EXISTS `users_tasks` (
 ALTER TABLE `users_tasks`
   ADD CONSTRAINT `users_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `users_tasks_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
-  
+
 -- drop table calendar (10/04/2015)
 DROP TABLE IF EXISTS `calendar`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ticket_tracker` (04/04/2015)
+--
+CREATE TABLE IF NOT EXISTS `civility` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+ALTER TABLE `users`
+  ADD `civility_id` bigint(20) DEFAULT NULL;
+
+ALTER TABLE `users`
+  ADD CONSTRAINT `civility_ibfk` FOREIGN KEY (`civility_id`) REFERENCES `civility` (`id`);
