@@ -187,9 +187,8 @@ ALTER TABLE `users_tasks`
 DROP TABLE IF EXISTS `calendar`;
 
 -- --------------------------------------------------------
-
 --
--- Table structure for table `ticket_tracker` (04/04/2015)
+-- Table structure for table `civility` (12/04/2015)
 --
 CREATE TABLE IF NOT EXISTS `civility` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
