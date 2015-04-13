@@ -201,3 +201,7 @@ ALTER TABLE `users`
 
 ALTER TABLE `users`
   ADD CONSTRAINT `civility_ibfk` FOREIGN KEY (`civility_id`) REFERENCES `civility` (`id`);
+
+-- fix (14/04/12)
+ALTER TABLE
+  `users` ADD `civility` int(4) DEFAULT NULL;
