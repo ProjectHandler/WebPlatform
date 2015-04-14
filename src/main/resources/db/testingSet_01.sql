@@ -18,15 +18,36 @@ SET time_zone = "+00:00";
 
 --
 -- Database: `project_handler`
+-- ////////////////////////////////////////////////////////////////////
+-- NB : tous les mots de passes des users sont les mêmes. (mpd: 000000aA)
+-- ////////////////////////////////////////////////////////////////////
 --
+USE project_handler;
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `civility`) VALUES
+(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', NULL, '0101020304', '0102030405', 3, 1, NULL, 0),
+(20, 'Jean', 'Patoche', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'jean.patoche@example.com', NULL, '01000001', '06000001', 1, 1, NULL, 0),
+(21, 'Lucie', 'Roblochon', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'lucie_peace@margoulette.com', NULL, '0133449978', '0612546879', 1, 1, NULL, 0),
+(22, 'Maria', 'Mandzukic', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'mandzu.maria@zlatan.com', NULL, '0198877665', '0698877665', 1, 1, NULL, 0),
+(23, 'Vladimir', 'Machine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'vlad-exp@coldmail.com', NULL, '07888888', '06888888', 1, 1, NULL, 0),
+(50, 'Platane', 'Inactive', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'inactif@lol.com', NULL, '1111111111', '6666666666', 1, 0, NULL, 0);
 
 --
 -- Dumping data for table `address`
 --
-
 INSERT INTO `address` (`id`, `street_number`, `street_name`, `city`, `zipcode`, `country`, `user_id`) VALUES
 (2, '31', 'Herberton Park', 'Dublin', '8', 'Ireland', 12),
 (3, '48', 'Rue polisson', 'Meûtière-en-Veuhlu', '789', 'Luxembourg', 11);
+
+UPDATE `project_handler`.`users` SET `address` = '2' WHERE `users`.`id` = 12;
+UPDATE `project_handler`.`users` SET `address` = '3' WHERE `users`.`id` = 20;
+UPDATE `project_handler`.`users` SET `address` = '3' WHERE `users`.`id` = 21;
+UPDATE `project_handler`.`users` SET `address` = '2' WHERE `users`.`id` = 22;
+UPDATE `project_handler`.`users` SET `address` = '2' WHERE `users`.`id` = 23;
+UPDATE `project_handler`.`users` SET `address` = '3' WHERE `users`.`id` = 50;
 
 --
 -- Dumping data for table `civility`
@@ -85,25 +106,6 @@ INSERT INTO `ticket_messages` (`id`, `ticket_id`, `user_id`, `created_at`, `upda
 (5, 3, 22, '2015-04-14 14:21:03', '2015-04-14 14:21:03', 'Lorem ipsum dolor sit amet, consectetur viverra fusce.'),
 (6, 4, 22, '2015-04-14 14:21:19', '2015-04-14 14:21:19', 'sdf');
 
---
--- Dumping data for table `tokens`
---
-
-INSERT INTO `tokens` (`id`, `token`, `time_stamp`, `user_id`) VALUES
-(3, '186ddfb9-a465-4417-9ce8-baf1d8c01b8e', 1416049588886, 10);
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `civility`) VALUES
-(11, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, NULL, NULL),
-(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', 2, '0101020304', '0102030405', 3, 1, NULL, 0),
-(20, 'Jean', 'Patoche', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'jean.patoche@example.com', 3, '01000001', '06000001', 1, 1, NULL, 0),
-(21, 'Lucie', 'Roblochon', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'lucie_peace@margoulette.com', 3, '0133449978', '0612546879', 1, 1, NULL, 0),
-(22, 'Maria', 'Mandzukic', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'mandzu.maria@zlatan.com', 3, '0198877665', '0698877665', 1, 1, NULL, 0),
-(23, 'Vladimir', 'Machine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'vlad-exp@coldmail.com', 2, '07888888', '06888888', 1, 1, NULL, 0),
-(50, 'Platane', 'Inactive', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'inactif@lol.com', 2, '1111111111', '6666666666', 1, 0, NULL, 0);
 
 --
 -- Dumping data for table `users_projects`
