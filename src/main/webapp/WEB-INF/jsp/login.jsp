@@ -8,11 +8,11 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Project Handler</title>
 		<spring:url value="/resources/css/redcss.css" var="redcss"/>
 		<link href="${redcss}" rel="stylesheet"/>
 		<spring:url value="/resources/img/icon.png" var="windowicon"/>
-		<link href="${windowicon}" rel="icon" type="image/png"/>		
+		<link href="${windowicon}" rel="icon" type="image/png"/>
+		<title>Project Handler</title>		
 	</head>
 	<body onload='document.f.j_username.focus();'>
 
@@ -61,6 +61,7 @@
 			
 			</div>
 		</div>
-
+		<script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.1.min.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/js/redcss.js"></script>
 	</body>
 </html>
