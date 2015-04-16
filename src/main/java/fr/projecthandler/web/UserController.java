@@ -265,17 +265,44 @@ public class UserController {
 
 		return new ModelAndView("user/changePassword", myModel);	
 	}
-
+		
+//	public JsonObject getIntoJson(List<Calendar> listTask) {
+//		try {
+//			JsonObject jsonResponse = new JsonObject();
+//
+//			jsonResponse.addProperty("iTotalRecords", listTask.size());
+//			jsonResponse.addProperty("iTotalDisplayRecords", listTask.size());
+//
+//			JsonArray data = new JsonArray();
+//
+//			for (Calendar list : listTask) {
+//				JsonArray row = new JsonArray();
+//				row.add(new JsonPrimitive("title: '" + list.getTitle() + "'"));
+//				row.add(new JsonPrimitive("description: '" + list.getText() + "'"));
+//				row.add(new JsonPrimitive("start: '" + list.getStart().toString() + "'"));
+//				row.add(new JsonPrimitive("end: '" + list.getEnd().toString() + "'"));
+//				row.add(new JsonPrimitive("id: '" + list.getUser().getId() + "'"));
+//				data.add(row);
+//			}
+//
+//			jsonResponse.add("aaData", data);
+//
+//			System.out.println("JSON: " + jsonResponse.toString());
+//			return jsonResponse;
+//
+//		} catch (JsonIOException e) {
+//			return new JsonObject();
+//		}
+//	}
+	
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
 	public ModelAndView verifyUserEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
-		logoutUser(principal, request, response);
-
+		
 		if (token != null && token.length() > 0) {
 			User user = tokenService.findUserByToken(token);
-
 			if (user == null)
 				return new ModelAndView("accessDenied", null);
 
