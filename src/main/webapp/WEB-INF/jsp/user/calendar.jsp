@@ -7,26 +7,44 @@
 
 <html lang="fr">
 	<head>
+		<jsp:include page="../template/head.jsp" />
 		<title><spring:message code="projecthandler.menu.calendar"/></title>
-		<spring:url value="/resources/js/jquery-1.11.1.js" var="jquery"/>
-		<script type="text/javascript" src="${jquery}"></script>
-		<spring:url value="/resources/js/jquery.inputmask.js" var="jqueryMask"/>
-		<script type="text/javascript" src="${jqueryMask}"></script>
-		<spring:url value="/resources/js/chosen.jquery.js" var="jqueryChosen"/>
-		<script type="text/javascript" src="${jqueryChosen}"></script>
-		
 		
 		<spring:url value="/resources/libs/fullcalendar/moment.min.js" var="moment"/>
 		<script type="text/javascript" src="${moment}"></script>
+		
 		<spring:url value="/resources/js/fullcalendar/fullcalendar.min.js" var="fullcalendar"/>
 		<script type="text/javascript" src="${fullcalendar}"></script>
 		
 		
 		<spring:url value="/resources/css/fullcalendar/fullcalendar.css" var="fullcalendarCss"/>
 		<link href="${fullcalendarCss}" rel="stylesheet"/>
+		
 		<spring:url value="/resources/css/fullcalendar/fullcalendar.print.css" var="fullcalendarPrintCss"/>
 		<link href="${fullcalendarPrintCss}" rel='stylesheet' media='print'/>
+						
+		<style>
 
+	body {
+		margin: 40px 10px;
+		padding: 0;
+		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+		font-size: 14px;
+	}
+
+	#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+</style>
+	</head>
+	<body>
+		<jsp:include page="../template/header.jsp" />
+		<jsp:include page="../template/menu.jsp" />
+
+		<div id='calendar'></div>
+		
 		<script type="text/javascript">
 		
 		
@@ -36,10 +54,13 @@
 
             var calendar = $('#calendar').fullCalendar({
                 header: {
-                    left: 'prev,next today',
+                    left: 'today prev,next',
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                         },
+                    firstDay:1,
+                    defaultView: 'agendaWeek',
+                    theme:false,
                     selectable: true,
                     selectHelper: true,
 
@@ -82,28 +103,7 @@
                     });
             });
 		</script>
-		<style>
-
-	body {
-		margin: 40px 10px;
-		padding: 0;
-		font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
-		font-size: 14px;
-	}
-
-	#calendar {
-		max-width: 900px;
-		margin: 0 auto;
-	}
-
-</style>
-	</head>
-	<body>
-		<jsp:include page="../template/header.jsp" />
-		<jsp:include page="../template/menu.jsp" />
-
-		<div id='calendar'></div>
-		
+				
 		<jsp:include page="../template/footer.jsp" />
 	</body>
 </html>

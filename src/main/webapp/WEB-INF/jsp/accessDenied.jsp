@@ -3,6 +3,7 @@
 
 <html>
 	<head>
+		<jsp:include page="template/head.jsp" />
 	</head>
 	<body>
 		<jsp:include page="template/header.jsp" />

@@ -6,6 +6,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<jsp:include page="../template/head.jsp" />
 		<title>Ticket</title>
 		<style>
 			.ticket-message-fisrt {

@@ -7,6 +7,7 @@
 
 <html lang="fr">
 	<head>
+		<jsp:include page="../template/head.jsp" />
 		<title>Changement de mot de passe</title>
 		<spring:url value="/resources/js/jquery-1.11.1.js" var="jquery"/>
 		<script type="text/javascript" src="${jquery}"></script>

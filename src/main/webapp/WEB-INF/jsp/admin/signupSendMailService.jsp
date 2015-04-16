@@ -7,14 +7,8 @@
 
 <html>
 	<head>
-		<spring:url value="/resources/js/jquery-1.11.1.js" var="jquery"/>
-		<script type="text/javascript" src="${jquery}"></script>
-		<spring:url value="/resources/js/jquery.inputmask.js" var="jqueryMask"/>
-		<script type="text/javascript" src="${jqueryMask}"></script>
-		<spring:url value="/resources/js/chosen.jquery.js" var="jqueryChosen"/>
-		<script type="text/javascript" src="${jqueryChosen}"></script>
-		<spring:url value="/resources/js/jquery.autosize.js" var="jqueryAutosize"/>
-		<script type="text/javascript" src="${jqueryAutosize}"></script>
+		<jsp:include page="../template/head.jsp" />
+
 
 		<script type="text/javascript">		
 		$(document).ready(function() {
