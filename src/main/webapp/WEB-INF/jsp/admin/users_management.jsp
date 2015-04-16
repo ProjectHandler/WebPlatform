@@ -10,8 +10,7 @@
 		<jsp:include page="../template/head.jsp" />
 		<title><spring:message code="projecthandler.admin.userManagementTitle"/></title>
 		<script type="text/javascript">
-			var CONTEXT_PATH = "<%=request.getContextPath() %>"; 
-			
+
 			$(document).ready(function() {
 				$("#usersTable").tablesorter();
 				

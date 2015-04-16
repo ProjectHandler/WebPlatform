@@ -13,13 +13,15 @@
 <spring:url value="/resources/img/icon.png" var="windowicon"/>
 <link href="${windowicon}" rel="icon" type="image/png"/>
 
-<script src="${pageContext.request.contextPath}/resources/js/jquery-1.11.1.min.js"></script>
-<script src="${pageContext.request.contextPath}/resources/js/redcss.js"></script>
 
-<script type="text/javascript" src="/resources/js/jquery.tablesorter.min.js"></script>
-
-<spring:url value="/resources/js/jquery-1.11.1.js" var="jquery"/>
+<spring:url value="/resources/js/jquery-1.11.1.min.js" var="jquery"/>
 <script type="text/javascript" src="${jquery}"></script>
+
+<spring:url value="/resources/js/redcss.js" var="redcss"/>
+<script type="text/javascript" src="${redcss}"></script>
+
+<spring:url value="/resources/js/jquery.tablesorter.min.js" var="tableSorter"/>
+<script type="text/javascript" src="${tableSorter}"></script>
 
 <spring:url value="/resources/js/jquery.inputmask.js" var="jqueryMask"/>
 <script type="text/javascript" src="${jqueryMask}"></script>
