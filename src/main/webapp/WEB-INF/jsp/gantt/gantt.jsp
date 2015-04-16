@@ -60,16 +60,6 @@
 		  workSpace.css({width:$(window).width() - 20,height:$(window).height() - 100});
 		  ge.init(workSpace);
 		
-		  //inject some buttons (for this demo only)
-		  $(".ganttButtonBar div").append("")//"<button onclick='clearGantt();' class='button'>clear</button>")
-		          .append("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;")
-		          .append("<button onclick='getFile();' class='button'><spring:message code='projecthandler.gantt.export'/></button>")
-		          .append("<button onclick='saveGanttOnServer();' class='button'><spring:message code='projecthandler.gantt.save'/></button>");
-		  $(".ganttButtonBar div").addClass('buttons');
-		  
-		  
-		  //<spring:message code="projecthandler.gantt.export"/>
-		  
 		  //overwrite with localized ones
 		  loadI18n();
 		
@@ -154,36 +144,6 @@
 			  CM:"SVPROJECT",prj:JSON.stringify(prj), projectId: $("#selectProject option:selected").val()
 			  }
 		  });
-		  
-		  
-		  /*$.ajax("ganttAjaxController.jsp", {
-		    dataType:"json",
-		    data: {CM:"SVPROJECT",prj:JSON.stringify(prj)},
-		    type:"POST",
-		
-		    success: function(response) {
-		      if (response.ok) {
-		        prof.stop();
-		        if (response.project) {
-		          ge.loadProject(response.project); //must reload as "tmp_" ids are now the good ones
-		        } else {
-		          ge.reset();
-		        }
-		      } else {
-		        var errMsg="Errors saving project\n";
-		        if (response.message) {
-		          errMsg=errMsg+response.message+"\n";
-		        }
-		
-		        if (response.errorMessages.length) {
-		          errMsg += response.errorMessages.join("\n");
-		        }
-		
-		        alert(errMsg);
-		      }
-		    }
-		
-		  });*/
 		  
 		}
 		
@@ -363,27 +323,17 @@
 	<jsp:include page="../template/menu.jsp" />
 
 	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>	
-	<div id="taZone" style="display:none;" class="noprint">
-	   <textarea rows="8" cols="150" id="ta">
-	     {"tasks":[
-	     {"id":-1,"name":"Gantt editor","code":"","level":0,"status":"STATUS_ACTIVE","canWrite":true,"start":1396994400000,"duration":21,"end":1399672799999,"startIsMilestone":true,"endIsMilestone":false,"collapsed":false,"assigs":[],"hasChild":true}
-	     ],"selectedRow":0,"canWrite":true,"canWriteOnParent":true}
-	   </textarea>
-	
-	  <button onclick="loadGanttFromServer();">load</button>
-	</div>
-
-	<form id="gimmeBack" style="display:none;" action="../gimmeBack.jsp" method="post" target="_blank"><input type="hidden" name="prj" id="gimBaPrj"></form>
 
 	<div id="gantEditorTemplates" style="display:none;">
 	  <div class="__template__" type="GANTBUTTONS">
-	  <div class="ganttButtonBar noprint">
-		<select id="selectProject" onchange="loadGanttFromServer()">
+	  <div class="ganttButtonBar noprint" style="margin-right: 100px">
+	    <div class="buttons">
+	    <select id="selectProject" onchange="loadGanttFromServer()">
 			<c:forEach var="project" items="${projects}">
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
 		</select>
-	    <div class="buttons">
+		<span class="ganttButtonSeparator"></span>
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.undo"/>"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.redo"/>"><span class="teamworkIcon">&middot;</span></button>
 	    <span class="ganttButtonSeparator"></span>
@@ -406,7 +356,11 @@
 	    <button onclick="ge.gantt.showCriticalPath=!ge.gantt.showCriticalPath; ge.redraw();" class="button textual" title="<spring:message code="projecthandler.gantt.criticalPath"/>"><span class="teamworkIcon">&pound;</span></button>
 	    <span class="ganttButtonSeparator"></span>
 	    <button onclick="editResources();" class="button textual" title="<spring:message code="projecthandler.gantt.editResources"/>"><span class="teamworkIcon">M</span></button>
-	      &nbsp; &nbsp; &nbsp; &nbsp;
+	    <span class="ganttButtonSeparator"></span>
+	    <button onclick='getFile();' class="button textual"><spring:message code='projecthandler.gantt.export'/></button>
+	    <span class="ganttButtonSeparator"></span>
+		<button onclick='saveGanttOnServer();' class="button textual"><spring:message code='projecthandler.gantt.save'/></button>
+		<span class="ganttButtonSeparator"></span>
 	    </div></div>
 	  </div>
 	

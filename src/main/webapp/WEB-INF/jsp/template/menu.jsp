@@ -4,7 +4,7 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<div class="position-relative">
+<div class="position-relative" style="z-index: 2001">
 	<div class="container position-absolute position-top position-right">
 		
 		<button class="default-btn-shape theme3-primary-btn-style1 inverted-text position-absolute position-top position-right margin-top margin-right toggle-event text-h1" data-toggle="pop-event" data-target="debuggingmenu" title="debugging menu">
