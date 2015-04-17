@@ -12,9 +12,11 @@
 <link href="${redcss}" rel="stylesheet"/>
 <spring:url value="/resources/img/icon.png" var="windowicon"/>
 <link href="${windowicon}" rel="icon" type="image/png"/>
+<spring:url value="/resources/css/selectivity-full.min.css" var="selectivity"/>
+<link href="${selectivity}" rel="stylesheet"/>
 
 
-<spring:url value="/resources/js/jquery-1.11.1.min.js" var="jquery"/>
+<spring:url value="/resources/js/jquery-2.1.3.min.js" var="jquery"/>
 <script type="text/javascript" src="${jquery}"></script>
 
 <spring:url value="/resources/js/redcss.js" var="redcss"/>
@@ -31,4 +33,7 @@
 
 <spring:url value="/resources/js/jquery.autosize.js" var="jqueryAutosize"/>
 <script type="text/javascript" src="${jqueryAutosize}"></script>
+
+<spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
+<script type="text/javascript" src="${selectivity}"></script>
 

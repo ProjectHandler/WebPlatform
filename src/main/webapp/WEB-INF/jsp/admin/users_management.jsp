@@ -9,18 +9,20 @@
 	<head>
 		<jsp:include page="../template/head.jsp" />
 		<title><spring:message code="projecthandler.admin.userManagementTitle"/></title>
-		<script type="text/javascript">
 
+		<script type="text/javascript">
+			var CONTEXT_PATH = "<%=request.getContextPath() %>";
+			
 			$(document).ready(function() {
 				$("#usersTable").tablesorter();
-				
-				
-				$(".dropdown dt a").on('click', function () {
-			          $(".dropdown dd ul").slideToggle('fast');
-			    });
-				$(".dropdown dd ul li a").on('click', function () {
-				    $(".dropdown dd ul").hide();
+
+				// TODO : type to search a group => fichier de langue
+				$('.groupSelection').selectivity({
+				    multiple: true,
+				    placeholder: 'Type to search a group'
 				});
+				
+				$('.groupSelection').on("change", changeGroup);
 			});
 			
 			function changeRole(role, user_id) {
@@ -62,32 +64,39 @@
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
-			
-			function changeGroup(checkbox , userId) {
-				var groupId = $(checkbox).val();
+
+			function changeGroup(item) {
 				var url = CONTEXT_PATH + "/admin/users_management/changeGroup";
+				var res;
+				var userId;
+				var groupId;
 				var action;
-				if (checkbox.checked)
-					action = "add";
-				else
-					action = "remove";
 				
-				 $.ajax({type: "GET", url: url, data: { userId: userId, groupId: groupId, action: action}, 
-				    	success: function(data) {
-				    		if (data == "KO") 
-				    			alert("error"); 
-				    	}, 
-				    	error: function(data) {alert("error: " + data);} 
-				    });
+				if (item.added) {
+					res = item.added.id.split("/");
+					action = "add";
+				}
+				else {
+					res = item.removed.id.split("/");
+					action = "remove";
+				}
+				userId = res[0];
+				groupId = res[1];
+				
+				$.ajax({type: "GET", url: url, data: { userId: userId, groupId: groupId, action: action}, 
+			    	success: function(data) {
+			    		if (data == "KO") 
+			    			alert("error"); 
+			    	}, 
+			    	error: function(data) {alert("error: " + data);}
+			    });
 			}
-			
 		</script>
 	</head>
 	<body>
 		<jsp:include page="../template/header.jsp" />
 		<jsp:include page="../template/menu.jsp" />
-		<h1><spring:message code="projecthandler.admin.userManagementTitle"/></h1> 
-		
+		<h1><spring:message code="projecthandler.admin.userManagementTitle"/></h1>
 		<table id="usersTable">
 			<thead>
 				<tr>
@@ -103,79 +112,74 @@
 			</thead>
 			<tbody>
 				<c:forEach var="user" items="${users}">
-					<tr>
-						<td><c:out value="${user.lastName}"/></td>
-						<td><c:out value="${user.firstName}"/></td>
-						<td><c:out value="${user.email}"/></td>
-						<td>
-							<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')">
-								<c:forEach var='role' items='${user_role}' >
-									<c:choose>
-										<c:when test="${role==user.userRole}">
-											<option selected="selected"><c:out value='${role}'/></option>
-										</c:when>
-										<c:otherwise>
-											<option><c:out value='${role}'/></option>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-							</select>
-						</td>
-						<td>
-							<select id="accountStatus" onchange="changeStatus(this, '${user.id}')">
-								<c:forEach var='status' items='${account_status}' >
-									<c:choose>
-										<c:when test="${status==user.accountStatus}">
-											<option selected="selected"><c:out value='${status}'/></option>
-										</c:when>
-										<c:otherwise>
-											<option><c:out value='${status}'/></option>
-										</c:otherwise>
-									</c:choose>
-								</c:forEach>
-							</select>
-						</td>
-						<td>
-							<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>' 	ONCLICK="deleteUser('${user.id}')"/>
-							<c:if test="${user.accountStatus == 'INACTIVE'}">
-								<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.reSendMail"/>' 	ONCLICK="sendEmailUser('${user.id}')"/>
-							</c:if>
-						</td>
-						<td>
-							<dl class="dropdown"> 
-								<dt>
-									<a href="#" style="background-color:#ececec; display:block; overflow: hidden; border:0; width:200px;">
-										<p class="multiSel"></p>
-									</a>
-								</dt>
-								<dd Style="position:relative;">
-									<div class="mutliSelect">
-										<ul style="background-color:#ececec; display:none; position:absolute; width:200px; list-style:none; overflow: auto;">
-											<c:forEach var='group' items='${groups}' >
-												<c:set var="found" value="false"/>
-												<c:if test="${user.groups != null}">
-													<c:forEach var="userGroup" items="${user.groups}">
-														<c:if test="${userGroup.id == group.id}">
-															<c:set var="found" value="true"/>
-															<li><input type="checkbox" value="${group.id}" onchange="changeGroup(this,${user.id})" checked/><c:out value='${group.name}'/></li>
-														</c:if>	
-													</c:forEach>
-												</c:if>
-												<c:if test="${user.groups == null || found eq false}">
-													<li><input type="checkbox" value="${group.id}" onchange="changeGroup(this,${user.id})" /><c:out value='${group.name}'/></li>
-												</c:if>			
-											</c:forEach>
-										</ul>
-									</div>
-								</dd>
-							</dl>
-						</td>
+				<tr>
+					<td><c:out value="${user.lastName}"/></td>
+					<td><c:out value="${user.firstName}"/></td>
+					<td><c:out value="${user.email}"/></td>
+					<td>
+						<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')">
+							<c:forEach var='role' items='${user_role}' >
+							<c:choose>
+							<c:when test="${role==user.userRole}">
+								<option selected="selected"><c:out value='${role}'/></option>
+							</c:when>
+							<c:otherwise>
+								<option><c:out value='${role}'/></option>
+							</c:otherwise>
+							</c:choose>
+							</c:forEach>
+						</select>
+					</td>
+					<td>
+						<select id="accountStatus" onchange="changeStatus(this, '${user.id}')">
+							<c:forEach var='status' items='${account_status}' >
+							<c:choose>
+							<c:when test="${status==user.accountStatus}">
+								<option selected="selected"><c:out value='${status}'/></option>
+							</c:when>
+							<c:otherwise>
+								<option><c:out value='${status}'/></option>
+							</c:otherwise>
+							</c:choose>
+							</c:forEach>
+						</select>
+					</td>
+					<td>
+						<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>'
+							ONCLICK="deleteUser('${user.id}')"/>
+						<c:if test="${user.accountStatus == 'INACTIVE'}">
+						<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.reSendMail"/>'
+							ONCLICK="sendEmailUser('${user.id}')"/>
+						</c:if>
+					</td>
+					<td>
+						<select class="groupSelection"  multiple="multiple" placeholder>
+       						<c:forEach var='group' items='${groups}' >
+								<c:set var="found" value="false"/>
+								<c:if test="${user.groups != null}">
+									<c:forEach var="userGroup" items="${user.groups}">
+										<c:if test="${userGroup.id == group.id}">
+											<c:set var="found" value="true"/>
+											<option selected value="${user.id}/${group.id}">
+												${group.name}
+											</option>
+										</c:if>
+									</c:forEach>
+								</c:if>
+								<c:if test="${user.groups == null || found eq false}">
+									<option value="${user.id}/${group.id}">
+										${group.name}
+									</option>
+								</c:if>	
+							</c:forEach>
+       					</select>
+       				</td>
 					</tr>
 				 </c:forEach>
 			</tbody>
 		</table>
 		<br/>
-		<a href="<c:url value="/"/>">home</a>
+		
 		<jsp:include page="../template/footer.jsp" />
 	</body>
 </html>
