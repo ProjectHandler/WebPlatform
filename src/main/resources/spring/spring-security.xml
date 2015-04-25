@@ -6,6 +6,16 @@
            http://www.springframework.org/schema/security
            http://www.springframework.org/schema/security/spring-security.xsd">
 
+
+	<http authentication-manager-ref="userDatabase" pattern="/api/**"
+		realm="Protected API" use-expressions="true" auto-config="false"
+		create-session="stateless" entry-point-ref="CustomAuthenticationEntryPoint">
+		<custom-filter ref="authenticationTokenProcessingFilter"
+			position="FORM_LOGIN_FILTER" />
+		<intercept-url pattern="/api/user/authenticate" access="permitAll" />
+		<intercept-url pattern="/api/**" access="isAuthenticated()" />
+	</http>
+
 	<http auto-config='false' use-expressions="true"
 		authentication-manager-ref="userDatabase"
 		security-context-repository-ref="userSecurityContextRepo"
@@ -30,7 +40,13 @@
 		<intercept-url pattern="/changePassword"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/calendar"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 	</http>
-	
+
+	<beans:bean id="CustomAuthenticationEntryPoint"
+		class="fr.projecthandler.api.authentication.CustomAuthenticationEntryPoint" />
+
+	<beans:bean id="authenticationTokenProcessingFilter"
+		class="fr.projecthandler.api.authentication.AuthenticationTokenProcessingFilter">
+	</beans:bean>
 
 	<authentication-manager id="userDatabase">
 		<authentication-provider user-service-ref="customUserDetailsService">
