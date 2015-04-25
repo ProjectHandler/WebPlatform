@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import fr.projecthandler.model.Civility;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
+import fr.projecthandler.util.TokenGenerator;
 
 @RestController
 @Transactional
@@ -59,8 +59,18 @@ public class UserRestController {
 		CustomUserDetails userDetails = (CustomUserDetails) this.customUserDetailsService.loadUserByUsername(email);
 		Token token = tokenService.findTokenByUserId(userDetails.getId());
 		
+		//Generate a token if the user doesn't have one.
 		if (token == null) {
-			return new ResponseEntity<String>("pas de token", HttpStatus.OK);
+			User u = userService.findUserById(userDetails.getId());
+			token = new Token();
+
+			if (u == null) {
+				return new ResponseEntity<String>("{\"status\":505, \"message\":\"Internal Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+			token.setToken(TokenGenerator.generateToken());
+			token.setTimeStamp(TokenGenerator.generateTimeStamp());
+			token.setUser(u);
+			tokenService.saveToken(token);
 		}
 		
 		return new ResponseEntity<String>(token.getToken(), HttpStatus.OK);
@@ -75,11 +85,6 @@ public class UserRestController {
 		return u;
 	}
 	
-	@RequestMapping(value = "/civility/get/{id}", method = RequestMethod.GET)
-	public Civility getCivility(@PathVariable Long id) {
-
-		return null;
-	}
 //	@RequestMapping(value = "/post/{id}", method = RequestMethod.POST)
 //	@ResponseStatus(HttpStatus.CREATED)
 //	public User save() {
