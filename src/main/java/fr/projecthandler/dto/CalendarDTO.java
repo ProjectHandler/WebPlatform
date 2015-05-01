@@ -2,6 +2,7 @@ package fr.projecthandler.dto;
 
 import java.util.Date;
 
+import fr.projecthandler.model.Event;
 import fr.projecthandler.model.Task;
 
 public class  CalendarDTO {
@@ -11,6 +12,7 @@ public class  CalendarDTO {
 	private String description;
 	private Date start;
 	private Date end;
+	private Boolean allDay;
 		
 	public CalendarDTO(Task task) {
 		this.id = task.getId();
@@ -18,6 +20,16 @@ public class  CalendarDTO {
 		this.description = task.getDescription();
 		this.start = task.getStartingDate();
 		this.end = task.getEndingDate();
+		this.allDay = false;
+	}
+	
+	public CalendarDTO(Event event) {
+		this.id = event.getId();
+		this.title = event.getTitle();
+		this.description = event.getDescription();
+		this.start = event.getStartingDate();
+		this.end = event.getEndingDate();
+		this.allDay = false;
 	}
 
 	public Long getId() {
@@ -59,10 +71,18 @@ public class  CalendarDTO {
 	public void setEnd(Date end) {
 		this.end = end;
 	}
+	
+	public Boolean getAllDay() {
+		return allDay;
+	}
+
+	public void setAllDay(Boolean allDay) {
+		this.allDay = allDay;
+	}
 
 	@Override
 	public String toString() {
-		return "Calendar [title=" + title + ", description=" + description + ", start=" + start + ", end=" + end + "]";
+		return "Calendar [title=" + title + ", description=" + description + ", start=" + start + ", end=" + end + ", allDay=" + allDay + "]";
 	}
 	
 }

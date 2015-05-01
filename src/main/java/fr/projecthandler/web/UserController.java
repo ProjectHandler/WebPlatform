@@ -2,7 +2,10 @@ package fr.projecthandler.web;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -39,11 +42,14 @@ import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.Civility;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Calendar;
+import fr.projecthandler.model.Event;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.InputAutocompleteService;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
@@ -67,6 +73,9 @@ public class UserController {
 
 	@Autowired
 	ProjectService				projectService;
+	
+	@Autowired
+	EventService				eventService;
 
 	@Autowired
 	BCryptPasswordEncoder		passwordEncoder;
@@ -200,40 +209,75 @@ public class UserController {
 		
 		return new ModelAndView("user/changePassword", myModel);
 	}
+	
+	@RequestMapping(value = "/createEvent", method = RequestMethod.POST)
+	public ModelAndView createEvent(Principal principal, HttpServletRequest request) throws IOException {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN || userDetails.getUserRole() == UserRole.ROLE_MANAGER) {
+				User u = userService.findUserById(userDetails.getId());
+				List<User> users = new ArrayList<User>();
+				users.add(u);
+				
+				String title = Utilities.getRequestParameter(request, "title");
+				String description = Utilities.getRequestParameter(request, "description");
+				String daterange = Utilities.getRequestParameter(request, "daterange");
+				String date[] = daterange.split("-", 0);
+				try {
+					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(date[0]);
+					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(date[1]);
+					
+					Event event = new Event();
+					event.setTitle(title);
+					event.setDescription(description);
+					event.setStartingDate(startingDate);
+					event.setEndingDate(endingDate);
+					event.setUsers(users);
+					eventService.saveEvent(event);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return new ModelAndView("user/calendar", myModel);
+	}
+	
+	
 
 	@RequestMapping(value = "/calendarDetails", method = RequestMethod.GET)
 	public void calendarDetails(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
-
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
 			//Get the entire list of appointments available by user
-			//List<Calendar> listTask = calendarService.getAllTaskByUser(u);
 			Set<Task> listTask = new HashSet<Task>();
+			Set<Event> listEvent = new HashSet<Event>();
 			try {
 				listTask = taskService.getTasksByUserAndFetchUsers(u.getId());
+				listEvent = eventService.getEventsByUser(u.getId());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
 			//Convert appointment to FullCalendar (A class I created to facilitate the JSON)
-			List<CalendarDTO> newlistTask = new ArrayList<>();
+			List<CalendarDTO> listForCalendar = new ArrayList<>();
 			for (Task task : listTask)
-				newlistTask.add(new CalendarDTO(task));
-
+				listForCalendar.add(new CalendarDTO(task));
+			for (Event event : listEvent)
+				listForCalendar.add(new CalendarDTO(event));
+			
 			//Convert FullCalendar from Java to JSON
-			String jsonAppointment = new Gson().toJson(newlistTask);
+			String jsonAppointment = new Gson().toJson(listForCalendar);
 			//Printout the JSON
 			respsonse.setContentType("application/json");
 			respsonse.setCharacterEncoding("UTF-8");
 			try {
 				respsonse.getWriter().write(jsonAppointment);
 			} catch (IOException e) {
-				//      e.printStackTrace();
+				e.printStackTrace();
 			}
 		}
-
 	}
 
 	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
@@ -265,35 +309,6 @@ public class UserController {
 
 		return new ModelAndView("user/changePassword", myModel);	
 	}
-		
-//	public JsonObject getIntoJson(List<Calendar> listTask) {
-//		try {
-//			JsonObject jsonResponse = new JsonObject();
-//
-//			jsonResponse.addProperty("iTotalRecords", listTask.size());
-//			jsonResponse.addProperty("iTotalDisplayRecords", listTask.size());
-//
-//			JsonArray data = new JsonArray();
-//
-//			for (Calendar list : listTask) {
-//				JsonArray row = new JsonArray();
-//				row.add(new JsonPrimitive("title: '" + list.getTitle() + "'"));
-//				row.add(new JsonPrimitive("description: '" + list.getText() + "'"));
-//				row.add(new JsonPrimitive("start: '" + list.getStart().toString() + "'"));
-//				row.add(new JsonPrimitive("end: '" + list.getEnd().toString() + "'"));
-//				row.add(new JsonPrimitive("id: '" + list.getUser().getId() + "'"));
-//				data.add(row);
-//			}
-//
-//			jsonResponse.add("aaData", data);
-//
-//			System.out.println("JSON: " + jsonResponse.toString());
-//			return jsonResponse;
-//
-//		} catch (JsonIOException e) {
-//			return new JsonObject();
-//		}
-//	}
 	
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
@@ -329,6 +344,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/ajax/search/{projectId}/user", method = RequestMethod.GET)
+	//"@RequestParam String q" c'est quoi 'q' ???
 	public @ResponseBody String userSearch(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @RequestParam String q) {
 		if (userDetails == null) {
 			return "[]";

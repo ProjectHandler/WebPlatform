@@ -5,7 +5,7 @@
 
 <div style="position:fixed; bottom:0; width:100%;">
 	<spring:eval expression="@applicationProps['site.web.url']" var="siteWebUrl"/>
-	<table  align="center">
+<!-- 	<table  align="center">
 		<tr>
 			<td><a href="${siteWebUrl}">home</a></td>
 			<td>|</td>
@@ -19,5 +19,5 @@
 			<td>|</td>
 			<td><a href="${siteWebUrl}/contact">contact</a></td>
 		</tr>
-	</table>
+	</table> -->
 </div>

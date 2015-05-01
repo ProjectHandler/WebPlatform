@@ -15,7 +15,6 @@
 <spring:url value="/resources/css/selectivity-full.min.css" var="selectivity"/>
 <link href="${selectivity}" rel="stylesheet"/>
 
-
 <spring:url value="/resources/js/jquery-2.1.3.min.js" var="jquery"/>
 <script type="text/javascript" src="${jquery}"></script>
 
@@ -36,4 +35,3 @@
 
 <spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
 <script type="text/javascript" src="${selectivity}"></script>
-
