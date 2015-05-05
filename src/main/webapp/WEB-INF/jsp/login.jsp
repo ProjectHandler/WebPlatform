@@ -19,38 +19,38 @@
 		<div class="display-table full-width full-height inverted-bg">
 			<div class="display-table-cell vertical-align full-width full-height">
 
-				<div class="maxwidth-1024 container margin-auto">
+				<div class="fixedmaxwidth-1024 container margin-auto">
 					<div class="display-table full-width">
 						<div class="display-table-cell vertical-align">
-							<img src="${pageContext.request.contextPath}/resources/img/download-box.png" alt="" class="width-384 hidden-xxxs visible-sm margin-right"/>
+							<img src="${pageContext.request.contextPath}/resources/img/download-box.png" alt="" class="fixedwidth-384 xxxs-display-none sm-display-block margin-right"/>
 						</div>
 						<div class="display-table-cell vertical-align full-width">
-							<div class="maxwidth-384 margin-auto">
-								<h1 class="no-margin-top margin-bottom padding-bottom util1-primary-text">Sign In</h1>
+							<div class="fixedmaxwidth-384 margin-auto">
+								<h1 class="margin-bottom padding-bottom util1-primary-text">Sign In</h1>
 
 								<form name='f' action="j_spring_security_check" method="post">
 								
 									<label>
 										<div class="padding-bottom position-relative">
-											<h2 class="no-margin-top small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Email :</h2>
-											<input type="email" name="j_username" class="default-btn-shape theme3-lighten1-bdr display-block" placeholder="Enter your email" required/>
+											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Email :</h2>
+											<input type="email" name="j_username" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="Enter your email" required/>
 											<c:if test="${Message != null}">
-												<p name="error-tag" class="no-margin-top no-margin-bottom position-absolute position-bottom position-right util5-primary-text">
+												<p name="error-tag" class="position-absolute position-bottom position-right util5-primary-text">
 												<span class="icon-cancel-circle"></span> Invalid</p>
 											</c:if>	
 										</div>
 									</label>
 									<label>
 										<div class="padding-bottom position-relative">
-											<h2 class="no-margin-top small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Password :</h2>
-											<input type="password" name="j_password" class="default-btn-shape theme3-lighten1-bdr display-block" placeholder="Password" required/>
+											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Password :</h2>
+											<input type="password" name="j_password" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="Password" required/>
 											<c:if test="${Message != null}">
-												<p name="error-tag" class="no-margin-top no-margin-bottom position-absolute position-bottom position-right util5-primary-text">
+												<p name="error-tag" class="position-absolute position-bottom position-right util5-primary-text">
 												<span class="icon-cancel-circle"></span> Invalid</p>
 											</c:if>
 										</div>
 									</label>
-									<button name="submit" type="submit" class="default-btn-shape theme1-primary-btn-style1 display-block text-center margin-top margin-bottom">Login</button>
+									<button name="submit" type="submit" class="default-btn-shape theme1-primary-btn-style1 display-block text-center margin-top margin-bottom  full-width">Login</button>
 									<div class="text-center"><a class="display-inline-block default-btn-shape default-btn-style5" href="#">Forgot your password ?</a></div>
 								</form>
 

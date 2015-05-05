@@ -12,10 +12,10 @@
 	<div class="small-padding-top theme1-primary-bg"></div>
 	<div class="container inverted-bg underlined theme3-lighten1-bdr clearfix">
 		<div class="float-left padding-right">
-			<img src="${pageContext.request.contextPath}/resources/img/logo&name.min.png" class="default-img-p visible-xxxs hidden-xxs">
-			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png" class="default-img-p hidden-xxxs visible-xxs">
+			<img src="${pageContext.request.contextPath}/resources/img/logo&name.min.png" class="default-img-p xxxs-display-block xxs-display-none">
+			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png" class="default-img-p xxxs-display-none xxs-display-block">
 		</div>
-		<div class="float-left maxwidth-320">
+		<div class="float-left fixedmaxwidth-320">
 			<div class="display-table-cell vertical-top full-width">
 				<input type="text" class="default-box-p surrounded small-container theme3-lighten1-bdr full-width" placeholder="Your research here ..."/>
 			</div>
@@ -52,7 +52,7 @@
 					</a>
 				</li>
 				<li class="position-relative display-table-cell">
-					<a class="toggle-event display-table theme1-primary-btn-style1" data-toggle="pop-event" data-target="mainmenu-profilebox" href="#" title="profile">
+					<a class="display-table theme1-primary-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-profilebox" href="#" title="profile">
 						<div class="display-table-cell">
 							<div class="display-table-cell vertical-align">
 								<div class="default-box-p util1-primary-bg">
@@ -64,11 +64,11 @@
 							</div>
 						</div>
 					</a>
-					<div id="mainmenu-profilebox" class="pop-event focus-sensitive position-absolute position-right width-384 inverted-bg margin-top raised zindex-50">
+					<div id="mainmenu-profilebox" class="pop-event focus-sensitive position-absolute position-right fixedwidth-384 inverted-bg margin-top theme3-darken2-boxshadow-raising-out zindex-50">
 						<div class="position-relative">
 							<div class="container underlined theme3-lighten1-bdr">
 								<div class="display-table-cell">
-									<div class="width-128 height-128 util1-primary-bg">
+									<div class="fixedwidth-128 fixedheight-128 util1-primary-bg">
 										<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
 									</div>
 								</div>
@@ -82,10 +82,10 @@
 							</div>
 							<div class="container inverted-bg clearfix">
 								<div class="float-right">
-									<a class="default-btn-shape default-btn-style5 raised small-margin-right" href="#">
+									<a class="default-btn-shape default-btn-style5 theme3-darken2-boxshadow-raising-out small-margin-right" href="#">
 										<span class="icon-cog small-margin-right"></span>Settings
 									</a>
-									<a class="default-btn-shape theme1-primary-btn-style1 raised toggle-event" data-toggle="pop-event" data-target="mainmenu-leavevalidation" href="#">
+									<a class="default-btn-shape theme1-primary-btn-style1 theme3-darken2-boxshadow-raising-out animating-event" data-action="open-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
 										<span class="icon-switch small-margin-right"></span>Sign out
 									</a>
 								</div>
@@ -94,11 +94,11 @@
 								<div class="display-table full-width full-height">
 									<div class="display-table-cell full-width full-height vertical-align">
 										<div class="text-center">
-											<p class="no-margin-top margin-bottom"><b>Do you really want to leave ?</b></p>
+											<p class="margin-bottom"><b>Do you really want to leave ?</b></p>
 											<a class="default-btn-shape util4-primary-btn-style1 small-margin-right" href="<c:url value="/j_spring_security_logout" />">
 												<span class="icon-checkmark small-margin-right"></span>Yes
 											</a>
-											<a class="default-btn-shape util2-primary-btn-style1 toggle-event" data-toggle="pop-event" data-target="mainmenu-leavevalidation" href="#">
+											<a class="default-btn-shape util2-primary-btn-style1 animating-event" data-action="close-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
 												<span class="icon-cross small-margin-right"></span>No
 											</a>														
 										</div>
