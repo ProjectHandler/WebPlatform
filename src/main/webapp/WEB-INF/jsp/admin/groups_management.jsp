@@ -66,7 +66,10 @@
 					
 					<div class="full-width full-height overflow-auto">
 						<div class="container">
-							<h1 class="util1-primary-text margin-bottom"><span class="icon-tree small-margin-left margin-right"></span><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
+							<div class="margin-bottom clearfix">
+								<h1 class="util1-primary-text float-left"><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
+								<div class="text-h1 float-right"><span class="icon-tree"></span></div>
+							</div>
 							<div class="margin-bottom">
 								<h2 class="small-margin-bottom"><spring:message code="projecthandler.group.create"/></h2>
 								<input type="text" name="groupName" id="groupName"  maxlength="50" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your group name here ..."/>
