@@ -94,92 +94,126 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="../template/header.jsp" />
-		<jsp:include page="../template/menu.jsp" />
-		<h1><spring:message code="projecthandler.admin.userManagementTitle"/></h1>
-		<table id="usersTable">
-			<thead>
-				<tr>
-					<th><spring:message code="projecthandler.user.lastName"/></th>
-					<th><spring:message code="projecthandler.user.firstName"/></th>
-					<th><spring:message code="projecthandler.user.email"/></th>
-					<th><spring:message code="projecthandler.user.role"/></th>
-					<th><spring:message code="projecthandler.user.status"/></th>
-					<th><spring:message code="projecthandler.user.action"/></th>
+		<div class="display-table full-width full-height">
+			<div class="display-table-row">
+				<jsp:include page="../template/header.jsp" />		
+			</div>
+			<div class="display-table full-width full-height">
+				<div class="display-table-cell full-height theme1-primary-bg">
+					<div class="fixedwidth-320">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<h1 class="padding-top padding-bottom text-center inverted-text"><span class="icon-database margin-right"></span>Administration</h1>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree small-margin-left margin-right"></span>Administration des groupes</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/users_management"/>"><span class="icon-users small-margin-left margin-right"></span>Administration des utilisateurs</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>"><span class="icon-user-plus small-margin-left margin-right"></span>Inscrire un utilisateur</a>
+						<hr class="inverted-bg">
+					</sec:authorize>	
+					</div>
+				</div>
+				<div class="display-table-cell full-width full-height">
 					
-					<th>Group</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="user" items="${users}">
-				<tr>
-					<td><c:out value="${user.lastName}"/></td>
-					<td><c:out value="${user.firstName}"/></td>
-					<td><c:out value="${user.email}"/></td>
-					<td>
-						<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')">
-							<c:forEach var='role' items='${user_role}' >
-							<c:choose>
-							<c:when test="${role==user.userRole}">
-								<option selected="selected"><c:out value='${role}'/></option>
-							</c:when>
-							<c:otherwise>
-								<option><c:out value='${role}'/></option>
-							</c:otherwise>
-							</c:choose>
-							</c:forEach>
-						</select>
-					</td>
-					<td>
-						<select id="accountStatus" onchange="changeStatus(this, '${user.id}')">
-							<c:forEach var='status' items='${account_status}' >
-							<c:choose>
-							<c:when test="${status==user.accountStatus}">
-								<option selected="selected"><c:out value='${status}'/></option>
-							</c:when>
-							<c:otherwise>
-								<option><c:out value='${status}'/></option>
-							</c:otherwise>
-							</c:choose>
-							</c:forEach>
-						</select>
-					</td>
-					<td>
-						<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>'
-							ONCLICK="deleteUser('${user.id}')"/>
-						<c:if test="${user.accountStatus == 'INACTIVE'}">
-						<INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.reSendMail"/>'
-							ONCLICK="sendEmailUser('${user.id}')"/>
-						</c:if>
-					</td>
-					<td>
-						<select class="groupSelection"  multiple="multiple" placeholder>
-       						<c:forEach var='group' items='${groups}' >
-								<c:set var="found" value="false"/>
-								<c:if test="${user.groups != null}">
-									<c:forEach var="userGroup" items="${user.groups}">
-										<c:if test="${userGroup.id == group.id}">
-											<c:set var="found" value="true"/>
-											<option selected value="${user.id}/${group.id}">
-												${group.name}
-											</option>
-										</c:if>
-									</c:forEach>
-								</c:if>
-								<c:if test="${user.groups == null || found eq false}">
-									<option value="${user.id}/${group.id}">
-										${group.name}
-									</option>
-								</c:if>	
-							</c:forEach>
-       					</select>
-       				</td>
-					</tr>
-				 </c:forEach>
-			</tbody>
-		</table>
-		<br/>
-		
-		<jsp:include page="../template/footer.jsp" />
+					<div class="full-width full-height overflow-auto">
+						<div class="container">
+							<div class="margin-bottom clearfix">
+								<h1 class="util1-primary-text float-left"><spring:message code="projecthandler.admin.userManagementTitle"/></h1>
+								<div class="text-h1 float-right"><span class="icon-users"></span></div>
+							</div>
+							<div>
+							
+								<h2 class="small-margin-bottom">Liste des utilisateurs</h2>
+								<table id="usersTable" class="full-width surrounded theme3-primary-bdr">
+									<thead>
+										<tr>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.lastName"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.firstName"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.email"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.role"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.status"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.action"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text">Groupes</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="user" items="${users}">
+										<tr>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.lastName}"/></td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.firstName}"/></td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.email}"/></td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
+												<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')" class="select-switch surrounded theme3-lighten1-bdr">
+													<c:forEach var='role' items='${user_role}' >
+													<c:choose>
+													<c:when test="${role==user.userRole}">
+														<option selected="selected"><c:out value='${role}'/></option>
+													</c:when>
+													<c:otherwise>
+														<option><c:out value='${role}'/></option>
+													</c:otherwise>
+													</c:choose>
+													</c:forEach>
+												</select>
+											</td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
+												<select id="accountStatus" class="select-switch surrounded theme3-lighten1-bdr" onchange="changeStatus(this, '${user.id}')">
+													<c:forEach var='status' items='${account_status}' >
+													<c:choose>
+													<c:when test="${status==user.accountStatus}">
+														<option selected="selected"><c:out value='${status}'/></option>
+													</c:when>
+													<c:otherwise>
+														<option><c:out value='${status}'/></option>
+													</c:otherwise>
+													</c:choose>
+													</c:forEach>
+												</select>
+											</td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
+												<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteUser('${user.id}')"/>
+													<span class="icon-cross small-margin-right"></span>supprimer
+												</button>
+												<c:if test="${user.accountStatus == 'INACTIVE'}">
+												<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')"/>
+													<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
+												</button>
+												</c:if>
+											</td>
+											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
+												<select class="groupSelection"  multiple="multiple" placeholder>
+						       						<c:forEach var='group' items='${groups}' >
+														<c:set var="found" value="false"/>
+														<c:if test="${user.groups != null}">
+															<c:forEach var="userGroup" items="${user.groups}">
+																<c:if test="${userGroup.id == group.id}">
+																	<c:set var="found" value="true"/>
+																	<option selected value="${user.id}/${group.id}">
+																		${group.name}
+																	</option>
+																</c:if>
+															</c:forEach>
+														</c:if>
+														<c:if test="${user.groups == null || found eq false}">
+															<option value="${user.id}/${group.id}">
+																${group.name}
+															</option>
+														</c:if>	
+													</c:forEach>
+						       					</select>
+						       				</td>
+											</tr>
+										 </c:forEach>
+									</tbody>
+								</table>
+
+
+
+							</div>
+						</div>	
+					</div>					
+				</div>
+			</div>		
+		</div>
 	</body>
 </html>

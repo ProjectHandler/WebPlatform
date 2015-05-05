@@ -82,7 +82,7 @@
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
 					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="#" title="notifications">
-						<span class="icon-bubble"></span>
+						<span class="icon-bell"></span>
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">

@@ -43,7 +43,7 @@
 			}
 			
 		</script>
-	</head>
+	</head>	
 	<body>
 		<div class="display-table full-width full-height">
 			<div class="display-table-row">
@@ -52,14 +52,16 @@
 			<div class="display-table full-width full-height">
 				<div class="display-table-cell full-height theme1-primary-bg">
 					<div class="fixedwidth-320">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<h1 class="padding-top padding-bottom text-center inverted-text"><span class="icon-database margin-right"></span>Administration</h1>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-tree small-margin-left margin-right"></span>Administration des groupes</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree small-margin-left margin-right"></span>Administration des groupes</a>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-users small-margin-left margin-right"></span>Administration des utilisateurs</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/users_management"/>"><span class="icon-users small-margin-left margin-right"></span>Administration des utilisateurs</a>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-user-plus small-margin-left margin-right"></span>Inscrire un utilisateur</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>"><span class="icon-user-plus small-margin-left margin-right"></span>Inscrire un utilisateur</a>
 						<hr class="inverted-bg">
+					</sec:authorize>	
 					</div>
 				</div>
 				<div class="display-table-cell full-width full-height">
@@ -73,7 +75,7 @@
 							<div class="margin-bottom">
 								<h2 class="small-margin-bottom"><spring:message code="projecthandler.group.create"/></h2>
 								<input type="text" name="groupName" id="groupName"  maxlength="50" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your group name here ..."/>
-								<button id="btnCreate" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
+								<button id="btnCreate" class="default-btn-shape util3-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
 							</div>
 							<div>
 								<h2 class="small-margin-bottom">Liste des groupes</h2>
@@ -101,11 +103,9 @@
 								</table>
 							</div>
 						</div>	
-					</div>
-					
+					</div>	
 				</div>
 			</div>		
 		</div>
-
 	</body>
 </html>
