@@ -45,34 +45,64 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="../template/header.jsp" />
-		<jsp:include page="../template/menu.jsp" />
-		<h1><spring:message code="projecthandler.admin.groupManagementTitle"/></h1> 
-		
-		<table id="usersTable">
-			<thead>
-				<tr>
-					<th><spring:message code="projecthandler.group.name"/></th>
-					<th>Action</th>
-				</tr>
-			</thead>
-			<tbody>
-				<c:forEach var="group" items="${groups}">
-					<tr>
-						<td><c:out value="${group.name}"/></td>
-						<td><INPUT TYPE="BUTTON" VALUE='<spring:message code="projecthandler.admin.action.delete"/>' ONCLICK="deleteGroup('${group.id}')"/></td>
-					</tr>
-				 </c:forEach>
-			</tbody>
-		</table>
-		<br/>
-		
-		<div>
-			<h3><spring:message code="projecthandler.group.create"/></h3>
-			<input type="text" name="groupName" id="groupName"  maxlength="50"/>
-			<button id="btnCreate"><spring:message code="projecthandler.signup.create" /></button>
+		<div class="display-table full-width full-height">
+			<div class="display-table-row">
+				<jsp:include page="../template/header.jsp" />		
+			</div>
+			<div class="display-table full-width full-height">
+				<div class="display-table-cell full-height theme1-primary-bg">
+					<div class="fixedwidth-320">
+						<h1 class="padding-top padding-bottom text-center inverted-text"><span class="icon-database margin-right"></span>Administration</h1>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-tree small-margin-left margin-right"></span>Administration des groupes</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-users small-margin-left margin-right"></span>Administration des utilisateurs</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href=""><span class="icon-user-plus small-margin-left margin-right"></span>Inscrire un utilisateur</a>
+						<hr class="inverted-bg">
+					</div>
+				</div>
+				<div class="display-table-cell full-width full-height">
+					
+					<div class="full-width full-height overflow-auto">
+						<div class="container">
+							<h1 class="util1-primary-text margin-bottom"><span class="icon-tree small-margin-left margin-right"></span><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
+							<div class="margin-bottom">
+								<h2 class="small-margin-bottom"><spring:message code="projecthandler.group.create"/></h2>
+								<input type="text" name="groupName" id="groupName"  maxlength="50" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your group name here ..."/>
+								<button id="btnCreate" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
+							</div>
+							<div>
+								<h2 class="small-margin-bottom">Liste des groupes</h2>
+								<table id="usersTable" class="full-width surrounded theme3-primary-bdr">
+									<thead>
+										<tr>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text full-width"><spring:message code="projecthandler.group.name"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text text-center">Action</th>
+										</tr>
+									</thead>
+									<tbody>
+										<c:forEach var="group" items="${groups}">
+											<tr>
+												<td class="container soft-surrounded theme3-primary-bdr full-width">
+													<c:out value="${group.name}"/>
+												</td>
+												<td class="container soft-surrounded theme3-primary-bdr">
+													<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteGroup('${group.id}')"/>
+														<span class="icon-cross small-margin-right"></span>supprimer
+													</button>
+												</td>
+											</tr>
+										 </c:forEach>
+									</tbody>
+								</table>
+							</div>
+						</div>	
+					</div>
+					
+				</div>
+			</div>		
 		</div>
-		
-		<jsp:include page="../template/footer.jsp" />
+
 	</body>
 </html>

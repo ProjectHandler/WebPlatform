@@ -8,11 +8,11 @@
 	
 	<div class="float-right">
 
-		<button class="reduced-btn-shape text-h3 surrounded theme3-darken2-text theme3-darken2-bdr theme1-primary-btn-style2 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu">
+		<button class="reduced-btn-shape text-h3 surrounded theme3-darken2-text theme3-darken2-bdr theme1-primary-btn-style2 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debugging-menu" title="debugging menu">
 			<span class="icon-equalizer"></span>
 		</button>
 		
-		<div id="debuggingmenu" class="pop-event focus-sensitive position-absolute position-right small-margin-top margin-right container surrounded theme3-primary-bdr radius inverted-bg position-relative zindex-10">
+		<div id="debugging-menu" class="pop-event position-absolute position-right focus-sensitive default-bg small-margin-top margin-right container surrounded theme3-primary-bdr inverted-bg zindex-10">
 		
 			<h1 class="margin-bottom">Debugging menu</h1>
 			
