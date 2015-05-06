@@ -58,7 +58,7 @@
 				
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
-		function createEvent() {
+		function createEventFromDatePiker() {
 		/*
 		 * TODO check input
 		 */
@@ -72,7 +72,7 @@
 				var creatFormEvent = '<label><spring:message code="projecthandler.calendar.title" /></label>' + '<input type="text" name="title"/>' 
 				+ '<label><spring:message code="projecthandler.calendar.descritption" /></label>' + '<input type="text" name="description"/>'
 				+ '</br>' + '<input type="text" name="daterange"/>' 
-				+ '<button id="btnSave" onclick="createEvent()"><spring:message code="projecthandler.signup.create" /></button>';
+				+ '<button type="button" id="btnSave" onclick="createEventFromDatePiker()"><spring:message code="projecthandler.signup.create" /></button>';
 				
 				$("#daterangeDiv").append(creatFormEvent);
 
