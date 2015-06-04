@@ -37,7 +37,6 @@ public class UserListFormatter implements Formatter<List<User>> {
 		String[] array = userListString.split(delimiter);
 		List<User> userList = new ArrayList<User>();
 
-		System.out.println("parse: " + userListString);
 		for (String str : array) {
 			// TODO replace by our own StringUtils ?
 			if (StringUtils.isNumeric(str)) {

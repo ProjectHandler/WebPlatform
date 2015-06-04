@@ -142,7 +142,6 @@ public class UserController {
 		}
 
 		myModel.put("civilityList", civilityService.getAllCivilities());
-		System.out.println("civility 0:" + civilityService.getAllCivilities().get(0).getName());
 
 		return new ModelAndView("signup", myModel);
 	}
@@ -327,7 +326,6 @@ public class UserController {
 				return new ModelAndView("accessDenied", null);
 
 			myModel.put("civilityList", civilityService.getAllCivilities());
-			System.out.println("civility 0:" + civilityService.getAllCivilities().get(0).getName());
 			myModel.put("user", user);
 
 			// Access denied if Token out of date.
