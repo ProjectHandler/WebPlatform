@@ -13,11 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.dao.UserDao;
 import fr.projecthandler.enums.AccountStatus;
-import fr.projecthandler.enums.Civility;
 import fr.projecthandler.enums.UserRole;
-import fr.projecthandler.model.Group;
 import fr.projecthandler.model.User;
-import fr.projecthandler.service.UserService;
 import static org.junit.Assert.*;
 
 
@@ -30,7 +27,6 @@ public class UserDaoTest {
 	@Autowired
 	UserDao userDao;
 
-	private Civility civility = Civility.M;
 	private String firstName = "Robert";
 	private String lastName = "Dupont";
 	private String password = "56az4de456zaz";
@@ -43,7 +39,6 @@ public class UserDaoTest {
 	//private List<Group> groups;
 
 	private void setUserData(User user) {
-		user.setCivility(civility);
 		user.setFirstName(firstName);
 		user.setLastName(lastName);
 		user.setPassword(password);

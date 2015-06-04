@@ -6,7 +6,7 @@ import fr.projecthandler.model.Ticket;
 
 public interface TicketDao {
 
-	public void saveTicket(Ticket Ticket);
+	public Long saveTicket(Ticket Ticket);
 
 	public void updateTicket(Ticket Ticket);
 

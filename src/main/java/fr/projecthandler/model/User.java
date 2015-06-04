@@ -10,11 +10,11 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import fr.projecthandler.enums.AccountStatus;
-import fr.projecthandler.enums.Civility;
 import fr.projecthandler.enums.UserRole;
 
 @Entity
@@ -23,7 +23,8 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5538144362291281238L;
 
-	@Column(name = "civility")
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "civility_id")
 	private Civility civility;
 	
 	@Column(name = "first_name", length = 30)

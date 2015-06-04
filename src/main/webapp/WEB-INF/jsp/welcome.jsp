@@ -14,7 +14,7 @@
 		<jsp:include page="template/header.jsp" />
 		<jsp:include page="template/menu.jsp" />
 		
-		<h1>welcome ${user.civility} ${user.firstName} ${user.lastName}</h1> 
+		<h1>welcome <spring:message code="${user.civility.name}" text=""/> ${user.firstName} ${user.lastName}</h1>
 		<br/>
 		${user.userRole}
 

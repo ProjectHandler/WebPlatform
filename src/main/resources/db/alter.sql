@@ -22,3 +22,6 @@ CREATE TABLE IF NOT EXISTS `users_events` (
 ALTER TABLE `users_events`
   ADD CONSTRAINT `users_events_ibfk_2` FOREIGN KEY (`events_id`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `users_events_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- delete attribute for civility enum (04/06/2015)
+ALTER TABLE `users` DROP `civility`;

@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
+import fr.projecthandler.model.TicketPriority;
 import fr.projecthandler.model.TicketTracker;
 
 public interface TicketService {
@@ -37,5 +38,17 @@ public interface TicketService {
 	public TicketTracker findTicketTrackerById(Long id);
 
 	public List<TicketTracker> getAllTicketTrackers();
+
+	public Long saveTicketPriority(TicketPriority ticketPriority);
+
+	public void updateTicketPriority(TicketPriority ticketPriority);
+
+	public void deleteTicketPriorityById(Long ticketPriorityId);
+
+	public void deleteTicketPrioritiesByIds(List<Long> ticketPriorities);
+
+	public TicketPriority findTicketPriorityById(Long ticketPriorityId);
+
+	public List<TicketPriority> getAllTicketPriorities();
 
 }

@@ -13,8 +13,10 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 
 	@Override
 	@Transactional
-	public void saveTicket(Ticket ticket) {
+	public Long saveTicket(Ticket ticket) {
 		em.persist(ticket);
+
+		return ticket.getId();
 	}
 
 	@Override

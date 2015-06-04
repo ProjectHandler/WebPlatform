@@ -39,6 +39,7 @@
 			<set>
 				<ref bean="projectFormatter" />
 				<ref bean="ticketTrackerFormatter" />
+				<ref bean="ticketPriorityFormatter" />
 				<ref bean="userListFormatter" />
 			</set>
 		</property>

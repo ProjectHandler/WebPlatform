@@ -153,17 +153,18 @@
 				<br/>
 			<ul class="form">
 				<li>
-					<label><spring:message code="projecthandler.signup.civility"/><spring:message code="projecthandler.field.required"/></label>
-				<c:forEach items="${civility}" var="civil">
-					<c:if test="${user != null && user.civility.id eq civil.id}">
-						<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civil.value}" />
-					</c:if>
-					<c:if test="${user eq null || user.civility.id != civil.id}">
-						<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civil.value}" />
-					</c:if>
+					<label path="civility"><spring:message code="projecthandler.signup.civility"/><spring:message code="projecthandler.field.required"/></label>
+					<c:forEach items="${civilityList}" var="civil">
+						<c:set var="civilityValue"><spring:message code="${civil.name}" text=""/></c:set>
+						<c:if test="${user != null && user.civility.id eq civil.id}">
+							<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+						</c:if>
+						<c:if test="${user eq null || user.civility.id != civil.id}">
+							<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+						</c:if>
 					</c:forEach>
-					<span class="error" id="civilityError"></span>
 				</li>
+
 				<li>
 					<label><spring:message code="projecthandler.user.lastName"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="text" name="lastName" id="lastName"  value="${user.lastName}" maxlength="30"/>

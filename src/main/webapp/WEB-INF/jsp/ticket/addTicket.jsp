@@ -53,6 +53,14 @@
 					</td>
 				</tr>
 				<tr>
+					<td><form:label path="ticketPriority">Priority</form:label></td>
+					<td>
+						<form:select path="ticketPriority">
+						    <form:options items="${ticketPriorityList}" itemValue="id" itemLabel="name" />
+						</form:select>
+					</td>
+				</tr>
+				<tr>
 					<td><form:label path="users">Users</form:label></td>
 					<td><form:input path="users"></form:input></td>
 				</tr>

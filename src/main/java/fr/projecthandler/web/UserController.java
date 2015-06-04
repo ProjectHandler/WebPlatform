@@ -41,7 +41,6 @@ import com.google.gson.JsonPrimitive;
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
 import fr.projecthandler.enums.AccountStatus;
-import fr.projecthandler.enums.Civility;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Calendar;
 import fr.projecthandler.model.Event;
@@ -49,6 +48,7 @@ import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.CivilityService;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.InputAutocompleteService;
 import fr.projecthandler.service.ProjectService;
@@ -76,6 +76,9 @@ public class UserController {
 	
 	@Autowired
 	EventService				eventService;
+
+	@Autowired
+	CivilityService				civilityService;
 
 	@Autowired
 	BCryptPasswordEncoder		passwordEncoder;
@@ -138,7 +141,9 @@ public class UserController {
 			myModel.put("user", u);
 		}
 
-		myModel.put("civility", Civility.values());
+		myModel.put("civilityList", civilityService.getAllCivilities());
+		System.out.println("civility 0:" + civilityService.getAllCivilities().get(0).getName());
+
 		return new ModelAndView("signup", myModel);
 	}
 	
@@ -152,7 +157,7 @@ public class UserController {
 			// mandatory information
 			String civility = Utilities.getRequestParameter(request, "civility");
 			if (civility != null && civility.length() > 0) {
-				u.setCivility(Civility.findCivilityById(Integer.parseInt(civility)));
+				u.setCivility(civilityService.findCivilityById(Long.parseLong(civility)));
 			} else
 				isValid = false;
 			String firstName = Utilities.getRequestParameter(request, "firstName");
@@ -321,7 +326,8 @@ public class UserController {
 			if (user == null)
 				return new ModelAndView("accessDenied", null);
 
-			myModel.put("civility", Civility.values());
+			myModel.put("civilityList", civilityService.getAllCivilities());
+			System.out.println("civility 0:" + civilityService.getAllCivilities().get(0).getName());
 			myModel.put("user", user);
 
 			// Access denied if Token out of date.

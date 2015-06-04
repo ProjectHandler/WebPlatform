@@ -7,9 +7,11 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.TicketDao;
 import fr.projecthandler.dao.TicketMessageDao;
+import fr.projecthandler.dao.TicketPriorityDao;
 import fr.projecthandler.dao.TicketTrackerDao;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
+import fr.projecthandler.model.TicketPriority;
 import fr.projecthandler.model.TicketTracker;
 
 @Service
@@ -23,6 +25,9 @@ public class TicketServiceImpl implements TicketService {
 
 	@Autowired
 	TicketTrackerDao ticketTrackerDao;
+
+	@Autowired
+	TicketPriorityDao ticketPriorityDao;
 
 	@Override
 	public void saveTicket(Ticket newTicket) {
@@ -86,5 +91,29 @@ public class TicketServiceImpl implements TicketService {
 
 	public List<TicketTracker> getAllTicketTrackers() {
 		return ticketTrackerDao.getAllTicketTrackers();
+	}
+
+	public Long saveTicketPriority(TicketPriority ticketPriority) {
+		return ticketPriorityDao.saveTicketPriority(ticketPriority);
+	}
+
+	public void updateTicketPriority(TicketPriority ticketPriority) {
+		ticketPriorityDao.updateTicketPriority(ticketPriority);
+	}
+
+	public void deleteTicketPriorityById(Long ticketPriorityId) {
+		ticketPriorityDao.deleteTicketPriorityById(ticketPriorityId);
+	}
+
+	public void deleteTicketPrioritiesByIds(List<Long> ticketPriorities) {
+		ticketPriorityDao.deleteTicketPrioritiesByIds(ticketPriorities);
+	}
+
+	public TicketPriority findTicketPriorityById(Long ticketPriorityId) {
+		return ticketPriorityDao.findTicketPriorityById(ticketPriorityId);
+	}
+
+	public List<TicketPriority> getAllTicketPriorities() {
+		return ticketPriorityDao.getAllTicketPriorities();
 	}
 }

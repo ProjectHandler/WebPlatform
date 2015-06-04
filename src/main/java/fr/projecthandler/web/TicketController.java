@@ -22,6 +22,7 @@ import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
+import fr.projecthandler.model.TicketPriority;
 import fr.projecthandler.model.TicketTracker;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
@@ -62,12 +63,14 @@ public class TicketController {
 		User u = userService.findUserById(userDetails.getId());
 		List<Project> projectList = projectService.getAllProjects();
 		List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
+		List<TicketPriority> ticketPriorityList = ticketService.getAllTicketPriorities();
 
 		ticket.setProject(project);
 		model.put("user", u);
 		model.put("ticket", ticket);
 		model.put("projectList", projectList);
 		model.put("ticketTrackerList", ticketTrackerList);
+		model.put("ticketPriorityList", ticketPriorityList);
 
 		return new ModelAndView("ticket/addTicket", model);
 	}
@@ -82,7 +85,6 @@ public class TicketController {
 		// TODO check des permissions, check si les ID sont valides
 		User user = userService.findUserById(userDetails.getId());
 		ticket.setUser(user);
-		System.out.println("users: " + ticket.getUsers());
 		ticketService.saveTicket(ticket);
 		return new ModelAndView("redirect:" + "/ticket/" + ticket.getId() + "/messages");
 	}

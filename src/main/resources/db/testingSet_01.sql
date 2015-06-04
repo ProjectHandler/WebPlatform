@@ -27,13 +27,13 @@ USE project_handler;
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `civility`) VALUES
-(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', NULL, '0101020304', '0102030405', 3, 1, NULL, 0),
-(20, 'Jean', 'Patoche', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'jean.patoche@example.com', NULL, '01000001', '06000001', 1, 1, NULL, 0),
-(21, 'Lucie', 'Roblochon', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'lucie_peace@margoulette.com', NULL, '0133449978', '0612546879', 1, 1, NULL, 0),
-(22, 'Maria', 'Mandzukic', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'mandzu.maria@zlatan.com', NULL, '0198877665', '0698877665', 1, 1, NULL, 0),
-(23, 'Vladimir', 'Machine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'vlad-exp@coldmail.com', NULL, '07888888', '06888888', 1, 1, NULL, 0),
-(50, 'Platane', 'Inactive', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'inactif@lol.com', NULL, '1111111111', '6666666666', 1, 0, NULL, 0);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`) VALUES
+(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', NULL, '0101020304', '0102030405', 3, 1, 1),
+(20, 'Jean', 'Patoche', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'jean.patoche@example.com', NULL, '01000001', '06000001', 1, 1, 1),
+(21, 'Lucie', 'Roblochon', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'lucie_peace@margoulette.com', NULL, '0133449978', '0612546879', 1, 1, 2),
+(22, 'Maria', 'Mandzukic', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'mandzu.maria@zlatan.com', NULL, '0198877665', '0698877665', 1, 1, 3),
+(23, 'Vladimir', 'Machine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'vlad-exp@coldmail.com', NULL, '07888888', '06888888', 1, 1, 1),
+(50, 'Platane', 'Inactive', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'inactif@lol.com', NULL, '1111111111', '6666666666', 1, 0, 2);
 
 --
 -- Dumping data for table `address`
@@ -54,8 +54,9 @@ UPDATE `project_handler`.`users` SET `address` = '3' WHERE `users`.`id` = 50;
 --
 
 INSERT INTO `civility` (`id`, `name`) VALUES
-(1, 'Madame'),
-(4, 'Monsieur');
+(1, 'projecthandler.civility.mister'),
+(2, 'projecthandler.civility.mrs'),
+(3, 'projecthandler.civility.miss');
 
 --
 -- Dumping data for table `groups`
@@ -121,3 +122,9 @@ INSERT INTO `users_projects` (`user_id`, `project_id`) VALUES
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Dumping data for table `ticket_priority`
+--
+
+INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES (NULL, '10', 'low'), (NULL, '20', 'medium'), (NULL, '30', 'high');

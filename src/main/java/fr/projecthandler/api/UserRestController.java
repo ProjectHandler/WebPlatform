@@ -67,6 +67,7 @@ public class UserRestController {
 			if (u == null) {
 				return new ResponseEntity<String>("{\"status\":505, \"message\":\"Internal Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
+			//TODO make sure token is unique ?
 			token.setToken(TokenGenerator.generateToken());
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
 			token.setUser(u);
