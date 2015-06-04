@@ -25,3 +25,9 @@ ALTER TABLE `users_events`
 
 -- delete attribute for civility enum (04/06/2015)
 ALTER TABLE `users` DROP `civility`;
+
+DELETE FROM civility;
+INSERT INTO `civility` (`id`, `name`) VALUES
+(1, 'projecthandler.civility.mister'),
+(2, 'projecthandler.civility.mrs'),
+(3, 'projecthandler.civility.miss');
