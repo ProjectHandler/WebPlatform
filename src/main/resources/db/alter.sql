@@ -31,3 +31,9 @@ INSERT INTO `civility` (`id`, `name`) VALUES
 (1, 'projecthandler.civility.mister'),
 (2, 'projecthandler.civility.mrs'),
 (3, 'projecthandler.civility.miss');
+  ADD CONSTRAINT `users_events_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ 
+-- Constraints for table `users_projects` (05/06/2015)
+ALTER TABLE `users_projects`
+	ADD CONSTRAINT `users_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+ 	ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`);

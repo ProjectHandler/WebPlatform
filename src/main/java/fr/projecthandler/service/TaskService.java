@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.User;
 
 public interface TaskService {
 
@@ -20,4 +21,6 @@ public interface TaskService {
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
+	
+	public List<User> getUsersByTaskId(Long taskId);
 }

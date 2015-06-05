@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.TaskDao;
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.User;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -41,5 +42,9 @@ public class TaskServiceImpl implements TaskService {
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId){
 		return taskDao.getTasksByUserAndFetchUsers(userId);
+	}
+	
+	public List<User> getUsersByTaskId(Long taskId) {
+		return taskDao.getUsersByTaskId(taskId);
 	}
 }

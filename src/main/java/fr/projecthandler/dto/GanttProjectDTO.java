@@ -15,7 +15,7 @@ public class GanttProjectDTO {
 
 	public GanttProjectDTO() {
 		this.tasks = new ArrayList<GanttTaskDTO>(); 
-		this.resources = new ArrayList<GanttResourceDTO>(); 
+		this.resources = new ArrayList<GanttResourceDTO>();
 		this.roles = new ArrayList<GanttRoleDTO>(); 
 		this.canWrite = true;
 		this.canWriteOnParent = true;

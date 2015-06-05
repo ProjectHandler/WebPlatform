@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
 				return "The group called " + groupName + " already exists.";
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			e.printStackTrace();
 			return "The group called " + groupName + " already exists.";
 		}
 	}
@@ -97,5 +97,5 @@ public class UserServiceImpl implements UserService {
 	public User findUserByIdAndFetchProjects(Long userId) {
 		return userDao.findUserByIdAndFetchProjects(userId);
 	}
-
+	
 }

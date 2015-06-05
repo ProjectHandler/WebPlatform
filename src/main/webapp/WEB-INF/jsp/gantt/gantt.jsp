@@ -127,7 +127,7 @@
 		
 		  var prj = ge.saveProject();
 		
-		  delete prj.resources;
+		  //delete prj.resources;
 		  delete prj.roles;
 		
 		  var prof = new Profiler("saveServerSide");
@@ -228,7 +228,10 @@
 		
 		  for (var i=0;i<ge.resources.length;i++){
 		    var res=ge.resources[i];
-		    resTbl.append($.JST.createFromTemplate(res, "RESOURCE_ROW"))
+		    //resTbl.append($.JST.createFromTemplate(res, "RESOURCE_ROW"))
+		    var row = $.JST.createFromTemplate(res, "RESOURCE_ROW");
+		    row.find("select").val(res.id).change();
+		    resTbl.append(row);
 		  }
 		
 		
@@ -246,9 +249,12 @@
 		      var row = resourceEditor.find("[resId="+res.id+"]");
 		      if (row.size()>0){
 		        //if still there save it
-		        var name = row.find("input[name]").val();
-		        if (name && name!="")
+		        var name = row.find("select").find(":selected").text();
+		        var resId = row.find("select").find(":selected").val();
+		        if (name && name!="") {
 		          res.name=name;
+		          res.id=resId;
+		        }
 		        newRes.push(res);
 		      } else {
 		        //remove assignments
@@ -268,9 +274,10 @@
 		    //loop on new rows
 		    resourceEditor.find("[resId=new]").each(function(){
 		      var row = $(this);
-		      var name = row.find("input[name]").val();
+		      var name = row.find("select").find(":selected").text();
+		      var resId = row.find("select").find(":selected").val();
 		      if (name && name!="")
-		        newRes.push (new Resource("tmp_"+new Date().getTime(),name));
+		      	newRes.push (new Resource(resId, name));
 		    });
 		
 		    ge.resources=newRes;
@@ -282,6 +289,11 @@
 		
 		  var ndo = createBlackPage(400, 500).append(resourceEditor);
 		}
+		
+		function delRes(resources) {
+			//alert(resources.parent().prev().text());
+			resources.parent().parent().remove();
+		};
 	
 	  $.JST.loadDecorator("ASSIGNMENT_ROW", function(assigTr, taskAssig) {
 	
@@ -333,6 +345,7 @@
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
 		</select>
+		
 		<span class="ganttButtonSeparator"></span>
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.undo"/>"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.redo"/>"><span class="teamworkIcon">&middot;</span></button>
@@ -478,8 +491,6 @@
 	  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
 	    <tr>
 	      <th style="width:100px;">name</th>
-	      <th style="width:70px;">role</th>
-	      <th style="width:30px;">est.wklg.</th>
 	      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 	    </tr>
 	  </table>
@@ -492,8 +503,6 @@
 	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
 	  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
 	    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
-	    <td ><select type="select" name="roleId"  class="formElements"></select></td>
-	    <td ><input type="text" name="effort" value="(#=getMillisInHoursMinutes(obj.assig.effort)#)" size="5" class="formElements"></td>
 	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
 	  </tr>
 	  --></div>
@@ -505,20 +514,26 @@
 	    <h2>Project team</h2>
 	    <table  cellspacing="1" cellpadding="0" width="100%" id="resourcesTable">
 	      <tr>
-	        <th style="width:100px;">name</th>
+	        <th style="width:100px;">full name</th>
 	        <th style="width:30px;" id="addResource"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
 	      </tr>
 	    </table>
-	
+		
 	    <div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big">save2</button></div>
 	  </div>
 	  --></div>
-	
-	
-	  <div class="__template__" type="RESOURCE_ROW"><!--
+
+	  <div class="__template__" type="RESOURCE_ROW"><!--  
 	  <tr resId="(#=obj.id#)" class="resRow" >
-	    <td ><input type="text" name="name" value="(#=obj.name#)" style="width:100%;" class="formElements"></td>
-	    <td align="center"><span class="teamworkIcon delRes" style="cursor: pointer">d</span></td>
+	  	<td>
+	 		
+   			<select id="selectUser" name="name" style="width:90%;" class="formElements">
+				<c:forEach var="user" items="${users}">
+					<option value="${user.id}" >${user.firstName} ${user.lastName}</option>
+				</c:forEach>
+			</select>
+	    </td>
+	    <td align="center"><span id="delRes" class="teamworkIcon delRes" style="cursor: pointer"  ONCLICK="delRes($(this))">d</span></td>
 	  </tr>
 	  --></div>
 	

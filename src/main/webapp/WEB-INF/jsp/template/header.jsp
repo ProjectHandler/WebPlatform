@@ -99,7 +99,9 @@
 								</div>
 							</div>
 							<div class="display-table-cell vertical-align small-padding-left small-padding-right">
-								<sec:authentication property="principal.fullname" />
+								<sec:authorize access="isAuthenticated()">
+									<sec:authentication property="principal.fullname" />
+								</sec:authorize>
 							</div>
 						</div>
 					</a>
@@ -112,8 +114,10 @@
 									</div>
 								</div>
 								<div class="display-table-cell vertical-top padding-left full-width">
-									<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.fullname" /></h1>
-									<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
+									<sec:authorize access="isAuthenticated()">
+										<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.fullname" /></h1>
+										<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
+									</sec:authorize>
 									<a class="default-btn-shape theme1-primary-btn-style1" href="#">
 										<span class="icon-user small-margin-right"></span>My profile
 									</a>

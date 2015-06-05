@@ -2,7 +2,6 @@ package fr.projecthandler.model;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -49,7 +48,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	private String status;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
-	private Set<Task> tasks = new HashSet<Task>(0);
+	private Set<Task> tasks;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })

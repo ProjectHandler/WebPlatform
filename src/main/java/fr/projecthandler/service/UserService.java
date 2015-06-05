@@ -30,4 +30,5 @@ public interface UserService {
 	public void changeGroup(Long userId, Long groupId, String action);
 
 	public User findUserByIdAndFetchProjects(Long userId);
+
 }

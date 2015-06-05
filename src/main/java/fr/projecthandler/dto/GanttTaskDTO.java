@@ -22,14 +22,14 @@ public class GanttTaskDTO {
 	private long end;
 	private boolean startIsMilestone;
 	private boolean endIsMilestone;
-	private List<String> assigs;
+	private List<GanttAssigsDTO> assigs;
 	private boolean hasChild;
 	
 	public GanttTaskDTO() {
 	}
 	
 	public GanttTaskDTO(Project project) {
-		this.id = project.getId().toString();
+		this.id = "project_" + project.getId().toString();
 		this.name = project.getName();
 		this.code = "";
 		this.level = 0;
@@ -41,14 +41,14 @@ public class GanttTaskDTO {
 		this.end = project.getDateEnd() == null ? 0 : project.getDateEnd().getTime();
 		this.startIsMilestone = false;
 		this.endIsMilestone = false;
-		this.assigs = new ArrayList<String>();
+		this.assigs = new ArrayList<GanttAssigsDTO>();
 		this.depends = "";
 		this.description = project.getDescription();
 		this.progress = 0l;
 	}
 	
 	public GanttTaskDTO(Task task) {
-		this.id = task.getId().toString();
+		this.id = "task_" + task.getId().toString();
 		this.name = task.getName();
 		this.code = "";
 		this.level = task.getLevel() + 1;
@@ -60,7 +60,7 @@ public class GanttTaskDTO {
 		this.end = task.getEndingDate() == null ? 0 : task.getEndingDate().getTime();
 		this.startIsMilestone = false;
 		this.endIsMilestone = false;
-		this.assigs = new ArrayList<String>();
+		this.assigs = new ArrayList<GanttAssigsDTO>();
 		this.depends = "";
 		this.description = task.getDescription();
 		this.progress = task.getProgress();
@@ -178,11 +178,11 @@ public class GanttTaskDTO {
 		this.endIsMilestone = endIsMilestone;
 	}
 
-	public List<String> getAssigs() {
+	public List<GanttAssigsDTO> getAssigs() {
 		return assigs;
 	}
 
-	public void setAssigs(List<String> assigs) {
+	public void setAssigs(List<GanttAssigsDTO> assigs) {
 		this.assigs = assigs;
 	}
 

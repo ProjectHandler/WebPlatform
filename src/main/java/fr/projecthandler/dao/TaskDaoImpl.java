@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
 @Component
@@ -58,5 +59,11 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		Set<Task> result = new HashSet<Task>();
 		result.addAll(em.createQuery("SELECT t FROM Task t JOIN FETCH t.users u WHERE :userId IN (u.id)").setParameter("userId", userId).getResultList());
 		return result;
+	}
+	
+	@Override
+	public List<User> getUsersByTaskId(Long taskId) {
+		return (List<User>) em.createQuery("SELECT t.users FROM Task t WHERE t.id = :taskId").setParameter("taskId", taskId)
+				.getResultList();
 	}
 }

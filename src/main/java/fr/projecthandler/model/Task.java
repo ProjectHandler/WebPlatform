@@ -59,7 +59,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	private Project project;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "depend_Tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, 
+	@JoinTable(name = "depend_tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, 
 			inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })
 	private Set<Task> dependtasks;
 	

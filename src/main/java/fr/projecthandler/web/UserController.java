@@ -33,16 +33,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
-import fr.projecthandler.model.Calendar;
 import fr.projecthandler.model.Event;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
