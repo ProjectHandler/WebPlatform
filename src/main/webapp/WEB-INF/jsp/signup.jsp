@@ -124,6 +124,13 @@
 				$("#civilityError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.civility"/>');
 			}
 			
+			if (!validateFirstName())
+				valid = false;
+			
+			if (!validateLastName())
+				valid = false;
+
+			
 			if ($("#userStatus").val() != 'ACTIVE') {
 				if (!validatePassword())
 				valid = false;
@@ -173,7 +180,7 @@
 				<li>
 					<label><spring:message code="projecthandler.user.firstName"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="text" name="firstName" id="firstName"  value="${user.firstName}" maxlength="30"/>
-					<span class="error" id="firstNameError"></span>
+					<span class="error" id="fisrtNameError"></span>
 				</li>
 				<li>
 					<label><spring:message code="projecthandler.user.email"/><spring:message code="projecthandler.field.required"/></label>

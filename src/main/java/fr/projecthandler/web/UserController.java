@@ -214,7 +214,7 @@ public class UserController {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN || userDetails.getUserRole() == UserRole.ROLE_MANAGER) {
+			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
