@@ -1,5 +1,6 @@
 package fr.projecthandler.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,8 +56,24 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
+	public List<User> getAllActiveUsers() {
+		return userDao.getAllActiveUsers();
+	}
+	
+	@Override
 	public List<Group> getAllGroups() {
 		return groupDao.getAllGroups();
+	}
+	
+	@Override
+	public List<Group> getAllNonEmptyGroups() {
+		List<Group> nonEmptyGroups = new ArrayList<Group>();
+		List<Group> groups = groupDao.getAllGroups();
+		
+		for(Group g : groups)
+			if (!g.getUsers().isEmpty())
+				nonEmptyGroups.add(g);
+		return nonEmptyGroups;
 	}
 	
 	@Override
@@ -64,6 +81,7 @@ public class UserServiceImpl implements UserService {
 		return groupDao.findGroupById(groupId);
 	}
 	
+	@Override
 	public String createGroup(String groupName) {
 		try {
 			if (groupDao.findGroupByName(groupName) == null) {
@@ -80,10 +98,12 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 	
+	@Override
 	public void deleteGroupById(Long groupId) {
 		groupDao.deleteGroupById(groupId);
 	}
 	
+	@Override
 	public void changeGroup(Long userId, Long groupId, String action) {
 		User user = findUserById(userId);
 		Group group = findGroupById(groupId);
@@ -94,8 +114,14 @@ public class UserServiceImpl implements UserService {
 		updateUser(user);
 	}
 
+	@Override
 	public User findUserByIdAndFetchProjects(Long userId) {
 		return userDao.findUserByIdAndFetchProjects(userId);
 	}
+
 	
+	@Override
+	public List<User> getGroupUsersByGroupId(Long groupId) {
+		return groupDao.getGroupUsersByGroupId(groupId);
+	}
 }

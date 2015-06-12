@@ -14,6 +14,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.google.gson.annotations.Expose;
+
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 
@@ -28,9 +30,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	private Civility civility;
 	
 	@Column(name = "first_name", length = 30)
+	@Expose
 	private String firstName;
 
 	@Column(name = "last_name", length = 30)
+	@Expose
 	private String lastName;
 
 	@Column(name = "password", length = 70)
@@ -204,6 +208,45 @@ public class User extends BaseEntity implements java.io.Serializable {
 		this.tasks = tasks;
 	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((email == null) ? 0 : email.hashCode());
+		result = prime * result
+				+ ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result
+				+ ((lastName == null) ? 0 : lastName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (firstName == null) {
+			if (other.firstName != null)
+				return false;
+		} else if (!firstName.equals(other.firstName))
+			return false;
+		if (lastName == null) {
+			if (other.lastName != null)
+				return false;
+		} else if (!lastName.equals(other.lastName))
+			return false;
+		return true;
+	}
+
 	@Override
 	public String toString() {
 		return "User is : [civility="+ civility +", firstName=" + firstName + ", lastName=" + lastName

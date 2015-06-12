@@ -18,8 +18,12 @@ public interface UserService {
 	public void deleteUserByIds(List<Long> usersList);
 
 	public List<User> getAllUsers();
+	
+	public List<User> getAllActiveUsers();
 
 	public List<Group> getAllGroups();
+	
+	public List<Group> getAllNonEmptyGroups();
 
 	public Group findGroupById(Long groupId);
 
@@ -30,5 +34,7 @@ public interface UserService {
 	public void changeGroup(Long userId, Long groupId, String action);
 
 	public User findUserByIdAndFetchProjects(Long userId);
+	
+	public List<User> getGroupUsersByGroupId(Long groupId);
 
 }

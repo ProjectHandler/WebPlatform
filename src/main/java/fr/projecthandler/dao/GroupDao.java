@@ -3,6 +3,7 @@ package fr.projecthandler.dao;
 import java.util.List;
 
 import fr.projecthandler.model.Group;
+import fr.projecthandler.model.User;
 
 public interface GroupDao {
 
@@ -15,7 +16,8 @@ public interface GroupDao {
 	public Group findGroupById(Long groupId);
 
 	public List<Group> getAllGroups();
-	
+
 	public Group findGroupByName(String name);
 	
+	public List<User> getGroupUsersByGroupId(Long groupId);
 }

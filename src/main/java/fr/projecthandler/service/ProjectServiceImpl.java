@@ -32,7 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void deleteProjectsByIds(List<Long> projectIds) {
-		projectDao.deleteProjectsByIds(projectIds);;
+		projectDao.deleteProjectsByIds(projectIds);
 	}
 
 	@Override

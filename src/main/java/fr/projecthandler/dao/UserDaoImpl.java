@@ -52,11 +52,17 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	}
 
 	@Override
+	public List<User> getAllActiveUsers() {
+		return (List<User>)em.createQuery("SELECT u FROM User u WHERE u.accountStatus = 1").getResultList();
+	}
+	
+	@Override
 	public User findUserByIdAndFetchProjects(Long userId) {
 		Query query = em.createQuery("Select u from User u JOIN FETCH u.projects where u.id = :userId")
 				.setParameter("userId", userId);
 
 		return Utilities.getSingleResultOrNullWithoutSettingMaxResults(query);
 	}
+
 
 }

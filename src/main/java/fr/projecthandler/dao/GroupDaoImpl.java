@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.model.Group;
+import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
 @Component
@@ -45,5 +46,11 @@ public class GroupDaoImpl extends AbstractDao implements GroupDao {
 	public Group findGroupByName(String name) {
 		return (Group) Utilities.getSingleResultOrNull(em.createQuery("SELECT g FROM Group g WHERE g.name = :groupName")
 				.setParameter("groupName", name));
+	}
+
+	@Override
+	public List<User> getGroupUsersByGroupId(Long groupId) {
+		return (List<User>) em.createQuery("SELECT g.users FROM Group g WHERE g.id = :groupId").setParameter("groupId", groupId)
+				.getResultList();
 	}
 }

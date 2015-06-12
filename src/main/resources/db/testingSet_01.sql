@@ -28,7 +28,7 @@ USE project_handler;
 --
 
 INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`) VALUES
-(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', NULL, '0101020304', '0102030405', 3, 1, 1),
+(12, 'Guillard', 'Arthur', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'arthur.guillard@example.com', NULL, '0101020304', '0102030405', 1, 1, 1),
 (20, 'Jean', 'Patoche', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'jean.patoche@example.com', NULL, '01000001', '06000001', 1, 1, 1),
 (21, 'Lucie', 'Roblochon', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'lucie_peace@margoulette.com', NULL, '0133449978', '0612546879', 1, 1, 2),
 (22, 'Maria', 'Mandzukic', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'mandzu.maria@zlatan.com', NULL, '0198877665', '0698877665', 1, 1, 3),

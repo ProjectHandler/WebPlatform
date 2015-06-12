@@ -86,8 +86,8 @@
 				$.ajax({type: "GET", url: url, data: { userId: userId, groupId: groupId, action: action}, 
 			    	success: function(data) {
 			    		if (data == "KO") 
-			    			alert("error"); 
-			    	}, 
+			    			alert("error");
+			    	},
 			    	error: function(data) {alert("error: " + data);}
 			    });
 			}
@@ -182,7 +182,7 @@
 											</td>
 											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
 												<select class="groupSelection"  multiple="multiple" placeholder>
-						       						<c:forEach var='group' items='${groups}' >
+						       						<c:forEach var='group' items='${groups}'>
 														<c:set var="found" value="false"/>
 														<c:if test="${user.groups != null}">
 															<c:forEach var="userGroup" items="${user.groups}">
@@ -206,9 +206,6 @@
 										 </c:forEach>
 									</tbody>
 								</table>
-
-
-
 							</div>
 						</div>	
 					</div>					
