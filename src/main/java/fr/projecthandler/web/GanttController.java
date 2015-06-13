@@ -57,7 +57,7 @@ public class GanttController {
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
 	public void saveGantt(HttpServletRequest request, Principal principal) {
-		//System.out.println(request.getParameter("prj"));
+		System.out.println(request.getParameter("prj"));
 		ganttService.save(request.getParameter("prj"));
 	}
 }

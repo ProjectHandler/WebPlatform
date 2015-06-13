@@ -46,288 +46,236 @@
 	<script src="${rsc}/js/gantt/ganttGridEditor.js"></script>
 	<script src="${rsc}/js/gantt/ganttMaster.js"></script>  
 	
-	
+	<spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
+	<script type="text/javascript" src="${selectivity}"></script>
 	<script type="text/javascript">
-		var ge;  //this is the hugly but very friendly global var for the gantt editor
+		var ge; //this is the hugly but very friendly global var for the gantt editor
 		$(function() {
 		
-		  //load templates
-		  $("#ganttemplates").loadTemplates();
+			//load templates
+			$("#ganttemplates").loadTemplates();
 		
-		  // here starts gantt initialization
-		  ge = new GanttMaster();
-		  var workSpace = $("#workSpace");
-		  workSpace.css({width:$(window).width() - 20,height:$(window).height() - 100});
-		  ge.init(workSpace);
+			// here starts gantt initialization
+			ge = new GanttMaster();
+			var workSpace = $("#workSpace");
+			workSpace.css({
+				width : $(window).width() - 20,
+				height : $(window).height() - 100
+			});
+			ge.init(workSpace);
 		
-		  //overwrite with localized ones
-		  loadI18n();
+			//overwrite with localized ones
+			loadI18n();
 		
-		  //simulate a data load from a server.
-		  loadGanttFromServer();
+			//simulate a data load from a server.
+			loadGanttFromServer();
 		
+			//fill default Teamwork roles if any
+			if (!ge.roles || ge.roles.length == 0) {
+				setRoles();
+			}
 		
-		  //fill default Teamwork roles if any
-		  if (!ge.roles || ge.roles.length == 0) {
-		    setRoles();
-		  }
+			//fill default Resources roles if any
+			if (!ge.resources || ge.resources.length == 0) {
+				setResource();
+			}
 		
-		  //fill default Resources roles if any
-		  if (!ge.resources || ge.resources.length == 0) {
-		    setResource();
-		  }
+			/*/debug time scale
+			$(".splitBox2").mousemove(function(e){
+			  var x=e.clientX-$(this).offset().left;
+			  var mill=Math.round(x/(ge.gantt.fx) + ge.gantt.startMillis)
+			  $("#ndo").html(x+" "+new Date(mill))
+			});*/
 		
-		
-		  /*/debug time scale
-		  $(".splitBox2").mousemove(function(e){
-		    var x=e.clientX-$(this).offset().left;
-		    var mill=Math.round(x/(ge.gantt.fx) + ge.gantt.startMillis)
-		    $("#ndo").html(x+" "+new Date(mill))
-		  });*/
-		
-		  $(window).resize(function(){
-		    workSpace.css({width:$(window).width() - 1,height:$(window).height() - workSpace.position().top});
-		    workSpace.trigger("resize.gantt");
-		  }).oneTime(150,"resize",function(){$(this).trigger("resize")});
+			$(window).resize(function() {
+				workSpace.css({
+					width : $(window).width() - 1,
+					height : $(window).height() - workSpace.position().top
+				});
+				workSpace.trigger("resize.gantt");
+			}).oneTime(150, "resize", function() {
+				$(this).trigger("resize")
+			});
 		
 		});
 		
-		
 		function loadGanttFromServer(taskId, callback) {
-
-		  //var taskId = $("#taskSelector").val();
-		  var prof = new Profiler("loadServerSide");
-		  prof.reset();		
-		  
-		  var url = CONTEXT_PATH+"/gantt/load?"+"projectId="+ $("#selectProject option:selected").val();
-
-		  $.ajax({type: "POST", url:  url,
-				success: function(data) {
+		
+			//var taskId = $("#taskSelector").val();
+			var prof = new Profiler("loadServerSide");
+			prof.reset();
+		
+			var url = CONTEXT_PATH + "/gantt/load?" + "projectId="
+					+ $("#selectProject option:selected").val();
+		
+			$.ajax({
+				type : "POST",
+				url : url,
+				success : function(data) {
 					prof.stop();
-					 
+		
 					//loadFromLocalStorage();
 					ge.loadProject(data);
 					ge.checkpoint(); //empty the undo stack
-					
-					if (typeof(callback)=="function") {
-					  callback(data);
+		
+					if (typeof (callback) == "function") {
+						callback(data);
 					}
-				
-				}, error: function(data) {alert("error: " + data);}
+		
+				},
+				error : function(data) {
+					alert("error: " + data);
+				}
 			});
 		}
 		
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////		
 		function saveGanttOnServer() {
-		  if(!ge.canWrite)
-		    return;
+			if (!ge.canWrite)
+				return;
 		
-		  //this is a simulation: save data to the local storage or to the textarea
-		  //saveInLocalStorage();
+			//this is a simulation: save data to the local storage or to the textarea
+			//saveInLocalStorage();
 		
-		  var prj = ge.saveProject();
+			var prj = ge.saveProject();
 		
-		  //delete prj.resources;
-		  delete prj.roles;
+			//delete prj.resources;
+			delete prj.roles;
 		
-		  var prof = new Profiler("saveServerSide");
-		  prof.reset();
+			var prof = new Profiler("saveServerSide");
+			prof.reset();
 		
-		  if (ge.deletedTaskIds.length>0) {
-		    if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"+ge.deletedTaskIds.length)) {
-		      return;
-		    }
-		  }
+			if (ge.deletedTaskIds.length > 0) {
+				if (!confirm("TASK_THAT_WILL_BE_REMOVED\n"
+						+ ge.deletedTaskIds.length)) {
+					return;
+				}
+			}
 		
-		  var url = CONTEXT_PATH+"/gantt/save";
-		  $.ajax({type: "POST", url: url, data: {
-			  CM:"SVPROJECT",prj:JSON.stringify(prj), projectId: $("#selectProject option:selected").val()
-			  }
-		  });
-		  
+			var url = CONTEXT_PATH + "/gantt/save";
+			$.ajax({
+				type : "POST",
+				url : url,
+				data : {
+					CM : "SVPROJECT",
+					prj : JSON.stringify(prj),
+					projectId : $("#selectProject option:selected").val()
+				}
+			});
+		
 		}
-		
 		
 		//-------------------------------------------  Create some demo data ------------------------------------------------------
 		function setRoles() {
-		  /*ge.roles = [
-		    {
-		      id:"tmp_1",
-		      name:"Project Manager"
-		    },
-		    {
-		      id:"tmp_2",
-		      name:"Worker"
-		    },
-		    {
-		      id:"tmp_3",
-		      name:"Stakeholder/Customer"
-		    }
-		  ];*/
+			/*ge.roles = [
+			  {
+			    id:"tmp_1",
+			    name:"Project Manager"
+			  },
+			  {
+			    id:"tmp_2",
+			    name:"Worker"
+			  },
+			  {
+			    id:"tmp_3",
+			    name:"Stakeholder/Customer"
+			  }
+			];*/
 		}
 		
 		function setResource() {
-		  /*var res = [];
-		  for (var i = 1; i <= 10; i++) {
-		    res.push({id:"tmp_" + i,name:"Resource " + i});
-		  }
-		  ge.resources = res;*/
+			/*var res = [];
+			for (var i = 1; i <= 10; i++) {
+			  res.push({id:"tmp_" + i,name:"Resource " + i});
+			}
+			ge.resources = res;*/
 		}
 		
-		
-		function editResources(){
+		function editResources() {
 		
 		}
 		
 		function clearGantt() {
-		  ge.reset();
+			ge.reset();
 		}
 		
 		function loadI18n() {
-		  GanttMaster.messages = {
-		    "CANNOT_WRITE":                  "CANNOT_WRITE",
-		    "CHANGE_OUT_OF_SCOPE":"NO_RIGHTS_FOR_UPDATE_PARENTS_OUT_OF_EDITOR_SCOPE",
-		    "START_IS_MILESTONE":"START_IS_MILESTONE",
-		    "END_IS_MILESTONE":"END_IS_MILESTONE",
-		    "TASK_HAS_CONSTRAINTS":"TASK_HAS_CONSTRAINTS",
-		    "GANTT_ERROR_DEPENDS_ON_OPEN_TASK":"GANTT_ERROR_DEPENDS_ON_OPEN_TASK",
-		    "GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK":"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK",
-		    "TASK_HAS_EXTERNAL_DEPS":"TASK_HAS_EXTERNAL_DEPS",
-		    "GANTT_ERROR_LOADING_DATA_TASK_REMOVED":"GANTT_ERROR_LOADING_DATA_TASK_REMOVED",
-		    "ERROR_SETTING_DATES":"ERROR_SETTING_DATES",
-		    "CIRCULAR_REFERENCE":"CIRCULAR_REFERENCE",
-		    "CANNOT_DEPENDS_ON_ANCESTORS":"CANNOT_DEPENDS_ON_ANCESTORS",
-		    "CANNOT_DEPENDS_ON_DESCENDANTS":"CANNOT_DEPENDS_ON_DESCENDANTS",
-		    "INVALID_DATE_FORMAT":"INVALID_DATE_FORMAT",
-		    "TASK_MOVE_INCONSISTENT_LEVEL":"TASK_MOVE_INCONSISTENT_LEVEL",
+			GanttMaster.messages = {
+				"CANNOT_WRITE" : "CANNOT_WRITE",
+				"CHANGE_OUT_OF_SCOPE" : "NO_RIGHTS_FOR_UPDATE_PARENTS_OUT_OF_EDITOR_SCOPE",
+				"START_IS_MILESTONE" : "START_IS_MILESTONE",
+				"END_IS_MILESTONE" : "END_IS_MILESTONE",
+				"TASK_HAS_CONSTRAINTS" : "TASK_HAS_CONSTRAINTS",
+				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK" : "GANTT_ERROR_DEPENDS_ON_OPEN_TASK",
+				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" : "GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK",
+				"TASK_HAS_EXTERNAL_DEPS" : "TASK_HAS_EXTERNAL_DEPS",
+				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED" : "GANTT_ERROR_LOADING_DATA_TASK_REMOVED",
+				"ERROR_SETTING_DATES" : "ERROR_SETTING_DATES",
+				"CIRCULAR_REFERENCE" : "CIRCULAR_REFERENCE",
+				"CANNOT_DEPENDS_ON_ANCESTORS" : "CANNOT_DEPENDS_ON_ANCESTORS",
+				"CANNOT_DEPENDS_ON_DESCENDANTS" : "CANNOT_DEPENDS_ON_DESCENDANTS",
+				"INVALID_DATE_FORMAT" : "INVALID_DATE_FORMAT",
+				"TASK_MOVE_INCONSISTENT_LEVEL" : "TASK_MOVE_INCONSISTENT_LEVEL",
 		
-		    "GANTT_QUARTER_SHORT":"trim.",
-		    "GANTT_SEMESTER_SHORT":"sem."
-		  };
+				"GANTT_QUARTER_SHORT" : "trim.",
+				"GANTT_SEMESTER_SHORT" : "sem."
+			};
 		}
-		
-		
 		
 		//-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
 		function getFile() {
-		  $("#gimBaPrj").val(JSON.stringify(ge.saveProject()));
-		  $("#gimmeBack").submit();
-		  $("#gimBaPrj").val("");
+			$("#gimBaPrj").val(JSON.stringify(ge.saveProject()));
+			$("#gimmeBack").submit();
+			$("#gimBaPrj").val("");
 		
-		  /*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
-		   neww=window.open(uriContent,"dl");*/
+			/*  var uriContent = "data:text/html;charset=utf-8," + encodeURIComponent(JSON.stringify(prj));
+			 neww=window.open(uriContent,"dl");*/
 		}
 		
 		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
 		
-		function editResources(){
+		function editResources() {
 		
-		  //make resource editor
-		  var resourceEditor = $.JST.createFromTemplate({}, "RESOURCE_EDITOR");
-		  var resTbl=resourceEditor.find("#resourcesTable");
+			//make resource editor
+			var resourceEditor = $.JST.createFromTemplate({}, "RESOURCE_EDITOR");
 		
-		  for (var i=0;i<ge.resources.length;i++){
-		    var res=ge.resources[i];
-		    //resTbl.append($.JST.createFromTemplate(res, "RESOURCE_ROW"))
-		    var row = $.JST.createFromTemplate(res, "RESOURCE_ROW");
-		    row.find("select").val(res.id).change();
-		    resTbl.append(row);
-		  }
+			//bind save event
+			resourceEditor.find("#resSaveButton").click(function() {
+				var newRes = [];
+				var newResArray = $('.userProjectSelection').find(":selected");
 		
+				$.each(newResArray, function() {
+					newRes.push(new Resource($(this).val(), $(this).text()));
+				});
 		
-		  //bind add resource
-		  resourceEditor.find("#addResource").click(function(){
-		    resTbl.append($.JST.createFromTemplate({id:"new",name:"resource"}, "RESOURCE_ROW"))
-		  });
+				ge.resources = newRes;
+				closeBlackPopup();
+				ge.redraw();
+			});
 		
-		  //bind save event
-		  resourceEditor.find("#resSaveButton").click(function(){
-		    var newRes=[];
-		    //find for deleted res
-		    for (var i=0;i<ge.resources.length;i++){
-		      var res=ge.resources[i];
-		      var row = resourceEditor.find("[resId="+res.id+"]");
-		      if (row.size()>0){
-		        //if still there save it
-		        var name = row.find("select").find(":selected").text();
-		        var resId = row.find("select").find(":selected").val();
-		        if (name && name!="") {
-		          res.name=name;
-		          res.id=resId;
-		        }
-		        newRes.push(res);
-		      } else {
-		        //remove assignments
-		        for (var j=0;j<ge.tasks.length;j++){
-		          var task=ge.tasks[j];
-		          var newAss=[];
-		          for (var k=0;k<task.assigs.length;k++){
-		            var ass=task.assigs[k];
-		            if (ass.resourceId!=res.id)
-		              newAss.push(ass);
-		          }
-		          task.assigs=newAss;
-		        }
-		      }
-		    }
+			var ndo = createBlackPage(400, 500).append(resourceEditor);
 		
-		    //loop on new rows
-		    resourceEditor.find("[resId=new]").each(function(){
-		      var row = $(this);
-		      var name = row.find("select").find(":selected").text();
-		      var resId = row.find("select").find(":selected").val();
-		      if (name && name!="")
-		      	newRes.push (new Resource(resId, name));
-		    });
+			$('.userProjectSelection').selectivity({
+				multiple : true,
+				allowClear : true,
+				placeholder : 'Type to search a group'
 		
-		    ge.resources=newRes;
+			});
 		
-		    closeBlackPopup();
-		    ge.redraw();
-		  });
-		
-		
-		  var ndo = createBlackPage(400, 500).append(resourceEditor);
+			var userProjectSelected = [];
+			for (var i = 0; i < ge.resources.length; i++) {
+				var res = ge.resources[i];
+				userProjectSelected.push({
+					id : res.id,
+					text : res.name
+				});
+			}
+			$('.userProjectSelection').selectivity('data', userProjectSelected);
 		}
 		
-		function delRes(resources) {
-			//alert(resources.parent().prev().text());
-			resources.parent().parent().remove();
-		};
-	
-	  $.JST.loadDecorator("ASSIGNMENT_ROW", function(assigTr, taskAssig) {
-	
-	    var resEl = assigTr.find("[name=resourceId]");
-	    for (var i in taskAssig.task.master.resources) {
-	      var res = taskAssig.task.master.resources[i];
-	      var opt = $("<option>");
-	      opt.val(res.id).html(res.name);
-	      if (taskAssig.assig.resourceId == res.id)
-	        opt.attr("selected", "true");
-	      resEl.append(opt);
-	    }
-	
-	
-	    var roleEl = assigTr.find("[name=roleId]");
-	    for (var i in taskAssig.task.master.roles) {
-	      var role = taskAssig.task.master.roles[i];
-	      var optr = $("<option>");
-	      optr.val(role.id).html(role.name);
-	      if (taskAssig.assig.roleId == role.id)
-	        optr.attr("selected", "true");
-	      roleEl.append(optr);
-	    }
-	
-	    if(taskAssig.task.master.canWrite && taskAssig.task.canWrite){
-	      assigTr.find(".delAssig").click(function() {
-	        var tr = $(this).closest("[assigId]").fadeOut(200, function() {
-	          $(this).remove();
-	        });
-	      });
-	    }
-	
-	
-	  });
+		$.JST.loadDecorator("ASSIGNMENT_ROW", function(assigTr, taskAssig) {
+			//useless with selectivity
+		});
 	</script>
 </head>
 <body style="background-color: #fff; overflow: hidden">
@@ -345,7 +293,7 @@
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
 		</select>
-		
+
 		<span class="ganttButtonSeparator"></span>
 	    <button onclick="$('#workSpace').trigger('undo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.undo"/>"><span class="teamworkIcon">&#39;</span></button>
 	    <button onclick="$('#workSpace').trigger('redo.gantt');" class="button textual" title="<spring:message code="projecthandler.gantt.redo"/>"><span class="teamworkIcon">&middot;</span></button>
@@ -488,55 +436,24 @@
 	    </table>
 	
 	  <h2>assignments</h2>
-	  <table  cellspacing="1" cellpadding="0" width="100%" id="assigsTable">
-	    <tr>
-	      <th style="width:100px;">name</th>
-	      <th style="width:30px;" id="addAssig"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
-	    </tr>
-	  </table>
+	  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%">
+	  </select>
 	
-	  <div style="text-align: right; padding-top: 20px"><button id="saveButton" class="button big">save1</button></div>
+	  <div style="text-align: right; padding-top: 20px"><button id="saveButton" class="button big">save</button></div>
 	  </div>
 	  --></div>
 	
-	
-	  <div class="__template__" type="ASSIGNMENT_ROW"><!--
-	  <tr taskId="(#=obj.task.id#)" assigId="(#=obj.assig.id#)" class="assigEditRow" >
-	    <td ><select name="resourceId"  class="formElements" (#=obj.assig.id.indexOf("tmp_")==0?"":"disabled"#) ></select></td>
-	    <td align="center"><span class="teamworkIcon delAssig" style="cursor: pointer">d</span></td>
-	  </tr>
-	  --></div>
-	
-	
-	  <div class="__template__" type="RESOURCE_EDITOR"><!--
-	  <div class="resourceEditor" style="padding: 5px;">
-	
-	    <h2>Project team</h2>
-	    <table  cellspacing="1" cellpadding="0" width="100%" id="resourcesTable">
-	      <tr>
-	        <th style="width:100px;">full name</th>
-	        <th style="width:30px;" id="addResource"><span class="teamworkIcon" style="cursor: pointer">+</span></th>
-	      </tr>
-	    </table>
-		
-	    <div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big">save2</button></div>
-	  </div>
-	  --></div>
-
-	  <div class="__template__" type="RESOURCE_ROW"><!--  
-	  <tr resId="(#=obj.id#)" class="resRow" >
-	  	<td>
-	 		
-   			<select id="selectUser" name="name" style="width:90%;" class="formElements">
-				<c:forEach var="user" items="${users}">
-					<option value="${user.id}" >${user.firstName} ${user.lastName}</option>
-				</c:forEach>
-			</select>
-	    </td>
-	    <td align="center"><span id="delRes" class="teamworkIcon delRes" style="cursor: pointer"  ONCLICK="delRes($(this))">d</span></td>
-	  </tr>
-	  --></div>
-	
+	  <div class="__template__" type="RESOURCE_EDITOR"><!-- 
+	  	<div class="resourceEditor" style="padding: 5px;">
+	  		<h2>Project team</h2>
+				<select class="userProjectSelection" multiple="multiple" placeholder style="width: 100%">
+					<c:forEach var="user" items="${users}">
+						<option value="${user.id}" >${user.firstName} ${user.lastName}</option>
+					</c:forEach>
+				</select>
+			<div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big">save</button></div>				       					
+	  	</div>-->
+	 </div>
 	
 	</div>
 </body>

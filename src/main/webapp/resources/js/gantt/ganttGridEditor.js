@@ -52,7 +52,7 @@ GridEditor.prototype.fillEmptyLines = function () {
         start = master.tasks[0].start;
         level = master.tasks[0].level + 1;
       }
-
+ass
       //fill all empty previouses
       emptyRow.prevAll(".emptyRow").andSelf().each(function () {
         var ch = factory.build("tmp_fk" + new Date().getTime(), "", "", level, start, 1);
@@ -486,14 +486,14 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   //taskEditor.find("[name=depends]").val(task.depends);
 
   //make assignments table
-  var assigsTable = taskEditor.find("#assigsTable");
+  /*var assigsTable = taskEditor.find("#assigsTable");
   assigsTable.find("[assigId]").remove();
   // loop on already assigned resources
   for (var i = 0; i < task.assigs.length; i++) {
     var assig = task.assigs[i];
     var assigRow = $.JST.createFromTemplate({task:task, assig:assig}, "ASSIGNMENT_ROW");
     assigsTable.append(assigRow);
-  }
+  }*/
 
   //define start end callbacks
   function startChangeCallback(date) {
@@ -567,12 +567,12 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
 
     //bind add assignment
-    taskEditor.find("#addAssig").click(function () {
+    /*taskEditor.find("#addAssig").click(function () {
       var assigsTable = taskEditor.find("#assigsTable");
       var assigRow = $.JST.createFromTemplate({task:task, assig:{id:"tmp_" + new Date().getTime()}}, "ASSIGNMENT_ROW");
       assigsTable.append(assigRow);
       $("#bwinPopupd").scrollTop(10000);
-    });
+    });*/
 
     taskEditor.find("#status").click(function () {
       var tskStatusChooser = $(this);
@@ -602,52 +602,52 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
       task.endIsMilestone = taskEditor.find("#endIsMilestone").is(":checked");
+      
+  	  var newRes = [];
+	  var newResArray = $('.userTaskSelection').find(":selected");
 
-      //set assignments
-      taskEditor.find("tr[assigId]").each(function () {
-        var trAss = $(this);
-        var assId = trAss.attr("assigId");
-        var resId = trAss.find("[name=resourceId]").val();
-        var roleId = trAss.find("[name=roleId]").val();
-        var effort = millisFromString(trAss.find("[name=effort]").val());
+	  $.each(newResArray, function() {
+		 var trAss = $(this);
+	     var assId = $(this).val()
+	     var resId = $(this).val()
+	     var roleId = ""
+	     var effort = 0
+	    	 
+    	 //check if an existing assig has been deleted and re-created with the same values
+         var found = false;
+         for (var i = 0; i < task.assigs.length; i++) {
+        	 var ass = task.assigs[i];
 
-
-        //check if an existing assig has been deleted and re-created with the same values
-        var found = false;
-        for (var i = 0; i < task.assigs.length; i++) {
-          var ass = task.assigs[i];
-
-          if (assId == ass.id) {
-            ass.effort = effort;
-            ass.roleId = roleId;
-            ass.resourceId = resId;
-            ass.touched = true;
-            found = true;
-            break;
-
-          } else if (roleId == ass.roleId && resId == ass.resourceId) {
-            ass.effort = effort;
-            ass.touched = true;
-            found = true;
-            break;
-
-          }
-        }
-
-        if (!found) { //insert
-          var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort);
-          ass.touched = true;
-        }
-
-      });
-
+             if (assId == ass.id) {
+               ass.effort = effort;
+               ass.roleId = roleId;
+               ass.resourceId = resId;
+               ass.touched = true;
+               found = true;
+               break;
+             } else if (roleId == ass.roleId && resId == ass.resourceId) {
+               ass.effort = effort;
+               ass.touched = true;
+               found = true;
+               break;
+             }
+         }
+         if (!found) { //insert
+           var ass = task.createAssignment("tmp_" + new Date().getTime(), resId, roleId, effort);
+           ass.touched = true;
+         }	  
+         
+	  });
+      
       //remove untouched assigs
       task.assigs = task.assigs.filter(function (ass) {
         var ret = ass.touched;
         delete ass.touched;
         return ret;
       });
-
+	
+		
+      
       //change dates
       task.setPeriod(Date.parseString(taskEditor.find("#start").val()).getTime(), Date.parseString(taskEditor.find("#end").val()).getTime() + (3600000 * 24));
 
@@ -662,5 +662,30 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   }
 
   var ndo = createBlackPage(800, 500).append(taskEditor);
+  
+  //add all users on project
+  var allUsersProject = ge.resources;
+  $.each(allUsersProject, function(index, value) {
+	  $('.userTaskSelection').append('<option value="'+value.id+'">' + value.name+ '</option>');
+  });
+  
+  $('.userTaskSelection').selectivity({
+		multiple : true,
+		allowClear : true,
+		placeholder : 'Type to search a group'
 
+	});
+  
+  //already assigned resources
+  var assRess = []
+  for (var i = 0; i < task.assigs.length; i++) {
+    var assig = task.assigs[i];
+    for ( var i in task.master.resources) {
+		var res = task.master.resources[i];
+		if (assig.resourceId == res.id)
+			assRess.push({ id: res.id, text: res.name });
+    }
+  }
+  $('.userTaskSelection').selectivity('data', assRess);
+  
 };

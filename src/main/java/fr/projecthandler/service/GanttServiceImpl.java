@@ -114,12 +114,20 @@ public class GanttServiceImpl implements GanttService {
 	
 	@Override
 	public void save(String ganttGson) {
+
 		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(ganttGson, GanttProjectDTO.class);
 		
 		List<Task> lstTask = new ArrayList<Task>();
 		List<GanttTaskDTO> listTaskDTO = prj.getTasks();
 		Map<Integer, Long> rowId = new HashMap<Integer, Long>();
+		
+		for (GanttTaskDTO taskDTO : listTaskDTO) {
+			if (taskDTO.getId().startsWith("project_"))
+				taskDTO.setId(taskDTO.getId().substring(8, taskDTO.getId().length()));
+			else if (taskDTO.getId().startsWith("task_"))
+				taskDTO.setId(taskDTO.getId().substring(5,  taskDTO.getId().length()));
+		}
 		
 		Project newProject = saveProjectAndTask(lstTask, listTaskDTO, rowId);
 		saveDependsTasks(listTaskDTO, rowId);
@@ -137,10 +145,6 @@ public class GanttServiceImpl implements GanttService {
 		Project newProject = null;
 		int row = 0;
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
-			if (taskDTO.getId().startsWith("project_"))
-				taskDTO.setId(taskDTO.getId().substring(0, 8));
-			else if (taskDTO.getId().startsWith("task_"))
-				taskDTO.setId(taskDTO.getId().substring(0, 5));
 			
 			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
@@ -148,7 +152,7 @@ public class GanttServiceImpl implements GanttService {
 				Task t = new Task(taskDTO);
 				t.setProject(newProject);
 				t.setUsers(saveUsersOnTask(taskDTO));
-				
+	
 				if (taskDTO.getId().startsWith("tmp")) {
 					taskService.saveTask(t);
 					taskDTO.setId(t.getId().toString());
@@ -191,8 +195,12 @@ public class GanttServiceImpl implements GanttService {
 	}
 	
 	private void saveDeletedTask(GanttProjectDTO prj) {
-		for (String taskId : prj.getDeletedTaskIds())
-			taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId)));
+		for (String taskId : prj.getDeletedTaskIds()) {
+			if (taskId.startsWith("task_"))
+				taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId.substring(5,  taskId.length()))));
+			else
+				taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId)));
+		}
 	}
 	
 	private void saveUsersOnProject(GanttProjectDTO projectDTO, Project project) {

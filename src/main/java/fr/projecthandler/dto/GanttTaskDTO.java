@@ -8,6 +8,15 @@ import fr.projecthandler.model.Task;
 
 public class GanttTaskDTO {
 
+	/*
+	 * Status
+	 * 		green: STATUS_ACTIVE
+	 * 		blue: STATUS_DONE
+	 * 		purple: STATUS_FAILED
+	 * 		orange: STATUS_SUSPENDED
+	 * 		white: STATUS_UNDEFINED
+	 */
+	
 	private String id;
 	private String name;
 	private long progress;
@@ -33,7 +42,7 @@ public class GanttTaskDTO {
 		this.name = project.getName();
 		this.code = "";
 		this.level = 0;
-		this.status = "STATUS_ACTIVE";
+		this.status = project.getStatus();
 		this.start = project.getDateBegin().getTime();
 		this.canWrite = true;
 		this.duration = project.getDuration();
@@ -52,7 +61,7 @@ public class GanttTaskDTO {
 		this.name = task.getName();
 		this.code = "";
 		this.level = task.getLevel() + 1;
-		this.status = "STATUS_ACTIVE";
+		this.status = task.getStatus();
 		this.canWrite = true;
 		this.start = task.getStartingDate() == null ? 0 : task.getStartingDate().getTime();
 		this.duration = task.getDuration();
