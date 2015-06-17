@@ -54,7 +54,13 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	@Column(name = "account_status")
 	private AccountStatus accountStatus;
-
+	
+	@Column(name = "work_day")
+	private String workDay;
+	
+	@Column(name = "daily_hour")
+	private String dailyHour;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
@@ -132,6 +138,22 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setAccountStatus(AccountStatus accountStatus) {
 		this.accountStatus = accountStatus;
+	}
+
+	public String getWorkDay() {
+		return workDay;
+	}
+
+	public void setWorkDay(String workDay) {
+		this.workDay = workDay;
+	}
+
+	public String getDailyHour() {
+		return dailyHour;
+	}
+
+	public void setDailyHour(String dailyHour) {
+		this.dailyHour = dailyHour;
 	}
 
 	public String getPhone() {

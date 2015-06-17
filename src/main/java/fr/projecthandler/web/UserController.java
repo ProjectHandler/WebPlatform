@@ -169,6 +169,7 @@ public class UserController {
 				u.setPhone(phone);
 			} else
 				isValid = false;
+			
 			String password = Utilities.getRequestParameter(request, "password");
 			if (u.getAccountStatus() != AccountStatus.ACTIVE && password != null && password.length() > 0) {
 				u.setPassword(passwordEncoder.encode(password));
@@ -176,6 +177,8 @@ public class UserController {
 				isValid = false;
 
 			// not required information
+			u.setWorkDay(Utilities.getRequestParameter(request, "userWorkDay"));
+			u.setDailyHour(Utilities.getRequestParameter(request, "userDailyHour"));
 			u.setMobilePhone(Utilities.getRequestParameter(request, "mobilePhone"));
 
 			if (isValid == true && u.getAccountStatus() != AccountStatus.ACTIVE)

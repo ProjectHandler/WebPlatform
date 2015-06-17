@@ -14,6 +14,10 @@
 <link href="${windowicon}" rel="icon" type="image/png"/>
 <spring:url value="/resources/css/selectivity-full.min.css" var="selectivity"/>
 <link href="${selectivity}" rel="stylesheet"/>
+<spring:url value="/resources/css/jquery-ui.min.css" var="jqueryUiCss"/>
+<link href="${jqueryUiCss}" rel="stylesheet"/>
+<spring:url value="/resources/css/jquery.ui.timepicker.css" var="jqueryTimePikerCss"/>
+<link href="${jqueryTimePikerCss}" rel="stylesheet"/>
 
 <spring:url value="/resources/js/jquery-2.1.3.min.js" var="jquery"/>
 <script type="text/javascript" src="${jquery}"></script>
@@ -32,6 +36,12 @@
 
 <spring:url value="/resources/js/jquery.autosize.js" var="jqueryAutosize"/>
 <script type="text/javascript" src="${jqueryAutosize}"></script>
+
+<spring:url value="/resources/js/jquery-ui.min.js" var="jqueryUI"/>
+<script type="text/javascript" src="${jqueryUI}"></script>
+
+<spring:url value="/resources/js/jquery.ui.timepicker.js" var="jqueryTimePiker"/>
+<script type="text/javascript" src="${jqueryTimePiker}"></script> 
 
 <spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
 <script type="text/javascript" src="${selectivity}"></script>

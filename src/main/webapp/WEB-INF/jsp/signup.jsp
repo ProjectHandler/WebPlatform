@@ -18,6 +18,16 @@
 			$("#btnSave").click(function(e) {
 				$("#emailError").html("");
 				if(checkDataBeforeSaveUser() && confirm("Etes-vous sûr de vouloir enregistrer vos données ?")) {
+					var workDayCheckboxes = document.querySelectorAll('input[name="workDayCheckboxes"]'), values = [];
+					var workDay = "";
+					for (var i=0, n=workDayCheckboxes.length;i<n;i++)
+					  if (workDayCheckboxes[i].checked) 
+						  workDay += "t";
+					  else
+						  workDay += "f";
+					$("#userWorkDay").val(workDay);
+					var dailyHour = $("#dailyHourStart").val() + " - " + $("#dailyHourEnd").val();
+					$("#userDailyHour").val(dailyHour);
 					$("#createAccount").attr("action", CONTEXT_PATH+"/saveUser");
 					$("#createAccount").submit();
 				}
@@ -41,11 +51,42 @@
 			$("#passwordConfirm").focusout(function() {
 				validatePasswordConfirm();
 			});
+			
+			$("#dailyHourStartDiv").timepicker({
+			    showPeriod: true,
+			    showLeadingZero: true,
+			    altField: '#dailyHourStart',
+			});
+			
+			$("#dailyHourEndDiv").timepicker({
+			    showPeriod: true,
+			    showLeadingZero: true,
+			    altField: '#dailyHourEnd'
+			});
+
+			setUserWorkDays();
+			setUserDailyHour();
+				
+			
 		});
+		
+		function setUserWorkDays() {
+			var workDayCheckboxes = document.querySelectorAll('input[name="workDayCheckboxes"]'), values = [];
+			var userWorkDays = $("#userWorkDay").val().split("");
+			for (var i=0, n=workDayCheckboxes.length;i<n;i++)
+				if (userWorkDays[i] == 't') 
+					document.forms[0].workDayCheckboxes[i].checked=true;
+		}
+		
+		function setUserDailyHour() {
+			var userDailyHour = $("#userDailyHour").val().split("-");
+			 $('#dailyHourStartDiv').timepicker('setTime',userDailyHour[0]);
+			 $('#dailyHourEndDiv').timepicker('setTime',userDailyHour[1]);
+		}
 		
 		function validateFirstName(){
 			var fisrtName = $("#firstName").val();
-			$("#fisrtNameError").html("");
+			$("#firstNameError").html("");
 			if((fisrtName == null || fisrtName.length == 0)){
 				$("#fisrtNameError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.firstName"/>');
 				return false;
@@ -105,6 +146,17 @@
 			return true;
 		}
 		
+		function validateDailyHour(){
+			var dailyHourStart = $("#dailyHourStart").val();
+			var dailyHourEnd = $("#dailyHourEnd").val();
+			if ((dailyHourStart == null || dailyHourStart.length == 0 || (dailyHourStart.length > 0 && !isValideHour12Format(dailyHourStart))) 
+			|| (dailyHourEnd == null || dailyHourEnd.length == 0 || (dailyHourEnd.length > 0 && !isValideHour12Format(dailyHourEnd)))) {
+				$("#dailyHourConfirmError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.dailyHour"/>');
+				return false;
+			}
+			return true
+		}
+		
 		function isValidPhoneNumber(phone){
 			var pattern = new RegExp(/^0[1-9]([\.|\-|\s]*[0-9]{2}){4}$/);
 			return pattern.test(phone);
@@ -113,6 +165,11 @@
 		function isValidPassword(password) {
 			var pattern = new RegExp(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[0-9a-zA-Z!£\$\%\^&\*()_/\-\+\{\}~#\]\[\:\;@<>?,\|\\`€=§.?µ¨²]{8,}$/);
 			return pattern.test(password);
+		}
+		
+		function isValideHour12Format(hour) {
+			var pattern = new RegExp(/^([0]\d|[1][0-2]):([0-5]\d)\s?(?:AM|PM)$/i);
+			return pattern.test(hour);
 		}
 		
 		function checkDataBeforeSaveUser() {
@@ -144,7 +201,9 @@
 			
 			if (!validateMobilePhone())
 				valid = false;
-
+			
+			if (!validateDailyHour())
+				valid = false;
 			return valid;
 		}
 		
@@ -154,8 +213,10 @@
 		<jsp:include page="template/header.jsp" />
 		<jsp:include page="template/menu.jsp" />
 		<form id="createAccount" name="createAccount" method="post">
-			<input type="hidden" name="userId" 		id="userId" 	value="${user.id}"/>
-			<input type="hidden" name="userStatus" 	id="userStatus" value="${user.accountStatus}"/>
+			<input type="hidden" name="userId" 			id="userId" 		value="${user.id}"/>
+			<input type="hidden" name="userStatus" 		id="userStatus" 	value="${user.accountStatus}"/>
+			<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${user.workDay}"/>
+			<input type="hidden" name="userDailyHour" 	id="userDailyHour"	value="${user.dailyHour}"/>
 				<h1><spring:message code="projecthandler.signup.form"/></h1>
 				<br/>
 			<ul class="form">
@@ -180,7 +241,7 @@
 				<li>
 					<label><spring:message code="projecthandler.user.firstName"/><spring:message code="projecthandler.field.required"/></label>
 					<input type="text" name="firstName" id="firstName"  value="${user.firstName}" maxlength="30"/>
-					<span class="error" id="fisrtNameError"></span>
+					<span class="error" id="firstNameError"></span>
 				</li>
 				<li>
 					<label><spring:message code="projecthandler.user.email"/><spring:message code="projecthandler.field.required"/></label>
@@ -216,6 +277,37 @@
 					</li>
 					<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
 				 </c:if>
+					 <li>
+					 <label><spring:message code="projecthandler.signup.workDay"/></label>
+						<div id="workDayCheckboxes">
+							<label for="workDayCheckboxes"><spring:message code="projecthandler.day.monday"/></label>
+			   				<input name="workDayCheckboxes" type="checkbox"/>
+			   				<label for="workDayCheckboxes"><spring:message code="projecthandler.day.tuesday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.wednesday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.thursday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.friday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.saturday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.sunday"/></label>
+						    <input name="workDayCheckboxes" type="checkbox"/>
+						</div>
+					 </li>
+					 <li>
+						 <label for="dailyHour"><spring:message code="projecthandler.signup.dailyHour"/></label>
+						 <div id="dailyHour">
+							 <label for="dailyHourStart"><spring:message code="projecthandler.gantt.start"/></label>
+							 <input type="text" id="dailyHourStart" name="dailyHourStart"  disabled/>
+							 <div id="dailyHourStartDiv"></div>
+							 <label for="dailyHourEnd"><spring:message code="projecthandler.gantt.end"/></label>
+							 <input type="text" id="dailyHourEnd" name="dailyHourEnd"  disabled/>
+							 <div id="dailyHourEndDiv"></div>
+							 <span class="error" id="dailyHourConfirmError"></span>
+						</div>
+					</li>
 			</ul>
 		</form>
 		<br/>
