@@ -79,7 +79,7 @@
 		}
 		
 		function setUserDailyHour() {
-			var userDailyHour = $("#userDailyHour").val().split("-");
+			var userDailyHour = $("#userDailyHour").val().split(" - ");
 			 $('#dailyHourStartDiv').timepicker('setTime',userDailyHour[0]);
 			 $('#dailyHourEndDiv').timepicker('setTime',userDailyHour[1]);
 		}

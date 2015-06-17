@@ -67,8 +67,19 @@
 		}
 		
 		$(document).ready(function() {
-			var userRole = '<sec:authentication property="principal.userRole"/>';// $("#userRole").val();
-			if (userRole == "ROLE&#95;ADMIN") {
+			//get businessHours from user
+			var userDailyHour = '${user.dailyHour}'.split("-");
+			var start = convertTo24h(userDailyHour[0]);
+			var end = convertTo24h(userDailyHour[1]);
+			
+			//get businessDays from user, sunday = 0;
+			var userWorkDay = '${user.workDay}';
+			var workDay = [];
+			for (var i=0, n=userWorkDay.length;i<n;i++)
+				  if (userWorkDay[i] == 't') 
+					  workDay.push(i == 7 ? 0 : i + 1);
+			
+			if ('${user.userRole}' == "ROLE_ADMIN") {
 				var creatFormEvent = '<label><spring:message code="projecthandler.calendar.title" /></label>' + '<input type="text" name="title"/>' 
 				+ '<label><spring:message code="projecthandler.calendar.descritption" /></label>' + '<input type="text" name="description"/>'
 				+ '</br>' + '<input type="text" name="daterange"/>' 
@@ -85,6 +96,11 @@
 			}
 
             var calendar = $('#calendar').fullCalendar({
+            	businessHours: {
+            	        start: start,
+            	        end: end,
+            	        dow: workDay
+            	    },
                 header: {
                     left: 'today prev,next',
                     center: 'title',
@@ -130,10 +146,24 @@
                                     }
                             ],
                         eventRender: function(event, element) { 
-                            element.find('.fc-title').append("<br/>" + event.description); 
+                            element.find('.fc-title').append("<br/>" + event.description != undefined ? event.description : ""); 
                         } 
                     });
             });
+		
+		function convertTo24h(time_str) {
+		    // Convert a string like 10:05 PM to 24h format, returns like 22:5
+		    var time = time_str.match(/(\d+):(\d+) (\w)/);
+		    var hours = Number(time[1]);
+		    var minutes = Number(time[2]);
+		    var meridian = time[3].toLowerCase();
+
+		    if (meridian == 'p' && hours < 12)
+		      hours = hours + 12;
+		    else if (meridian == 'a' && hours == 12)
+		      hours = hours - 12;
+		    return hours + ":" + minutes; 
+		  }
 		</script>
 		
 		<jsp:include page="../template/footer.jsp" />
