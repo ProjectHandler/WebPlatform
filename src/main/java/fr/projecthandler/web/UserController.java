@@ -227,8 +227,8 @@ public class UserController {
 				String daterange = Utilities.getRequestParameter(request, "daterange");
 				String date[] = daterange.split("-", 0);
 				try {
-					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(date[0]);
-					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm").parse(date[1]);
+					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[0]);
+					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[1]);
 					
 					Event event = new Event();
 					event.setTitle(title);
