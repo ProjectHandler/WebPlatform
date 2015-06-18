@@ -40,3 +40,7 @@ ALTER TABLE `users_projects`
 -- ADD 2 field for table 'users' (17/06/2015)	
 ALTER TABLE `users` ADD `work_day` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'tttttff' ;
 ALTER TABLE `users` ADD `daily_hour` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '09:00 AM - 05:00 PM';
+
+-- ADD avatar field for table 'users' (18/06/2015)
+ALTER TABLE `users` ADD `avatar_file_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+ALTER TABLE `users` ADD `avatar_base_64` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;

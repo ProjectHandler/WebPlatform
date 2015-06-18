@@ -65,6 +65,12 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "daily_hour")
 	private String dailyHour;
 	
+	@Column(name = "avatar_base_64")
+	private String avatarBase64;
+	
+	@Column(name = "avatar_file_name")
+	private String avatarFileName;
+	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
@@ -158,6 +164,22 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setDailyHour(String dailyHour) {
 		this.dailyHour = dailyHour;
+	}
+
+	public String getAvatarBase64() {
+		return avatarBase64;
+	}
+
+	public void setAvatarBase64(String avatarBase64) {
+		this.avatarBase64 = avatarBase64;
+	}
+
+	public String getAvatarFileName() {
+		return avatarFileName;
+	}
+
+	public void setAvatarFileName(String avatarFileName) {
+		this.avatarFileName = avatarFileName;
 	}
 
 	public String getPhone() {

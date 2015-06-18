@@ -1,6 +1,10 @@
 package fr.projecthandler.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,10 +15,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +40,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
@@ -293,6 +304,67 @@ public class UserController {
 		}
 
 		return new ModelAndView("user/calendar", myModel);
+	}
+	
+	@RequestMapping(value = "/saveAvatar", method = RequestMethod.POST)
+	public String saveAvatar(Principal principal, @RequestParam MultipartFile avatar) throws Exception {
+		System.out.println("TEST 00");
+		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+		Configuration config = new PropertiesConfiguration("spring/path.properties");
+		System.out.println("TEST 01");
+		String path = config.getString("folder.path");
+		File directory = new File(new File(path, "users"), "avatars");
+		if (!directory.exists())
+			directory.mkdirs();
+		System.out.println("TEST 02");
+		User user = userService.findUserById(userDetails.getId());
+		if (user != null) {
+			if (avatar.isEmpty()) {
+				// delete user avatar
+				File file = new File(directory, user.getAvatarFileName());
+				file.delete();
+				user.setAvatarFileName(null);
+				user.setAvatarBase64(null);
+				userService.updateUser(user);
+			} else {
+				System.out.println("TEST 03");
+				BufferedOutputStream out = null;
+				String fileName = user.getAvatarFileName();
+				File file = null;
+				System.out.println("TEST 04");
+				try {
+					if (fileName == null) {
+						final StringBuilder fileNameSB = new StringBuilder(user.getId() + "_" + UUID.randomUUID().toString());
+						fileNameSB.append('.').append(FilenameUtils.getExtension(avatar.getOriginalFilename()));
+						fileName = fileNameSB.toString();
+					}
+					System.out.println("TEST 05");
+					// save avatar
+					file = new File(directory, fileName);
+					out = new BufferedOutputStream(new FileOutputStream(file));
+					out.write(avatar.getBytes());
+					if (out != null) {
+						out.close();
+					}
+					System.out.println("TEST 06");
+					String mimeType = URLConnection.guessContentTypeFromName(file.getName());
+					if (mimeType.equals("image/jpeg") || mimeType.equals("image/pjpeg") || mimeType.equals("image/x-png")
+					|| mimeType.equals("image/png") || mimeType.equals("image/gif")) {
+						// resize image
+						file = Utilities.resizeImage(file, 200, 200);
+						// save user
+						user.setAvatarFileName(fileName);
+						user.setAvatarBase64(Base64.encodeBase64String(FileUtils.readFileToByteArray(file)));
+						userService.updateUser(user);
+					} else {
+
+					}
+				} catch (Exception e) {
+					throw new Exception("Error uploading avatar for user: " + userDetails.getId(), e);
+				}
+			}
+		}
+		return "redirect:/signup";
 	}
 
 	@RequestMapping(value = "/changePassword", method = RequestMethod.POST)

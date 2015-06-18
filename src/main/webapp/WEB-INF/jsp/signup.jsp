@@ -14,7 +14,15 @@
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
 		$(document).ready(function() {
-		
+			$("#avatar").change(function() {
+				$("#avatar_error").html("");
+				if($("#avatar").val() == ""){
+					document.getElementById('addAvatarButton').disabled = true;
+				}else{
+					document.getElementById('addAvatarButton').disabled = false;
+				}
+			});
+			
 			$("#btnSave").click(function(e) {
 				$("#emailError").html("");
 				if(checkDataBeforeSaveUser() && confirm("Etes-vous sûr de vouloir enregistrer vos données ?")) {
@@ -207,12 +215,29 @@
 			return valid;
 		}
 		
+		function addAvatar() {
+			$("#avatar_error").html("");
+			if($("#avatar")[0] == undefined	|| navigator.userAgent.indexOf('MSIE') !== -1 || $("#avatar")[0].files[0] == undefined || $("#avatar")[0].files[0].size < 1048576){
+				document.createAccount.action = CONTEXT_PATH + "/saveAvatar";
+				document.createAccount.submit();
+			}else{
+				$("#avatar_error").html("<spring:message code='projecthandler.signup.error.file.toBig1mo'/>");
+			}
+		}
+		
+		function deleteAvatar() {
+			$("#avatar_error").html("");
+			$("#avatar").val("");
+			document.createAccount.action = CONTEXT_PATH + "/saveAvatar";
+			document.createAccount.submit();
+		}
+		
 		</script>
 	</head>
 	<body>
 		<jsp:include page="template/header.jsp" />
 		<jsp:include page="template/menu.jsp" />
-		<form id="createAccount" name="createAccount" method="post">
+		<form id="createAccount" name="createAccount" method="post" enctype="multipart/form-data">
 			<input type="hidden" name="userId" 			id="userId" 		value="${user.id}"/>
 			<input type="hidden" name="userStatus" 		id="userStatus" 	value="${user.accountStatus}"/>
 			<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${user.workDay}"/>
@@ -307,6 +332,42 @@
 							 <div id="dailyHourEndDiv"></div>
 							 <span class="error" id="dailyHourConfirmError"></span>
 						</div>
+					</li>
+					<li>
+						<table style="width: 100%">
+						<tr style="width: 100%">
+						<td width="50%">
+							<c:choose>
+								<c:when test="${user.avatarBase64 != null}">
+									<div id="divAvatarImage" style="margin-left: auto; margin-right: auto; padding: 20px; width: 400px; border-radius: 3px;">
+										<img id="userAvatar" width="200px" alt="avatar" src="data:image/jpeg;base64,${user.avatarBase64}"/>
+									</div>
+									<div class="divButton" style="width: 73px;">
+										<button id="deleteAvatarButton" class="btn btn-primary btn-xs right" onClick='deleteAvatar();return false;'>
+											<spring:message code="projecthandler.admin.action.delete" />
+										</button>
+									</div>
+								</c:when>
+								<c:otherwise>
+									<img width="200px" alt="avatar" src="resources/img/placehold200x200.gif" />
+								</c:otherwise>
+							</c:choose>
+						</td>
+						<td width="50%" id="tdAvatarButton">
+							<spring:message code="projecthandler.signup.customDetails.imageType" />
+							<br/><br/>
+							<input type="file" name="avatar" id="avatar" class="filestyle" data-buttonName="btn btn-primary btn-xs" data-buttonText="&nbsp;<spring:message code="projecthandler.signup.button.chooseFile"/>"/>
+							<br/>
+							<span id="avatar_error" style="color: red; display:block;"></span>
+							<br/>
+							<div class="divButton" style="width: 100%;">
+								<button id="addAvatarButton" class="btn btn-primary btn-xs" onClick="addAvatar();return false;" disabled="disabled">
+									<spring:message code="projecthandler.admin.action.add" />
+								</button>
+							</div>
+						</td>
+						</tr>
+						</table>
 					</li>
 			</ul>
 		</form>

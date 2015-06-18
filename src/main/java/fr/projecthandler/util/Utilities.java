@@ -1,7 +1,14 @@
 package fr.projecthandler.util;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import org.imgscalr.Scalr;
+import org.imgscalr.Scalr.Method;
+import org.imgscalr.Scalr.Mode;
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
 
@@ -29,5 +36,23 @@ public class Utilities {
 			return request.getParameter(parameter);
 		}
 		return null;
+	}
+	
+	public static File resizeImage(File fileInput, int width, int height) {
+		File fileOutput = fileInput;
+		try {
+			// load image
+			BufferedImage img = ImageIO.read(fileInput);
+
+			// resize image
+			if (img != null && (img.getWidth() > width || img.getHeight() > height)) {
+				BufferedImage outImage = Scalr.resize(img, Method.QUALITY, Mode.AUTOMATIC, width, height, Scalr.OP_ANTIALIAS);
+				ImageIO.write(outImage, "png", fileOutput);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return fileOutput;
 	}
 }
