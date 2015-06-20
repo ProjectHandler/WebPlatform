@@ -72,11 +72,6 @@ public class ProjectController {
 			List<Project> projectList = projectService.getProjectsByUserId(u
 					.getId());
 			myModel.put("projectList", projectList);
-
-			System.out.println("Projects:");
-			for (Project project : projectList) {
-				System.out.println("name: " + project.getName());
-			}
 		} else {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied", null);

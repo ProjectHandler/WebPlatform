@@ -308,15 +308,12 @@ public class UserController {
 	
 	@RequestMapping(value = "/saveAvatar", method = RequestMethod.POST)
 	public String saveAvatar(Principal principal, @RequestParam MultipartFile avatar) throws Exception {
-		System.out.println("TEST 00");
 		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 		Configuration config = new PropertiesConfiguration("spring/path.properties");
-		System.out.println("TEST 01");
 		String path = config.getString("folder.path");
 		File directory = new File(new File(path, "users"), "avatars");
 		if (!directory.exists())
 			directory.mkdirs();
-		System.out.println("TEST 02");
 		User user = userService.findUserById(userDetails.getId());
 		if (user != null) {
 			if (avatar.isEmpty()) {
@@ -327,18 +324,15 @@ public class UserController {
 				user.setAvatarBase64(null);
 				userService.updateUser(user);
 			} else {
-				System.out.println("TEST 03");
 				BufferedOutputStream out = null;
 				String fileName = user.getAvatarFileName();
 				File file = null;
-				System.out.println("TEST 04");
 				try {
 					if (fileName == null) {
 						final StringBuilder fileNameSB = new StringBuilder(user.getId() + "_" + UUID.randomUUID().toString());
 						fileNameSB.append('.').append(FilenameUtils.getExtension(avatar.getOriginalFilename()));
 						fileName = fileNameSB.toString();
 					}
-					System.out.println("TEST 05");
 					// save avatar
 					file = new File(directory, fileName);
 					out = new BufferedOutputStream(new FileOutputStream(file));
@@ -346,7 +340,6 @@ public class UserController {
 					if (out != null) {
 						out.close();
 					}
-					System.out.println("TEST 06");
 					String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 					if (mimeType.equals("image/jpeg") || mimeType.equals("image/pjpeg") || mimeType.equals("image/x-png")
 					|| mimeType.equals("image/png") || mimeType.equals("image/gif")) {

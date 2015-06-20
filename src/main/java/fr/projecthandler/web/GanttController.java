@@ -51,13 +51,11 @@ public class GanttController {
 	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
 	public @ResponseBody Object loadGantt(HttpServletRequest request, Principal principal) {
 		String json =  ganttService.load(Long.parseLong(request.getParameter("projectId"), 10));
-		//System.out.println(json);
 		return new JsonParser().parse(json);
 	}
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
 	public void saveGantt(HttpServletRequest request, Principal principal) {
-		System.out.println(request.getParameter("prj"));
 		ganttService.save(request.getParameter("prj"));
 	}
 }
