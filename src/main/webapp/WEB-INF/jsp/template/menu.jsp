@@ -17,7 +17,7 @@
 			<h1 class="margin-bottom">Debugging menu</h1>
 			
 			<sec:authorize access="isAuthenticated()">
-				<p class="margin-bottom">you are logged as : <span class="theme2-primary-text"><sec:authentication property="principal.fullname" /></span></p>
+				<p class="margin-bottom">you are logged as : <span class="theme2-primary-text"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></span></p>
 			</sec:authorize>
 			
            	<ul class="margin-bottom">

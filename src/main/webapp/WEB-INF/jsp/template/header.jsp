@@ -37,7 +37,7 @@
 						<h1 class="margin-bottom">Debugging menu</h1>
 						
 						<sec:authorize access="isAuthenticated()">
-							<p class="margin-bottom">you are logged as : <span class="theme2-primary-text"><sec:authentication property="principal.fullname" /></span></p>
+							<p class="margin-bottom">you are logged as : <span class="theme2-primary-text"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></span></p>
 						</sec:authorize>
 						
 			           	<ul class="margin-bottom">
@@ -76,7 +76,7 @@
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="#" title="calendar">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="<c:url value="/calendar"/>" title="calendar">
 						<span class="icon-calendar"></span>
 					</a>
 				</li>
@@ -100,7 +100,8 @@
 							</div>
 							<div class="display-table-cell vertical-align small-padding-left small-padding-right">
 								<sec:authorize access="isAuthenticated()">
-									<sec:authentication property="principal.fullname" />
+									<sec:authentication property="principal.firstName" /> 
+									<sec:authentication property="principal.lastName" />
 								</sec:authorize>
 							</div>
 						</div>
@@ -115,7 +116,7 @@
 								</div>
 								<div class="display-table-cell vertical-top padding-left full-width">
 									<sec:authorize access="isAuthenticated()">
-										<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.fullname" /></h1>
+										<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></h1>
 										<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
 									</sec:authorize>
 									<a class="default-btn-shape theme1-primary-btn-style1" href="#">

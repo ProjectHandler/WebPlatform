@@ -15,17 +15,20 @@ public class CustomUserDetails implements UserDetails {
 	private Long id;
 	private Collection<? extends GrantedAuthority> authorities;
 	private String password;
+	private String firstName;
+	private String lastName;
+	private String avatarBase64;
 	private String username;
+	//private String fullname;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
 	private boolean enabled;
-	private String fullname;
 	private AccountStatus accountStatus;
 	private UserRole userRole;
 
 	public CustomUserDetails(Long id, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String fullname, AccountStatus accountStatus, UserRole userRole) {
+			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, AccountStatus accountStatus, UserRole userRole, String avatarBase64) {
 		this.id = id;
 		this.authorities = authorities;
 		this.accountNonExpired = accountNonExpired;
@@ -33,8 +36,10 @@ public class CustomUserDetails implements UserDetails {
 		this.credentialsNonExpired = credentialsNonExpired;
 		this.enabled = enabled;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.avatarBase64 = avatarBase64;
 		this.username = username;
-		this.fullname = fullname;
 		this.accountStatus = accountStatus;
 		this.setUserRole(userRole);
 	}
@@ -67,6 +72,18 @@ public class CustomUserDetails implements UserDetails {
 		return accountNonExpired;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public String getAvatarBase64() {
+		return avatarBase64;
+	}
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return accountNonLocked;
@@ -80,10 +97,6 @@ public class CustomUserDetails implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return enabled;
-	}
-
-	public String getFullname() {
-		return fullname;
 	}
 
 	public AccountStatus getAccountStatus() {
