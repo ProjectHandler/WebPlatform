@@ -19,7 +19,7 @@
 				// TODO : type to search a group => fichier de langue
 				$('.groupSelection').selectivity({
 				    multiple: true,
-				    placeholder: 'Type to search a group'
+				    placeholder: ''
 				});
 				
 				$('.groupSelection').on("change", changeGroup);
@@ -113,7 +113,29 @@
 					</sec:authorize>	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height">
+				<div class="position-relative display-table-cell full-width full-height">
+					<div id="modalBox" class="display-none position-absolute position-top position-left zindex-50 default-transpbg full-width full-height overflow-auto">
+						<div class="display-table full-width full-height">
+							<div class="display-table-cell full-width full-height vertical-align">
+								<div class="position-relative fixedwidth-512 margin-auto inverted-bg">
+									<div id="modalData"></div>
+								</div>
+							</div>
+						</div>
+					</div>			
+					<script>
+						function showModal(id) { 
+							var data=$("#userData-" + id);
+							$("#modalData").html(data);
+							$("#modalBox").show();
+						}
+						function closeModal(id) {
+							var data=$("#userData-" + id);
+							$("#modalBox").hide();
+							$("#userDataContainer-" + id).html(data);
+						}
+					</script>
+					
 					
 					<div class="full-width full-height overflow-auto">
 						<div class="container">
@@ -122,86 +144,111 @@
 								<div class="text-h1 float-right"><span class="icon-users"></span></div>
 							</div>
 							<div>
-							
 								<h2 class="small-margin-bottom">Liste des utilisateurs</h2>
 								<table id="usersTable" class="full-width surrounded theme3-primary-bdr">
 									<thead>
 										<tr>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.lastName"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.firstName"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.email"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.role"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.status"/></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><div class="fixedwidth-192 overflow-hidden">User</div></th>
+											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text full-width"><spring:message code="projecthandler.user.email"/></th>
 											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text"><spring:message code="projecthandler.user.action"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text">Groupes</th>
 										</tr>
 									</thead>
 									<tbody>
 										<c:forEach var="user" items="${users}">
 										<tr>
-											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.lastName}"/></td>
-											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.firstName}"/></td>
+											<td class="text-capitalize container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.firstName}"/> <c:out value="${user.lastName}"/></td>
 											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.email}"/></td>
 											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
-												<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')" class="select-switch surrounded theme3-lighten1-bdr">
-													<c:forEach var='role' items='${user_role}' >
-													<c:choose>
-													<c:when test="${role==user.userRole}">
-														<option selected="selected"><c:out value='${role}'/></option>
-													</c:when>
-													<c:otherwise>
-														<option><c:out value='${role}'/></option>
-													</c:otherwise>
-													</c:choose>
-													</c:forEach>
-												</select>
-											</td>
-											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
-												<select id="accountStatus" class="select-switch surrounded theme3-lighten1-bdr" onchange="changeStatus(this, '${user.id}')">
-													<c:forEach var='status' items='${account_status}' >
-													<c:choose>
-													<c:when test="${status==user.accountStatus}">
-														<option selected="selected"><c:out value='${status}'/></option>
-													</c:when>
-													<c:otherwise>
-														<option><c:out value='${status}'/></option>
-													</c:otherwise>
-													</c:choose>
-													</c:forEach>
-												</select>
-											</td>
-											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
-												<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteUser('${user.id}')"/>
-													<span class="icon-cross small-margin-right"></span>supprimer
+												<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="showModal(${user.id})"/>
+													<span class="icon-wrench small-margin-right"></span>Consulter
 												</button>
-												<c:if test="${user.accountStatus == 'INACTIVE'}">
-												<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')"/>
-													<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
-												</button>
-												</c:if>
-											</td>
-											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
-												<select class="groupSelection"  multiple="multiple" placeholder>
-						       						<c:forEach var='group' items='${groups}'>
-														<c:set var="found" value="false"/>
-														<c:if test="${user.groups != null}">
-															<c:forEach var="userGroup" items="${user.groups}">
-																<c:if test="${userGroup.id == group.id}">
-																	<c:set var="found" value="true"/>
-																	<option selected value="${user.id}/${group.id}">
+												
+												<div id="userDataContainer-${user.id}" class="display-none">
+													<div id="userData-${user.id}" class="text-center">
+														<button class="position-absolute position-top position-right default-btn-shape util1-lighten3-text default-btn-style6" ONCLICK="closeModal(${user.id})">
+															<span class="icon-cross"></span>
+														</button>
+													 	<div class="display-inline-block container">
+															<div class="display-table-cell padding-right">
+																<div class="fixedwidth-128 fixedheight-128 default-bg circle">
+																	<div class="full-width full-height img-as-background circle" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+																</div>
+															</div>
+															<div class="display-table-cell padding-left vertical-align text-left">
+																<div class="text-h2 text-capitalize">${user.firstName} ${user.lastName}</div>
+																<div class="text-h4 util1-lighten1-text">${user.email}</div>
+															</div>
+														</div>
+														<div class="display-table full-width theme3-lighten1-bg container">
+															<div class="display-table-cell gridwidth-5 padding-right padding-left">
+																<div class="text-h2 small-margin-bottom">Role</div>
+																<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')" class="select-switch surrounded theme3-primary-bdr full-width">
+																	<c:forEach var='role' items='${user_role}' >
+																	<c:choose>
+																	<c:when test="${role==user.userRole}">
+																		<option selected="selected"><c:out value='${role}'/></option>
+																	</c:when>
+																	<c:otherwise>
+																		<option><c:out value='${role}'/></option>
+																	</c:otherwise>
+																	</c:choose>
+																	</c:forEach>
+																</select>
+															</div>
+															<div class="display-table-cell gridwidth-5 padding-right padding-left">
+																<div class="text-h2 small-margin-bottom">State</div>
+																<select id="accountStatus" onchange="changeStatus(this, '${user.id}')" class="select-switch surrounded theme3-primary-bdr full-width">
+																	<c:forEach var='status' items='${account_status}' >
+																	<c:choose>
+																	<c:when test="${status==user.accountStatus}">
+																		<option selected="selected"><c:out value='${status}'/></option>
+																	</c:when>
+																	<c:otherwise>
+																		<option><c:out value='${status}'/></option>
+																	</c:otherwise>
+																	</c:choose>
+																	</c:forEach>
+																</select>
+															</div>
+														</div>
+														<div class="container">
+															<div class="text-h2 small-margin-bottom">Groups</div>
+															<select class="groupSelection"  multiple="multiple" placeholder">
+																<c:forEach var='group' items='${groups}'>
+																<c:set var="found" value="false"/>
+																<c:if test="${user.groups != null}">
+																	<c:forEach var="userGroup" items="${user.groups}">
+																		<c:if test="${userGroup.id == group.id}">
+																			<c:set var="found" value="true"/>
+																			<option selected value="${user.id}/${group.id}">
+																				${group.name}
+																			</option>
+																		</c:if>
+																	</c:forEach>
+																</c:if>
+																<c:if test="${user.groups == null || found eq false}">
+																	<option value="${user.id}/${group.id}">
 																		${group.name}
 																	</option>
-																</c:if>
-															</c:forEach>
-														</c:if>
-														<c:if test="${user.groups == null || found eq false}">
-															<option value="${user.id}/${group.id}">
-																${group.name}
-															</option>
-														</c:if>	
-													</c:forEach>
-						       					</select>
-						       				</td>
+																</c:if>	
+																</c:forEach>
+															</select>
+														</div>
+														<hr class="theme3-lighten1-bg">
+														<div class="container">
+															<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteUser('${user.id}')"/>
+																<span class="icon-cross small-margin-right"></span>supprimer
+															</button>
+															<c:if test="${user.accountStatus == 'INACTIVE'}">
+															<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')"/>
+																<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
+															</button>
+															</c:if>
+														</div>
+													
+													</div>
+												</div>
+											</td>
 											</tr>
 										 </c:forEach>
 									</tbody>
