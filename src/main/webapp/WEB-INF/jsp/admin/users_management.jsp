@@ -15,6 +15,16 @@
 			
 			$(document).ready(function() {
 				$("#usersTable").tablesorter();
+				
+				$('#role').selectivity({
+				    allowClear: true,
+				    placeholder: ''
+				});
+				
+				$('#accountStatus').selectivity({
+				    allowClear: true,
+				    placeholder: ''
+				});
 
 				// TODO : type to search a group => fichier de langue
 				$('.groupSelection').selectivity({
@@ -159,7 +169,7 @@
 											<td class="text-capitalize container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.firstName}"/> <c:out value="${user.lastName}"/></td>
 											<td class="container soft-surrounded theme3-primary-bdr vertical-align"><c:out value="${user.email}"/></td>
 											<td class="container soft-surrounded theme3-primary-bdr vertical-align">
-												<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="showModal(${user.id})"/>
+												<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="showModal(${user.id})">
 													<span class="icon-wrench small-margin-right"></span>Consulter
 												</button>
 												
