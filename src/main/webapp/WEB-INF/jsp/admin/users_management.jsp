@@ -18,6 +18,7 @@
 				
 				$('.role').selectivity({
 				    allowClear: true,
+				    showSearchInputInDropdown: false,
 				    placeholder: ''
 				});
 				
@@ -25,6 +26,7 @@
 				
 				$('.accountStatus').selectivity({
 				    allowClear: true,
+				    showSearchInputInDropdown: false,
 				    placeholder: ''
 				});
 				
