@@ -43,7 +43,6 @@
 				txtToAdd = user.firstName + ' ' + user.lastName;
 				$('.userSelection').selectivity('add', {id: idToAdd, text: txtToAdd});
 			}
-			
 		}
 		
 		function groupChanged(item) {
@@ -58,7 +57,7 @@
 						url: url,
 						data: {groupId: groupId}, 
 			    		success: function(data) {
-			    				if (data == "KO") 
+			    				if (data == "KO")
 				    				alert("error");
 			    				else {
 				    				usersInGroup = jQuery.parseJSON(data);
@@ -106,20 +105,19 @@
 				<tr>
 					<td><form:label path="users">utilisateur(s):</form:label></td>
 					<td>
-					<form:select  path="users" class="userSelection" id="id">
+					<form:select path="users" class="userSelection">
 						<c:forEach var='user' items='${users}'>
 						<form:option value="${user.id}">
 							${user.firstName} ${user.lastName}
 						</form:option>
 					</c:forEach>
-						
 					</form:select>
 					</td>
 				</tr>
 				<tr>
 					<td><label >Groupe(s):</label></td>
 					<td>
-					<select class="groupSelection"  multiple="multiple" placeholder>
+					<select class="groupSelection"  multiple="multiple">
 					<c:forEach var='group' items='${groups}'>
 						<option value="${group.id}">
 							${group.name}

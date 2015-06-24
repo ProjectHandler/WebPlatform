@@ -16,17 +16,21 @@
 			$(document).ready(function() {
 				$("#usersTable").tablesorter();
 				
-				$('#role').selectivity({
+				$('.role').selectivity({
 				    allowClear: true,
 				    placeholder: ''
 				});
 				
-				$('#accountStatus').selectivity({
+				$('.role').on("change", changeRole);
+				
+				$('.accountStatus').selectivity({
 				    allowClear: true,
 				    placeholder: ''
 				});
+				
+				$('.accountStatus').on("change", changeStatus);
 
-				// TODO : type to search a group => fichier de langue
+				// TODO : placeholder="type to search a group" => fichier de langue
 				$('.groupSelection').selectivity({
 				    multiple: true,
 				    placeholder: ''
@@ -35,15 +39,17 @@
 				$('.groupSelection').on("change", changeGroup);
 			});
 			
-			function changeRole(role, user_id) {
-			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeRole", data: { userId: user_id, role: role.value }, 
+			function changeRole(item) {
+				var res = item.value.split("/");
+			  	$.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeRole", data: { userId: res[0], role: res[1] }, 
 			    	success: function(data) {if (data == "KO") alert("error");}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
 			
-			function changeStatus(status, user_id) {
-			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeStatus", data: { userId: user_id, status: status.value }, 
+			function changeStatus(item) {
+				var res = item.value.split("/");
+			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeStatus", data: { userId: res[0], status: res[1] }, 
 			    	success: function(data) {
 			    		if (data == "KO") 
 			    			alert("error");
@@ -192,14 +198,14 @@
 														<div class="display-table full-width theme3-lighten1-bg container">
 															<div class="display-table-cell gridwidth-5 padding-right padding-left">
 																<div class="text-h2 small-margin-bottom">Role</div>
-																<select id="role" value="ROLE_MANAGER" onchange="changeRole(this, '${user.id}')" class="select-switch surrounded theme3-primary-bdr full-width">
+																<select id="role" value="ROLE_MANAGER" class="role select-switch surrounded theme3-primary-bdr full-width">
 																	<c:forEach var='role' items='${user_role}' >
 																	<c:choose>
 																	<c:when test="${role==user.userRole}">
-																		<option selected="selected"><c:out value='${role}'/></option>
+																		<option selected="selected" value="${user.id}/${role}"><c:out value='${role}'/></option>
 																	</c:when>
 																	<c:otherwise>
-																		<option><c:out value='${role}'/></option>
+																		<option value="${user.id}/${role}"><c:out value='${role}'/></option>
 																	</c:otherwise>
 																	</c:choose>
 																	</c:forEach>
@@ -207,14 +213,14 @@
 															</div>
 															<div class="display-table-cell gridwidth-5 padding-right padding-left">
 																<div class="text-h2 small-margin-bottom">State</div>
-																<select id="accountStatus" onchange="changeStatus(this, '${user.id}')" class="select-switch surrounded theme3-primary-bdr full-width">
+																<select id="accountStatus" class="accountStatus select-switch surrounded theme3-primary-bdr full-width">
 																	<c:forEach var='status' items='${account_status}' >
 																	<c:choose>
 																	<c:when test="${status==user.accountStatus}">
-																		<option selected="selected"><c:out value='${status}'/></option>
+																		<option selected="selected" value="${user.id}/${status}"><c:out value='${status}'/></option>
 																	</c:when>
 																	<c:otherwise>
-																		<option><c:out value='${status}'/></option>
+																		<option value="${user.id}/${status}"><c:out value='${status}'/></option>
 																	</c:otherwise>
 																	</c:choose>
 																	</c:forEach>

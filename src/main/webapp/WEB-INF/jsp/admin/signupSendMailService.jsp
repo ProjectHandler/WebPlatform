@@ -14,7 +14,6 @@
 		$(document).ready(function() {
 			$('#email').autosize();
 			
-			
 			$("#btnSend").click(function(e) {
 				if (checkInput())
 					$.ajax({
