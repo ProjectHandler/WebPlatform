@@ -135,7 +135,7 @@
 					<div id="modalBox" class="display-none position-absolute position-top position-left zindex-50 default-transpbg full-width full-height overflow-auto">
 						<div class="display-table full-width full-height">
 							<div class="display-table-cell full-width full-height vertical-align">
-								<div class="position-relative fixedwidth-512 margin-auto inverted-bg">
+								<div class="position-relative fixedwidth-576 margin-auto inverted-bg">
 									<div id="modalData"></div>
 								</div>
 							</div>
@@ -198,7 +198,7 @@
 															</div>
 														</div>
 														<div class="display-table full-width theme3-lighten1-bg container">
-															<div class="display-table-cell gridwidth-5 padding-right padding-left">
+															<div class="display-table-cell gridwidth-5">
 																<div class="text-h2 small-margin-bottom">Role</div>
 																<select id="role" value="ROLE_MANAGER" class="role select-switch surrounded theme3-primary-bdr full-width">
 																	<c:forEach var='role' items='${user_role}' >
@@ -213,7 +213,7 @@
 																	</c:forEach>
 																</select>
 															</div>
-															<div class="display-table-cell gridwidth-5 padding-right padding-left">
+															<div class="display-table-cell gridwidth-5">
 																<div class="text-h2 small-margin-bottom">State</div>
 																<select id="accountStatus" class="accountStatus select-switch surrounded theme3-primary-bdr full-width">
 																	<c:forEach var='status' items='${account_status}' >
