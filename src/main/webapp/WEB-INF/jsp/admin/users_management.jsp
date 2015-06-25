@@ -179,7 +179,7 @@
 												<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
 											</div>
 											<div class="display-table-cell full-width vertical-align small-container padding-left padding-right">
-												<div class="overflow-hidden">
+												<div class="">
 													<div class="text-capitalize text-h4">${user.firstName} ${user.lastName}</div>
 													<div class="util1-lighten2-text"><small>${user.email}</small></div>
 												</div>
