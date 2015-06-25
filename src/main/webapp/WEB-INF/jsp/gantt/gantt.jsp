@@ -49,6 +49,7 @@
 	<spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
 	<script type="text/javascript" src="${selectivity}"></script>
 	<script type="text/javascript">
+		var messageSelectSearch = "<spring:message code='projecthandler.select.search'/>";
 		var ge; //this is the hugly but very friendly global var for the gantt editor
 		$(function() {
 		
@@ -96,7 +97,7 @@
 			}).oneTime(150, "resize", function() {
 				$(this).trigger("resize")
 			});
-		
+
 		});
 		
 		function loadGanttFromServer(taskId, callback) {
@@ -258,7 +259,7 @@
 			$('.userProjectSelection').selectivity({
 				multiple : true,
 				allowClear : true,
-				placeholder : 'Type to search a group'
+				placeholder : "<spring:message code='projecthandler.select.search'/>"
 		
 			});
 		
@@ -277,6 +278,17 @@
 			//useless with selectivity
 		});
 	</script>
+	
+<style>		
+	label, input, table, caption, tbody, tfoot, thead, tr, th, td, {
+	    margin: 0px !important;
+	    padding: 10px !important;
+	    border: 0px none !important;
+	    font: inherit !important;
+	    vertical-align: baseline !important;
+	}
+</style>
+
 </head>
 <body style="background-color: #fff; overflow: hidden">
 	<jsp:include page="../template/header.jsp" />
@@ -288,7 +300,7 @@
 	  <div class="__template__" type="GANTBUTTONS">
 	  <div class="ganttButtonBar noprint" style="margin-right: 100px">
 	    <div class="buttons">
-	    <select id="selectProject" onchange="loadGanttFromServer()">
+	    <select id="selectProject" onchange="loadGanttFromServer()" style="padding: 2px; border-radius:4px; cursor:pointer; border: solid 3px #617777; color:#68979b; appearance:none; -webkit-appearance:none; -moz-appearance:none;">
 			<c:forEach var="project" items="${projects}">
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
@@ -391,28 +403,29 @@
 	
 	  <div class="__template__" type="CHANGE_STATUS"><!--
 	    <div class="taskStatusBox">
-	      <div class="taskStatus cvcColorSquare" status="STATUS_ACTIVE" title="active"></div>
-	      <div class="taskStatus cvcColorSquare" status="STATUS_DONE" title="completed"></div>
-	      <div class="taskStatus cvcColorSquare" status="STATUS_FAILED" title="failed"></div>
-	      <div class="taskStatus cvcColorSquare" status="STATUS_SUSPENDED" title="suspended"></div>
-	      <div class="taskStatus cvcColorSquare" status="STATUS_UNDEFINED" title="undefined"></div>
+	      <li><div class="taskStatus cvcColorSquare" status="STATUS_ACTIVE" title="active"></div><span><spring:message code='projecthandler.gantt.active'/></span></li>
+	      <li><div class="taskStatus cvcColorSquare" status="STATUS_DONE" title="completed"></div><span><spring:message code='projecthandler.gantt.completed'/></span></li>
+	      <li><div class="taskStatus cvcColorSquare" status="STATUS_FAILED" title="failed"></div><span><spring:message code='projecthandler.gantt.failed'/></span></li>
+	      <li><div class="taskStatus cvcColorSquare" status="STATUS_SUSPENDED" title="suspended"></div><span><spring:message code='projecthandler.gantt.suspended'/></span></li>
+	      <li><div class="taskStatus cvcColorSquare" status="STATUS_UNDEFINED" title="undefined"></div><span><spring:message code='projecthandler.gantt.undefined'/></span></li>
 	    </div>
 	  --></div>
+	  
 	
 	  <div class="__template__" type="TASK_EDITOR"><!--
-	  <div class="ganttTaskEditor">
-	  <table width="100%">
+	  <div class="ganttTaskEditor" style="padding: 5px;">
+	  <table width="100%" style="padding: 5px;">
 	    <tr>
 	      <td>
 	        <table cellpadding="5">
 	          <tr>
-	            <td><label for="code">code/short name</label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
+	            <td style="padding: 10px;"><label for="code"><spring:message code='projecthandler.gantt.code'/></label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
 	           </tr><tr>
-	            <td><label for="name">name</label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+	            <td style="padding: 10px;"><label for="name"><spring:message code='projecthandler.gantt.name'/></label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
 	          </tr>
 	          <tr></tr>
-	            <td>
-	              <label for="description">description</label><br>
+	            <td style="padding: 10px;">
+	              <label for="description"><spring:message code='projecthandler.gantt.description'/></label><br>
 	              <textarea rows="5" cols="30" id="description" name="description" class="formElements"></textarea>
 	            </td>
 	          </tr>
@@ -421,37 +434,37 @@
 	      <td valign="top">
 	        <table cellpadding="5">
 	          <tr>
-	          <td colspan="2"><label for="status">status</label><br><div id="status" class="taskStatus" status=""></div></td>
+	          <td colspan="2" style="padding: 10px;"><label for="status"><spring:message code='projecthandler.gantt.status'/></label><br><div id="status" class="taskStatus" status=""></div></td>
 	          <tr>
-	          <td colspan="2"><label for="progress">progress</label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
+	          <td colspan="2" style="padding: 10px;"><label for="progress"><spring:message code='projecthandler.gantt.progress'/></label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
 	          </tr>
 	          <tr>
-	          <td><label for="start">start</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
-	          <td rowspan="2" class="graph" style="padding-left:50px"><label for="duration">dur.</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>
+	          <td style="padding: 10px;"><label for="start"><spring:message code='projecthandler.gantt.start'/></label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
+	          <td rowspan="2" class="graph" style="padding-left:50px; vertical-align:middle;"><label for="duration"><spring:message code='projecthandler.gantt.dur'/></label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>
 	        </tr><tr>
-	          <td><label for="end">end</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
+	          <td style="padding: 10px;"><label for="end"><spring:message code='projecthandler.gantt.end'/></label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
 	        </table>
 	      </td>
 	    </tr>
 	    </table>
 	
-	  <h2>assignments</h2>
-	  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%">
+	  <h2 style="padding: 5px 10px;"><spring:message code='projecthandler.gantt.assignees'/></h2>
+	  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%; padding: 5px 10px;">
 	  </select>
 	
-	  <div style="text-align: right; padding-top: 20px"><button id="saveButton" class="button big">save</button></div>
+	  <div style="padding: 10px; text-align: right; padding-top: 20px"><button id="saveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>
 	  </div>
 	  --></div>
 	
 	  <div class="__template__" type="RESOURCE_EDITOR"><!-- 
 	  	<div class="resourceEditor" style="padding: 5px;">
-	  		<h2>Project team</h2>
+	  		<h2><spring:message code='projecthandler.gantt.team'/></h2>
 				<select class="userProjectSelection" multiple="multiple" placeholder style="width: 100%">
 					<c:forEach var="user" items="${users}">
 						<option value="${user.id}" >${user.firstName} ${user.lastName}</option>
 					</c:forEach>
 				</select>
-			<div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big">save</button></div>				       					
+			<div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>				       					
 	  	</div>-->
 	 </div>
 	

@@ -52,7 +52,7 @@ GridEditor.prototype.fillEmptyLines = function () {
         start = master.tasks[0].start;
         level = master.tasks[0].level + 1;
       }
-ass
+
       //fill all empty previouses
       emptyRow.prevAll(".emptyRow").andSelf().each(function () {
         var ch = factory.build("tmp_fk" + new Date().getTime(), "", "", level, start, 1);
@@ -672,10 +672,10 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
   $('.userTaskSelection').selectivity({
 		multiple : true,
 		allowClear : true,
-		placeholder : 'Type to search a group'
+		placeholder : messageSelectSearch
 
 	});
-  
+
   //already assigned resources
   var assRess = []
   for (var i = 0; i < task.assigs.length; i++) {
