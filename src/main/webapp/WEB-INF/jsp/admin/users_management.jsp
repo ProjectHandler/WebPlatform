@@ -139,7 +139,7 @@
 					</div>
 				</div>
 				<div class="position-relative display-table-cell full-width full-height">
-					<div id="modalBox" class="display-none position-absolute position-top position-left zindex-50 default-transpbg full-width full-height overflow-auto">
+					<div id="modalBox" class="display-none position-absolute position-top position-left zindex-25 default-transpbg full-width full-height overflow-auto">
 						<div class="display-table full-width full-height">
 							<div class="display-table-cell full-width full-height vertical-align">
 								<div class="position-relative fixedwidth-576 margin-auto inverted-bg">
@@ -275,9 +275,28 @@
 												</div>
 												<hr class="theme3-lighten1-bg">
 												<div class="container">
-													<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteUser('${user.id}')">
-														<span class="icon-cross small-margin-right"></span>supprimer
+													<button class="default-btn-shape util6-primary-btn-style1 animating-event" data-action="open-event" data-animation="pop-event" data-target="deleteSecurityfor-${user.id}">
+														<span class="icon-cross small-margin-right"></span>Supprimer
 													</button>
+													<div id="deleteSecurityfor-${user.id}" class="pop-event position-absolute position-top position-left full-width full-height inverted-transpbg">
+														<div class="display-table full-width full-height">
+															<div class="display-table-cell full-width full-height vertical-align">
+																<div>
+																	<div class="container util6-lighten2-bg inverted-text text-center">
+																		<div class="margin-top text-h2">You are deleting this user !</div>
+																		<div class="container">
+																			<button class="default-btn-shape util6-primary-btn-style1 small-margin-right" ONCLICK="deleteUser('${user.id}')">
+																				<span class="icon-checkmark small-margin-right"></span>Supprimer
+																			</button><!--
+																			 --><button class="default-btn-shape util2-primary-btn-style1 small-margin-left animating-event" data-action="close-event" data-animation="pop-event" data-target="deleteSecurityfor-${user.id}">
+																				<span class="icon-cross small-margin-right"></span>Annuler
+																			</button>
+																		</div>	
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
 													<c:if test="${user.accountStatus == 'INACTIVE'}">
 													<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')">
 														<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
