@@ -282,16 +282,17 @@
 														<div class="display-table full-width full-height">
 															<div class="display-table-cell full-width full-height vertical-align">
 																<div>
-																	<div class="container util6-lighten2-bg inverted-text text-center">
+																	<div class="container util6-lighten2-bg inverted-text">
 																		<div class="margin-top text-h2">You are deleting this user !</div>
-																		<div class="container">
-																			<button class="default-btn-shape util6-primary-btn-style1 small-margin-right" ONCLICK="deleteUser('${user.id}')">
+																		<div class="container text-center">
+																			<button class="default-btn-shape util6-primary-btn-style1 small-margin-right radius" ONCLICK="deleteUser('${user.id}')">
 																				<span class="icon-checkmark small-margin-right"></span>Supprimer
-																			</button><!--
-																			 --><button class="default-btn-shape util2-primary-btn-style1 small-margin-left animating-event" data-action="close-event" data-animation="pop-event" data-target="deleteSecurityfor-${user.id}">
+																			</button>
+																			or
+																			<button class="default-btn-shape inverted-btn-style1 animating-event small-margin-left radius" data-action="close-event" data-animation="pop-event" data-target="deleteSecurityfor-${user.id}">
 																				<span class="icon-cross small-margin-right"></span>Annuler
 																			</button>
-																		</div>	
+																		</div>
 																	</div>
 																</div>
 															</div>
