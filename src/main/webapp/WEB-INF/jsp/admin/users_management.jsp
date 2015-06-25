@@ -129,9 +129,9 @@
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<h1 class="text-h2 container text-left inverted-text"><span class="icon-database margin-right"></span>Administration</h1>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree margin-right"></span>Administration des groupes</a>
-						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/users_management"/>"><span class="icon-users margin-right"></span>Administration des utilisateurs</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree margin-right"></span>Administration des groupes</a>
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>"><span class="icon-user-plus margin-right"></span>Inscrire un utilisateur</a>
 						<hr class="inverted-bg">

@@ -66,7 +66,7 @@
 				</li>
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="#" title="home">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="<c:url value="/"/>" title="home">
 						<span class="icon-home"></span>
 					</a>
 				</li>
@@ -86,7 +86,7 @@
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-btn-shape util6-primary-btn-style1" href="#" title="administration">
+					<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
 						<span class="icon-database small-margin-right"></span>Administration
 					</a>
 				</li>
