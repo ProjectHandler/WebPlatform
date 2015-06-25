@@ -4,7 +4,9 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -156,15 +158,22 @@ public class AdminController {
 				return "redirect:/accessDenied";
 		} else
 			return "redirect:/accessDenied";
-
+		Locale locale = Locale.FRANCE;
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
+			//check number of administrator
+			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
+				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
+				if (usersAdmin.size() <= 1)
+					return "KO:" + bundle.getString("projecthandler.admin.error.deleteAllAdmin");
+			}
 			user.setUserRole(UserRole.valueOf(role));
 			userService.updateUser(user);
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "KO";
+			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
 
@@ -176,15 +185,22 @@ public class AdminController {
 				return "redirect:/accessDenied";
 		} else
 			return "redirect:/accessDenied";
-
+		Locale locale = Locale.FRANCE;
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
+			//check number of administrator
+			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
+				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
+				if (usersAdmin.size() <= 1)
+					return "KO:" + bundle.getString("projecthandler.admin.error.deleteAllAdmin");
+			}
 			user.setAccountStatus(AccountStatus.valueOf(status));
 			userService.updateUser(user);
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "KO";
+			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
 
@@ -196,15 +212,22 @@ public class AdminController {
 				return "redirect:/accessDenied";
 		} else
 			return "redirect:/accessDenied";
-
+		Locale locale = Locale.FRANCE;
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
+			//check number of administrator
+			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
+				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
+				if (usersAdmin.size() <= 1)
+					return "KO:" + bundle.getString("projecthandler.admin.error.deleteAllAdmin");
+			}
 			tokenService.deleteTokenByUserId(user.getId());
 			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
 			return "OK";
 		} catch (Exception e) {
 			e.printStackTrace();
-			return "KO";
+			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
 

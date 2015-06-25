@@ -2,6 +2,7 @@ package fr.projecthandler.dao;
 
 import java.util.List;
 
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.User;
 
 public interface UserDao {
@@ -19,6 +20,8 @@ public interface UserDao {
 	public List<User> getAllUsers();
 	
 	public List<User> getAllActiveUsers();
+	
+	public List<User> getUsersByRole(UserRole userRole);
 
 	public User findUserByIdAndFetchProjects(Long userId);
 

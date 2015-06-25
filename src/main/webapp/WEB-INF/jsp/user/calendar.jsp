@@ -72,7 +72,7 @@
 			var start = convertTo24h(userDailyHour[0]);
 			var end = convertTo24h(userDailyHour[1]);
 			
-			//get businessDays from user, sunday = 0;
+			//get businessDays from user, strat at sunday = 0;
 			var userWorkDay = '${user.workDay}';
 			var workDay = [];
 			for (var i=0, n=userWorkDay.length;i<n;i++)
@@ -127,24 +127,22 @@
                             }
                             calendar.fullCalendar('unselect');
                         },
-                                editable: true,
-                                eventSources: [
-                                    {
-                                            url: CONTEXT_PATH+'/calendarDetails',
-                                            type: 'GET',
-                                            data: {
-                                                start: 'start',
-                                                end: 'end',
-                                                id: 'id',
-                                                title: 'title',
-                                                description: 'description'
-                                             //   allDay: 'allDay'
-                                            },
-                                            error: function () {
-                                                alert('there was an error while fetching events!');
-                                            }
-                                    }
-                            ],
+                editable: true,
+                eventSources: [{
+                            url: CONTEXT_PATH+'/calendarDetails',
+                            type: 'GET',
+                            data: {
+                                start: 'start',
+                                end: 'end',
+                                id: 'id',
+                                title: 'title',
+                                description: 'description'
+                             //   allDay: 'allDay'
+                            },
+                            error: function () {
+                                alert('there was an error while fetching events!');
+                            }
+                    }],
                         eventRender: function(event, element) { 
                             element.find('.fc-title').append("<br/>" + event.description != undefined ? event.description : ""); 
                         } 

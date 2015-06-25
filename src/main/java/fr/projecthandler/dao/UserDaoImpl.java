@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
 
@@ -54,6 +55,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	@Override
 	public List<User> getAllActiveUsers() {
 		return (List<User>)em.createQuery("SELECT u FROM User u WHERE u.accountStatus = 1").getResultList();
+	}
+	
+	@Override
+	public List<User> getUsersByRole(UserRole userRole) {
+		return (List<User>)em.createQuery("SELECT u FROM User u WHERE u.userRole = :userRole").setParameter("userRole", userRole).getResultList();
 	}
 	
 	@Override

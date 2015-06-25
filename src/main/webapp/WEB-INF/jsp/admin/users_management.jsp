@@ -44,7 +44,12 @@
 			function changeRole(item) {
 				var res = item.value.split("/");
 			  	$.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeRole", data: { userId: res[0], role: res[1] }, 
-			    	success: function(data) {if (data == "KO") alert("error");}, 
+			    	success: function(data) {
+			    		if (data.indexOf("KO:") != -1) {
+			    			var msg = data.replace("KO:", "");
+			    			alert(msg);
+			    		}
+			    	}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
@@ -53,9 +58,10 @@
 				var res = item.value.split("/");
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeStatus", data: { userId: res[0], status: res[1] }, 
 			    	success: function(data) {
-			    		if (data == "KO") 
-			    			alert("error");
-				    	else 
+			    		if (data.indexOf("KO:") != -1) {
+			    			var msg = data.replace("KO:", "");
+			    			alert(msg);
+			    		} else 
 			    			location.reload();}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
@@ -64,9 +70,10 @@
 			function deleteUser(user_id) {
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/delete", data: { userId: user_id}, 
 			    	success: function(data) {
-			    		if (data == "KO") 
-			    			alert("error"); 
-			    		else 
+			    		if (data.indexOf("KO:") != -1) {
+			    			var msg = data.replace("KO:", "");
+			    			alert(msg);
+			    		} else 
 			    			location.reload();}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });

@@ -2,6 +2,7 @@ package fr.projecthandler.service;
 
 import java.util.List;
 
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Group;
 import fr.projecthandler.model.User;
 
@@ -20,6 +21,8 @@ public interface UserService {
 	public List<User> getAllUsers();
 	
 	public List<User> getAllActiveUsers();
+	
+	public List<User> getUsersByRole(UserRole userRole);
 
 	public List<Group> getAllGroups();
 	

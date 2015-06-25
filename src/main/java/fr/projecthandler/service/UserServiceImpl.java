@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import fr.projecthandler.dao.AddressDao;
 import fr.projecthandler.dao.GroupDao;
 import fr.projecthandler.dao.UserDao;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Group;
 import fr.projecthandler.model.User;
 
@@ -58,6 +59,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<User> getAllActiveUsers() {
 		return userDao.getAllActiveUsers();
+	}
+	
+	@Override
+	public List<User> getUsersByRole(UserRole userRole) {
+		return userDao.getUsersByRole(userRole);
 	}
 	
 	@Override
