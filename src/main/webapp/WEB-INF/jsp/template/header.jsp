@@ -10,20 +10,12 @@
 
 <div class="">
 	<div class="small-padding-top theme1-primary-bg"></div>
-	<div class="container inverted-bg underlined theme3-lighten1-bdr clearfix">
-		<div class="float-left padding-right">
+	<div class="display-table full-width inverted-bg underlined theme3-lighten1-bdr">
+		<div class="display-table-cell container">
 			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png" class="default-img-p">
 		</div>
-		<div class="float-left fixedmaxwidth-320">
-			<div class="display-table-cell vertical-top full-width">
-				<input type="text" class="default-box-p surrounded small-container theme3-lighten1-bdr full-width" placeholder="Your research here ..."/>
-			</div>
-			<a class="display-table-cell vertical-align small-padding-left small-padding-right theme1-primary-btn-style6 theme3-lighten1-bg default-text text-h2 text-center" href="#" title="search">
-				<span class="icon-search"></span>
-			</a>
-		</div>
-		<div class="float-right">
-			<ul class="unstyled-list display-table no-margin-top no-margin-bottom">
+		<div class="display-table-cell container full-width clearfix">
+			<ul class="unstyled-list display-table no-margin-top no-margin-bottom float-right">
 				<!-- link -->
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">
@@ -100,8 +92,7 @@
 							</div>
 							<div class="display-table-cell vertical-align small-padding-left small-padding-right">
 								<sec:authorize access="isAuthenticated()">
-									<sec:authentication property="principal.firstName" /> 
-									<sec:authentication property="principal.lastName" />
+									<sec:authentication property="principal.firstName" />
 								</sec:authorize>
 							</div>
 						</div>
@@ -119,7 +110,7 @@
 										<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></h1>
 										<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
 									</sec:authorize>
-									<a class="default-btn-shape theme1-primary-btn-style1" href="#">
+									<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/signup"/>">
 										<span class="icon-user small-margin-right"></span>My profile
 									</a>
 								</div>
