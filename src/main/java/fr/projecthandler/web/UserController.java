@@ -230,6 +230,7 @@ public class UserController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				User u = userService.findUserById(userDetails.getId());
+				myModel.put("user", u);
 				List<User> users = new ArrayList<User>();
 				users.add(u);
 				

@@ -48,8 +48,8 @@
 			    		if (data.indexOf("KO:") != -1) {
 			    			var msg = data.replace("KO:", "");
 			    			alert(msg);
-			    		}
-			    	}, 
+			    		} else 
+			    			location.reload();}, 
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}

@@ -69,8 +69,7 @@ public class ProjectController {
 			User u = userService.findUserById(userDetails.getId());
 
 			myModel.put("user", u);
-			List<Project> projectList = projectService.getProjectsByUserId(u
-					.getId());
+			List<Project> projectList = projectService.getProjectsByUserId(u.getId());
 			myModel.put("projectList", projectList);
 		} else {
 			// TODO redirect to login
@@ -133,7 +132,7 @@ public class ProjectController {
 		try {
 			users = userService.getGroupUsersByGroupId(Long.parseLong(groupId));
 			String json = gson.toJson(users);
-			
+
 			return json;
 		} catch (Exception e) {
 			e.printStackTrace();
