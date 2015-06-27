@@ -14,17 +14,31 @@
 		$(document).ready(function() {
 			$('#email').autosize();
 			
+			$('#emailSelection').selectivity({
+			    inputType: 'Email',
+			    placeholder: '<spring:message code="projecthandler.signup.emailPlaceholder" />'
+			});
+			
+			
 			$("#btnSend").click(function(e) {
-				if (checkInput())
+				var emailList = $("#emailSelection").selectivity('data');
+				var res;
+				$.each(emailList, function f(i, val) {
+					res = val.text + ";";
+				});
+				$('#email').val(res);
+				
+				if (checkInput(emailList))
 					$.ajax({
 						type: "POST",
-						url:  CONTEXT_PATH+"/checkEmailExists?"+"email="+$("#email").val(),
+						url:  CONTEXT_PATH+"/checkEmailExists?"+"email="+res,
 						success: function(data) {
 							if(data == "OK"){
 								$("#emailOk").html('<spring:message javaScriptEscape="true" code="projecthandler.admin.sendMailService.sending"/>');
 								sendEmails();
 							}else{
 								$("#emailError").html(data);
+
 							}
 						}, error: function (xhr, ajaxOptions, thrownError) {
 							alert(xhr.responseText);
@@ -33,24 +47,27 @@
 			});
 		});
 		
-		
-		function checkInput() {
+		function checkInput(email) {
 			$("#emailError").html("");
+			var error = false;
 			
-			var email = $("#email").val();
+			
 			if (email == null || email.length == 0) {
 				$("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.inputEmpty"/>');
 				return false;
 			}
-			var pattern = new RegExp(/^[^<>%$]*$/);	
-			if (!pattern.test(email)) {
-				$("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.characterNotAllowed"/>');
-				document.getElementById("btnSend").disabled = true; 
-				return false;
-			} else {
-				document.getElementById("btnSend").disabled = false;
-				return true;
-			}
+			
+			var pattern = /\S+@\S+/;
+			$.each(email, function f(i, val) {
+				 if (!pattern.test(val.text)) {
+					 $("#emailError").html('<spring:message javaScriptEscape="true" code="projecthandler.admin.sendMailService.error.mail"/>: \"' + val.text + "\"");
+					 error = true;
+					 return;
+				 }
+			});
+				
+			document.getElementById("btnSend").disabled = error;
+			return !error;
 		}
 		
 		function sendEmails() {
@@ -85,17 +102,19 @@
 					<div class="full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
-								<h1 class="util1-primary-text float-left">Inscrire un utilisateur</h1>
+								<h1 class="util1-primary-text float-left"><spring:message code="projecthandler.admin.sendMailService"/></h1>
 								<div class="text-h1 float-right"><span class="icon-user-plus"></span></div>
 							</div>
 							<div>
 								<h2 class="small-margin-bottom"><spring:message code="projecthandler.admin.sendMailService.title"/></h2>
 								<div class="fixedmaxwidth-384">
+								<div style="width:40%" >
 									<form name="emailForm" id="emailForm" method="post" >
-										<textarea rows="3" name="email" id="email" maxlength="1024" onKeyUp="checkInput()" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your email here ..."></textarea>
+									<select id="emailSelection"></select>
 									</form>
-									<div class="util6-primary-text text-right" id="emailError"></div>
-									<div class="util3-primary-text text-right" id="emailOk"></div>
+								</div>
+								<div class="util6-primary-text text-right" id="emailError"></div>
+								<div class="util3-primary-text text-right" id="emailOk"></div>
 								</div>
 								<button id="btnSend" class="margin-top default-btn-shape util3-primary-btn-style1"><span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.sendMailService.send"/></button>						
 							</div>

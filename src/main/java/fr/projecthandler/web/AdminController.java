@@ -73,11 +73,11 @@ public class AdminController {
 			if (!emailValidator.validate(parsedMail[i])) {
 				errorMail.append("\"");
 				errorMail.append(parsedMail[i]);
-				errorMail.append("\";</br>");
+				errorMail.append("\";");
 			} else if (userService.getUserByEmail(parsedMail[i]) != null) {
-				errorMail.append("L'email :" + parsedMail[i] + " existe déjà.</br>");
+				errorMail.append("L'email :" + parsedMail[i] + " existe déjà.");
 			} else if (parsedMail.length > 1)
-				errorMail.append("L'email :" + parsedMail[i] + " est correcte.</br>");
+				errorMail.append("L'email :" + parsedMail[i] + " est correcte.");
 		}
 		if (errorMail.toString().length() > 18)
 			return errorMail.toString();
