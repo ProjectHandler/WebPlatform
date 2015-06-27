@@ -171,7 +171,7 @@
 				</tr>
 				<tr>
 					<td><label><spring:message code="projecthandler.project.edit.endDate" />:</label></td>
-						<fmt:formatDate value="${project.dateBegin}" var="dateEndString" pattern="yyyy-MM-dd" />
+						<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="yyyy-MM-dd" />
 					<td>
 						<form:input path="dateEnd" type="date" value="${dateEndString}" id="dateEnd"/>
 						<span class="error" id="dateEndError"></span>
