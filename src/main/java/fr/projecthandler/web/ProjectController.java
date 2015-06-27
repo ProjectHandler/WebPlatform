@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,9 +29,13 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.dto.ProjectProgressDTO;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
 
@@ -41,6 +46,9 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	TaskService taskService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -58,30 +66,41 @@ public class ProjectController {
 		});
 	}
 
-	@RequestMapping(value = "/project/projectHome", method = RequestMethod.GET)
-	public ModelAndView projectHome(HttpServletRequest request,
-			HttpServletResponse response, Principal principal) {
+	@RequestMapping(value = "/project/projectsList", method = RequestMethod.GET)
+	public ModelAndView projectHome(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		List<Project> projectList;
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		if (principal != null) {
-			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal)
-					.getPrincipal();
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
-
 			myModel.put("user", u);
-			List<Project> projectList = projectService.getProjectsByUserId(u.getId());
+			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
+				projectList = projectService.getAllProjects();
+			}
+			else {
+				projectList = projectService.getProjectsByUserId(u.getId());
+			}
 			myModel.put("projectList", projectList);
+			
+			List<ProjectProgressDTO> projectProgressList = new ArrayList<>();
+			for (Project p : projectList) {
+				p.setTasks(taskService.getTasksByProjectId(p.getId()));
+				projectProgressList.add(new ProjectProgressDTO(p));
+			}
+			
+			myModel.put("projectProgressList", projectProgressList);
 		} else {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied", null);
 		}
 
-		return new ModelAndView("project/projectHome", myModel);
+		return new ModelAndView("project/projectsList", myModel);
 	}
 
-	@RequestMapping(value = "/project/new", method = RequestMethod.GET)
-	public ModelAndView addProject(HttpServletRequest request,
-			HttpServletResponse response, Principal principal) {
+	// called when click on create new project
+	@RequestMapping(value = "/project/edit", method = RequestMethod.GET)
+	public ModelAndView addProject(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
 		// TODO vérifier que c'est un manager
@@ -90,41 +109,76 @@ public class ProjectController {
 			Project project = new Project();
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal)
 					.getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
 
 			project.setDateBegin(new Date());
 			project.setDateEnd(new Date());
 			myModel.put("project", project);
-			myModel.put("user", userService.findUserById(userDetails.getId()));
+			project.addUser(u);
+			myModel.put("user", u);
 			myModel.put("users", userService.getAllActiveUsers());
 			myModel.put("groups", userService.getAllNonEmptyGroups());
 		} else {
 			return new ModelAndView("redirect:" + "/");
 		}
 
-		return new ModelAndView("project/addProject", myModel);
+		return new ModelAndView("project/editProject", myModel);
+	}
+	
+	// call when click on corresponding edit button in projectList page
+	@RequestMapping(value = "/project/edit/{projectId}", method = RequestMethod.GET)
+	public ModelAndView editProject(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		Project project = projectService.findProjectById(projectId);
+		
+		if (project == null) {
+			// TODO not found
+			return new ModelAndView("redirect:/");
+		}
+		project.setUsers(projectService.getUsersByProjectId(project.getId()));
+		myModel.put("project", project);
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+		myModel.put("users", userService.getAllActiveUsers());
+		myModel.put("groups", userService.getAllNonEmptyGroups());
+		
+		return new ModelAndView("project/editProject", myModel);
 	}
 
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
-	public ModelAndView saveProject(Principal principal,
-			@ModelAttribute("project") Project project, BindingResult result) {
+	public ModelAndView saveProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
+		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+		
 		if (principal != null) {
-
-			long diff = project.getDateEnd().getTime()
-					- project.getDateBegin().getTime();
+			long diff = project.getDateEnd().getTime() - project.getDateBegin().getTime();
 			float duration = (float) diff / (24 * 60 * 60 * 1000);
 			project.setDuration((long) Math.floor(duration));
-			project.setProgress(0l);
-			project.setStatus("STATUS_ACTIVE");
 
-			projectService.saveProject(project);
-		} else {
-			return new ModelAndView("redirect:" + "/");
+			// project does not exist
+			if (project.getId() == null) {
+				project.setProgress(0l);
+				project.setStatus("STATUS_ACTIVE");
+				projectService.saveProject(project);
+			}
+			else { // project exists
+				Project p = projectService.findProjectById(project.getId());
+				project.setProgress(p.getProgress());
+				project.setStatus(p.getStatus());
+				projectService.updateProject(project);
+			}
 		}
+		else
+			return new ModelAndView("redirect:" + "/");
 
-		return new ModelAndView("redirect:" + "/project/projectHome");
+		return new ModelAndView("redirect:" + "/project/projectsList");
 	}
 	
 	// We chose to authorize adding inactive users via group.
+	// Called from edit project to fetch users of a given group
 	@RequestMapping(value = "project/fetchGroupUsers", method = RequestMethod.GET)
 	public @ResponseBody String fetchGroupUsers(Principal principal, @RequestParam("groupId") String groupId) {
 		List<User> users = new ArrayList<>();

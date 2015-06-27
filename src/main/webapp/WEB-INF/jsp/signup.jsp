@@ -25,7 +25,7 @@
 			
 			$("#btnSave").click(function(e) {
 				$("#emailError").html("");
-				if(checkDataBeforeSaveUser() && confirm("Etes-vous sûr de vouloir enregistrer vos données ?")) {
+				if(checkDataBeforeSaveUser() && confirm("Etes-vous sûr de vouloir enregistrer vos données ?")) { // TODO traduire
 					var workDayCheckboxes = document.querySelectorAll('input[name="workDayCheckboxes"]'), values = [];
 					var workDay = "";
 					for (var i=0, n=workDayCheckboxes.length;i<n;i++)
@@ -96,7 +96,7 @@
 			var fisrtName = $("#firstName").val();
 			$("#firstNameError").html("");
 			if((fisrtName == null || fisrtName.length == 0)){
-				$("#fisrtNameError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.firstName"/>');
+				$("#firstNameError").html('<spring:message javaScriptEscape="true" code="projecthandler.signup.error.firstName"/>');
 				return false;
 			}
 			return true;

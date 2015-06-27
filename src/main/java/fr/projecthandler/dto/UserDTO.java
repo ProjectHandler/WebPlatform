@@ -8,7 +8,6 @@ import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Address;
 import fr.projecthandler.model.Civility;
-import fr.projecthandler.model.Event;
 import fr.projecthandler.model.Group;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;

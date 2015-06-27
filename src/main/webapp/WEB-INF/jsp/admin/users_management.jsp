@@ -110,7 +110,7 @@
 				
 				$.ajax({type: "GET", url: url, data: { userId: userId, groupId: groupId, action: action}, 
 			    	success: function(data) {
-			    		if (data == "KO") 
+			    		if (data == "KO")
 			    			alert("error");
 			    	},
 			    	error: function(data) {alert("error: " + data);}
@@ -135,7 +135,7 @@
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>"><span class="icon-user-plus margin-right"></span>Inscrire un utilisateur</a>
 						<hr class="inverted-bg">
-					</sec:authorize>	
+					</sec:authorize>
 					</div>
 				</div>
 				<div class="position-relative display-table-cell full-width full-height">
