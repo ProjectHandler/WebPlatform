@@ -53,7 +53,7 @@ public class GanttTaskDTO {
 		this.assigs = new ArrayList<GanttAssigsDTO>();
 		this.depends = "";
 		this.description = project.getDescription();
-		this.progress = 0l;
+		this.progress = project.getProgress();
 	}
 	
 	public GanttTaskDTO(Task task) {

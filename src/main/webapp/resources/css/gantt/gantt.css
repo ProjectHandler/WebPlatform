@@ -638,3 +638,11 @@ input[readonly]{
   }
 
 }
+
+/* Change selectivity setting*/
+
+.selectivity-multiple-selected-item-remove:hover{
+    color: #000;
+    cursor: pointer;
+    text-decoration: none;
+}
