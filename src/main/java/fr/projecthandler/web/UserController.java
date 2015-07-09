@@ -347,7 +347,7 @@ public class UserController {
 						// resize image
 						file = Utilities.resizeImage(file, 200, 200);
 						// save user
-						user.setAvatarFileName(fileName);
+						user.setAvatarFileName(path + "/users/avatars/" + fileName);
 						user.setAvatarBase64(Base64.encodeBase64String(FileUtils.readFileToByteArray(file)));
 						userService.updateUser(user);
 					} else {
