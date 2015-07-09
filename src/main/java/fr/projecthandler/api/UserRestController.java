@@ -1,11 +1,11 @@
 package fr.projecthandler.api;
 
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 import javax.validation.Valid;
 
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -26,15 +25,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
-import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.TokenService;
@@ -61,7 +59,7 @@ public class UserRestController {
 	private UserDetailsService customUserDetailsService;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-	public ResponseEntity<String> authenticate(
+	public @ResponseBody Object authenticate(
 			@RequestParam("email") String email,
 			@RequestParam("password") String password) {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
@@ -98,8 +96,20 @@ public class UserRestController {
 			tokenService.saveToken(token);
 		}
 
-		return new ResponseEntity<String>("{\"token\":" + token.getToken()
-				+ "}", HttpStatus.OK);
+		/*
+		 * return new ResponseEntity<String>("{\"token\":" + token.getToken() +
+		 * "}", HttpStatus.OK);
+		 */
+		try {
+			ObjectWriter ow = new ObjectMapper().writer()
+					.withDefaultPrettyPrinter();
+			String json = ow.writeValueAsString(token.getToken());
+			return new JsonParser().parse(json);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
