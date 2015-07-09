@@ -47,3 +47,7 @@ ALTER TABLE `users` ADD `avatar_base_64` LONGTEXT CHARACTER SET utf8 COLLATE utf
 
 -- Change rule for level in task (09/07/2015)
 UPDATE `task` SET `level` = `level` + 1
+
+-- ADD row column for in task (09/07/2015)
+ALTER TABLE `task` ADD `row` bigint(20) DEFAULT NULL;ALTER TABLE `users` ADD `avatar_base_64` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
