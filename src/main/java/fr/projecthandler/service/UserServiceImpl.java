@@ -73,13 +73,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public List<Group> getAllNonEmptyGroups() {
-		List<Group> nonEmptyGroups = new ArrayList<Group>();
-		List<Group> groups = groupDao.getAllGroups();
-		
-		for(Group g : groups)
-			if (!g.getUsers().isEmpty())
-				nonEmptyGroups.add(g);
-		return nonEmptyGroups;
+		return groupDao.getAllNonEmptyGroups();
 	}
 	
 	@Override

@@ -110,7 +110,7 @@ public class AdminController {
 			return "redirect:/accessDenied";
 
 		String email = request.getParameter("email");
-		String[] parsedMail = email.split("[,; ]");
+		String[] parsedMail = email.split(";");
 
 		// for each mail
 		for (int i = 0; i < parsedMail.length; i++) {

@@ -41,6 +41,11 @@ public class GroupDaoImpl extends AbstractDao implements GroupDao {
 	public List<Group> getAllGroups() {
 		return (List<Group>)em.createQuery("SELECT g FROM Group g").getResultList();
 	}
+	
+	@Override
+	public List<Group> getAllNonEmptyGroups() {
+		return (List<Group>)em.createQuery("SELECT g FROM Group g WHERE size(g.users) > 0").getResultList();
+	}
 
 	@Override
 	public Group findGroupByName(String name) {

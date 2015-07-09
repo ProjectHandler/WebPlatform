@@ -16,6 +16,8 @@ public interface GroupDao {
 	public Group findGroupById(Long groupId);
 
 	public List<Group> getAllGroups();
+	
+	public List<Group> getAllNonEmptyGroups();
 
 	public Group findGroupByName(String name);
 	

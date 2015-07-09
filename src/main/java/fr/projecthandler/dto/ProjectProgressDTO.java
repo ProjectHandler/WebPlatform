@@ -3,6 +3,7 @@ package fr.projecthandler.dto;
 import java.util.Date;
 import java.util.Set;
 
+import fr.projecthandler.enums.TaskLevel;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 
@@ -36,11 +37,16 @@ public class ProjectProgressDTO {
 	private void computeTaskProgress(Set<Task> tasks) {
 		if (!tasks.isEmpty()) {
 			double count = 0;
+			double done = 0;
 			for (Task t : tasks) {
-				if (t.getStatus().equals("STATUS_DONE"))
+				if (t.getLevel() == TaskLevel.TASK.getId()) {
 					count++;
+					if (t.getStatus().equals("STATUS_DONE"))
+						done++;
+				}
+				
 			}
-			this.tasksProgress = (int)Math.round((count / tasks.size()) * 100);
+			this.tasksProgress = (int)Math.round((done / count) * 100);
 		}
 		else
 			this.tasksProgress = 100;

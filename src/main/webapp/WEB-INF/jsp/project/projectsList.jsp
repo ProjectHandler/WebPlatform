@@ -9,7 +9,7 @@
 		<jsp:include page="../template/head.jsp" />
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tablesorter.2.0.5.min.js"></script>
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/ticket/tablesorter.css">
-		<title>Mes projets</title>
+		<title><spring:message code="projecthandler.projectsList.title"/></title>
 		<script type="text/javascript">
 		$(document).ready(function(){
 			
