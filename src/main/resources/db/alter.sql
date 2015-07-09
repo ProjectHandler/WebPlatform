@@ -44,3 +44,6 @@ ALTER TABLE `users` ADD `daily_hour` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8
 -- ADD avatar field for table 'users' (18/06/2015)
 ALTER TABLE `users` ADD `avatar_file_name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
 ALTER TABLE `users` ADD `avatar_base_64` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
+
+-- Change rule for level in task (09/07/2015)
+UPDATE `task` SET `level` = `level` + 1

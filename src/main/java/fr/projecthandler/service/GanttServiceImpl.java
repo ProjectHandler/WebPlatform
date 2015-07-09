@@ -71,7 +71,7 @@ public class GanttServiceImpl implements GanttService {
 			for (Task t : tasks) {
 				rowId.put(t.getId(), row);
 				++row;
-			}	
+
 			
 			for (Task t : tasks) {
 				GanttTaskDTO gt = new GanttTaskDTO(t);
@@ -152,7 +152,8 @@ public class GanttServiceImpl implements GanttService {
 				Task t = new Task(taskDTO);
 				t.setProject(newProject);
 				t.setUsers(saveUsersOnTask(taskDTO));
-	
+				t.setRow((long) (row + 1));
+
 				if (taskDTO.getId().startsWith("tmp")) {
 					taskService.saveTask(t);
 					taskDTO.setId(t.getId().toString());

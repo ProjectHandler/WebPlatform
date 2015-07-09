@@ -12,7 +12,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import fr.projecthandler.dto.GanttTaskDTO;
 
@@ -50,8 +49,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;
 
-	//@Column(name = "row")
-	@Transient
+	@Column(name = "row")
 	private Long row;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -72,7 +70,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 		this.name = taskDTO.getName();
 		this.progress = taskDTO.getProgress();
 		this.description = taskDTO.getDescription();
-		this.level = taskDTO.getLevel() - 1;
+		this.level = taskDTO.getLevel();
 		this.duration = taskDTO.getDuration();
 		this.startingDate = new Date(taskDTO.getStart());
 		this.endingDate = new Date(taskDTO.getEnd());

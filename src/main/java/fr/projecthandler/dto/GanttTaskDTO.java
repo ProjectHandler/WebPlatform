@@ -60,7 +60,7 @@ public class GanttTaskDTO {
 		this.id = "task_" + task.getId().toString();
 		this.name = task.getName();
 		this.code = "";
-		this.level = task.getLevel() + 1;
+		this.level = task.getLevel();
 		this.status = task.getStatus();
 		this.canWrite = true;
 		this.start = task.getStartingDate() == null ? 0 : task.getStartingDate().getTime();

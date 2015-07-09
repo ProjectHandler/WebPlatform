@@ -1,6 +1,7 @@
 package fr.projecthandler.dao;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,16 +41,16 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
 	@Override
 	public Set<Task> getTasksByProjectId(Long projectId) {
-		Set<Task> result = new HashSet<Task>();
-		result.addAll(em.createQuery("SELECT t FROM Task t WHERE t.project.id = :projectId").setParameter("projectId", projectId).getResultList());
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
+		result.addAll(em.createQuery("SELECT t FROM Task t WHERE t.project.id = :projectId ORDER BY t.row ASC").setParameter("projectId", projectId).getResultList());
 		return result;
 	}
 	
 	@Override
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId){
-		Set<Task> result = new HashSet<Task>();
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(
-				em.createQuery("SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :projectId ")
+				em.createQuery("SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :projectId ORDER BY t.row asc")
 				.setParameter("projectId", projectId).getResultList());
 		return result;
 	}
