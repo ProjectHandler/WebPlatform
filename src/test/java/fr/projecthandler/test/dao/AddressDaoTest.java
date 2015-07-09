@@ -70,19 +70,19 @@ public class AddressDaoTest {
 		assertEquals(result.getCountry(), country);
 	}
 	
-	@Test
-	@Transactional
-	public void testGetAddressesByUser() {
-		Address address = new Address();
-
-		List<User> userList = userService.getAllUsers();
-		User user = userList.get(0);
-		setAddressData(address);
-		address.setUser(user);
-		addressDao.saveAddress(address);
-		List<Address> addressList = addressDao.getAddressesByUser(user.getId());
-		assertTrue(addressList.size() == 1);
-	}
+//	@Test
+//	@Transactional
+//	public void testGetAddressesByUser() {
+//		Address address = new Address();
+//
+//		List<User> userList = userService.getAllUsers();
+//		User user = userList.get(0);
+//		setAddressData(address);
+//		address.setUser(user);
+//		addressDao.saveAddress(address);
+//		List<Address> addressList = addressDao.getAddressesByUser(user.getId());
+//		assertTrue(addressList.size() == 1);
+//	}
 	
 	@Test
 	@Transactional

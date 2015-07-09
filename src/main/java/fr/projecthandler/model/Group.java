@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import fr.projecthandler.annotation.ApiExclude;
+
 @Entity
 @Table(name = "groups")
 public class Group extends BaseEntity implements java.io.Serializable {
@@ -19,6 +21,7 @@ public class Group extends BaseEntity implements java.io.Serializable {
 	@Column(name = "name", length=50)
 	private String name;
 
+	@ApiExclude
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;

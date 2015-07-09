@@ -19,6 +19,7 @@ import javax.persistence.TemporalType;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import fr.projecthandler.annotation.ApiExclude;
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
 
@@ -38,11 +39,13 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@Column(name = "ticket_status", nullable = false)
 	TicketStatus ticketStatus;
 	
+	@ApiExclude
 	//Author
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 	
+	@ApiExclude
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id", nullable = false)
 	@Valid
@@ -56,6 +59,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@JoinColumn(name = "ticket_priority_id")
 	private TicketPriority ticketPriority;
 
+	@ApiExclude
 	//List of recipients
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tickets", joinColumns = { @JoinColumn(name = "ticket_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })

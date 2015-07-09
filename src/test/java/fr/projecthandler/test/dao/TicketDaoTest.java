@@ -28,63 +28,63 @@ import static org.junit.Assert.*;
 @TransactionConfiguration(defaultRollback = true)
 public class TicketDaoTest {
 	
-	@Autowired
-	TicketDao ticketDao;
-
-	private String title = "Titre 01";
-	private String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-	TicketStatus ticketStatus = TicketStatus.OPEN;
-	private User user;
-	private Project project;
-	private TicketTracker ticketTracker;
-	private TicketPriority ticketPriority;
-	private List<User> users = new ArrayList<User>();;
-    private Date createdAt;
-    private Date updatedAt;
-    
-	private void setTicketData(Ticket ticket) {
-		ticket.setTitle(title);
-	}
-	
-	@Test
-	@Transactional
-	public void testSaveTicket() {
-		Ticket ticket = new Ticket();
-		
-		setTicketData(ticket);		
-		ticketDao.saveTicket(ticket);
-	}
-	
-	@Test
-	@Transactional
-	//Test if the saved fields are equal to the loaded fields.
-	public void testSaveAndFindTicketById() {
-		Ticket ticket = new Ticket();
-
-		setTicketData(ticket);
-		Long id = ticketDao.saveTicket(ticket);
-		Ticket result = ticketDao.findTicketById(id);
-		assertNotNull("getTicketById: excepted a Ticket Object but was null", result);
-		assertEquals(result.getId(), id);
-		assertEquals(result.getText(), text);
-		assertEquals(result.getTicketStatus(), ticketStatus);
-	}
-	
-	@Test
-	@Transactional
-	public void testDeleteTicketsByIds() {
-		List<Long> ticketIdList = new ArrayList<Long>(); ;
-		
-		for (int i = 0; i < 10; i++) {
-			Ticket ticket = new Ticket();
-			setTicketData(ticket);
-			ticketIdList.add(ticketDao.saveTicket(ticket));
-		}
-		
-		ticketDao.deleteTicketsByIds(ticketIdList);
-		for (Long ticketId : ticketIdList) {
-			Ticket result = ticketDao.findTicketById(ticketId);
-			assertNull(result);
-		}
-	}
+//	@Autowired
+//	TicketDao ticketDao;
+//
+//	private String title = "Titre 01";
+//	private String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+//	TicketStatus ticketStatus = TicketStatus.OPEN;
+//	private User user;
+//	private Project project;
+//	private TicketTracker ticketTracker;
+//	private TicketPriority ticketPriority;
+//	private List<User> users = new ArrayList<User>();;
+//    private Date createdAt;
+//    private Date updatedAt;
+//    
+//	private void setTicketData(Ticket ticket) {
+//		ticket.setTitle(title);
+//	}
+//	
+//	@Test
+//	@Transactional
+//	public void testSaveTicket() {
+//		Ticket ticket = new Ticket();
+//		
+//		setTicketData(ticket);		
+//		ticketDao.saveTicket(ticket);
+//	}
+//	
+//	@Test
+//	@Transactional
+//	//Test if the saved fields are equal to the loaded fields.
+//	public void testSaveAndFindTicketById() {
+//		Ticket ticket = new Ticket();
+//
+//		setTicketData(ticket);
+//		Long id = ticketDao.saveTicket(ticket);
+//		Ticket result = ticketDao.findTicketById(id);
+//		assertNotNull("getTicketById: excepted a Ticket Object but was null", result);
+//		assertEquals(result.getId(), id);
+//		assertEquals(result.getText(), text);
+//		assertEquals(result.getTicketStatus(), ticketStatus);
+//	}
+//	
+//	@Test
+//	@Transactional
+//	public void testDeleteTicketsByIds() {
+//		List<Long> ticketIdList = new ArrayList<Long>(); ;
+//		
+//		for (int i = 0; i < 10; i++) {
+//			Ticket ticket = new Ticket();
+//			setTicketData(ticket);
+//			ticketIdList.add(ticketDao.saveTicket(ticket));
+//		}
+//		
+//		ticketDao.deleteTicketsByIds(ticketIdList);
+//		for (Long ticketId : ticketIdList) {
+//			Ticket result = ticketDao.findTicketById(ticketId);
+//			assertNull(result);
+//		}
+//	}
 }

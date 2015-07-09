@@ -16,6 +16,7 @@ import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
 
+import fr.projecthandler.annotation.ApiExclude;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 
@@ -45,6 +46,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	@Column(name = "address")
+	@ApiExclude
 	private Set<Address> address = new HashSet<Address>(0);
 
 	@Column(name = "email", length = 50)
@@ -54,6 +56,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	private String phone;
 	
 	@Column(name = "mobile_phone", length = 10)
+	@ApiExclude
 	private String mobilePhone;
 	
 	@Column(name = "account_status")
@@ -75,10 +78,12 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
 
+	@ApiExclude
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") })
 	private List<Project> projects;
 	
+	@ApiExclude
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") })
 	private List<Task> tasks;

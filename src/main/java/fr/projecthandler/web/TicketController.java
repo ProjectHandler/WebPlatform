@@ -82,6 +82,10 @@ public class TicketController {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied");
 		}
+		if (result.hasErrors()) {
+			//TODO redirect
+			return new ModelAndView("redirect:/");
+        }
 		// TODO check des permissions, check si les ID sont valides
 		User user = userService.findUserById(userDetails.getId());
 		ticket.setUser(user);

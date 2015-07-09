@@ -35,7 +35,9 @@ public class UserDaoTest {
 	private String email = "robert.dupont478@yopmail.com";
 	private String phone = "0142215886";
 	private String mobilePhone = "0654422187";
+	private String dailyHour = "09:00pm - 10:00pm";
 	private AccountStatus accountStatus = AccountStatus.ACTIVE;
+	private String workDay = "ttttttf";
 	//private List<Group> groups;
 
 	private void setUserData(User user) {
@@ -47,6 +49,8 @@ public class UserDaoTest {
 		user.setPhone(phone);
 		user.setMobilePhone(mobilePhone);
 		user.setAccountStatus(accountStatus);
+		user.setDailyHour(dailyHour);
+		user.setWorkDay(workDay);
 	}
 	
 	@Test
