@@ -176,7 +176,12 @@
 											<a href="#" class="cover-btn-shape default-btn-style5 zindex-10" ONCLICK="showModal(${user.id})"></a>
 											<div class="display-table-cell"><div class="fixedwidth-64 fixedheight-64"></div></div>
 											<div class="position-absolute position-top position-left fixedwidth-64 fixedheight-64 default-bg">
-												<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+												<c:if test="${user.avatarFileName != null}">
+ 													<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${user.id});"></div>
+												</c:if>
+												<c:if test="${user.avatarFileName == null}">
+ 													<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+												</c:if>
 											</div>
 											<div class="display-table-cell full-width vertical-align small-container padding-left padding-right">
 												<div class="">
@@ -209,8 +214,13 @@
 												</button>
 											 	<div class="display-inline-block container">
 													<div class="display-table-cell padding-right">
-														<div class="fixedwidth-128 fixedheight-128 default-bg circle">
-															<div class="full-width full-height img-as-background circle" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+														<div class="fixedwidth-128 fixedheight-128 circle">
+															<c:if test="${user.avatarFileName != null}">
+			 													<div class="full-width full-height img-as-background circle" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${user.id});"></div>
+															</c:if>
+															<c:if test="${user.avatarFileName == null}">
+			 													<div class="full-width full-height img-as-background circle" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+															</c:if>
 														</div>
 													</div>
 													<div class="display-table-cell padding-left vertical-align text-left">
