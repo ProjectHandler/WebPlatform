@@ -43,7 +43,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
 		CustomUserDetails userDetails = new CustomUserDetails(user.getId(), user.getEmail(), user.getPassword(), enabled, accountNonExpired, 
 				credentialsNonExpired, accountNonLocked, getAuthorities(user), user.getFirstName(),
-				user.getLastName(), user.getAccountStatus(), user.getUserRole(), user.getAvatarBase64());
+				user.getLastName(), user.getAccountStatus(), user.getUserRole(), user.getAvatarFileName());
 
 		return userDetails;
 	}

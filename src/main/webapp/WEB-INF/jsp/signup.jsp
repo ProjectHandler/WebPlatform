@@ -338,7 +338,7 @@
 						<tr style="width: 100%">
 						<td width="50%">
 							<c:choose>
-								<c:when test="${user.avatarBase64 != null}">
+								<c:when test="${user.avatarFileName != null}">
 									<div id="divAvatarImage" style="margin-left: auto; margin-right: auto; padding: 20px; width: 400px; border-radius: 3px;">
 										<img id="userAvatar" width="200px" alt="avatar" src="<%=request.getContextPath() %>/downloadAvatar/${user.id}"/>
 									</div>

@@ -20,10 +20,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -329,7 +327,6 @@ public class UserController {
 				File file = new File(directory, user.getAvatarFileName());
 				file.delete();
 				user.setAvatarFileName(null);
-				user.setAvatarBase64(null);
 				userService.updateUser(user);
 			} else {
 				BufferedOutputStream out = null;
@@ -343,19 +340,15 @@ public class UserController {
 					}
 					// save avatar
 					file = new File(directory, fileName);
-					out = new BufferedOutputStream(new FileOutputStream(file));
-					out.write(avatar.getBytes());
-					if (out != null) {
-						out.close();
-					}
 					String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 					if (mimeType.equals("image/jpeg") || mimeType.equals("image/pjpeg") || mimeType.equals("image/x-png")
 					|| mimeType.equals("image/png") || mimeType.equals("image/gif")) {
-						// resize image
-						file = Utilities.resizeImage(file, 200, 200);
-						// save user
+						out = new BufferedOutputStream(new FileOutputStream(file));
+						out.write(avatar.getBytes());
+						if (out != null) {
+							out.close();
+						}
 						user.setAvatarFileName(fileName);
-						user.setAvatarBase64(Base64.encodeBase64String(FileUtils.readFileToByteArray(file)));
 						userService.updateUser(user);
 					} else {
 

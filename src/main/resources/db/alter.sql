@@ -51,3 +51,6 @@ UPDATE `task` SET `level` = `level` + 1;
 -- ADD row column for in task (09/07/2015)
 ALTER TABLE `task` ADD `row` bigint(20) DEFAULT NULL;
 
+-- drop row in users (10/07/2015)
+ALTER TABLE `users` DROP `avatar_base_64`;
+

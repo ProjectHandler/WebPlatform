@@ -17,7 +17,7 @@ public class CustomUserDetails implements UserDetails {
 	private String password;
 	private String firstName;
 	private String lastName;
-	private String avatarBase64;
+	private String avatarFileName;
 	private String username;
 	//private String fullname;
 	private boolean accountNonExpired;
@@ -28,7 +28,7 @@ public class CustomUserDetails implements UserDetails {
 	private UserRole userRole;
 
 	public CustomUserDetails(Long id, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, AccountStatus accountStatus, UserRole userRole, String avatarBase64) {
+			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, AccountStatus accountStatus, UserRole userRole, String avatarFileName) {
 		this.id = id;
 		this.authorities = authorities;
 		this.accountNonExpired = accountNonExpired;
@@ -38,7 +38,7 @@ public class CustomUserDetails implements UserDetails {
 		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.avatarBase64 = avatarBase64;
+		this.avatarFileName = avatarFileName;
 		this.username = username;
 		this.accountStatus = accountStatus;
 		this.setUserRole(userRole);
@@ -80,8 +80,8 @@ public class CustomUserDetails implements UserDetails {
 		return lastName;
 	}
 
-	public String getAvatarBase64() {
-		return avatarBase64;
+	public String getAvatarFileName() {
+		return avatarFileName;
 	}
 
 	@Override
