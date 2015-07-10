@@ -71,7 +71,7 @@ public class GanttServiceImpl implements GanttService {
 			for (Task t : tasks) {
 				rowId.put(t.getId(), row);
 				++row;
-
+			}
 			
 			for (Task t : tasks) {
 				GanttTaskDTO gt = new GanttTaskDTO(t);
