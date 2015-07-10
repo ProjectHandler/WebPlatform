@@ -46,7 +46,7 @@ ALTER TABLE `users` ADD `avatar_file_name` VARCHAR(100) CHARACTER SET utf8 COLLA
 ALTER TABLE `users` ADD `avatar_base_64` LONGTEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
 
 -- Change rule for level in task (09/07/2015)
-UPDATE `task` SET `level` = `level` + 1
+UPDATE `task` SET `level` = `level` + 1;
 
 -- ADD row column for in task (09/07/2015)
 ALTER TABLE `task` ADD `row` bigint(20) DEFAULT NULL;
