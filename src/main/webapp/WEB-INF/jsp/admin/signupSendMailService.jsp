@@ -110,6 +110,7 @@
 								<div class="fixedmaxwidth-384">
 								<div style="width:40%" >
 									<form name="emailForm" id="emailForm" method="post" >
+									<input type="hidden" name="email" id="email"/>
 									<select id="emailSelection"></select>
 									</form>
 								</div>

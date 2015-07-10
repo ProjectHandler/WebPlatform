@@ -119,6 +119,8 @@ public class AdminController {
 			user.setEmail(parsedMail[i]);
 			user.setAccountStatus(AccountStatus.INACTIVE);
 			user.setUserRole(UserRole.ROLE_SIMPLE_USER);
+			user.setDailyHour("09:00 AM - 05:00 PM");
+			user.setWorkDay("tttttff");
 			userService.saveUser(user);
 
 			// Handle Token
