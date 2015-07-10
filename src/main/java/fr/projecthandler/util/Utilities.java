@@ -2,15 +2,20 @@ package fr.projecthandler.util;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+
+import org.apache.commons.io.IOUtils;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
+
 import javax.persistence.Query;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class Utilities {
 
@@ -54,5 +59,26 @@ public class Utilities {
 		}
 
 		return fileOutput;
+	}
+	
+	public static void writeFileAsResponseStream(File file, HttpServletResponse response) {
+		if (file != null) {
+			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+
+			FileInputStream in = null;
+			try {
+				in = new FileInputStream(file);
+				IOUtils.copy(in, response.getOutputStream());
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+		}
 	}
 }

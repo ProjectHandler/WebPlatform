@@ -67,7 +67,7 @@ import fr.projecthandler.util.Utilities;
 
 @Controller
 public class UserController {
-
+	
 	@Autowired
 	UserService					userService;
 
@@ -307,12 +307,19 @@ public class UserController {
 		return new ModelAndView("user/calendar", myModel);
 	}
 	
+	@RequestMapping(value = "/downloadAvatar/{userId}", method = RequestMethod.GET)
+	public void downloadAvatar(@PathVariable Long userId, HttpServletResponse response) {
+		File avatarFile = userService.getUserAvatarFile(userId);
+		Utilities.writeFileAsResponseStream(avatarFile, response);
+	}
+	
 	@RequestMapping(value = "/saveAvatar", method = RequestMethod.POST)
 	public String saveAvatar(Principal principal, @RequestParam MultipartFile avatar) throws Exception {
 		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 		Configuration config = new PropertiesConfiguration("spring/path.properties");
 		String path = config.getString("folder.path");
-		File directory = new File(new File(path, "users"), "avatars");
+
+		File directory = new File(new File(path, "users" + Long.toString(userDetails.getId())), "avatars");
 		if (!directory.exists())
 			directory.mkdirs();
 		User user = userService.findUserById(userDetails.getId());

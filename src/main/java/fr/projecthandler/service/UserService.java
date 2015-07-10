@@ -1,5 +1,6 @@
 package fr.projecthandler.service;
 
+import java.io.File;
 import java.util.List;
 
 import fr.projecthandler.enums.UserRole;
@@ -39,5 +40,7 @@ public interface UserService {
 	public User findUserByIdAndFetchProjects(Long userId);
 	
 	public List<User> getGroupUsersByGroupId(Long groupId);
+	
+	public File getUserAvatarFile(Long userId);
 
 }

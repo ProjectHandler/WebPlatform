@@ -340,7 +340,7 @@
 							<c:choose>
 								<c:when test="${user.avatarBase64 != null}">
 									<div id="divAvatarImage" style="margin-left: auto; margin-right: auto; padding: 20px; width: 400px; border-radius: 3px;">
-										<img id="userAvatar" width="200px" alt="avatar" src="data:image/jpeg;base64,${user.avatarBase64}"/>
+										<img id="userAvatar" width="200px" alt="avatar" src="<%=request.getContextPath() %>/downloadAvatar/${user.id}"/>
 									</div>
 									<div class="divButton" style="width: 73px;">
 										<button id="deleteAvatarButton" class="btn btn-primary btn-xs right" onClick='deleteAvatar();return false;'>
