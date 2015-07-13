@@ -1,11 +1,7 @@
 package fr.projecthandler.api;
 
-import java.io.IOException;
-
 import javax.validation.Valid;
 
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -28,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.AccountStatus;
@@ -96,20 +91,8 @@ public class UserRestController {
 			tokenService.saveToken(token);
 		}
 
-		/*
-		 * return new ResponseEntity<String>("{\"token\":" + token.getToken() +
-		 * "}", HttpStatus.OK);
-		 */
-		try {
-			ObjectWriter ow = new ObjectMapper().writer()
-					.withDefaultPrettyPrinter();
-			String json = ow.writeValueAsString(token.getToken());
-			return new JsonParser().parse(json);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		return new ResponseEntity<String>("{\"token\":" + token.getToken()
+				+ "}", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
