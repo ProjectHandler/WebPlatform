@@ -23,4 +23,10 @@ public interface TaskService {
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 	
 	public List<User> getUsersByTaskId(Long taskId);
+	
+	public Set<Task> getYesterdayTasksByUser(Long userId);
+	
+	public Set<Task> getTodayTasksByUser(Long userId);
+	
+	public Set<Task> getTomorrowTasksByUser(Long userId);
 }

@@ -26,32 +26,32 @@
 						</div>
 						<div class="display-table-cell vertical-align full-width">
 							<div class="fixedmaxwidth-384 margin-auto">
-								<h1 class="margin-bottom padding-bottom util1-primary-text">Sign In</h1>
+								<h1 class="margin-bottom padding-bottom util1-primary-text"><spring:message code="projecthandler.login.signIn"/></h1>
 
 								<form name='f' action="j_spring_security_check" method="post">
 								
 									<label>
 										<div class="padding-bottom position-relative">
-											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Email :</h2>
-											<input type="email" name="j_username" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="Enter your email" required/>
+											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.login.email"/>:</h2>
+											<input type="email" name="j_username" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="<spring:message code="projecthandler.login.typeEmail"/>" required/>
 											<c:if test="${Message != null}">
 												<p name="error-tag" class="position-absolute position-bottom position-right util5-primary-text">
-												<span class="icon-cancel-circle"></span> Invalid</p>
+												<span class="icon-cancel-circle"></span><spring:message code="projecthandler.login.invalid"/></p>
 											</c:if>	
 										</div>
 									</label>
 									<label>
 										<div class="padding-bottom position-relative">
-											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span>Password :</h2>
-											<input type="password" name="j_password" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="Password" required/>
+											<h2 class="small-margin-bottom text-h3"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.login.password"/>:</h2>
+											<input type="password" name="j_password" class="default-btn-shape theme3-lighten1-bdr display-block full-width" placeholder="<spring:message code="projecthandler.login.typePassword"/>" required/>
 											<c:if test="${Message != null}">
 												<p name="error-tag" class="position-absolute position-bottom position-right util5-primary-text">
-												<span class="icon-cancel-circle"></span> Invalid</p>
+												<span class="icon-cancel-circle"></span><spring:message code="projecthandler.login.invalid"/></p>
 											</c:if>
 										</div>
 									</label>
-									<button name="submit" type="submit" class="default-btn-shape theme1-primary-btn-style1 display-block text-center margin-top margin-bottom  full-width">Login</button>
-									<div class="text-center"><a class="display-inline-block default-btn-shape default-btn-style5" href="#">Forgot your password ?</a></div>
+									<button name="submit" type="submit" class="default-btn-shape theme1-primary-btn-style1 display-block text-center margin-top margin-bottom  full-width"><spring:message code="projecthandler.login.login"/></button>
+									<div class="text-center"><a class="display-inline-block default-btn-shape default-btn-style5" href="#"><spring:message code="projecthandler.login.forgotPassword"/>?</a></div>
 								</form>
 
 							</div>

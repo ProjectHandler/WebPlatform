@@ -16,4 +16,10 @@ public interface EventDao {
 	public Event findEventById(Long eventId);
 
 	public Set<Event> getEventsByUser(Long userId);
+
+	public Set<Event> getYesterdayEventsByUser(Long userId);
+
+	public Set<Event> getTodayEventsByUser(Long userId);
+
+	public Set<Event> getTomorrowEventsByUser(Long userId);
 }

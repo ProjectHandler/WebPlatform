@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.Task;
 
 public interface EventService {
 	public Long saveEvent(Event newEvent);
@@ -15,4 +16,10 @@ public interface EventService {
 	public void deleteEventsByIds(List<Long> EventsIdsList);
 
 	public Set<Event> getEventsByUser(Long userId);
+	
+	public Set<Event> getYesterdayEventsByUser(Long userId);
+	
+	public Set<Event> getTodayEventsByUser(Long userId);
+	
+	public Set<Event> getTomorrowEventsByUser(Long userId);
 }

@@ -15,9 +15,6 @@
 			
 			$("#projectTable").tablesorter();
 			
-			
-			  
-		    
 		});
 		</script>
 	</head>

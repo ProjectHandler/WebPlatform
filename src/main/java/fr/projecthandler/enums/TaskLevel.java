@@ -3,7 +3,7 @@ package fr.projecthandler.enums;
 import java.util.Arrays;
 
 public enum TaskLevel {
-	PROJECT(0l, "Project"), MILESTONE(1l, "Milestone"), TASK(2l, "Task");
+	PROJECT(0l, "Project"), MILESTONE(1l, "Milestone"), TASK(2l, "Task"), EVENT(3l, "Event");
 	
 	private Long id;		// Long to match task level type
 	private String value;

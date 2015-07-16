@@ -47,4 +47,16 @@ public class TaskServiceImpl implements TaskService {
 	public List<User> getUsersByTaskId(Long taskId) {
 		return taskDao.getUsersByTaskId(taskId);
 	}
+	
+	public Set<Task> getYesterdayTasksByUser(Long userId) {
+		return taskDao.getYesterdayTasksByUser(userId);
+	}
+	
+	public Set<Task> getTodayTasksByUser(Long userId) {
+		return taskDao.getTodayTasksByUser(userId);
+	}
+	
+	public Set<Task> getTomorrowTasksByUser(Long userId) {
+		return taskDao.getTomorrowTasksByUser(userId);
+	}
 }
