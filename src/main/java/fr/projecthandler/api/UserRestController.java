@@ -26,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.dto.UserDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Token;
@@ -97,21 +98,20 @@ public class UserRestController {
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
-		User u = userService.findUserById(id);
-
-		if (u == null) {
+		User user = userService.findUserById(id);
+	
+		if (user == null) {
 			return new ResponseEntity<String>(
 					"{\"status\":400, \"message\":\"Not found\"}",
 					HttpStatus.NOT_FOUND);
 		}
-
+		
 		// Gson gson = new
 		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		Gson gson = new GsonBuilder().setExclusionStrategies(
 				new ApiExclusionStrategy()).create();
 		try {
-			String json = gson.toJson(u);
-
+			String json = gson.toJson(new UserDTO(user));
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
