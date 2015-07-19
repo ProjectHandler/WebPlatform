@@ -1,5 +1,7 @@
 package fr.projecthandler.api;
 
+import java.io.IOException;
+import java.io.StringWriter;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +24,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.AccountStatus;
@@ -107,24 +111,49 @@ public class UserRestController {
 
 		// Gson gson = new
 		// GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
-		try {
-			String json = gson.toJson(u);
+		// Gson gson = new GsonBuilder().setExclusionStrategies(
+		// new ApiExclusionStrategy()).create();
+		// try {
+		// String json = gson.toJson(u);
+		//
+		// return new ResponseEntity<String>(json, HttpStatus.OK);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		// }
 
-			return new ResponseEntity<String>(json, HttpStatus.OK);
-		} catch (Exception e) {
+		// create ObjectMapper instance
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		// configure Object mapper for pretty print
+		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+		// writing to console, can write to any output stream such as file
+		StringWriter stringEmp = new StringWriter();
+		try {
+			objectMapper.writeValue(stringEmp, u);
+		} catch (JsonGenerationException e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		System.out.println("User is\n" + stringEmp.toString());
+
+		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
 
-	// @RequestMapping(value = "/post/{id}", method = RequestMethod.POST)
-	// @ResponseStatus(HttpStatus.CREATED)
-	// public User save() {
-	//
-	//
-	// }
+	@RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
+	public @ResponseBody User getUser(@PathVariable Long id) {
+		User u = userService.findUserById(id);
+
+		if (u == null) {
+			return null;
+		}
+
+		return u;
+	}
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
@@ -132,7 +161,6 @@ public class UserRestController {
 			@CurrentUserDetails CustomUserDetails userDetails,
 			@Valid User user, BindingResult result) {
 		if (userDetails == null) {
-			// TODO redirect to login
 			return new ResponseEntity<String>("Acces denied",
 					HttpStatus.BAD_REQUEST);
 		}

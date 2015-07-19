@@ -10,10 +10,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import fr.projecthandler.annotation.ApiExclude;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "groups")
+@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Group extends BaseEntity implements java.io.Serializable {
 	
 	private static final long serialVersionUID = 7777936323140047759L;
@@ -21,7 +23,6 @@ public class Group extends BaseEntity implements java.io.Serializable {
 	@Column(name = "name", length=50)
 	private String name;
 
-	@ApiExclude
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;

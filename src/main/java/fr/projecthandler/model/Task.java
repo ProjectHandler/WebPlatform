@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.projecthandler.dto.GanttTaskDTO;
 
 @Entity
@@ -45,6 +47,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@Column(name = "status", length = 30)
 	private String status;
 	
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;
@@ -56,6 +59,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@JoinColumn(name = "project_id")
 	private Project project;
 
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "depend_tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, 
 			inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })

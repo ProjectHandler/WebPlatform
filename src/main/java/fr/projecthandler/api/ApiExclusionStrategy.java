@@ -4,7 +4,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 
 import fr.projecthandler.annotation.ApiExclude;
- 
+
 /**
  * This class defines custom exclusion policy. We want to ignore all fields that
  * have been annotated with the Country annotation. Note that we can also ignore
@@ -14,28 +14,28 @@ import fr.projecthandler.annotation.ApiExclude;
  *
  */
 public class ApiExclusionStrategy implements ExclusionStrategy {
- 
-    public ApiExclusionStrategy() {
-    }
- 
-    // This method is called for all fields. if the method returns false the
-    // field is excluded from serialization
-    @Override
-    public boolean shouldSkipField(FieldAttributes f) {
-    	System.out.println("---------------- exclude test01 ----------------");
-        if (f.getAnnotation(ApiExclude.class) == null) {
-        	System.out.println("exclude false");
-        	return false;
-        }
-    	System.out.println("exclude true !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
-        return true;
-    }
- 
-    // This method is called for all classes. If the method returns false the
-    // class is excluded.
-    @Override
-    public boolean shouldSkipClass(Class<?> clazz) {
-        return clazz.getAnnotation(ApiExclude.class) != null;
-      }
+	public ApiExclusionStrategy() {
+	}
+
+	// This method is called for all fields. if the method returns false the
+	// field is excluded from serialization
+	@Override
+	public boolean shouldSkipField(FieldAttributes f) {
+		System.out.println("---------------- exclude test01 ----------------");
+		if (f.getAnnotation(ApiExclude.class) == null) {
+			System.out.println("exclude false");
+			return false;
+		}
+		System.out.println("exclude true !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		return true;
+	}
+
+	// This method is called for all classes. If the method returns false the
+	// class is excluded.
+	@Override
+	public boolean shouldSkipClass(Class<?> clazz) {
+		return clazz.getAnnotation(ApiExclude.class) != null;
+	}
 }

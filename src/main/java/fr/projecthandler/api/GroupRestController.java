@@ -1,5 +1,9 @@
 package fr.projecthandler.api;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,52 +30,64 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fr.projecthandler.model.Project;
+import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.enums.AccountStatus;
+import fr.projecthandler.enums.UserRole;
+import fr.projecthandler.model.Address;
+import fr.projecthandler.model.Group;
 import fr.projecthandler.model.Ticket;
-import fr.projecthandler.service.ProjectService;
-import fr.projecthandler.service.TicketService;
+import fr.projecthandler.model.Token;
+import fr.projecthandler.model.User;
+import fr.projecthandler.service.AddressService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
+import fr.projecthandler.util.TokenGenerator;
 
 @RestController
 @Transactional
-@RequestMapping("/api/project")
-public class ProjectRestController {
+@RequestMapping("/api/group")
+public class GroupRestController {
 
 	@Autowired
 	UserService userService;
 
 	@Autowired
 	TokenService tokenService;
-	
-	@Autowired
-	ProjectService projectService;
-	
-	@Autowired
-	private UserDetailsService	customUserDetailsService;
-	
+
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
-		Project project = projectService.findProjectById(id);
-		
-		if (project == null) {
-			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
+		Group group = userService.findGroupById(id);
+
+		System.out.println("group " + group);
+		if (group == null) {
+			return new ResponseEntity<String>(
+					"{\"status\":400, \"group\":\"Not found\"}",
+					HttpStatus.NOT_FOUND);
 		}
 		
-		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
-		try {
-			String json = gson.toJson(project);
-
-			return new ResponseEntity<String>(json, HttpStatus.OK);
-		} catch (Exception e) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+        StringWriter stringEmp = new StringWriter();
+        try {
+			objectMapper.writeValue(stringEmp, group);
+		} catch (JsonGenerationException e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		} catch (JsonMappingException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+        
+        return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
-
 }

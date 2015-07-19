@@ -16,7 +16,8 @@ import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import fr.projecthandler.annotation.ApiExclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.projecthandler.dto.GanttTaskDTO;
 
 @Entity
@@ -48,11 +49,11 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	@Column(name = "status", length = 30)
 	private String status;
 
-	@ApiExclude
+	@JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
 	private Set<Task> tasks;
 
-	@ApiExclude
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private List<User> users = new ArrayList<User>();
