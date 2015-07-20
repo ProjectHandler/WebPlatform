@@ -49,16 +49,16 @@ public class AdressRestController {
 					"{\"status\":400, \"address\":\"Not found\"}",
 					HttpStatus.NOT_FOUND);
 		}
-		
-        //create ObjectMapper instance
-        ObjectMapper objectMapper = new ObjectMapper();
-         
-        //configure Object mapper for pretty print
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-         
-        //writing to console, can write to any output stream such as file
-        StringWriter stringEmp = new StringWriter();
-        try {
+
+		// create ObjectMapper instance
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		// configure Object mapper for pretty print
+		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+
+		// writing to console, can write to any output stream such as file
+		StringWriter stringEmp = new StringWriter();
+		try {
 			objectMapper.writeValue(stringEmp, addresses.get(0));
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class AdressRestController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-        return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
+
+		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
 }

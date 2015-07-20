@@ -74,11 +74,11 @@ public class GroupRestController {
 					"{\"status\":400, \"group\":\"Not found\"}",
 					HttpStatus.NOT_FOUND);
 		}
-		
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-        StringWriter stringEmp = new StringWriter();
-        try {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+		StringWriter stringEmp = new StringWriter();
+		try {
 			objectMapper.writeValue(stringEmp, group);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -87,7 +87,7 @@ public class GroupRestController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-        return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
+
+		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
 }

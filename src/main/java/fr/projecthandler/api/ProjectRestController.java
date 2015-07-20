@@ -48,22 +48,25 @@ public class ProjectRestController {
 
 	@Autowired
 	TokenService tokenService;
-	
+
 	@Autowired
 	ProjectService projectService;
-	
+
 	@Autowired
-	private UserDetailsService	customUserDetailsService;
-	
+	private UserDetailsService customUserDetailsService;
+
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
 		Project project = projectService.findProjectById(id);
-		
+
 		if (project == null) {
-			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(
+					"{\"status\":400, \"project\":\"Not found\"}",
+					HttpStatus.NOT_FOUND);
 		}
-		
-		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+
+		Gson gson = new GsonBuilder().setExclusionStrategies(
+				new ApiExclusionStrategy()).create();
 		try {
 			String json = gson.toJson(project);
 
