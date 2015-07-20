@@ -132,7 +132,7 @@ public class UserRestController {
 		// writing to console, can write to any output stream such as file
 		StringWriter stringEmp = new StringWriter();
 		try {
-			objectMapper.writeValue(stringEmp, u);
+			objectMapper.writeValue(stringEmp, user);
 		} catch (JsonGenerationException e) {
 			e.printStackTrace();
 		} catch (JsonMappingException e) {
