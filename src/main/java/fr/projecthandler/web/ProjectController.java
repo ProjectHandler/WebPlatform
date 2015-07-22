@@ -151,8 +151,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
 	public ModelAndView saveProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
-		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-		
+		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
 		if (principal != null) {
 			long diff = project.getDateEnd().getTime() - project.getDateBegin().getTime();
 			float duration = (float) diff / (24 * 60 * 60 * 1000);

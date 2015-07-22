@@ -2,6 +2,7 @@ package fr.projecthandler.api;
 
 import java.io.IOException;
 import java.io.StringWriter;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.dto.UserDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Token;
