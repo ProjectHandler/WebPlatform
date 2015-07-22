@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,7 +26,6 @@ import fr.projecthandler.model.TicketMessage;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
 
 @RestController
 @Transactional

@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Event;
-import fr.projecthandler.model.Task;
 
 public interface EventService {
 	public Long saveEvent(Event newEvent);

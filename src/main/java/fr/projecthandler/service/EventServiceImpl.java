@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.EventDao;
 import fr.projecthandler.model.Event;
-import fr.projecthandler.model.Task;
 
 @Service
 public class EventServiceImpl implements EventService {
