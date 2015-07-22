@@ -59,8 +59,6 @@
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree margin-right"></span>Administration des groupes</a>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>"><span class="icon-user-plus margin-right"></span>Inscrire un utilisateur</a>
-						<hr class="inverted-bg">
 					</sec:authorize>	
 					</div>
 				</div>
