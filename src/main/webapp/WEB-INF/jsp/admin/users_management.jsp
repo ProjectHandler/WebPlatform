@@ -234,7 +234,7 @@
 
 							<div class="margin-bottom">
 								<h2 class="text-h3 small-margin-bottom">Inscrire un utilisateur</h2>
-								<div class="display-table-cell">
+								<div class="display-table-cell vertical-align">
 									<div class="fixedmaxwidth-384">
 										<div>
 											<form name="emailForm" id="emailForm" method="post" >
@@ -242,13 +242,13 @@
 											<select id="emailSelection"></select>
 											</form>
 										</div>
-										<div class="util6-primary-text text-right display-none" id="emailError"></div>
-										<div class="util3-primary-text text-right display-none" id="emailOk"></div>
 									</div>
 								</div>
 								<div class="display-table-cell vertical-align">
 									<button id="btnSend" class="small-margin-left default-btn-shape util3-primary-btn-style1"><span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.sendMailService.send"/></button>						
 								</div>
+								<div class="display-table-cell small-padding-left vertical-align util6-primary-text" id="emailError"></div>
+								<div class="display-table-cell small-padding-left vertical-align util3-primary-text" id="emailOk"></div>
 							</div>
 
 							<div>
@@ -362,6 +362,11 @@
 													<button class="default-btn-shape util6-primary-btn-style1 animating-event" data-action="open-event" data-animation="pop-event" data-target="deleteSecurityfor-${user.id}">
 														<span class="icon-cross small-margin-right"></span>Supprimer
 													</button>
+													<c:if test="${user.accountStatus == 'INACTIVE'}">
+													<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')">
+														<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
+													</button>
+													</c:if>
 													<div id="deleteSecurityfor-${user.id}" class="pop-event position-absolute position-top position-left full-width full-height inverted-transpbg">
 														<div class="display-table full-width full-height">
 															<div class="display-table-cell full-width full-height vertical-align">
@@ -382,11 +387,6 @@
 															</div>
 														</div>
 													</div>
-													<c:if test="${user.accountStatus == 'INACTIVE'}">
-													<button class="default-btn-shape util2-primary-btn-style1" ONCLICK="sendEmailUser('${user.id}')">
-														<span class="icon-mail2 small-margin-right"></span><spring:message code="projecthandler.admin.action.reSendMail"/>
-													</button>
-													</c:if>
 												</div>
 											
 											</div>
