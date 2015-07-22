@@ -77,26 +77,26 @@
 						<span class="icon-bell"></span>
 					</a>
 				</li>
+				<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li class="position-relative vertical-top display-table-cell padding-right">
 					<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
 						<span class="icon-database small-margin-right"></span>Administration
 					</a>
 				</li>
+				</sec:authorize>
 				<li class="position-relative display-table-cell">
-					<a class="display-table theme1-primary-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-profilebox" href="#" title="profile">
-						<div class="display-table-cell">
-							<div class="display-table-cell vertical-align">
-								<div class="default-box-p util1-primary-bg">
-									<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
-								</div>
-							</div>
-							<div class="display-table-cell vertical-align small-padding-left small-padding-right">
-								<sec:authorize access="isAuthenticated()">
-									<sec:authentication property="principal.firstName" />
-								</sec:authorize>
-							</div>
+					<div class="display-table position-relative theme3-primary-boxshadow-raising-out">
+						<a class="cover-btn-shape animating-event default-btn-style5 zindex-5" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-profilebox" href="#" title="profile"></a>
+						<div class="display-table-cell"><div class="default-box-p"></div></div>
+						<div class="default-box-p position-absolute position-top position-left img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">
+							<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/<sec:authentication property="principal.id" />);"></div>
 						</div>
-					</a>
+						<div class="display-table-cell vertical-align small-padding-left small-padding-right util1-lighten3-text">
+							<sec:authorize access="isAuthenticated()">
+								<sec:authentication property="principal.firstName" />
+							</sec:authorize>
+						</div>
+					</div>
 					<div id="mainmenu-profilebox" class="pop-event focus-sensitive position-absolute position-right fixedwidth-384 inverted-bg margin-top theme3-darken2-boxshadow-raising-out zindex-50">
 						<div class="position-relative">
 							<div class="container underlined theme3-lighten1-bdr">
@@ -117,10 +117,10 @@
 							</div>
 							<div class="container inverted-bg clearfix">
 								<div class="float-right">
-									<a class="default-btn-shape default-btn-style5 theme3-darken2-boxshadow-raising-out small-margin-right" href="#">
+									<a class="default-btn-shape default-btn-style5 theme3-primary-boxshadow-raising-out small-margin-right" href="#">
 										<span class="icon-cog small-margin-right"></span>Settings
 									</a>
-									<a class="default-btn-shape theme1-primary-btn-style1 theme3-darken2-boxshadow-raising-out animating-event" data-action="open-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
+									<a class="default-btn-shape theme1-primary-btn-style1 animating-event" data-action="open-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
 										<span class="icon-switch small-margin-right"></span>Sign out
 									</a>
 								</div>

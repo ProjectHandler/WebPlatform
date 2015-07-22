@@ -81,7 +81,7 @@
 								<h2 class="text-h3 small-margin-bottom">Liste des groupes</h2>
 								<div class="clearfix">
 									<c:forEach var="group" items="${groups}">
-										<div class="position-relative fixedheight-128 util1-lighten3-boxshadow-raising-out margin-right margin-bottom float-left overflow-hidden" style="width:100px;">
+										<div class="position-relative fixedheight-128 theme3-primary-boxshadow-raising-out margin-right margin-bottom float-left overflow-hidden" style="width:100px;">
 											<a href="#" class="cover-btn-shape default-btn-style5 zindex-10 animating-event" data-action="open-event" data-animation="pop-event" data-target="groupdeletingvalidation-${group.id}"></a>
 											<div id="groupdeletingvalidation-${group.id}" class="pop-event focus-sensitive position-absolute position-top position-left full-width full-height util6-primary-transpbg zindex-20">
 												<div>
@@ -90,7 +90,7 @@
 													</button>
 												</div>
 												<div>
-													<button class="default-btn-shape full-width text-center small-margin-top inverted-btn-style1" ONCLICK="deleteGroup('${group.id}')">
+													<button class="default-btn-shape full-width text-center small-margin-top inverted-text default-btn-style6" ONCLICK="deleteGroup('${group.id}')">
 														Supprimer
 													</button>
 												</div>

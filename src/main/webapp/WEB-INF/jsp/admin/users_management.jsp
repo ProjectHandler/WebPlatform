@@ -172,7 +172,7 @@
 								
 								<div>
 									<c:forEach var="user" items="${users}">
-										<div class="display-table position-relative full-width small-margin-bottom util1-lighten3-boxshadow-raising-out">
+										<div class="display-table position-relative full-width small-margin-bottom theme3-primary-boxshadow-raising-out">
 											<a href="#" class="cover-btn-shape default-btn-style5 zindex-10" ONCLICK="showModal(${user.id})"></a>
 											<div class="display-table-cell"><div class="fixedwidth-64 fixedheight-64"></div></div>
 											<div class="position-absolute position-top position-left fixedwidth-64 fixedheight-64 img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
@@ -209,7 +209,7 @@
 												</button>
 											 	<div class="display-inline-block container">
 													<div class="display-table-cell padding-right">
-														<div class="fixedwidth-128 fixedheight-128 circle img-as-background theme3-primary-boxshadow-glowing-out" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">
+														<div class="fixedwidth-128 fixedheight-128 circle img-as-background surrounded theme3-lighten1-bdr" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">
 			 												<div class="full-width full-height img-as-background circle" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${user.id});"></div>
 														</div>
 													</div>
