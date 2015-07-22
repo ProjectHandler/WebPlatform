@@ -101,8 +101,8 @@
 						<div class="position-relative">
 							<div class="container underlined theme3-lighten1-bdr">
 								<div class="display-table-cell">
-									<div class="fixedwidth-128 fixedheight-128 util1-primary-bg">
-										<div class="full-width full-height img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);"></div>
+									<div class="fixedwidth-128 fixedheight-128 img-as-background theme3-primary-boxshadow-raising-out" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">
+										<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/<sec:authentication property="principal.id" />);"></div>
 									</div>
 								</div>
 								<div class="display-table-cell vertical-top padding-left full-width">
