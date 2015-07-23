@@ -1,5 +1,5 @@
 package fr.projecthandler.api;
-
+/*
 import java.io.IOException;
 import java.io.StringWriter;
 import java.nio.file.Files;
@@ -112,4 +112,4 @@ public class EventRestController {
 
 		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
-}
+}*/

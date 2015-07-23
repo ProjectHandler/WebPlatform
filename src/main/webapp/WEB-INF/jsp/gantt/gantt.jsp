@@ -124,8 +124,8 @@
 					}
 		
 				},
-				error : function(data) {
-					alert("error: " + data);
+				error : function(xhr, ajaxOptions, thrownError) {
+					alert("status: " + xhr.status + " " + thrownError);
 				}
 			});
 		}

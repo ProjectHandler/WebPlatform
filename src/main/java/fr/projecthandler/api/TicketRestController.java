@@ -1,5 +1,5 @@
 package fr.projecthandler.api;
-
+/*
 import java.io.IOException;
 import java.io.StringWriter;
 
@@ -101,4 +101,4 @@ public class TicketRestController {
 		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
 
-}
+}*/

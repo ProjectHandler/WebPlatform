@@ -1,5 +1,5 @@
 package fr.projecthandler.api;
-
+/*
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+//import com.fasterxml.jackson.databind.JsonMappingException;
+//import com.fasterxml.jackson.databind.ObjectMapper;
+//import com.fasterxml.jackson.databind.SerializationFeature;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.AccountStatus;
@@ -70,4 +70,4 @@ public class AdressRestController {
 
 		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
-}
+}*/

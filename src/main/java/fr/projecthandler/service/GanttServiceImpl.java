@@ -1,6 +1,5 @@
 package fr.projecthandler.service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,9 +37,12 @@ public class GanttServiceImpl implements GanttService {
 	@Override
 	public String load(Long projectId) {
 		try {
-			ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			return ow.writeValueAsString(loadProject(projectId));
-		} catch (IOException e) {
+			/*ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+			return ow.writeValueAsString(loadProject(projectId));*/
+			Gson gson = new Gson();
+			return gson.toJson(loadProject(projectId));
+			
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

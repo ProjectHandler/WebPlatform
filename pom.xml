@@ -105,23 +105,32 @@
 		</dependency>
 
 		<!-- JSON -->
+		<!-- useless ?
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
+		-->
+		
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>
 			<version>2.5.4</version>
 		</dependency>
-
+		<!-- remove this dependency because it broke's the gson on the gantt
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.5.4</version>
 		</dependency>
-
+		-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-smile</artifactId>
 			<version>2.5.4</version>
 		</dependency>
+
 
 		<dependency>
 			<groupId>com.google.code.gson</groupId>

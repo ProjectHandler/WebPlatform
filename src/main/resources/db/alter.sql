@@ -54,3 +54,5 @@ ALTER TABLE `task` ADD `row` bigint(20) DEFAULT NULL;
 -- drop row in users (10/07/2015)
 ALTER TABLE `users` DROP `avatar_base_64`;
 
+-- DEPLOYMENT ON PRODUCTION 22/07/2015 --
+
