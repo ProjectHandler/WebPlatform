@@ -20,7 +20,7 @@
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">
 				
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 util3-primary-text text-h1 text-center animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu" href="#" title="home">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 util3-primary-text text-h1 text-center radius animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu" href="#" title="home">
 						<span class="icon-equalizer"></span>
 					</a>
 					
@@ -37,7 +37,6 @@
 							<sec:authorize access="hasRole('ROLE_ADMIN')">
 							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/users_management"/>">				<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
 							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/groups_management"/>">			<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>">		<spring:message code="projecthandler.admin.sendMailService"/></a></li>
 							</sec:authorize>
 							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/calendar"/>">							<spring:message code="projecthandler.menu.calendar"/></a></li>
 							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/changePassword"/>">						<spring:message code="projecthandler.menu.changePassword"/></a></li>
@@ -58,22 +57,22 @@
 				</li>
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="<c:url value="/"/>" title="home">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 						<span class="icon-home"></span>
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="#" title="projects">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/project/projectsList"/>" title="projects">
 						<span class="icon-folder"></span>
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="<c:url value="/calendar"/>" title="calendar">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/calendar"/>" title="calendar">
 						<span class="icon-calendar"></span>
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center" href="#" title="notifications">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="#" title="notifications">
 						<span class="icon-bell"></span>
 					</a>
 				</li>
@@ -111,7 +110,7 @@
 										<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
 									</sec:authorize>
 									<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/signup"/>">
-										<span class="icon-user small-margin-right"></span>My profile
+										<span class="icon-user small-margin-right"></span>Mon profil
 									</a>
 								</div>
 							</div>

@@ -73,34 +73,59 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="../template/header.jsp" />
-		<jsp:include page="../template/menu.jsp" />
-		<h1>Changement de mot de passe</h1>
-		<br/>
-		<c:if test="${isPasswordChanged == true}">
-			<p>Votre mot de passe a bien été enregistré.<p>
-		</c:if>
-		<form id="passwordForm" name="passwordForm" method="post">
-			<input type="hidden" name="userId" id="userId" value="${user.id}"/>
-			<ul class="form">
-				<li>
-					<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
-					<span class="error" id="passwordError"></span>
-					<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
-					<span class="error" id="passwordConfirmError"></span>
-				</li>
-			</ul>
-		</form>
-		<br/>
-		<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
-		<br/>
-		<a href="/projecthandler/"><spring:message code="projecthandler.signup.home"/></a>
-		
-		<jsp:include page="../template/footer.jsp" />
+	<div class="display-table full-width full-height">
+			<div class="display-table-row">
+				<jsp:include page="../template/header.jsp" />
+			</div>
+			<div class="display-table full-width full-height">
+				<div class="display-table-cell full-height theme1-primary-bg">
+					<div class="fixedwidth-320">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<h1 class="text-h2 container inverted-text"><span class="icon-user margin-right"></span>Mon profil</h1>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/signup"/>"><span class="icon-profile margin-right"></span>Mes informations personnelles</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/changePassword"/>"><span class="icon-key margin-right"></span>Mon mot de passe</a>
+						<hr class="inverted-bg">
+					</sec:authorize>	
+					</div>
+				</div>
+				<div class="display-table-cell full-width full-height">
+					
+					<div class="full-width full-height overflow-auto">
+						<div class="container">
+							<div class="margin-bottom clearfix">
+								<h1 class="text-h2 util1-primary-text float-left">Mon mot de passe</h1>
+								<div class="text-h2 text-h1 float-right"><span class="icon-key"></span></div>
+							</div>
+							<div>
+
+								<c:if test="${isPasswordChanged == true}">
+									<p>Votre mot de passe a bien été enregistré.<p>
+								</c:if>
+								<form id="passwordForm" name="passwordForm" method="post">
+									<input type="hidden" name="userId" id="userId" value="${user.id}"/>
+									<ul class="form">
+										<li>
+											<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
+											<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
+											<span class="error" id="passwordError"></span>
+											<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
+										</li>
+										<li>
+											<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
+											<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+											<span class="error" id="passwordConfirmError"></span>
+										</li>
+									</ul>
+								</form>
+								<br/>
+								<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
+							</div>
+						</div>	
+					</div>	
+				</div>
+			</div>		
+		</div>	
 	</body>
 </html>

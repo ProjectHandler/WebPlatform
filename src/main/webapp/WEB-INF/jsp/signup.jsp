@@ -235,147 +235,171 @@
 		</script>
 	</head>
 	<body>
-		<jsp:include page="template/header.jsp" />
-		<jsp:include page="template/menu.jsp" />
-		<form id="createAccount" name="createAccount" method="post" enctype="multipart/form-data">
-			<input type="hidden" name="userId" 			id="userId" 		value="${user.id}"/>
-			<input type="hidden" name="userStatus" 		id="userStatus" 	value="${user.accountStatus}"/>
-			<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${user.workDay}"/>
-			<input type="hidden" name="userDailyHour" 	id="userDailyHour"	value="${user.dailyHour}"/>
-				<h1><spring:message code="projecthandler.signup.form"/></h1>
-				<br/>
-			<ul class="form">
-				<li>
-					<label path="civility"><spring:message code="projecthandler.signup.civility"/><spring:message code="projecthandler.field.required"/></label>
-					<c:forEach items="${civilityList}" var="civil">
-						<c:set var="civilityValue"><spring:message code="${civil.name}" text=""/></c:set>
-						<c:if test="${user != null && user.civility.id eq civil.id}">
-							<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
-						</c:if>
-						<c:if test="${user eq null || user.civility.id != civil.id}">
-							<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
-						</c:if>
-					</c:forEach>
-				</li>
-
-				<li>
-					<label><spring:message code="projecthandler.user.lastName"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="text" name="lastName" id="lastName"  value="${user.lastName}" maxlength="30"/>
-					<span class="error" id="lastNameError"></span>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.user.firstName"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="text" name="firstName" id="firstName"  value="${user.firstName}" maxlength="30"/>
-					<span class="error" id="firstNameError"></span>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.user.email"/><spring:message code="projecthandler.field.required"/></label>
-					<c:if test="${user.email != null}">
-						<input type="text" name="emailDummy" value="${user.email}" disabled="disabled" style="color: grey;"/>
-						<input type="hidden" name="email" id="email" value="${user.email}"/>
-					</c:if>
-					<c:if test="${user.email == null}">
-						<input type="text" name="email" id="email" maxlength="512"/>
-						<span class="error" id="emailError"></span>
-					</c:if>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.signup.phone"/><spring:message code="projecthandler.field.required"/></label>
-					<input type="text" name="phone" id="phone"  value="${user.phone}" maxlength="10"/>
-					<span class="error" id="phoneError"></span>
-				</li>
-				<li>
-					<label><spring:message code="projecthandler.signup.mobilePhone"/></label>
-					<input type="text" name="mobilePhone" id="mobilePhone" value="${user.mobilePhone}" maxlength="10"/>
-					<span class="error" id="mobilePhoneError"></span>
-				</li>
-				 <c:if test="${user.accountStatus != 'ACTIVE'}">
-					<li>
-						<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
-						<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
-						<span class="error" id="passwordError"></span>
-					</li>
-					<li>
-						<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
-						<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
-						<span class="error" id="passwordConfirmError"></span>
-					</li>
-					<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
-				 </c:if>
-					 <li>
-					 <label><spring:message code="projecthandler.signup.workDay"/></label>
-						<div id="workDayCheckboxes">
-							<label for="workDayCheckboxes"><spring:message code="projecthandler.day.monday"/></label>
-			   				<input name="workDayCheckboxes" type="checkbox"/>
-			   				<label for="workDayCheckboxes"><spring:message code="projecthandler.day.tuesday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.wednesday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.thursday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.friday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.saturday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.sunday"/></label>
-						    <input name="workDayCheckboxes" type="checkbox"/>
-						</div>
-					 </li>
-					 <li>
-						 <label for="dailyHour"><spring:message code="projecthandler.signup.dailyHour"/></label>
-						 <div id="dailyHour">
-							 <label for="dailyHourStart"><spring:message code="projecthandler.gantt.start"/></label>
-							 <input type="text" id="dailyHourStart" name="dailyHourStart"  disabled/>
-							 <div id="dailyHourStartDiv"></div>
-							 <label for="dailyHourEnd"><spring:message code="projecthandler.gantt.end"/></label>
-							 <input type="text" id="dailyHourEnd" name="dailyHourEnd"  disabled/>
-							 <div id="dailyHourEndDiv"></div>
-							 <span class="error" id="dailyHourConfirmError"></span>
-						</div>
-					</li>
-					<li>
-						<table style="width: 100%">
-						<tr style="width: 100%">
-						<td width="50%">
-							<c:choose>
-								<c:when test="${user.avatarFileName != null}">
-									<div id="divAvatarImage" style="margin-left: auto; margin-right: auto; padding: 20px; width: 400px; border-radius: 3px;">
-										<img id="userAvatar" width="200px" alt="avatar" src="<%=request.getContextPath() %>/downloadAvatar/${user.id}"/>
-									</div>
-									<div class="divButton" style="width: 73px;">
-										<button id="deleteAvatarButton" class="btn btn-primary btn-xs right" onClick='deleteAvatar();return false;'>
-											<spring:message code="projecthandler.admin.action.delete" />
-										</button>
-									</div>
-								</c:when>
-								<c:otherwise>
-									<img width="200px" alt="avatar" src="resources/img/placehold200x200.gif" />
-								</c:otherwise>
-							</c:choose>
-						</td>
-						<td width="50%" id="tdAvatarButton">
-							<spring:message code="projecthandler.signup.customDetails.imageType" />
-							<br/><br/>
-							<input type="file" name="avatar" id="avatar" class="filestyle" data-buttonName="btn btn-primary btn-xs" data-buttonText="&nbsp;<spring:message code="projecthandler.signup.button.chooseFile"/>"/>
-							<br/>
-							<span id="avatar_error" style="color: red; display:block;"></span>
-							<br/>
-							<div class="divButton" style="width: 100%;">
-								<button id="addAvatarButton" class="btn btn-primary btn-xs" onClick="addAvatar();return false;" disabled="disabled">
-									<spring:message code="projecthandler.admin.action.add" />
-								</button>
+		<div class="display-table full-width full-height">
+			<div class="display-table-row">
+				<jsp:include page="template/header.jsp" />
+			</div>
+			<div class="display-table full-width full-height">
+				<div class="display-table-cell full-height theme1-primary-bg">
+					<div class="fixedwidth-320">
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<h1 class="text-h2 container inverted-text"><span class="icon-user margin-right"></span>Mon profil</h1>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/signup"/>"><span class="icon-profile margin-right"></span>Mes informations personnelles</a>
+						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/changePassword"/>"><span class="icon-key margin-right"></span>Mon mot de passe</a>
+						<hr class="inverted-bg">
+					</sec:authorize>	
+					</div>
+				</div>
+				<div class="display-table-cell full-width full-height">
+					
+					<div class="full-width full-height overflow-auto">
+						<div class="container">
+							<div class="margin-bottom clearfix">
+								<h1 class="text-h2 util1-primary-text float-left">Mes informations personnelles</h1>
+								<div class="text-h2 text-h1 float-right"><span class="icon-profile"></span></div>
 							</div>
-						</td>
-						</tr>
-						</table>
-					</li>
-			</ul>
-		</form>
-		<br/>
-		<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
-		<br/>
-		<a href="/projecthandler/"><spring:message code="projecthandler.signup.home"/></a>
-		
-		<jsp:include page="template/footer.jsp" />
+							<div>		
+								<form id="createAccount" name="createAccount" method="post" enctype="multipart/form-data">
+									<input type="hidden" name="userId" 			id="userId" 		value="${user.id}"/>
+									<input type="hidden" name="userStatus" 		id="userStatus" 	value="${user.accountStatus}"/>
+									<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${user.workDay}"/>
+									<input type="hidden" name="userDailyHour" 	id="userDailyHour"	value="${user.dailyHour}"/>
+									<ul class="form">
+										<li>
+											<label path="civility"><spring:message code="projecthandler.signup.civility"/><spring:message code="projecthandler.field.required"/></label>
+											<c:forEach items="${civilityList}" var="civil">
+												<c:set var="civilityValue"><spring:message code="${civil.name}" text=""/></c:set>
+												<c:if test="${user != null && user.civility.id eq civil.id}">
+													<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+												</c:if>
+												<c:if test="${user eq null || user.civility.id != civil.id}">
+													<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+												</c:if>
+											</c:forEach>
+										</li>
+						
+										<li>
+											<label><spring:message code="projecthandler.user.lastName"/><spring:message code="projecthandler.field.required"/></label>
+											<input type="text" name="lastName" id="lastName"  value="${user.lastName}" maxlength="30"/>
+											<span class="error" id="lastNameError"></span>
+										</li>
+										<li>
+											<label><spring:message code="projecthandler.user.firstName"/><spring:message code="projecthandler.field.required"/></label>
+											<input type="text" name="firstName" id="firstName"  value="${user.firstName}" maxlength="30"/>
+											<span class="error" id="firstNameError"></span>
+										</li>
+										<li>
+											<label><spring:message code="projecthandler.user.email"/><spring:message code="projecthandler.field.required"/></label>
+											<c:if test="${user.email != null}">
+												<input type="text" name="emailDummy" value="${user.email}" disabled="disabled" style="color: grey;"/>
+												<input type="hidden" name="email" id="email" value="${user.email}"/>
+											</c:if>
+											<c:if test="${user.email == null}">
+												<input type="text" name="email" id="email" maxlength="512"/>
+												<span class="error" id="emailError"></span>
+											</c:if>
+										</li>
+										<li>
+											<label><spring:message code="projecthandler.signup.phone"/><spring:message code="projecthandler.field.required"/></label>
+											<input type="text" name="phone" id="phone"  value="${user.phone}" maxlength="10"/>
+											<span class="error" id="phoneError"></span>
+										</li>
+										<li>
+											<label><spring:message code="projecthandler.signup.mobilePhone"/></label>
+											<input type="text" name="mobilePhone" id="mobilePhone" value="${user.mobilePhone}" maxlength="10"/>
+											<span class="error" id="mobilePhoneError"></span>
+										</li>
+										 <c:if test="${user.accountStatus != 'ACTIVE'}">
+											<li>
+												<label><spring:message code="projecthandler.signup.password"/><spring:message code="projecthandler.field.required"/></label>
+												<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
+												<span class="error" id="passwordError"></span>
+											</li>
+											<li>
+												<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
+												<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+												<span class="error" id="passwordConfirmError"></span>
+											</li>
+											<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
+										 </c:if>
+											 <li>
+											 <label><spring:message code="projecthandler.signup.workDay"/></label>
+												<div id="workDayCheckboxes">
+													<label for="workDayCheckboxes"><spring:message code="projecthandler.day.monday"/></label>
+									   				<input name="workDayCheckboxes" type="checkbox"/>
+									   				<label for="workDayCheckboxes"><spring:message code="projecthandler.day.tuesday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.wednesday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.thursday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.friday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.saturday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												    <label for="workDayCheckboxes"><spring:message code="projecthandler.day.sunday"/></label>
+												    <input name="workDayCheckboxes" type="checkbox"/>
+												</div>
+											 </li>
+											 <li>
+												 <label for="dailyHour"><spring:message code="projecthandler.signup.dailyHour"/></label>
+												 <div id="dailyHour">
+													 <label for="dailyHourStart"><spring:message code="projecthandler.gantt.start"/></label>
+													 <input type="text" id="dailyHourStart" name="dailyHourStart"  disabled/>
+													 <div id="dailyHourStartDiv"></div>
+													 <label for="dailyHourEnd"><spring:message code="projecthandler.gantt.end"/></label>
+													 <input type="text" id="dailyHourEnd" name="dailyHourEnd"  disabled/>
+													 <div id="dailyHourEndDiv"></div>
+													 <span class="error" id="dailyHourConfirmError"></span>
+												</div>
+											</li>
+											<li>
+												<table style="width: 100%">
+												<tr style="width: 100%">
+												<td width="50%">
+													<c:choose>
+														<c:when test="${user.avatarFileName != null}">
+															<div id="divAvatarImage" style="margin-left: auto; margin-right: auto; padding: 20px; width: 400px; border-radius: 3px;">
+																<img id="userAvatar" width="200px" alt="avatar" src="<%=request.getContextPath() %>/downloadAvatar/${user.id}"/>
+															</div>
+															<div class="divButton" style="width: 73px;">
+																<button id="deleteAvatarButton" class="btn btn-primary btn-xs right" onClick='deleteAvatar();return false;'>
+																	<spring:message code="projecthandler.admin.action.delete" />
+																</button>
+															</div>
+														</c:when>
+														<c:otherwise>
+															<img width="200px" alt="avatar" src="resources/img/placehold200x200.gif" />
+														</c:otherwise>
+													</c:choose>
+												</td>
+												<td width="50%" id="tdAvatarButton">
+													<spring:message code="projecthandler.signup.customDetails.imageType" />
+													<br/><br/>
+													<input type="file" name="avatar" id="avatar" class="filestyle" data-buttonName="btn btn-primary btn-xs" data-buttonText="&nbsp;<spring:message code="projecthandler.signup.button.chooseFile"/>"/>
+													<br/>
+													<span id="avatar_error" style="color: red; display:block;"></span>
+													<br/>
+													<div class="divButton" style="width: 100%;">
+														<button id="addAvatarButton" class="btn btn-primary btn-xs" onClick="addAvatar();return false;" disabled="disabled">
+															<spring:message code="projecthandler.admin.action.add" />
+														</button>
+													</div>
+												</td>
+												</tr>
+												</table>
+											</li>
+									</ul>
+								</form>
+								<br/>
+								<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
+							</div>
+						</div>	
+					</div>	
+				</div>
+			</div>		
+		</div>
 	</body>
 </html>
