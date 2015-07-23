@@ -242,14 +242,12 @@
 			<div class="display-table full-width full-height">
 				<div class="display-table-cell full-height theme1-primary-bg">
 					<div class="fixedwidth-320">
-					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<h1 class="text-h2 container inverted-text"><span class="icon-user margin-right"></span>Mon profil</h1>
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/signup"/>"><span class="icon-profile margin-right"></span>Mes informations personnelles</a>
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/changePassword"/>"><span class="icon-key margin-right"></span>Mon mot de passe</a>
-						<hr class="inverted-bg">
-					</sec:authorize>	
+						<hr class="inverted-bg">	
 					</div>
 				</div>
 				<div class="display-table-cell full-width full-height">
