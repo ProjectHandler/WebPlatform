@@ -20,7 +20,7 @@
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">
 				
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 util3-primary-text text-h1 text-center radius animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu" href="#" title="home">
+					<a class="display-none default-box-p display-table-cell vertical-align default-btn-style5 util3-primary-text text-h1 text-center radius animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu" href="#" title="home">
 						<span class="icon-equalizer"></span>
 					</a>
 					
@@ -72,8 +72,8 @@
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="#" title="notifications">
-						<span class="icon-bell"></span>
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/gantt"/>" title="gantt">
+						<span class="icon-table2"></span>
 					</a>
 				</li>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">

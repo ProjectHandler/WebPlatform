@@ -292,7 +292,6 @@
 </head>
 <body style="background-color: #fff; overflow: hidden">
 	<jsp:include page="../template/header.jsp" />
-	<jsp:include page="../template/menu.jsp" />
 
 	<div id="workSpace" style="padding:0px; overflow-y:auto; overflow-x:hidden;border:1px solid #e5e5e5;position:relative;margin:0 5px"></div>	
 
