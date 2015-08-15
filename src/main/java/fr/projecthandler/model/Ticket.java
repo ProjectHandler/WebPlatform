@@ -38,7 +38,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	private String text;
 	
 	@Column(name = "ticket_status", nullable = false)
-	TicketStatus ticketStatus;
+	private TicketStatus ticketStatus;
 	
 	//Author
 	@ManyToOne(fetch = FetchType.EAGER)
