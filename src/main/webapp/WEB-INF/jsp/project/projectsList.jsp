@@ -12,7 +12,7 @@
 		<title><spring:message code="projecthandler.projectsList.title"/></title>
 		<script type="text/javascript">
 		$(document).ready(function(){
-			
+
 			$("#projectTable").tablesorter();
 			
 		});
@@ -106,24 +106,27 @@
 												</table>
 												</td>
 												<td style="width:10%">
-													<form action="${pageContext.request.contextPath}/project/edit/${project.id}">
-						    							<input type="submit" value="<spring:message code="projecthandler.projectsList.edit"/>">
-													</form>
-													<form action="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
-						    							<input type="submit" value="<spring:message code="projecthandler.projectsList.goToTickets"/>">
-													</form>
+													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
+														<spring:message code="projecthandler.projectsList.edit"/>
+													</a>
+													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
+														<spring:message code="projecthandler.projectsList.goToTickets"/>
+													</a>
+													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
+														<spring:message code="projecthandler.projectsList.goToProjectView"/>
+													</a>
 												</td>
 							                </tr>
 							            </c:forEach>
 						            </tbody>
 						        </table>
 						    </div>
-							    
 						</div>
 					</div>	
 				</div>	
 			</div>
 		</div>		
 	</div>
+	<jsp:include page="../template/footer.jsp" />
 </body>
 </html>

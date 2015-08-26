@@ -24,7 +24,7 @@ public class ProjectProgressDTO {
 		long dayInMs = 86400000;
 		double totalTime = end.getTime() - begin.getTime();
 		double elapsedTime = curr.getTime() - begin.getTime();
-		
+
 		this.daysLeft = (int)((totalTime - elapsedTime) / dayInMs);
 		if (this.daysLeft < 0) {
 			this.dateProgress = 100;

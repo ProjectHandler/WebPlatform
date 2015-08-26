@@ -31,11 +31,13 @@ import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.ProjectProgressDTO;
+import fr.projecthandler.enums.ProjectStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
+import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
 
@@ -49,6 +51,9 @@ public class ProjectController {
 	
 	@Autowired
 	TaskService taskService;
+
+	@Autowired
+	TicketService ticketService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -149,6 +154,32 @@ public class ProjectController {
 		return new ModelAndView("project/editProject", myModel);
 	}
 
+	@RequestMapping(value = "/project/viewProject/{projectId}", method = RequestMethod.GET)
+	public ModelAndView viewProject(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		Project project = projectService.findProjectById(projectId);
+
+		if (project == null) {
+			// TODO not found
+			return new ModelAndView("redirect:/");
+		}
+		project.setUsers(projectService.getUsersByProjectId(project.getId()));
+		project.setTasks(taskService.getTasksByProjectId(project.getId()));
+		ProjectProgressDTO projectProgress = new ProjectProgressDTO(project);
+		myModel.put("project", project);
+		myModel.put("projects", projectService.getProjectsByUserId(userDetails.getId()));
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+		myModel.put("tickets", ticketService.getTicketsByProjectId(project.getId()));
+		myModel.put("projectProgress", projectProgress);
+
+		return new ModelAndView("project/projectView", myModel);
+	}
+
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
 	public ModelAndView saveProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
 		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
@@ -160,7 +191,7 @@ public class ProjectController {
 			// project does not exist
 			if (project.getId() == null) {
 				project.setProgress(0l);
-				project.setStatus("STATUS_ACTIVE");
+				project.setStatus(ProjectStatus.ACTIVE.getValue());
 				projectService.saveProject(project);
 			}
 			else { // project exists

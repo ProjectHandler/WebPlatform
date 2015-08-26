@@ -384,7 +384,7 @@ public class UserController {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
 		
-		if (token != null && token.length() > 0) {
+		if (token != null && token.length() > 0 && principal != null) {
 			User user = tokenService.findUserByToken(token);
 			if (user == null)
 				return new ModelAndView("accessDenied", null);
@@ -392,7 +392,7 @@ public class UserController {
 			myModel.put("civilityList", civilityService.getAllCivilities());
 			myModel.put("user", user);
 
-			// Access denied if Token out of date.
+			// Access denied if Token out of date OR user already validated.
 			Token t = tokenService.findTokenByUserId(user.getId());
 			if (TokenGenerator.checkTimestamp(t.getTimeStamp(), maximumTokenValidity)) {
 				// TODO : inform about the fact that the token expired in a

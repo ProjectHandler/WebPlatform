@@ -61,7 +61,7 @@
 	            				${item.status}
 	            			</td>
 	            			<c:choose>
-	            			<c:when test="${item.type != 'Task'}">
+	            			<c:when test="${item.type == 'Task'}">
 		            			<td>
 									<div id="progress${item.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 										<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${item.progress}%; background: rgb(0, 128, 255);" >
@@ -113,7 +113,7 @@
 	            				${item.status}
 	            			</td>
 	            			<c:choose>
-	            			<c:when test="${item.type != 'Task'}">
+	            			<c:when test="${item.type == 'Task'}">
 		            			<td>
 									<div id="progress${item.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 										<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${item.progress}%; background: rgb(0, 128, 255);" >
@@ -165,7 +165,7 @@
 	            				${item.status}
 	            			</td>
 	            			<c:choose>
-	            			<c:when test="${item.type != 'Task'}">
+	            			<c:when test="${item.type == 'Task'}">
 		            			<td>
 									<div id="progress${item.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 										<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${item.progress}%; background: rgb(0, 128, 255);" >

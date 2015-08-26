@@ -58,7 +58,7 @@ public class AdminController {
 		} else
 			return new ModelAndView("accessDenied", null);
 
-		return new ModelAndView("admin/signupSendMailService", myModel);
+		return new ModelAndView("admin/users_management", myModel);
 	}
 
 	// Here we will be testing if all mail are valid;
@@ -85,6 +85,9 @@ public class AdminController {
 	}
 
 	private String buildTokenUrl(HttpServletRequest request, User user, Token token) {
+		if (!user.getAccountStatus().equals(AccountStatus.INACTIVE)) {
+			return "redirect:/accessDenied";
+		}
 		StringBuilder url = new StringBuilder();
 		String serverName = request.getServerName();
 		url.append(request.getScheme()).append("://").append(serverName);
