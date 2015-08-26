@@ -319,7 +319,7 @@
 												<c:forEach items="${civilityList}" var="civil">
 													<c:set var="civilityValue"><spring:message code="${civil.name}" text=""/></c:set>
 													<c:if test="${user != null && user.civility.id eq civil.id}">
-														<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" checked="checked" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+														<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
 													</c:if>
 													<c:if test="${user eq null || user.civility.id != civil.id}">
 														<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
@@ -504,7 +504,7 @@
 											</li>
 									</ul>
 								<div class="">
-									<button id="btnSave" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark"></span> Valider les informations</button>
+									<a id="btnSave" class="default-btn-shape theme2-primary-btn-style1" href="#"><span class="icon-checkmark"></span> Valider les informations</a>
 								</div>
 							</div>
 						</div>	
