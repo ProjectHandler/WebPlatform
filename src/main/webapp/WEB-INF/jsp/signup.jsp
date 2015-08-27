@@ -40,6 +40,11 @@
 					$("#createAccount").submit();
 				}
 			});
+			
+			if ("${user.civility}".length <= 0)
+				$("#civility_1").prop("checked", true);
+			
+			
 
 			$("#lastName").focusout(function() {
 				validateLastName();
@@ -319,10 +324,10 @@
 												<c:forEach items="${civilityList}" var="civil">
 													<c:set var="civilityValue"><spring:message code="${civil.name}" text=""/></c:set>
 													<c:if test="${user != null && user.civility.id eq civil.id}">
-														<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+														<input type="radio" name="civility" id="civility_${civil.id}" value="${civil.id}"  checked="checked" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
 													</c:if>
 													<c:if test="${user eq null || user.civility.id != civil.id}">
-														<input type="radio" name="civility" id="civility" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
+														<input type="radio" name="civility" id="civility_${civil.id}" value="${civil.id}" class="radio" style="width: 15px; float:none;"/><c:out value="${civilityValue}" />
 													</c:if>
 												</c:forEach>
 											</div>
