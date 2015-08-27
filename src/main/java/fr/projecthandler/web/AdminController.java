@@ -134,7 +134,7 @@ public class AdminController {
 			tokenService.saveToken(token);
 			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
 		}
-		return "redirect:/admin/signupSendMailService";
+		return "redirect:/admin/users_management";
 	}
 
 	@RequestMapping(value = "admin/users_management", method = RequestMethod.GET)
