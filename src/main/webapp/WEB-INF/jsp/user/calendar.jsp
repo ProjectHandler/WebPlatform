@@ -47,12 +47,33 @@
 		<jsp:include page="../template/menu.jsp" />
 		
 
-	<form id="createEvent" name="createEvent" method="post">
-		<div id='daterangeDiv'>
-		</div>
-	</form>
 				
 		<div id='calendar'></div>
+		
+		
+		
+		<div id="eventModal" style="display:none;">
+		<form id="appointmentForm" class="form-horizontal">
+		    <div class="modal-header">
+		        <label for=titleEvent><spring:message code="projecthandler.calendar.title" /></label>
+		        <input type="text" name="titleEvent" id="titleEvent">
+		
+		    </div>
+		    <div class="modal-body">
+		    	<label for="daterange"><spring:message code="projecthandler.calendar.duration" /></label>
+			    <input type="text" id="daterange" name="daterange"/><br>
+			    <label for="description"><spring:message code="projecthandler.calendar.descritption" /></label>
+		        <input type="text" id="description" name="description"/><br>
+		    
+		    </div>
+		    <div class="modal-footer">
+		        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><spring:message code="projecthandler.gantt.undo" /></button>
+		        <button class="btn btn-danger" id="deleteEventButton"><spring:message code="projecthandler.admin.action.delete" /></button>
+		        <button type="submit" class="btn btn-primary" id="submitEventButton"></button>
+		    </div>
+		    </form>
+		</div>
+
 		
 		<script type="text/javascript">
 				
@@ -62,8 +83,12 @@
 		/*
 		 * TODO check input
 		 */
-			$('#createEvent').attr("action", CONTEXT_PATH+"/createEvent");
-			$('#createEvent').submit();
+			$('#appointmentForm').attr("action", CONTEXT_PATH+"/createEvent");
+			$('#appointmentForm').submit();
+		}
+		
+		function deleteEvent() {
+			$('#calendar').fullCalendar('refetchEvents');
 		}
 		
 		$(document).ready(function() {
@@ -80,27 +105,17 @@
 					  workDay.push(i == 7 ? 0 : i + 1);
 			
 			if ('${user.userRole}' == "ROLE_ADMIN") {
-				var creatFormEvent = '<label><spring:message code="projecthandler.calendar.title" /></label>' + '<input type="text" name="title"/>' 
-				+ '<label><spring:message code="projecthandler.calendar.descritption" /></label>' + '<input type="text" name="description"/>'
-				+ '</br>' + '<input type="text" name="daterange"/>' 
-				+ '<button type="button" id="btnSave" onclick="createEventFromDatePiker()"><spring:message code="projecthandler.signup.create" /></button>';
-				
-				$("#daterangeDiv").append(creatFormEvent);
-
-				$('input[name="daterange"]').daterangepicker({
-			        timePicker: true,
-			        format: 'DD/MM/YYYY h:mm A',
-			        timePickerIncrement: 30,
-			        timePicker12Hour: false
-			    });
+/*
+ * TODO
+ */
 			}
 
             var calendar = $('#calendar').fullCalendar({
-            	businessHours: {
+            	businessHours: 	{
             	        start: start,
             	        end: end,
             	        dow: workDay
-            	    },
+            	    			},
                 header: {
                     left: 'today prev,next',
                     center: 'title',
@@ -113,19 +128,23 @@
                     selectHelper: true,
 
                 select: function(start, end, allDay) {
-                        var title = prompt('Event Title:');
-                        if (title) {
-                            calendar.fullCalendar('renderEvent',
-                            {
-                                title: title,
-                                start: start,
-                                end: end,
-                                allDay: allDay
-                            },
-                            true // make the event "stick"
-                            );
-                            }
-                            calendar.fullCalendar('unselect');
+                	buildModal(true, start, end, "", "");
+                  
+
+                 
+//                         var title = prompt('Event Title:');
+//                         if (title) {
+//                             calendar.fullCalendar('renderEvent',
+//                             {
+//                                 title: title,
+//                                 start: start,
+//                                 end: end,
+//                                 allDay: allDay
+//                             },
+//                             true // make the event "stick"
+//                             );
+//                             }
+//                             calendar.fullCalendar('unselect');
                         },
                 editable: true,
                 eventSources: [{
@@ -144,10 +163,64 @@
                             }
                     }],
                         eventRender: function(event, element) { 
-                            element.find('.fc-title').append("<br/>" + event.description != undefined ? event.description : ""); 
+                          	element.click(function() {
+                          		buildModal(false, moment(event.start), moment(event.end), event.title, event.description);
+                          	});
+                            element.find('.fc-title').append("<br/>" + event.description != undefined ? event.description : "");
                         } 
                     });
+            
+            $('#submitEventButton').on('click', function(e){
+                // We don't want this to act as a link so cancel the link action
+                e.preventDefault();
+                doSubmit();
+              });
+
+              
+              
             });
+
+		
+		function buildModal(isNewEvent, start, end, title, description) {
+            $('input[name="daterange"]').daterangepicker({
+		        timePicker: true,
+		        pickTime: true,
+		        format: 'DD/MM/YYYY h:mm A',
+		        timePickerIncrement: 30,
+		        timePicker12Hour: false
+		    });
+            $("#daterange").data('daterangepicker').setStartDate(start);
+            $("#daterange").data('daterangepicker').setEndDate(end);
+            $("#titleEvent").val(title);
+            $("#description").val(description);
+            if (isNewEvent) {
+            	var titleModal = '<spring:message code="projecthandler.calendar.newEvent" />';
+            	var saveButton = '<spring:message code="projecthandler.calendar.create" />';
+            } else {
+            	var titleModal = '<spring:message code="projecthandler.calendar.event" />';
+            	var saveButton = '<spring:message code="projecthandler.signup.create" />';
+            }
+            $("#submitEventButton").html(saveButton);
+            $("#eventModal").dialog({ modal: true, title: titleModal, width:500});
+		}
+		
+		function doSubmit(){
+			$('#eventModal').dialog('close');
+          //  $("#createEventModal").modal('hide');
+            console.log($('#apptStartTime').val());
+            console.log($('#apptEndTime').val());
+            console.log($('#apptAllDay').val());
+            alert("form submitted");
+                
+            $("#calendar").fullCalendar('renderEvent',
+                {
+                    title: $('#patientName').val(),
+                    start: new Date($('#apptStartTime').val()),
+                    end: new Date($('#apptEndTime').val()),
+                    allDay: ($('#apptAllDay').val() == "true"),
+                },
+                true);
+           }
 		
 		function convertTo24h(time_str) {
 		    // Convert a string like 10:05 PM to 24h format, returns like 22:5
