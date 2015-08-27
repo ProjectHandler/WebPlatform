@@ -14,7 +14,7 @@
 			    multiple: false,
 			    placeholder: 'Type to search a project'
 			});
-			
+
 			$('.projectSelection').on("selectivity-selected", changeProject);
 		});
 
@@ -29,7 +29,8 @@
 		<div>
 			<jsp:include page="../template/header.jsp" />
 		</div>
-		<div class="small-container">
+		<div id="toolBar" class="small-container">
+			<spring:message code="projecthandler.projectView.researchProject"/>: 
 			<select class="projectSelection display-inline-block" id="projectSelection">
 				<c:forEach var='projectSelectable' items='${projects}'>
 					<c:choose>
@@ -49,8 +50,11 @@
 			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
 				<spring:message code="projecthandler.projectView.editCurrentProject"/>
 			</a>
+			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
+				<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
+			</a>
 		</div>
-		<div class="small-container">
+		<div id="dateProgressBox" class="small-container">
 			<div class="display-inline-block">
 				<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
 				<spring:message code="projecthandler.projectView.dateBegin"/>: ${dateBeginString} 
@@ -69,7 +73,7 @@
 				<spring:message code="projecthandler.projectView.dateEnd"/>: ${dateEndString}
 			</div>
 		</div>
-		<div class="small-container">
+		<div id="taskProgressBox" class="small-container">
 			<div class="display-inline-block">
 				<spring:message code="projecthandler.projectView.taskProgress"/>:
 			</div>
@@ -81,11 +85,11 @@
 				</div>
 			</div>
 		</div>
-		<div class="small-container">
+		<div id="descriptionBox" class="small-container">
 			${project.description}
 		</div>
-		<div class="clearfix">
-			<div class="float-left gridwidth-5">
+		<div id="projectInfoBox" class="clearfix">
+			<div id="ticketAccessBox" class="float-left gridwidth-5">
 				<div>
 					<spring:message code="projecthandler.projectView.ticketList"/>
 				</div>
@@ -99,7 +103,7 @@
 					</div>
 				</c:forEach>
 			</div>
-			<div class="float-right gridwidth-5">
+			<div id="usersAccessBox" class="float-right gridwidth-5">
 				<div>
 					<spring:message code="projecthandler.projectView.userList"/>
 				</div>

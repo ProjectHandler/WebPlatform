@@ -179,6 +179,27 @@ public class ProjectController {
 
 		return new ModelAndView("project/projectView", myModel);
 	}
+	
+	@RequestMapping(value = "/project/viewProject/{projectId}/tasks", method = RequestMethod.GET)
+	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+
+		Project project = projectService.findProjectById(projectId);
+
+		if (project == null) {
+			// TODO not found
+			return new ModelAndView("redirect:/");
+		}
+		myModel.put("project", project);
+		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+
+		return new ModelAndView("project/projectTasksView", myModel);
+	}
 
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
 	public ModelAndView saveProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
