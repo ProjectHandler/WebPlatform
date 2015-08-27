@@ -33,8 +33,8 @@ public class TaskServiceImpl implements TaskService {
 		taskDao.updateTask(t);
 	}
 
-	public void deleteTasksByIds(List<Long> TasksIdsList) {
-		taskDao.deleteTasksByIds(TasksIdsList);
+	public void deleteTasksByIds(List<Long> tasksIdsList) {
+		taskDao.deleteTasksByIds(tasksIdsList);
 	}
 
 	public Set<Task> getTasksByProjectId(Long projectId) {

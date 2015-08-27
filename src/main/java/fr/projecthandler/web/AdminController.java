@@ -1,6 +1,7 @@
 package fr.projecthandler.web;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,9 +24,13 @@ import org.springframework.web.servlet.ModelAndView;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Group;
+import fr.projecthandler.model.Project;
+import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.MailService;
+import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -43,6 +48,12 @@ public class AdminController {
 
 	@Autowired
 	TokenService				tokenService;
+	
+	@Autowired
+	ProjectService				projectService;
+	
+	@Autowired
+	TaskService					taskService;
 
 	@RequestMapping(value = "admin/signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -227,6 +238,18 @@ public class AdminController {
 				if (usersAdmin.size() <= 1)
 					return "KO:" + bundle.getString("projecthandler.admin.error.deleteAllAdmin");
 			}
+			user.setProjects(projectService.getProjectsByUserId(user.getId()));
+			user.setTasks(new ArrayList<Task>(taskService.getTodayTasksByUser(user.getId())));
+			if (user.getProjects().size() > 0) {
+				StringBuilder str = new StringBuilder();
+				str.append("KO: ");
+				str.append(bundle.getString("projecthandler.admin.error.deleteUserInProject"));
+				for(Project p : user.getProjects())
+					str.append("\n-" + p.getName());
+				return str.toString();
+			}
+			else if (user.getTasks().size() > 0)
+				return "KO:" + bundle.getString("projecthandler.admin.error.deleteUserHasTasks");
 			tokenService.deleteTokenByUserId(user.getId());
 			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
 			return "OK";
