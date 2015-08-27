@@ -48,6 +48,7 @@ public class ProjectDaoImpl extends AbstractDao implements ProjectDao {
 	}
 
 	@Override
+	@Transactional
 	public void deleteProjectById(Long id) {
 		em.createQuery("DELETE FROM Project p WHERE p.id =:id").setParameter("id", id).executeUpdate();
 	}

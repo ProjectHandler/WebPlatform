@@ -225,9 +225,28 @@ public class ProjectController {
 		else
 			return new ModelAndView("redirect:" + "/");
 
-		return new ModelAndView("redirect:" + "/project/projectsList");
+		return new ModelAndView("redirect:/project/projectsList");
 	}
-	
+
+	@RequestMapping(value = "/project/delete", method = RequestMethod.POST)
+	public ModelAndView deleteProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
+		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+		User u = userService.findUserById(userDetails.getId());
+		
+		if (principal != null && u.getUserRole().equals(UserRole.ROLE_ADMIN)) {
+			try {
+				projectService.deleteProjectById(project.getId());
+			}
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+			return new ModelAndView("accessDenied");
+
+		return new ModelAndView("redirect:/project/projectsList");
+	}
+
 	// We chose to authorize adding inactive users via group.
 	// Called from edit project to fetch users of a given group
 	@RequestMapping(value = "project/fetchGroupUsers", method = RequestMethod.GET)

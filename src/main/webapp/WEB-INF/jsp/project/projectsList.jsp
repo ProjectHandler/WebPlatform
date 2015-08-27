@@ -54,9 +54,11 @@
 					                    	<h3 class="text-capitalize text-p">${project.name}</h3>
 											<div class="small theme3-primary-text">${project.status}</div>
 										</div>
+										<c:if test="${user.userRole == 'ROLE_ADMIN'}">
 										<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:2px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
 											<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
 										</a>
+										</c:if>
 				                    </div>
 
 									<div class="small-container theme3-lighten1-bg">

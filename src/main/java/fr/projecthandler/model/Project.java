@@ -155,5 +155,12 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	public boolean removeUser(User user) {
 		return this.users.remove(user);
 	}
+	
+	public void removeAllUsers() {
+		this.users.clear();
+	}
 
+	public void removeAllTasks() {
+		this.tasks.clear();
+	}
 }

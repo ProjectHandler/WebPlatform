@@ -47,9 +47,11 @@
 					</c:choose>
 				</c:forEach>
 			</select>
+			<c:if test="${user.userRole == 'ROLE_ADMIN'}">
 			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
 				<spring:message code="projecthandler.projectView.editCurrentProject"/>
 			</a>
+			</c:if>
 			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
 				<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
 			</a>

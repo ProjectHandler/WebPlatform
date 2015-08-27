@@ -35,9 +35,9 @@ INSERT INTO `civility` (`id`, `name`) VALUES
 -- Constraints for table `users_projects` (05/06/2015)
 ALTER TABLE `users_projects`
 	ADD CONSTRAINT `users_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
- 	ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`);
+ 	ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
 
--- ADD 2 field for table 'users' (17/06/2015)	
+-- ADD 2 field for table 'users' (17/06/2015)
 ALTER TABLE `users` ADD `work_day` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'tttttff' ;
 ALTER TABLE `users` ADD `daily_hour` VARCHAR(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '09:00 AM - 05:00 PM';
 

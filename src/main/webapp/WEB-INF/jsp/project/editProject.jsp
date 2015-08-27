@@ -137,6 +137,10 @@
 			}
 			
 		}
+		
+		function confirmDelete() {
+			return confirm('<spring:message code="projecthandler.project.edit.deleteConfirm"/>');
+		}
 		</script>
 	</head>
 <body>
@@ -243,11 +247,13 @@
 										<tr>
 										<td><input value="<spring:message code="projecthandler.project.edit.save"/>" type="submit" id="submit"></td>
 										</tr>
-										
 									</tbody>
 								</table>
 							</form:form>
-
+							<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
+								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
+   	 							<input value="<spring:message code="projecthandler.project.edit.delete"/>" type="submit" id="submit">
+							</form:form>
 						</div>
 					</div>	
 				</div>	

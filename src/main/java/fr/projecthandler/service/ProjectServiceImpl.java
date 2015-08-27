@@ -1,5 +1,6 @@
 package fr.projecthandler.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.ProjectDao;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.model.Task;
+import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.User;
 
 @Service
@@ -14,6 +17,12 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	ProjectDao projectDao;
+	
+	@Autowired
+	TicketService ticketService;
+	
+	@Autowired
+	TaskService taskService;
 
 	@Override
 	public Long saveProject(Project newProject) {
@@ -47,7 +56,23 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Override
 	public void deleteProjectById(Long projectId) {
-		projectDao.deleteProjectById(projectId);
+		if (projectId != null) {
+			Project p = findProjectById(projectId);
+			p.setTasks(taskService.getTasksByProjectId(projectId));
+			p.setUsers(getUsersByProjectId(projectId));
+			List<Long> tasksIds = new ArrayList<Long>();
+			for (Task t : p.getTasks()) {
+				tasksIds.add(t.getId());
+			}
+			taskService.deleteTasksByIds(tasksIds);
+			List<Ticket> tickets = ticketService.getTicketsByProjectId(projectId);
+			List<Long> ticketsIdsList = new ArrayList<Long>();
+			for(Ticket t : tickets) {
+				ticketsIdsList.add(t.getId());
+			}
+			ticketService.deleteTicketsByIds(ticketsIdsList);
+			projectDao.deleteProjectById(projectId);
+		}
 	}
 
 	@Override
