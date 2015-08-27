@@ -47,6 +47,10 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@Column(name = "status", length = 30)
 	private String status;
 	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "task_priority_id")
+	private TaskPriority priority;
+
 	//@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
@@ -79,6 +83,14 @@ public class Task extends BaseEntity implements java.io.Serializable {
 		this.startingDate = new Date(taskDTO.getStart());
 		this.endingDate = new Date(taskDTO.getEnd());
 		this.status = taskDTO.getStatus();
+	}
+
+	public TaskPriority getPriority() {
+		return priority;
+	}
+
+	public void setPriority(TaskPriority priority) {
+		this.priority = priority;
 	}
 
 	public List<User> getUsers() {
@@ -176,6 +188,4 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	public void setDepend(Set<Task> depend) {
 		this.dependtasks = depend;
 	}
-	
-	
 }

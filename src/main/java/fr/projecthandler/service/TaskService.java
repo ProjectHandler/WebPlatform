@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 
 public interface TaskService {
@@ -29,4 +30,16 @@ public interface TaskService {
 	public Set<Task> getTodayTasksByUser(Long userId);
 	
 	public Set<Task> getTomorrowTasksByUser(Long userId);
+	
+	public Long saveTaskPriority(TaskPriority taskPriority);
+
+	public void updateTaskPriority(TaskPriority taskPriority);
+
+	public void deleteTaskPriorityById(Long taskPriorityId);
+
+	public void deleteTaskPrioritiesByIds(List<Long> taskPriorities);
+
+	public TaskPriority findTaskPriorityById(Long taskPriorityId);
+
+	public List<TaskPriority> getAllTaskPriorities();
 }

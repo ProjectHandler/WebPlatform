@@ -115,7 +115,7 @@
 													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
 														<spring:message code="projecthandler.projectsList.goToProjectView"/>
 													</a>
-													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
+													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
 														<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
 													</a>
 												</td>

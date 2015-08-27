@@ -1,7 +1,7 @@
 package fr.projecthandler.enums;
 
 public enum Priority {
-	LOW(0, "PRIORITY_INACTIVE"), ACTIVE(1, "STATUS_ACTIVE"), MAIL_VALIDATED(2, "STATUS_MAIL_VALIDATED");
+	LOW(0, "PRIORITY_LOW"), MEDIUM(1, "PRIORITY_MEDIUM"), HIGH(2, "PRIORITY_HIGH");
 
 	private Integer id;
 	private String value;
@@ -29,9 +29,9 @@ public enum Priority {
 
 	public static String findById(Integer id) {
 		if (id != null) {
-			for (AccountStatus accountStatus : AccountStatus.values()) {
-				if (id.equals(accountStatus.getId())) {
-					return accountStatus.getValue();
+			for (Priority p : Priority.values()) {
+				if (id.equals(p.getId())) {
+					return p.getValue();
 				}
 			}
 		}

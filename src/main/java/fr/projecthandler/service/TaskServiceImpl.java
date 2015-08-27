@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.TaskDao;
+import fr.projecthandler.dao.TaskPriorityDao;
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 
 @Service
@@ -15,6 +17,9 @@ public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	TaskDao taskDao;
+	
+	@Autowired
+	TaskPriorityDao taskPriorityDao;
 
 	public Long saveTask(Task newTask) {
 		return taskDao.saveTask(newTask);
@@ -58,5 +63,29 @@ public class TaskServiceImpl implements TaskService {
 	
 	public Set<Task> getTomorrowTasksByUser(Long userId) {
 		return taskDao.getTomorrowTasksByUser(userId);
+	}
+	
+	public Long saveTaskPriority(TaskPriority taskPriority) {
+		return taskPriorityDao.saveTaskPriority(taskPriority);
+	}
+
+	public void updateTaskPriority(TaskPriority taskPriority) {
+		taskPriorityDao.updateTaskPriority(taskPriority);
+	}
+
+	public void deleteTaskPriorityById(Long taskPriorityId) {
+		taskPriorityDao.deleteTaskPriorityById(taskPriorityId);
+	}
+
+	public void deleteTaskPrioritiesByIds(List<Long> taskPriorities) {
+		taskPriorityDao.deleteTaskPrioritiesByIds(taskPriorities);
+	}
+
+	public TaskPriority findTaskPriorityById(Long taskPriorityId) {
+		return taskPriorityDao.findTaskPriorityById(taskPriorityId);
+	}
+
+	public List<TaskPriority> getAllTaskPriorities() {
+		return taskPriorityDao.getAllTaskPriorities();
 	}
 }

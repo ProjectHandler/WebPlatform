@@ -56,3 +56,25 @@ ALTER TABLE `users` DROP `avatar_base_64`;
 
 -- DEPLOYMENT ON PRODUCTION 22/07/2015 --
 
+--
+-- Table structure for table `task_priority`
+--
+-- Creation: 27/08/2015
+--
+
+CREATE TABLE IF NOT EXISTS `task_priority` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4;
+
+INSERT INTO `project_handler`.`task_priority` (`id`, `value`, `name`) VALUES (0, '10', 'LOW');
+INSERT INTO `project_handler`.`task_priority` (`id`, `value`, `name`) VALUES (1, '20', 'MEDIUM');
+INSERT INTO `project_handler`.`task_priority` (`id`, `value`, `name`) VALUES (2, '30', 'HIGH');
+
+-- ADDED COLUMN PRIORITY to table task 27/08/2015
+ALTER TABLE `task`
+	ADD `task_priority_id` bigint(20) DEFAULT NULL,
+	ADD KEY `task_priority_id` (`task_priority_id`),
+	ADD CONSTRAINT `task_priority_ibkf` FOREIGN KEY (`task_priority_id`) REFERENCES `task_priority` (`id`);

@@ -50,8 +50,11 @@
 			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
 				<spring:message code="projecthandler.projectView.editCurrentProject"/>
 			</a>
-			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
+			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
 				<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
+			</a>
+			<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
+				<spring:message code="projecthandler.projectView.goToProjectsList"/>
 			</a>
 		</div>
 		<div id="dateProgressBox" class="small-container">

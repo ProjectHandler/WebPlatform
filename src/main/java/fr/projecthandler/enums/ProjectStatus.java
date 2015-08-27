@@ -29,9 +29,9 @@ public enum ProjectStatus {
 
 	public static String findById(Integer id) {
 		if (id != null) {
-			for (AccountStatus accountStatus : AccountStatus.values()) {
-				if (id.equals(accountStatus.getId())) {
-					return accountStatus.getValue();
+			for (ProjectStatus projectStatus : ProjectStatus.values()) {
+				if (id.equals(projectStatus.getId())) {
+					return projectStatus.getValue();
 				}
 			}
 		}
