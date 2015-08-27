@@ -104,21 +104,28 @@
 								<form id="passwordForm" name="passwordForm" method="post">
 									<input type="hidden" name="userId" id="userId" value="${user.id}"/>
 									<ul class="form">
-										<li>
-											<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
-											<input type="password" name="password" id="password" autocomplete="off" maxlength="70"/>
+										<li class="small-margin-bottom">
+											<div class="display-table-cell fixedwidth-192 vertical-align">
+												<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
+											</div>
+											<div class="display-table-cell vertical-align">
+												<input type="password" name="password" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="password" autocomplete="off" maxlength="70"/>
+											</div>
 											<span class="error" id="passwordError"></span>
 											<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
 										</li>
-										<li>
-											<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
-											<input type="password" name="passwordConfirm" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+										<li class="small-margin-bottom">
+											<div class="display-table-cell fixedwidth-192 vertical-align">
+												<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
+											</div>
+											<div class="display-table-cell vertical-align">
+												<input type="password" name="passwordConfirm" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+											</div>
 											<span class="error" id="passwordConfirmError"></span>
 										</li>
 									</ul>
 								</form>
-								<br/>
-								<button id="btnSave"><spring:message code="projecthandler.signup.create" /></button>
+								<button id="btnSave" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
 							</div>
 						</div>	
 					</div>	
