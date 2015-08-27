@@ -43,93 +43,77 @@
 							<div class="text-h2 text-h1 float-right"><span class="icon-folder-open"></span></div>
 						</div>
 						<div>
-	
-							<div align="left">
-						        <table id="projectTable" class="tablesorter" border="1">
-						            <thead>
-							            <tr>
-							                <th><spring:message code="projecthandler.projectsList.name"/></th>
-							                <th><spring:message code="projecthandler.projectsList.description"/></th>
-							                <th><spring:message code="projecthandler.projectsList.progress"/></th>
-							                <th><spring:message code="projecthandler.projectsList.options"/></th>
-							            </tr>
-						            </thead>
-						            <tbody>
-							            <c:forEach var="project" items="${projectList}" varStatus="status">
-							                <tr>
-							                    <td style="width:10%">
-							                    	<c:out value="${project.name}" />
-							                    </td>
-							                    <td style="width:40%">
-							                    	<c:out value="${project.description}" />
-							                    </td>
-												<td style="width:40%">
-												<table>
-													<tr>
-														<td style="width:10%">
-															<label><spring:message code="projecthandler.projectsList.dateProgress"/>:</label>
-														</td>
-														<td style="width:10%">
-															<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
-															<label>${dateBeginString}</label>
-														</td>
-														<td style="width:70%">
-															<div id="progressDate${project.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-																<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${projectProgressList[status.index].dateProgress}%; background: rgb(0, 128, 255);" >
-																	<span style="color:black">${projectProgressList[status.index].dateProgress}%</span>
-																</div>
-															</div>
-														</td>
-														<td style="width:10%">
-															<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
-															<label>${dateEndString}</label>
-														</td>
-													</tr>
-													<tr>
-														<td style="width:10%">
-															<label><spring:message code="projecthandler.projectsList.taskProgress"/>:</label>
-														</td>
-														<td style="width:10%">
-															<label></label>
-														</td>
-														<td style="width:70%">
-															<div id="progressTask${project.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-																<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${projectProgressList[status.index].tasksProgress}%; background: rgb(0, 128, 255);" >
-																	<span style="color:black">${projectProgressList[status.index].tasksProgress}%</span>
-																</div>
-															</div>
-														</td>
-														<td style="width:10%">
-															<label></label>
-														</td>
-													</tr>
-												</table>
-												</td>
-												<td style="width:10%">
-													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
-														<spring:message code="projecthandler.projectsList.edit"/>
-													</a>
-													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
-														<spring:message code="projecthandler.projectsList.goToTickets"/>
-													</a>
-													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
-														<spring:message code="projecthandler.projectsList.goToProjectView"/>
-													</a>
-													<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
-														<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
-													</a>
-												</td>
-							                </tr>
-							            </c:forEach>
-						            </tbody>
-						        </table>
-						    </div>
+				            <c:forEach var="project" items="${projectList}" varStatus="status">
+				                <div class="inverted-bg theme3-primary-boxshadow-raising-out margin-bottom margin-right float-left fixedwidth-256">
+				                    
+				                    <div class="small-container">
+				                    	<div class="text-center display-table-cell vertical-align"><div class="display-inline-block"><div class="display-table-cell vertical-align fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
+											<span class="icon-folder"></span>
+										</div></div></div>
+										<div class=" display-table-cell vertical-align small-padding-left">
+					                    	<h3 class="text-capitalize text-p">${project.name}</h3>
+											<div class="small theme3-primary-text">${project.status}</div>
+										</div>
+										<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:2px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
+											<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
+										</a>
+				                    </div>
+
+									<div class="small-container theme3-lighten1-bg">
+										<div class="fixedwidth-192 margin-auto">
+											<div class="display-table-cell vertical-align text-h1">
+												<span class="icon-stopwatch"></span>
+											</div>
+											<div class="display-table-cell vertical-align small padding-left">
+						                    	<div>
+						                    		Débute le 
+													<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
+													<span class="theme1-primary-text">${dateBeginString}</span>
+												</div>					
+												<div>
+													Finit le
+													<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
+													<span class="theme1-primary-text">${dateEndString}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+									
+									<div class="small-container padding-top">									
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
+											<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].dateProgress}%;" ></div>
+											</div>
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].dateProgress}%</div></div>	
+										</div>
+										<div>
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Avancée</div></div>	
+											<div id="progressTask${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].tasksProgress}%;" ></div>
+											</div>
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].tasksProgress}%</div></div>	
+										</div>
+									</div>
+											
+									<div class="small-container">
+										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
+											<spring:message code="projecthandler.projectsList.goToTickets"/>
+										</a>
+										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
+											<spring:message code="projecthandler.projectsList.goToProjectView"/>
+										</a>
+										<a class="display-block full-width text-center small default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
+											<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
+										</a>
+									</div>
+									
+								 </div>
+				            </c:forEach>
 						</div>
 					</div>	
 				</div>	
 			</div>
 		</div>		
-	</div>
-	<jsp:include page="../template/footer.jsp" />
-</body>
+	</body>
 </html>
