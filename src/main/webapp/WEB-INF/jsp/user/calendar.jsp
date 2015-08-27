@@ -102,7 +102,7 @@
 			var workDay = [];
 			for (var i=0, n=userWorkDay.length;i<n;i++)
 				  if (userWorkDay[i] == 't') 
-					  workDay.push(i == 7 ? 0 : i + 1);
+					  workDay.push(i == 6 ? 0 : i + 1);
 			
 			if ('${user.userRole}' == "ROLE_ADMIN") {
 /*
