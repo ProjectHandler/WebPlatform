@@ -102,7 +102,8 @@
 						<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">
 							${ticket.title}. 
 						</a>
-						<spring:message code="projecthandler.projectView.status"/>: ${ticket.ticketStatus}
+						<spring:message code="projecthandler.projectView.status"/>: ${ticket.ticketStatus} 
+						<spring:message code="projecthandler.projectView.priority"/>: ${ticket.ticketPriority.name}
 					</div>
 				</c:forEach>
 			</div>
