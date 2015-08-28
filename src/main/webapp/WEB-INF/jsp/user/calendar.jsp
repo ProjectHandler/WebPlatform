@@ -44,36 +44,36 @@
 	</head>
 	<body>
 		<jsp:include page="../template/header.jsp" />
-		<jsp:include page="../template/menu.jsp" />
 		
-
+		<div class="bootstrap">
 				
-		<div id='calendar'></div>
-		
-		
-		
-		<div id="eventModal" style="display:none;">
-		<form id="appointmentForm" class="form-horizontal">
-		    <div class="modal-header">
-		        <label for=titleEvent><spring:message code="projecthandler.calendar.title" /></label>
-		        <input type="text" name="titleEvent" id="titleEvent">
-		
-		    </div>
-		    <div class="modal-body">
-		    	<label for="daterange"><spring:message code="projecthandler.calendar.duration" /></label>
-			    <input type="text" id="daterange" name="daterange"/><br>
-			    <label for="description"><spring:message code="projecthandler.calendar.descritption" /></label>
-		        <input type="text" id="description" name="description"/><br>
-		    
-		    </div>
-		    <div class="modal-footer">
-		        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><spring:message code="projecthandler.gantt.undo" /></button>
-		        <button class="btn btn-danger" id="deleteEventButton"><spring:message code="projecthandler.admin.action.delete" /></button>
-		        <button type="submit" class="btn btn-primary" id="submitEventButton"></button>
-		    </div>
-		    </form>
-		</div>
+			<div id='calendar'></div>
+			
+			
+			
+			<div id="eventModal" style="display:none;">
+			<form id="appointmentForm" class="form-horizontal">
+			    <div class="modal-header">
+			        <label for=titleEvent><spring:message code="projecthandler.calendar.title" /></label>
+			        <input type="text" name="titleEvent" id="titleEvent">
+			
+			    </div>
+			    <div class="modal-body">
+			    	<label for="daterange"><spring:message code="projecthandler.calendar.duration" /></label>
+				    <input type="text" id="daterange" name="daterange"/><br>
+				    <label for="description"><spring:message code="projecthandler.calendar.descritption" /></label>
+			        <input type="text" id="description" name="description"/><br>
+			    
+			    </div>
+			    <div class="modal-footer">
+			        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><spring:message code="projecthandler.gantt.undo" /></button>
+			        <button class="btn btn-danger" id="deleteEventButton"><spring:message code="projecthandler.admin.action.delete" /></button>
+			        <button type="submit" class="btn btn-primary" id="submitEventButton"></button>
+			    </div>
+			    </form>
+			</div>
 
+		</div>
 		
 		<script type="text/javascript">
 				
@@ -237,6 +237,5 @@
 		  }
 		</script>
 		
-		<jsp:include page="../template/footer.jsp" />
 	</body>
 </html>
