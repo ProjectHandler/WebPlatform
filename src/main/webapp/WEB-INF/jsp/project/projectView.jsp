@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			<div class="display-inline-block">
-				<fmt:formatDate value="${project.dateBegin}" var="dateEndString" pattern="dd-MM-yyyy" />
+				<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
 				<spring:message code="projecthandler.projectView.dateEnd"/>: ${dateEndString}
 			</div>
 		</div>
