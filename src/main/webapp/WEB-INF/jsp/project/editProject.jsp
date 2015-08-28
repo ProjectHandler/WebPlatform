@@ -250,10 +250,12 @@
 									</tbody>
 								</table>
 							</form:form>
+							<c:if test="${project.id != null}">
 							<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
 								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
    	 							<input value="<spring:message code="projecthandler.project.edit.delete"/>" type="submit" id="submit">
 							</form:form>
+							</c:if>
 						</div>
 					</div>	
 				</div>	
