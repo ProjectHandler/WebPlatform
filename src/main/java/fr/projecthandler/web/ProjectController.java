@@ -168,12 +168,17 @@ public class ProjectController {
 			// TODO not found
 			return new ModelAndView("redirect:/");
 		}
+		
 		project.setUsers(projectService.getUsersByProjectId(project.getId()));
 		project.setTasks(taskService.getTasksByProjectId(project.getId()));
 		ProjectProgressDTO projectProgress = new ProjectProgressDTO(project);
 		myModel.put("project", project);
-		myModel.put("projects", projectService.getProjectsByUserId(userDetails.getId()));
-		myModel.put("user", userService.findUserById(userDetails.getId()));
+		User user = userService.findUserById(userDetails.getId());
+		if (user.getUserRole().equals(UserRole.ROLE_ADMIN))
+			myModel.put("projects", projectService.getAllProjects());
+		else
+			myModel.put("projects", projectService.getProjectsByUserId(userDetails.getId()));
+		myModel.put("user", user);
 		myModel.put("tickets", ticketService.getTicketsByProjectId(project.getId()));
 		myModel.put("projectProgress", projectProgress);
 
