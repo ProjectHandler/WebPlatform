@@ -171,41 +171,54 @@
 						
 							<form:form method="POST" modelAttribute="project" id="addProject" action="${pageContext.request.contextPath}/project/save" onsubmit="return validateForm();">
 								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
-								<table>
-									<tbody>
-										<tr>
-											<td>
-												<label><spring:message code="projecthandler.project.edit.name" />
-												<spring:message code="projecthandler.field.required"/>:</label>
-											</td>
-											<td>
-												<form:input path="name" type="text" maxlength="30" id="name" value="${project.name}"></form:input>
-												<span class="error" id="nameError"></span>
-											</td>
-										</tr>
-										<tr>
-											<td><label><spring:message code="projecthandler.project.edit.description" />:</label></td>
-											<td><form:textarea path="description" id="description" maxlength="500" content="${project.description}"></form:textarea></td>
-										</tr>
-										<tr>
-											<td><label><spring:message code="projecthandler.project.edit.beginDate" />:</label></td>
-												<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="yyyy-MM-dd" />
-											<td>
-												<form:input path="dateBegin" type="date" value="${dateBeginString}" id="dateBegin"/>
-												<span class="error" id="dateBeginError"></span>
-											</td>
-										</tr>
-										<tr>
-											<td><label><spring:message code="projecthandler.project.edit.endDate" />:</label></td>
-												<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="yyyy-MM-dd" />
-											<td>
-												<form:input path="dateEnd" type="date" value="${dateEndString}" id="dateEnd"/>
-												<span class="error" id="dateEndError"></span>
-											</td>
-										</tr>
-										<tr>
-											<td><label ><spring:message code="projecthandler.project.edit.userSelection"/>:</label></td>
-											<td>
+								
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align">
+											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.name" />
+											<spring:message code="projecthandler.field.required"/></label></div>
+										</div>
+										<div class="display-table-cell vertical-align fixedmaxwidth-256">
+											<form:input path="name" type="text" maxlength="30" id="name" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" value="${project.name}"></form:input>
+											<span class="error" id="nameError"></span>
+										</div>
+									</div>
+									
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align fixedwidth-128">
+											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.description" /></label></div>
+										</div>
+										<div class="display-table-cell vertical-align fixedmaxwidth-256">
+											<form:textarea path="description" id="description" maxlength="500" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" content="${project.description}"></form:textarea>
+										</div>
+									</div>
+									
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align">
+											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.beginDate" /></label>
+											<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="yyyy-MM-dd" /></div>
+										</div>
+										<div class="display-table-cell vertical-align fixedmaxwidth-256">
+											<form:input path="dateBegin" type="date" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" value="${dateBeginString}" id="dateBegin"/>
+											<span class="error" id="dateBeginError"></span>
+										</div>
+									</div>																		
+
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align">
+											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.endDate" /></label>
+											<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="yyyy-MM-dd" /></div>
+										</div>
+										<div class="display-table-cell vertical-align fixedmaxwidth-256">
+											<form:input path="dateEnd" type="date" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" value="${dateEndString}" id="dateEnd"/>
+											<span class="error" id="dateEndError"></span>
+										</div>
+									</div>										
+										
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align fixedwidth-128">
+											<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
+										</div>
+										<div class="display-table-cell vertical-align">
 											<form:select path="users" class="userSelection" id="userSelection">
 												<c:forEach var='userInList' items='${users}'>
 													<c:set var="found" value= "false"/>
@@ -230,11 +243,14 @@
 													</c:choose>
 												</c:forEach>
 											</form:select>
-											</td>
-										</tr>
-										<tr>
-											<td><label ><spring:message code="projecthandler.project.edit.groupSelection" />:</label></td>
-											<td>
+										</div>
+									</div>	
+									
+									<div class="margin-bottom">
+										<div class="display-table-cell vertical-align fixedwidth-128">
+											<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
+										</div>
+										<div class="display-table-cell vertical-align">
 											<select class="groupSelection"  multiple="multiple" id="groupSelection">
 											<c:forEach var='group' items='${groups}'>
 												<option value="${group.id}">
@@ -242,20 +258,22 @@
 												</option>
 											</c:forEach>
 											</select>
-											</td>
-										</tr>
-										<tr>
-										<td><input value="<spring:message code="projecthandler.project.edit.save"/>" type="submit" id="submit"></td>
-										</tr>
-									</tbody>
-								</table>
+										</div>
+									</div>						
+										
+									<input class="default-btn-shape theme2-primary-btn-style1" value="<spring:message code="projecthandler.project.edit.save"/>" type="submit" id="submit">
+
 							</form:form>
+
+							<div style="margin-top:-36px;margin-left:110px;">
 							<c:if test="${project.id != null}">
 							<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
 								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
-   	 							<input value="<spring:message code="projecthandler.project.edit.delete"/>" type="submit" id="submit">
+   	 							<input class="default-btn-shape util6-primary-btn-style1" value="<spring:message code="projecthandler.project.edit.delete"/>" type="submit" id="submit">
 							</form:form>
 							</c:if>
+							</div>
+
 						</div>
 					</div>	
 				</div>	
