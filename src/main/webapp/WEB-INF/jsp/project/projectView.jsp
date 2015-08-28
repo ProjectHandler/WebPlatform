@@ -23,6 +23,28 @@
 			window.location.replace(url);
 			return false;
 		}
+
+		function opendialog(page, id) {
+			  var $dialog = $('#' + id)
+			  .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+			  .dialog({
+			    title: '<spring:message code="projechandler.profileViewBox.title"/>',
+			    autoOpen: false,
+			    dialogClass: 'dialog_fixed,ui-widget-header',
+			    modal: true,
+			    height: 700,
+			    minWidth: 1000,
+			    minHeight: 700,
+			    draggable:false,
+			    buttons: { "Ok": function () {$(this).dialog("close"); }
+			  }
+			  }); 
+			  $dialog.dialog('open');
+			}
+		
+		function openProfileViewBox(id) {
+			opendialog(CONTEXT_PATH + '/profile/viewProfileBox/' + id, id);
+		}
 		</script>
 	</head>
 	<body>
@@ -114,14 +136,11 @@
 					<spring:message code="projecthandler.projectView.userList"/>
 				</div>
 				<c:forEach var='userInList' items='${project.users}'>
-				<%-- TODO : href="${pageContext.request.contextPath}/user/profileView/${user.id}" --%>
-					<div>
-						<c:if test="${userInList.id != user.id}">
-							<a>
-								${userInList.firstName} ${userInList.lastName}
-							</a>
-						</c:if>
+					<div class="userView" id="${userInList.id}">
 					</div>
+					<button class="display-block" onClick="openProfileViewBox(${userInList.id})">
+						${userInList.firstName} ${userInList.lastName}
+					</button>
 				</c:forEach>
 			</div>
 		</div>

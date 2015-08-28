@@ -64,13 +64,15 @@ public class ProjectServiceImpl implements ProjectService {
 			for (Task t : p.getTasks()) {
 				tasksIds.add(t.getId());
 			}
-			taskService.deleteTasksByIds(tasksIds);
+			if (tasksIds.size() > 0)
+				taskService.deleteTasksByIds(tasksIds);
 			List<Ticket> tickets = ticketService.getTicketsByProjectId(projectId);
 			List<Long> ticketsIdsList = new ArrayList<Long>();
 			for(Ticket t : tickets) {
 				ticketsIdsList.add(t.getId());
 			}
-			ticketService.deleteTicketsByIds(ticketsIdsList);
+			if (ticketsIdsList.size() > 0)
+				ticketService.deleteTicketsByIds(ticketsIdsList);
 			projectDao.deleteProjectById(projectId);
 		}
 	}

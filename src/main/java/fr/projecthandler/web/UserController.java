@@ -436,4 +436,25 @@ public class UserController {
 
 		return inputAutocompleteService.userListToJson(userList);
 	}
+
+	@RequestMapping(value = "/profile/viewProfileBox/{userId}", method = RequestMethod.GET)
+	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long userId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+
+		User userToFind = userService.findUserById(userId);
+
+		if (userToFind == null) {
+			// TODO not found
+			return new ModelAndView("redirect:/");
+		}
+		userToFind.setProjects(projectService.getProjectsByUserId(userToFind.getId()));
+		myModel.put("userToFind", userToFind);
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+
+		return new ModelAndView("user/profileViewBox", myModel);
+	}
 }

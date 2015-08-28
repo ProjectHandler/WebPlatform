@@ -80,7 +80,6 @@
 											</div>
 										</div>
 									</div>
-									
 									<div class="small-container padding-top">									
 										<div class="small-margin-bottom">
 											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
@@ -97,7 +96,6 @@
 											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].tasksProgress}%</div></div>	
 										</div>
 									</div>
-											
 									<div class="small-container">
 										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
 											<spring:message code="projecthandler.projectsList.goToTickets"/>
