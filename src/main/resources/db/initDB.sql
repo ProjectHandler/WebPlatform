@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2015 at 09:49 PM
+-- Generation Time: Aug 28, 2015 at 02:36 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -12,7 +12,6 @@ DROP DATABASE IF EXISTS project_handler;
 CREATE DATABASE project_handler;
 
 USE project_handler;
-
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -32,8 +31,6 @@ SET time_zone = "+00:00";
 --
 -- Table structure for table `address`
 --
--- Creation: Apr 13, 2015 at 07:39 PM
---
 
 CREATE TABLE IF NOT EXISTS `address` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -45,14 +42,12 @@ CREATE TABLE IF NOT EXISTS `address` (
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `civility`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `civility` (
@@ -66,8 +61,6 @@ CREATE TABLE IF NOT EXISTS `civility` (
 --
 -- Table structure for table `depend_tasks`
 --
--- Creation: Apr 13, 2015 at 07:40 PM
---
 
 CREATE TABLE IF NOT EXISTS `depend_tasks` (
   `task_id1` bigint(20) NOT NULL,
@@ -79,9 +72,37 @@ CREATE TABLE IF NOT EXISTS `depend_tasks` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `groups`
+-- Table structure for table `event`
 --
--- Creation: Apr 13, 2015 at 07:39 PM
+
+CREATE TABLE IF NOT EXISTS `event` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `title` varchar(30) CHARACTER SET utf8 NOT NULL,
+  `description` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
+  `starting_date` datetime NOT NULL,
+  `ending_date` datetime NOT NULL,
+  `status` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `files_upload`
+--
+
+CREATE TABLE IF NOT EXISTS `files_upload` (
+  `upload_id` int(11) NOT NULL AUTO_INCREMENT,
+  `file_name` varchar(128) DEFAULT NULL,
+  `file_data` longblob,
+  PRIMARY KEY (`upload_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `groups`
 --
 
 CREATE TABLE IF NOT EXISTS `groups` (
@@ -89,14 +110,12 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `project`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `project` (
@@ -109,14 +128,12 @@ CREATE TABLE IF NOT EXISTS `project` (
   `date_end` date DEFAULT NULL,
   `status` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `task`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `task` (
@@ -130,15 +147,27 @@ CREATE TABLE IF NOT EXISTS `task` (
   `ending_date` date DEFAULT NULL,
   `status` varchar(30) CHARACTER SET utf8 DEFAULT NULL,
   `project_id` bigint(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+  `row` bigint(20) DEFAULT NULL,
+  `task_priority_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `task_priority_id` (`task_priority_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tickets`
+-- Table structure for table `task_priority`
 --
--- Creation: Apr 13, 2015 at 07:40 PM
+
+CREATE TABLE IF NOT EXISTS `task_priority` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `value` int(11) NOT NULL,
+  `name` varchar(50) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Table structure for table `tickets`
 --
 
 CREATE TABLE IF NOT EXISTS `tickets` (
@@ -157,14 +186,10 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   KEY `project_id` (`project_id`),
   KEY `ticket_priority_id` (`ticket_priority_id`),
   KEY `ticket_tracker_id` (`ticket_tracker_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 --
 -- Table structure for table `ticket_messages`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `ticket_messages` (
@@ -177,14 +202,12 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
   PRIMARY KEY (`id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `ticket_priority`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `ticket_priority` (
@@ -192,28 +215,24 @@ CREATE TABLE IF NOT EXISTS `ticket_priority` (
   `value` int(11) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `ticket_tracker`
 --
--- Creation: Apr 13, 2015 at 07:40 PM
---
 
 CREATE TABLE IF NOT EXISTS `ticket_tracker` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `tokens`
---
--- Creation: Apr 13, 2015 at 07:39 PM
 --
 
 CREATE TABLE IF NOT EXISTS `tokens` (
@@ -223,21 +242,10 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-
---
--- Dumping data for table `tokens`
---
-
-INSERT INTO `tokens` (`id`, `token`, `time_stamp`, `user_id`) VALUES
-(3, '186ddfb9-a465-4417-9ce8-baf1d8c01b8e', 1416049588886, 10);
-
--- --------------------------------------------------------
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
 --
 -- Table structure for table `users`
---
--- Creation: Apr 13, 2015 at 07:39 PM
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
@@ -252,25 +260,32 @@ CREATE TABLE IF NOT EXISTS `users` (
   `user_role` int(11) NOT NULL DEFAULT '1',
   `account_status` int(11) NOT NULL DEFAULT '0',
   `civility_id` bigint(20) DEFAULT NULL,
-  `civility` int(4) DEFAULT NULL,
+  `work_day` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT 'tttttff',
+  `daily_hour` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '09:00 AM - 05:00 PM',
+  `avatar_file_name` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `address` (`address`),
   KEY `civility_ibfk` (`civility_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `users`
+-- Table structure for table `users_events`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `civility`) VALUES
-(1, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, NULL, NULL);
+CREATE TABLE IF NOT EXISTS `users_events` (
+  `users_id` bigint(20) NOT NULL,
+  `events_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`users_id`,`events_id`),
+  KEY `users_id` (`users_id`),
+  KEY `events_id` (`events_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users_groups`
---
--- Creation: Apr 13, 2015 at 07:39 PM
 --
 
 CREATE TABLE IF NOT EXISTS `users_groups` (
@@ -285,8 +300,6 @@ CREATE TABLE IF NOT EXISTS `users_groups` (
 --
 -- Table structure for table `users_projects`
 --
--- Creation: Apr 13, 2015 at 07:40 PM
---
 
 CREATE TABLE IF NOT EXISTS `users_projects` (
   `user_id` bigint(20) NOT NULL,
@@ -300,8 +313,6 @@ CREATE TABLE IF NOT EXISTS `users_projects` (
 --
 -- Table structure for table `users_tasks`
 --
--- Creation: Apr 13, 2015 at 07:40 PM
---
 
 CREATE TABLE IF NOT EXISTS `users_tasks` (
   `users_id` bigint(20) NOT NULL,
@@ -310,12 +321,12 @@ CREATE TABLE IF NOT EXISTS `users_tasks` (
   KEY `users_tasks_ibfk_2` (`tasks_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+
 -- --------------------------------------------------------
 
 --
 -- Table structure for table `users_tickets`
---
--- Creation: Apr 13, 2015 at 07:40 PM
 --
 
 CREATE TABLE IF NOT EXISTS `users_tickets` (
@@ -343,20 +354,26 @@ ALTER TABLE `depend_tasks`
   ADD CONSTRAINT `depend_tasks_ibfk_2` FOREIGN KEY (`task_id2`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `task`
+--
+ALTER TABLE `task`
+  ADD CONSTRAINT `task_priority_ibkf` FOREIGN KEY (`task_priority_id`) REFERENCES `task_priority` (`id`);
+
+--
 -- Constraints for table `tickets`
 --
 ALTER TABLE `tickets`
-  ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`),
   ADD CONSTRAINT `fk_ticket_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`);
+  ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`),
+  ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`);
 
 --
 -- Constraints for table `ticket_messages`
 --
 ALTER TABLE `ticket_messages`
-  ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `users`
@@ -366,6 +383,13 @@ ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`address`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `users_events`
+--
+ALTER TABLE `users_events`
+  ADD CONSTRAINT `users_events_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_events_ibfk_2` FOREIGN KEY (`events_id`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Constraints for table `users_groups`
 --
 ALTER TABLE `users_groups`
@@ -373,11 +397,18 @@ ALTER TABLE `users_groups`
   ADD CONSTRAINT `users_groups_ibfk_2` FOREIGN KEY (`groups_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `users_projects`
+--
+ALTER TABLE `users_projects`
+  ADD CONSTRAINT `users_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `users_tasks`
 --
 ALTER TABLE `users_tasks`
-  ADD CONSTRAINT `users_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_tasks_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `users_tasks_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `users_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `users_tickets`
