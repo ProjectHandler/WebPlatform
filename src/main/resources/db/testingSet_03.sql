@@ -1,33 +1,3 @@
---
--- Dumping data for table `address`
---
-
-INSERT INTO `address` (`id`, `street_number`, `street_name`, `city`, `zipcode`, `country`, `user_id`) VALUES
-(2, '31', 'Herberton Park', 'Dublin', '8', 'Ireland', 11),
-(3, '48', 'Rue polisson', 'Meûtière-en-Veuhlu', '789', 'Luxembourg', 12),
-(4, '67', 'Rue Jean-seb', 'Boursouflé-en-Vesace', '92220', 'France', 13);
-
---
--- Dumping data for table `civility`
---
-
-INSERT INTO `civility` (`id`, `name`) VALUES
-(1, 'projecthandler.civility.mister'),
-(2, 'projecthandler.civility.mrs'),
-(3, 'projecthandler.civility.miss');
-
---
--- Dumping data for table `depend_tasks`
---
-
-INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
-(69, 68),
-(71, 68),
-(72, 71),
-(73, 71),
-(76, 75),
-(78, 75),
-(79, 76);
 
 --
 -- Dumping data for table `groups`
@@ -69,16 +39,48 @@ INSERT INTO `task` (`id`, `name`, `progress`, `description`, `level`, `duration`
 (78, 'Task7', 0, 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry''s standard dummy text ever since ', 2, 10, '2015-09-21', '2015-10-03', 'STATUS_FAILED', 22, 6, NULL),
 (79, 'Last Move', 0, '', 2, 24, '2015-10-06', '2015-11-07', 'STATUS_ACTIVE', 22, 7, NULL);
 
---
--- Dumping data for table `task_priority`
---
-
-INSERT INTO `task_priority` (`id`, `value`, `name`) VALUES
-(1, 20, 'MEDIUM'),
-(2, 30, 'HIGH'),
-(5, 10, 'LOW');
 
 -- --------------------------------------------------------
+
+--
+-- Dumping data for table `tokens`
+--
+
+INSERT INTO `tokens` (`id`, `token`, `time_stamp`, `user_id`) VALUES
+(3, '186ddfb9-a465-4417-9ce8-baf1d8c01b8e', 1416049588886, 10);
+
+
+--
+-- Dumping data for table `address`
+--
+
+INSERT INTO `address` (`id`, `street_number`, `street_name`, `city`, `zipcode`, `country`, `user_id`) VALUES
+(2, '31', 'Herberton Park', 'Dublin', '8', 'Ireland', 11),
+(3, '48', 'Rue polisson', 'Meûtière-en-Veuhlu', '789', 'Luxembourg', 12),
+(4, '67', 'Rue Jean-seb', 'Boursouflé-en-Vesace', '92220', 'France', 13);
+
+-- --------------------------------------------------------
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
+(10, 'User1', 'Spiderman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user1@example.com', 2, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(11, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, NULL, 'tttttff', '09:00 AM - 05:00 PM', '11_0df71b3d-7dcc-4ab8-85a0-90651553a714.jpg'),
+(12, 'User2', 'Batman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user2@example.com', 3, '01000001', '06000001', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(13, 'User3', 'Superman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user3@example.com', 3, '0133449978', '0612546879', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(15, 'User5', 'Hulk', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user5@example.com', 4, '07888888', '06888888', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(16, 'User6', 'Wonder Woman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user6@example.com', 3, '1111111111', '6666666666', 1, 0, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(17, 'User7', 'Ribéry', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user7@example.com', 2, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(18, 'User8', 'Zlatan', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user8@example.com', 3, '01000001', '06000001', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(19, 'User9', 'Zidane', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user9@example.com', 3, '0133449978', '0612546879', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(20, 'User10', 'Zlutine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user10@example.com', 2, '0198877665', '0698877665', 1, 1, 3, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(21, 'User11', 'Minus', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user11@example.com', 4, '07888888', '06888888', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(22, 'User12', 'Cortex', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user12@example.com', 3, '1111111111', '6666666666', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(23, 'User13', 'Mechant', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user13@example.com', 3, '1111111111', '6666666666', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(24, 'Guillard', 'Arthur', '$2a$10$H6CPJ6JiF93AMuPR257Cr.5tj0eU1LzX0uLp5otT0ukYFib1i6n7.', 'arthur.guillard@gmail.com', NULL, '0606060606', '', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL);
+
 
 --
 -- Dumping data for table `tickets`
@@ -109,44 +111,6 @@ INSERT INTO `ticket_messages` (`id`, `ticket_id`, `user_id`, `created_at`, `upda
 (25, 13, 11, '2015-08-27 23:39:25', '2015-08-27 23:39:25', 'Lorem Ipsum is simply dummy '),
 (26, 13, 11, '2015-08-27 23:39:29', '2015-08-27 23:39:29', 'ng and typesetting industry. Lore'),
 (27, 13, 11, '2015-08-27 23:39:33', '2015-08-27 23:39:33', 'esetting industry. Lorem Ipsum has be');
-
---
--- Dumping data for table `ticket_priority`
---
-
-INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
-(4, 10, 'low'),
-(5, 20, 'medium'),
-(6, 30, 'high');
-
---
--- Dumping data for table `tokens`
---
-
-INSERT INTO `tokens` (`id`, `token`, `time_stamp`, `user_id`) VALUES
-(3, '186ddfb9-a465-4417-9ce8-baf1d8c01b8e', 1416049588886, 10);
-
--- --------------------------------------------------------
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
-(10, 'User1', 'Spiderman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user1@example.com', 2, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(11, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, NULL, 'tttttff', '09:00 AM - 05:00 PM', '11_0df71b3d-7dcc-4ab8-85a0-90651553a714.jpg'),
-(12, 'User2', 'Batman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user2@example.com', 3, '01000001', '06000001', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(13, 'User3', 'Superman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user3@example.com', 3, '0133449978', '0612546879', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(15, 'User5', 'Hulk', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user5@example.com', 4, '07888888', '06888888', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(16, 'User6', 'Wonder Woman', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user6@example.com', 3, '1111111111', '6666666666', 1, 0, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(17, 'User7', 'Ribéry', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user7@example.com', 2, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(18, 'User8', 'Zlatan', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user8@example.com', 3, '01000001', '06000001', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(19, 'User9', 'Zidane', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user9@example.com', 3, '0133449978', '0612546879', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(20, 'User10', 'Zlutine', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user10@example.com', 2, '0198877665', '0698877665', 1, 1, 3, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(21, 'User11', 'Minus', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user11@example.com', 4, '07888888', '06888888', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(22, 'User12', 'Cortex', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user12@example.com', 3, '1111111111', '6666666666', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(23, 'User13', 'Mechant', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user13@example.com', 3, '1111111111', '6666666666', 1, 1, 2, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(24, 'Guillard', 'Arthur', '$2a$10$H6CPJ6JiF93AMuPR257Cr.5tj0eU1LzX0uLp5otT0ukYFib1i6n7.', 'arthur.guillard@gmail.com', NULL, '0606060606', '', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL);
 
 --
 -- Dumping data for table `users_groups`
@@ -219,6 +183,19 @@ INSERT INTO `users_tasks` (`users_id`, `tasks_id`) VALUES
 (21, 78),
 (22, 78),
 (23, 78);
+
+--
+-- Dumping data for table `depend_tasks`
+--
+
+INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
+(69, 68),
+(71, 68),
+(72, 71),
+(73, 71),
+(76, 75),
+(78, 75),
+(79, 76);
 
 --
 -- Dumping data for table `users_tickets`

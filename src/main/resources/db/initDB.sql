@@ -56,6 +56,15 @@ CREATE TABLE IF NOT EXISTS `civility` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
 
+--
+-- Dumping data for table `civility`
+--
+
+INSERT INTO `civility` (`id`, `name`) VALUES
+(1, 'projecthandler.civility.mister'),
+(2, 'projecthandler.civility.mrs'),
+(3, 'projecthandler.civility.miss');
+
 -- --------------------------------------------------------
 
 --
@@ -167,6 +176,15 @@ CREATE TABLE IF NOT EXISTS `task_priority` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
+-- Dumping data for table `task_priority`
+--
+
+INSERT INTO `task_priority` (`id`, `value`, `name`) VALUES
+(1, 20, 'MEDIUM'),
+(2, 30, 'HIGH'),
+(5, 10, 'LOW');
+
+--
 -- Table structure for table `tickets`
 --
 
@@ -216,6 +234,15 @@ CREATE TABLE IF NOT EXISTS `ticket_priority` (
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+
+--
+-- Dumping data for table `ticket_priority`
+--
+
+INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
+(4, 10, 'low'),
+(5, 20, 'medium'),
+(6, 30, 'high');
 
 -- --------------------------------------------------------
 

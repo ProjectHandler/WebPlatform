@@ -23,6 +23,8 @@ SET time_zone = "+00:00";
 -- ////////////////////////////////////////////////////////////////////
 --
 USE project_handler;
+
+
 --
 -- Dumping data for table `users`
 --
@@ -42,11 +44,12 @@ INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `addr
 (22, 'User12', 'Cortex', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user12@example.com', NULL, '1111111111', '6666666666', 1, 0, 2),
 (23, 'User13', 'Mechant', '$2a$10$BchMTgOEN5OaRG/B2Bx2IuNkpjFsE.KzfP4sLu8M8769ciRbNuSdW', 'user13@example.com', NULL, '1111111111', '6666666666', 1, 0, 2);
 
+
 --
 -- Dumping data for table `address`
 --
 INSERT INTO `address` (`id`, `street_number`, `street_name`, `city`, `zipcode`, `country`, `user_id`) VALUES
-(2, '31', 'Herberton Park', 'Dublin', '8', 'Ireland', 11),
+(2, '31', 'Herberton Park', 'Dublin', '8', 'Ireland', 10),
 (3, '48', 'Rue polisson', 'Meûtière-en-Veuhlu', '789', 'Luxembourg', 12),
 (4, '67', 'Rue Jean-seb', 'Boursouflé-en-Vesace', '92220', 'France', 13);
 
