@@ -88,9 +88,9 @@
 						<hr class="inverted-bg">	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height">
+				<div class="display-table-cell full-width full-height position-relative">
 					
-					<div class="full-width full-height overflow-auto">
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
 								<h1 class="text-h2 util1-primary-text float-left">Mon mot de passe</h1>
