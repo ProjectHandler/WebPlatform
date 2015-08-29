@@ -46,20 +46,29 @@
 				            <c:forEach var="project" items="${projectList}" varStatus="status">
 				                <div class="inverted-bg theme3-primary-boxshadow-raising-out margin-bottom margin-right float-left fixedwidth-256">
 				                    
-				                    <div class="small-container">
-				                    	<div class="text-center display-table-cell vertical-align"><div class="display-inline-block"><div class="display-table-cell vertical-align fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
-											<span class="icon-folder"></span>
-										</div></div></div>
-										<div class=" display-table-cell vertical-align small-padding-left">
+				                    <div class="small-container display-table">
+				                    	<div class="text-center display-table-cell vertical-align">
+					                    	<div class="display-inline-block">
+					                    		<div class="fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
+					                    			<div class="display-table full-width full-height">
+					                    				<div class="display-table-cell vertical-align full-width full-height">
+															<span class="icon-folder"></span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class=" display-table-cell vertical-align ful-width small-padding-left">
 					                    	<h3 class="text-capitalize text-p">${project.name}</h3>
 											<div class="small theme3-primary-text">${project.status}</div>
 										</div>
-										<c:if test="${user.userRole == 'ROLE_ADMIN'}">
-										<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:2px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
-											<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
-										</a>
-										</c:if>
 				                    </div>
+				                    
+				                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
+			                    	<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:-8px;margin-right:10px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
+										<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
+									</a>
+									</c:if>
 
 									<div class="small-container theme3-lighten1-bg">
 										<div class="fixedwidth-192 margin-auto">
