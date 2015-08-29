@@ -400,6 +400,7 @@ GanttMaster.prototype.loadTasks = function (tasks, selectedRow) {
   //reset
   this.reset();
 
+  if (tasks)
   for (var i = 0; i < tasks.length; i++) {
     var task = tasks[i];
     if (!(task instanceof Task)) {

@@ -21,6 +21,7 @@ import fr.projecthandler.service.GanttService;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
+import fr.projecthandler.util.Utilities;
 
 @Controller
 public class GanttController {
@@ -53,8 +54,11 @@ public class GanttController {
 	public @ResponseBody Object loadGantt(HttpServletRequest request, Principal principal) {
 		JsonElement jsonElement = null;
 		try {
-			String json =  ganttService.load(Long.parseLong(request.getParameter("projectId"), 10));
-			jsonElement = new JsonParser().parse(json);
+			String projectId = Utilities.getRequestParameter(request, "projectId");
+			if (projectId != null) {
+				String json =  ganttService.load(Long.parseLong(projectId));
+				jsonElement = new JsonParser().parse(json);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
