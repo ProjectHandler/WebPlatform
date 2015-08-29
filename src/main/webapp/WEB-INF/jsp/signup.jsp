@@ -303,7 +303,7 @@
 						</div>
 					</div>
 					
-					<div class="full-width full-height overflow-auto">
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
 								<h1 class="text-h2 util1-primary-text float-left">Mes informations personnelles</h1>

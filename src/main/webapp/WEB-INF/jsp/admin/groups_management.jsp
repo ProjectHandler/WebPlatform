@@ -60,9 +60,9 @@
 						<hr class="inverted-bg">	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height">
+				<div class="display-table-cell full-width full-height position-relative">
 					
-					<div class="full-width full-height overflow-auto">
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
 								<h1 class="text-h2 util1-primary-text float-left"><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
@@ -99,28 +99,6 @@
 									</c:forEach>
 								</div>
 								
-								<!-- <table id="usersTable" class="full-width surrounded theme3-primary-bdr">
-									<thead>
-										<tr>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text full-width"><spring:message code="projecthandler.group.name"/></th>
-											<th class="small-container padding-right padding-left soft-surrounded theme3-primary-bdr theme3-lighten1-bg theme3-darken2-text text-center">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<c:forEach var="group" items="${groups}">
-											<tr>
-												<td class="container soft-surrounded theme3-primary-bdr full-width">
-													<c:out value="${group.name}"/>
-												</td>
-												<td class="container soft-surrounded theme3-primary-bdr">
-													<button class="default-btn-shape util6-primary-btn-style1" ONCLICK="deleteGroup('${group.id}')"/>
-														<span class="icon-cross small-margin-right"></span>supprimer
-													</button>
-												</td>
-											</tr>
-										 </c:forEach>
-									</tbody>
-								</table> -->
 							</div>
 						</div>	
 					</div>	
