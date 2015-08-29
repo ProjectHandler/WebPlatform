@@ -106,11 +106,11 @@
 										</div>
 									</div>
 									<div class="small-container">
-										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
-											<spring:message code="projecthandler.projectsList.goToTickets"/>
-										</a>
 										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
 											<spring:message code="projecthandler.projectsList.goToProjectView"/>
+										</a>
+										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
+											<spring:message code="projecthandler.projectsList.goToTickets"/>
 										</a>
 										<a class="display-block full-width text-center small default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
 											<spring:message code="projecthandler.projectView.goToProjectTasksView"/>

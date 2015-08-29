@@ -25,21 +25,7 @@
 		}
 
 		function opendialog(page, id) {
-			  var $dialog = $('#' + id)
-			  .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
-			  .dialog({
-			    title: '<spring:message code="projechandler.profileViewBox.title"/>',
-			    autoOpen: false,
-			    dialogClass: 'dialog_fixed,ui-widget-header',
-			    modal: true,
-			    height: 700,
-			    minWidth: 1000,
-			    minHeight: 700,
-			    draggable:false,
-			    buttons: { "Ok": function () {$(this).dialog("close"); }
-			  }
-			  }); 
-			  $dialog.dialog('open');
+			  var $dialog = $("#modalForUserView").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>');
 			}
 		
 		function openProfileViewBox(id) {
@@ -63,9 +49,25 @@
 						<hr class="inverted-bg">	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height">
+				<div class="display-table-cell full-width full-height position-relative">
 					
-					<div class="full-width full-height overflow-auto">
+					<div id="userprofile-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
+						<div class="full-width full-height display-table">
+							<div class="full-width full-height display-table-cell vertical-align">
+
+								<div class="inverted-bg fixedwidth-320 margin-auto overflow-hidden position-relative">
+									<div id="modalForUserView">
+									</div>
+									<div class="text-center">
+										<a href="#" class="reduced-btn-shape theme3-lighten1-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box">Fermer</a>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+					
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
 								<h1 class="text-h2 util1-primary-text float-left">Consultation du projet</h1>
@@ -73,99 +75,152 @@
 							</div>
 							<div>
 
-								<div id="toolBar" class="small-container">
-									<spring:message code="projecthandler.projectView.researchProject"/>: 
-									<select class="projectSelection display-inline-block" id="projectSelection">
-										<c:forEach var='projectSelectable' items='${projects}'>
-											<c:choose>
-											<c:when test="${projectSelectable.id == project.id}">
-												<option id="${projectSelectable.id}" selected="selected" value="${projectSelectable.id}">
-													${projectSelectable.name}
-												</option>
-											</c:when>
-											<c:otherwise>
-												<option id="${projectSelectable.id}" value="${projectSelectable.id}">
-													${projectSelectable.name}
-												</option>
-											</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</select>
-									<c:if test="${user.userRole == 'ROLE_ADMIN'}">
-									<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/edit/${project.id}">
-										<spring:message code="projecthandler.projectView.editCurrentProject"/>
+								<div id="toolBar" class="small-container display-table full-width theme3-primary-boxshadow-raising-out small-margin-bottom">
+									<div class="display-table-cell vertical-align">
+										<div style="width:170px;">
+											<spring:message code="projecthandler.projectView.researchProject"/> :
+										</div>
+									</div>
+									<div class="display-table-cell vertical-align">
+										<select class="projectSelection display-inline-block" id="projectSelection">
+											<c:forEach var='projectSelectable' items='${projects}'>
+												<c:choose>
+												<c:when test="${projectSelectable.id == project.id}">
+													<option id="${projectSelectable.id}" selected="selected" value="${projectSelectable.id}">
+														${projectSelectable.name}
+													</option>
+												</c:when>
+												<c:otherwise>
+													<option id="${projectSelectable.id}" value="${projectSelectable.id}">
+														${projectSelectable.name}
+													</option>
+												</c:otherwise>
+												</c:choose>
+											</c:forEach>
+										</select>
+									</div>
+									<div class="display-table-cell vertical-align full-width text-right">
+										<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
+											<span class="icon-folder-open"></span> <spring:message code="projecthandler.projectView.goToProjectsList"/>
+										</a>
+									</div>
+								</div>
+								
+				                    
+			                    <div class="display-table padding-top padding-bottom">
+			                    	<div class="text-center display-table-cell vertical-align small-padding-left">
+				                    	<div class="display-inline-block">
+				                    		<div class="fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h1">
+				                    			<div class="display-table full-width full-height">
+				                    				<div class="display-table-cell vertical-align full-width full-height">
+														<span class="icon-folder"></span>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class=" display-table-cell vertical-align small-padding-left full-width">
+				                    	<h3 class="text-capitalize">${project.name}</h3>
+										<div class="theme3-primary-text">${project.status}</div>
+										<div class="small">${projectProgress.daysLeft} <spring:message code="projecthandler.projectView.daysLeft"/></div>
+									</div>
+									<div class="display-table-cell vertical-align text-right padding-left">
+										<div class="fixedwidth-192">
+											<div class="display-table-cell vertical-align text-h1">
+												<span class="icon-stopwatch"></span>
+											</div>
+											<div class="display-table-cell vertical-align small padding-left">
+						                    	<div>
+						                    		Débute le 
+													<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
+													<span class="theme1-primary-text">${dateBeginString}</span>
+												</div>					
+												<div>
+													Finit le
+													<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
+													<span class="theme1-primary-text">${dateEndString}</span>
+												</div>
+											</div>
+										</div>
+									</div>
+			                    </div>
+								
+								<div class="padding-bottom">
+									<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme1-lighten2-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
+										<spring:message code="projecthandler.projectsList.goToTickets"/>
 									</a>
-									</c:if>
-									<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
+									<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
 										<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
 									</a>
-									<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
-										<spring:message code="projecthandler.projectView.goToProjectsList"/>
-									</a>
 								</div>
-								<div id="dateProgressBox" class="small-container">
-									<div class="display-inline-block">
-										<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
-										<spring:message code="projecthandler.projectView.dateBegin"/>: ${dateBeginString} 
-									</div>
-									<div class="display-inline-block" style="width:40%">
-										<div id="progressDate${project.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-											<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${projectProgress.dateProgress}%; background: rgb(0, 128, 255);" >
-												<span style="color:black">
-													<spring:message code="projecthandler.projectView.daysLeft"/>: ${projectProgress.daysLeft}
-												</span>
-											</div>
-										</div>
-									</div>
-									<div class="display-inline-block">
-										<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
-										<spring:message code="projecthandler.projectView.dateEnd"/>: ${dateEndString}
+								
+								<div class="container theme3-lighten1-bg radius margin-bottom">
+									<div id="descriptionBox" class="text-justify">
+										${project.description}
 									</div>
 								</div>
-								<div id="taskProgressBox" class="small-container">
-									<div class="display-inline-block">
-										<spring:message code="projecthandler.projectView.taskProgress"/>:
-									</div>
-									<div class="display-inline-block" style="width:40%">
-										<div id="progressTask${project.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-											<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${projectProgress.tasksProgress}%; background: rgb(0, 128, 255);" >
-												<span style="color:black">${projectProgress.tasksProgress}%</span>
-											</div>
+								
+								<div class="small-container">									
+									<div class="small-margin-bottom">
+										<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
+										<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+											<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgress.dateProgress}%;" ></div>
 										</div>
+										<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgress.dateProgress}%</div></div>	
+									</div>
+									<div>
+										<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Avancée</div></div>	
+										<div id="progressTask${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+											<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgress.tasksProgress}%;" ></div>
+										</div>
+										<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgress.tasksProgress}%</div></div>	
 									</div>
 								</div>
-								<div id="descriptionBox" class="small-container">
-									${project.description}
-								</div>
-								<div id="projectInfoBox" class="clearfix">
-									<div id="ticketAccessBox" class="float-left gridwidth-5">
-										<div>
-											<spring:message code="projecthandler.projectView.ticketList"/>
-										</div>
-										<c:forEach var="ticket" items="${tickets}">
-											<div>
-												<spring:message code="projecthandler.projectView.ticketTitle"/>: 
-												<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">
-													${ticket.title}. 
-												</a>
-												<spring:message code="projecthandler.projectView.status"/>: ${ticket.ticketStatus} 
-												<spring:message code="projecthandler.projectView.priority"/>: ${ticket.ticketPriority.name}
-											</div>
-										</c:forEach>
-									</div>
-									<div id="usersAccessBox" class="float-right gridwidth-5">
-										<div>
-											<spring:message code="projecthandler.projectView.userList"/>
-										</div>
+								
+								<hr class="margin-top margin-bottom theme3-lighten1-bg">
+								
+								<div id="projectInfoBox" class="small-padding-top">
+									<div id="usersAccessBox" class="clearfix">
 										<c:forEach var='userInList' items='${project.users}'>
-											<div class="userView" id="${userInList.id}">
+											<div class="small-container theme3-primary-boxshadow-raising-out float-left margin-right small-margin-bottom">
+											
+												<div class="display-table-cell vertical-align small-padding-right">
+													<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
+		 												<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
+													</div>
+												</div>
+												<div class="display-table-cell vertical-align">
+													<h4 class="theme3-darken2-text">${userInList.firstName} ${userInList.lastName}</h4>
+													<button class="reduced-btn-shape theme2-primary-btn-style1 small rounded animating-event"data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box" onClick="openProfileViewBox(${userInList.id})">
+														<span class="icon-search"></span> Consulter le profil
+													</button>
+												</div>
 											</div>
-											<button class="display-block" onClick="openProfileViewBox(${userInList.id})">
-												${userInList.firstName} ${userInList.lastName}
-											</button>
 										</c:forEach>
 									</div>
 								</div>
+								
+								<a class="default-btn-shape theme1-primary-btn-style1 margin-top" href="<c:url value="/project/projectsList"/>">
+									<span class="icon-folder-open"></span> <spring:message code="projecthandler.projectView.goToProjectsList"/>
+								</a>
+								
+								<!--
+								<div id="ticketAccessBox" class="float-left gridwidth-5">
+									<div>
+										<spring:message code="projecthandler.projectView.ticketList"/>
+									</div>
+									<c:forEach var="ticket" items="${tickets}">
+										<div>
+											<spring:message code="projecthandler.projectView.ticketTitle"/>: 
+											<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">
+												${ticket.title}. 
+											</a>
+											<spring:message code="projecthandler.projectView.status"/>: ${ticket.ticketStatus} 
+											<spring:message code="projecthandler.projectView.priority"/>: ${ticket.ticketPriority.name}
+										</div>
+									</c:forEach>
+								</div>
+								 -->
 								
 							</div>
 						</div>
