@@ -164,7 +164,12 @@
 				<div class="full-width full-height overflow-auto">
 					<div class="container">
 						<div class="margin-bottom clearfix">
-							<h1 class="text-h2 util1-primary-text float-left">Creer un nouveau projet</h1>
+							<c:if test="${project.id == null}">
+								<h1 class="text-h2 util1-primary-text float-left">Creer un nouveau projet</h1>
+							</c:if>
+							<c:if test="${project.id != null}">
+								<h1 class="text-h2 util1-primary-text float-left">Editer le projet</h1>
+							</c:if>
 							<div class="text-h2 text-h1 float-right"><span class="icon-folder-plus"></span></div>
 						</div>
 						<div>
@@ -261,15 +266,15 @@
 										</div>
 									</div>						
 										
-									<input class="default-btn-shape theme2-primary-btn-style1" value="<spring:message code="projecthandler.project.edit.save"/>" type="submit" id="submit">
+									<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.project.edit.save"/></button>
 
 							</form:form>
 
-							<div style="margin-top:-36px;margin-left:110px;">
+							<div style="margin-top:-36px;margin-left:130px;">
 							<c:if test="${project.id != null}">
 							<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
 								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
-   	 							<input class="default-btn-shape util6-primary-btn-style1" value="<spring:message code="projecthandler.project.edit.delete"/>" type="submit" id="submit">
+   	 							<button class="default-btn-shape util6-primary-btn-style1" type="submit" id="submit"><span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.project.edit.delete"/></button>
 							</form:form>
 							</c:if>
 							</div>
