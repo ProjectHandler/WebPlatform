@@ -457,4 +457,20 @@ public class UserController {
 
 		return new ModelAndView("user/profileViewBox", myModel);
 	}
+	
+	@RequestMapping(value = "/profile/usersProfile", method = RequestMethod.GET)
+	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+
+		List<User> usersList = userService.getAllActiveUsers();
+
+		myModel.put("usersList", usersList);
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+
+		return new ModelAndView("user/usersProfileView", myModel);
+	}
 }

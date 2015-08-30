@@ -29,8 +29,16 @@
 				validateName();
 			});
 			
+			$(function() {
+			    $( "#dateBegin" ).datepicker();
+			});
+			
 			$("#dateBegin").focusout(function() {
 				validateDateBegin();
+			});
+			
+			$(function() {
+			    $( "#dateEnd" ).datepicker();
 			});
 			
 			$("#dateEnd").focusout(function() {
