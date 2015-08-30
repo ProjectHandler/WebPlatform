@@ -48,7 +48,7 @@ public class TaskPriorityDaoImpl extends AbstractDao implements TaskPriorityDao 
 
 	@Override
 	public List<TaskPriority> getAllTaskPriorities() {
-		return (List<TaskPriority>)em.createQuery("SELECT tt FROM taskPriority tt")
+		return (List<TaskPriority>)em.createQuery("SELECT tt FROM TaskPriority tt")
 				.getResultList();
 	}
 

@@ -15,11 +15,29 @@
 			    placeholder: 'Type to search a task'
 			});
 
-			$('#taskSelection').on("selectivity-selected", openTaskDetail);
+			$('#taskSelection').on("selectivity-selected", openTaskViewBox);
 		});
 		
-		function openTaskDetail() {
-			// TODO : open modal with task details
+		function opendialog(page, id) {
+			var $dialog = $('#' + id)
+			  .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+			  .dialog({
+			    title: '<spring:message code="projecthandler.taskBoxView.title"/>',
+			    autoOpen: false,
+			    dialogClass: 'dialog_fixed,ui-widget-header',
+			    modal: true,
+			    height: 700,
+			    minWidth: 1000,
+			    minHeight: 700,
+			    draggable:false,
+			    buttons: { "Ok": function () {$(this).dialog("close"); }
+			  }
+			  }); 
+			  $dialog.dialog('open');
+		}
+		
+		function openTaskViewBox(taskId, projectId) {
+			opendialog(CONTEXT_PATH + '/project/viewProject/' + projectId + "/tasks/" + taskId, taskId);
 		}
 		</script>
 	</head>
@@ -70,10 +88,10 @@
 									Statut: ${task.status}
 								</div>
 								<div class="display-inline-block">
-									<!-- TODO : ouvrir la modal de la tache séléctionné href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks/{task.id}"-->
-									<a class="default-btn-shape theme1-primary-btn-style1">
+									<div class="taskView" id="${task.id}"></div>
+									<button class="display-block default-btn-shape theme1-primary-btn-style1" onClick="openTaskViewBox(${task.id}, ${project.id})">
 										<spring:message code="projecthandler.projectTasksView.taskOpen"/>
-									</a>
+									</button>
 								</div>
 								<div id="progressTask${task.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 									<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${task.progress}%; background: rgb(0, 128, 255);" >
@@ -117,10 +135,10 @@
 									Statut: ${task.status}
 								</div>
 								<div class="display-inline-block">
-									<!-- TODO : ouvrir la modal de la tache séléctionné href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks/{task.id}"-->
-									<a class="default-btn-shape theme1-primary-btn-style1">
+									<div class="taskView" id="${task.id}"></div>
+									<button class="display-block default-btn-shape theme1-primary-btn-style1" onClick="openTaskViewBox(${task.id}, ${project.id})">
 										<spring:message code="projecthandler.projectTasksView.taskOpen"/>
-									</a>
+									</button>
 								</div>
 								<div id="progressTask${task.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 									<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${task.progress}%; background: rgb(0, 128, 255);" >
@@ -164,10 +182,10 @@
 									Statut: ${task.status}
 								</div>
 								<div class="display-inline-block">
-									<!-- TODO : ouvrir la modal de la tache séléctionné href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks/{task.id}"-->
-									<a class="default-btn-shape theme1-primary-btn-style1">
+									<div class="taskView" id="${task.id}"></div>
+									<button class="display-block default-btn-shape theme1-primary-btn-style1" onClick="openTaskViewBox(${task.id}, ${project.id})">
 										<spring:message code="projecthandler.projectTasksView.taskOpen"/>
-									</a>
+									</button>
 								</div>
 								<div id="progressTask${task.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 									<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${task.progress}%; background: rgb(0, 128, 255);" >

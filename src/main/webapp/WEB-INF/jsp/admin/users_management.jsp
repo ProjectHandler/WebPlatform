@@ -53,7 +53,7 @@
 			    	error: function(data) {alert("error: " + data);} 
 			    });
 			}
-			
+
 			function changeStatus(item) {
 				var res = item.value.split("/");
 			    $.ajax({type: "GET", url: CONTEXT_PATH + "/admin/users_management/changeStatus", data: { userId: res[0], status: res[1] }, 

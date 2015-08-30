@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import fr.projecthandler.enums.Priority;
+
 @Entity
 @Table(name = "task_priority")
 public class TaskPriority extends BaseEntity implements java.io.Serializable {
@@ -17,6 +19,11 @@ public class TaskPriority extends BaseEntity implements java.io.Serializable {
 	private String name;
 
 	public TaskPriority() {
+	}
+	
+	public TaskPriority(Integer id) {
+		this.value = id;
+		this.name = Priority.findById(id);
 	}
 
 	public int getValue() {

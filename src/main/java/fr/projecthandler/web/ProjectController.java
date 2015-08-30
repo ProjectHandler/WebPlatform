@@ -34,6 +34,8 @@ import fr.projecthandler.dto.ProjectProgressDTO;
 import fr.projecthandler.enums.ProjectStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
@@ -204,6 +206,32 @@ public class ProjectController {
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 
 		return new ModelAndView("project/projectTasksView", myModel);
+	}
+	
+	@RequestMapping(value = "/project/viewProject/{projectId}/tasks/{taskId}", method = RequestMethod.GET)
+	public ModelAndView viewProjectTaskBox(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @PathVariable Long taskId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+
+		Project p = projectService.findProjectById(projectId);
+		Task t = taskService.findTaskById(taskId);
+
+		if (p == null || t == null)
+			return new ModelAndView("redirect:/");
+		
+		p.setUsers(projectService.getUsersByProjectId(projectId));
+		t.setProject(p);
+		t.setUsers(taskService.getUsersByTaskId(taskId));
+		List<TaskPriority> priorities = taskService.getAllTaskPriorities();
+		
+		myModel.put("task", t);
+		myModel.put("priorities", priorities);
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+
+		return new ModelAndView("project/taskBoxView", myModel);
 	}
 
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)

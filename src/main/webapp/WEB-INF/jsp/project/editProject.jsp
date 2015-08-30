@@ -214,8 +214,7 @@
 											<form:input path="dateBegin" type="date" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" value="${dateBeginString}" id="dateBegin"/>
 											<span class="error" id="dateBeginError"></span>
 										</div>
-									</div>																		
-
+									</div>	
 									<div class="small-margin-bottom">
 										<div class="display-table-cell vertical-align">
 											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.endDate" /></label>
