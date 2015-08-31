@@ -18,7 +18,7 @@
 			});
 		});
 		
-		function opendialog(page, id) {
+		function openkikoolol(page, id) {
 			var $dialog = $('#' + id)
 			  .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
 			  .dialog({
@@ -37,7 +37,7 @@
 		}
 		
 		function openTaskViewBox(taskId, projectId) {
-			opendialog(CONTEXT_PATH + '/project/viewProject/' + projectId + "/tasks/" + taskId, taskId);
+			openkikoolol(CONTEXT_PATH + '/project/viewProject/' + projectId + "/tasks/" + taskId, taskId);
 		}
 		
 		function getFocusedTask() {

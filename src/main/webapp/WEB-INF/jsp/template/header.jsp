@@ -76,6 +76,11 @@
 						<span class="icon-table2"></span>
 					</a>
 				</li>
+				<li class="position-relative vertical-top display-table-cell padding-right">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/profile/usersProfile"/>" title="gantt">
+						<span class="icon-user"></span>
+					</a>
+				</li>
 				<sec:authorize access="hasRole('ROLE_ADMIN')">
 				<li class="position-relative vertical-top display-table-cell padding-right">
 					<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
