@@ -23,15 +23,17 @@ public class ProjectProgressDTO {
 		Date curr = new Date();
 		long dayInMs = 86400000;
 		double totalTime = end.getTime() - begin.getTime();
-		double elapsedTime = curr.getTime() - begin.getTime();
+		double elapsedTime = Math.min(curr.getTime(), end.getTime())- begin.getTime();
 
 		this.daysLeft = (int)((totalTime - elapsedTime) / dayInMs);
+
 		if (this.daysLeft < 0) {
 			this.dateProgress = 100;
 			this.daysLeft = 0;
 		}
-		else
+		else {
 			this.dateProgress = (int)Math.round((elapsedTime / totalTime) * 100);
+		}
 	}
 	
 	private void computeTaskProgress(Set<Task> tasks) {
