@@ -66,7 +66,13 @@ public class GanttController {
 	}
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
-	public void saveGantt(HttpServletRequest request, Principal principal) {
-		ganttService.save(request.getParameter("prj"));
+	public @ResponseBody String  saveGantt(HttpServletRequest request, Principal principal) {
+		try {
+			ganttService.save(request.getParameter("prj"));
+			return "success";
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "error";
+		}
 	}
 }

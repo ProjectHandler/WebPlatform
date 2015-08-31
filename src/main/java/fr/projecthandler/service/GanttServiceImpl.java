@@ -114,9 +114,10 @@ public class GanttServiceImpl implements GanttService {
 	
 	@Override
 	public void save(String ganttGson) {
-
 		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(ganttGson, GanttProjectDTO.class);
+		
+		//System.out.println(ganttGson);
 		
 		List<Task> lstTask = new ArrayList<Task>();
 		List<GanttTaskDTO> listTaskDTO = prj.getTasks();

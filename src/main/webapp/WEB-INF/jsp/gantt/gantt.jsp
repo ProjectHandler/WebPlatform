@@ -161,9 +161,20 @@
 					CM : "SVPROJECT",
 					prj : JSON.stringify(prj),
 					projectId : $("#selectProject option:selected").val()
+				},
+				success: function(data) {
+					if (data == "success") {
+						alert("<spring:message code='projecthandler.gantt.saveSuccess'/>");
+						loadGanttFromServer();
+					} else {
+						alert("<spring:message code='projecthandler.gantt.saveFailed'/>");
+					}
+				},
+				error : function(error) {
+					alert("error " + error.statusCode);
 				}
 			});
-		
+		//
 		}
 		
 		//-------------------------------------------  Create some demo data ------------------------------------------------------
