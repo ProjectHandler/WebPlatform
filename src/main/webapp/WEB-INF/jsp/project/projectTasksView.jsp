@@ -4,10 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-<html xmlns:th="http://www.thymeleaf.org">
-	<head>
-		<jsp:include page="../template/head.jsp" />
-		<title><spring:message code="projecthandler.projectTasksView.title"/></title>
+
 		<script type="text/javascript">
 		$(document).ready(function(){
 			$('#taskSelection').selectivity({
@@ -15,7 +12,10 @@
 			    placeholder: 'Type to search a task'
 			});
 
-			$('#taskSelection').on("selectivity-selected", openTaskViewBox);
+			$('#taskSelection').on("selectivity-selected", function(item){
+				var res = item.id.split("/");
+				openTaskViewBox(res[1], res[0]);
+			});
 		});
 		
 		function opendialog(page, id) {
@@ -39,30 +39,27 @@
 		function openTaskViewBox(taskId, projectId) {
 			opendialog(CONTEXT_PATH + '/project/viewProject/' + projectId + "/tasks/" + taskId, taskId);
 		}
+		
+		function getFocusedTask() {
+			
+		}
 		</script>
 	</head>
 	<body>
-		<div id="header">
-			<jsp:include page="../template/header.jsp" />
-		</div>
-		<div id="toolBar" class="small-container">
+
+		<div id="tasksearch-toolBar" class="small-container">
 			<spring:message code="projecthandler.projectTasksView.researchTask"/>: 
 			<select class="display-inline-block" id="taskSelection">
 				<c:forEach var='taskSelectable' items='${tasks}'>
 					<c:if test="${taskSelectable.level == 2}">
-						<option id="${taskSelectable.id}" value="${taskSelectable.id}">
+						<option id="${taskSelectable.id}" value="${project.id}/${taskSelectable.id}">
 							${taskSelectable.name} (<spring:message code="projecthandler.projectTasksView.state"/>: ${taskSelectable.status})
 						</option>
 					</c:if>
 				</c:forEach>
 			</select>
-			<a class="default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
-				<spring:message code="projecthandler.projectTasksView.goToProjectView"/>
-			</a>
 		</div>
-		<div>
-			<spring:message code="projecthandler.projectTasksView.currentProject"/>: ${project.name}
-		</div>
+
 		<div id="doingViewBox" class="small-container">
 			<div id="taskDoneBox" class="display-inline-block" style="width:33%">
 				<spring:message code="projecthandler.projectTasksView.tasksDone"/>
@@ -206,6 +203,3 @@
 				</c:forEach>
 			</div>
 		</div>
-	<jsp:include page="../template/footer.jsp" />
-	</body>
-</html>

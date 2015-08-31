@@ -75,9 +75,9 @@
 							</div>
 							<div>
 
-								<div id="toolBar" class="small-container display-table full-width theme3-primary-boxshadow-raising-out small-margin-bottom">
+								<div id="toolBar" class="small-container inverted-bg theme3-primary-boxshadow-raising-out display-table full-width small-margin-bottom">
 									<div class="display-table-cell vertical-align">
-										<div style="width:170px;">
+										<div class="" style="width:170px;">
 											<spring:message code="projecthandler.projectView.researchProject"/> :
 										</div>
 									</div>
@@ -101,7 +101,7 @@
 									</div>
 									<div class="display-table-cell vertical-align full-width text-right">
 										<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
-											<span class="icon-folder-open"></span> <spring:message code="projecthandler.projectView.goToProjectsList"/>
+											<span class="icon-folder-open small-margin-right"></span><spring:message code="projecthandler.projectView.goToProjectsList"/>
 										</a>
 									</div>
 								</div>
@@ -144,23 +144,8 @@
 										</div>
 									</div>
 			                    </div>
-								
-								<div class="padding-bottom">
-									<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme1-lighten2-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
-										<spring:message code="projecthandler.projectsList.goToTickets"/>
-									</a>
-									<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}/tasks">
-										<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
-									</a>
-								</div>
-								
-								<div class="container theme3-lighten1-bg radius margin-bottom">
-									<div id="descriptionBox" class="text-justify">
-										${project.description}
-									</div>
-								</div>
-								
-								<div class="small-container">									
+
+								<div class="small-container margin-bottom">									
 									<div class="small-margin-bottom">
 										<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
 										<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
@@ -177,50 +162,62 @@
 									</div>
 								</div>
 								
-								<hr class="margin-top margin-bottom theme3-lighten1-bg">
+								<div class="small-margin-bottom">
+									<div class="container theme3-lighten1-bg radius">
+										<div id="descriptionBox" class="text-justify">
+											${project.description}
+										</div>
+									</div>
+									<div class="small-margin-top display-table full-width">
+										<div class="text-right">
+											<div id="projectInfoBox" class="display-inline-block">
+												<div id="usersAccessBox" class="clearfix">
+													<c:forEach var='userInList' items='${project.users}'>
+														<div class="float-left small-margin-right position-relative">
+															<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
+				 												<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
+															</div>
+															<a title="${userInList.firstName} ${userInList.lastName}" href="#" class="cover-btn-shape default-btn-style5 circle animating-event" data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box" onClick="openProfileViewBox(${userInList.id})"></a> 
+														</div>
+													</c:forEach>
+												</div>
+											</div>										
+										</div>
+									</div>
+								</div>
 								
-								<div id="projectInfoBox" class="small-padding-top">
-									<div id="usersAccessBox" class="clearfix">
-										<c:forEach var='userInList' items='${project.users}'>
-											<div class="small-container theme3-primary-boxshadow-raising-out float-left margin-right small-margin-bottom">
-											
-												<div class="display-table-cell vertical-align small-padding-right">
-													<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
-		 												<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
+								<div>
+									<jsp:include page="projectTasksView.jsp" />
+								</div>
+								
+								<hr class="theme3-primary-bg small-margin-bottom">
+
+								<div class="small-padding-bottom">
+								
+									<div id="ticketAccessBox" class="clearfix">
+										<c:forEach var="ticket" items="${tickets}">
+											<c:if test="${ticket.ticketStatus == 'OPEN'}">
+												<div class="position-relative small-container theme3-primary-boxshadow-raising-out radius float-left margin-right margin-top">
+													<div class="">
+														<div>Ticket ouvert n° ${ticket.id}</div>
+														<div class="small-padding-left leftlined theme3-primary-bdr">
+															<div class="small theme3-primary-text">${ticket.createdAt}</div>
+															<div class="small theme1-primary-text">${ticket.title}</div>
+														</div>
 													</div>
+													<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages" class="cover-btn-shape default-btn-style5"></a> 
 												</div>
-												<div class="display-table-cell vertical-align">
-													<h4 class="theme3-darken2-text">${userInList.firstName} ${userInList.lastName}</h4>
-													<button class="reduced-btn-shape theme2-primary-btn-style1 small rounded animating-event"data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box" onClick="openProfileViewBox(${userInList.id})">
-														<span class="icon-search"></span> Consulter le profil
-													</button>
-												</div>
-											</div>
+											</c:if>
 										</c:forEach>
 									</div>
-								</div>
-								
-								<a class="default-btn-shape theme1-primary-btn-style1 margin-top" href="<c:url value="/project/projectsList"/>">
-									<span class="icon-folder-open"></span> <spring:message code="projecthandler.projectView.goToProjectsList"/>
-								</a>
-								
-								<!--
-								<div id="ticketAccessBox" class="float-left gridwidth-5">
+									
 									<div>
-										<spring:message code="projecthandler.projectView.ticketList"/>
+										<a class="default-btn-shape theme3-primary-text theme1-lighten2-btn-style6 small-margin-top" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
+											<span class="icon-envelop small-margin-right"></span>Voir tous les tickets
+										</a>
 									</div>
-									<c:forEach var="ticket" items="${tickets}">
-										<div>
-											<spring:message code="projecthandler.projectView.ticketTitle"/>: 
-											<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">
-												${ticket.title}. 
-											</a>
-											<spring:message code="projecthandler.projectView.status"/>: ${ticket.ticketStatus} 
-											<spring:message code="projecthandler.projectView.priority"/>: ${ticket.ticketPriority.name}
-										</div>
-									</c:forEach>
+									
 								</div>
-								 -->
 								
 							</div>
 						</div>

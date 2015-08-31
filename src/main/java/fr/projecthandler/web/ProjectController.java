@@ -183,11 +183,13 @@ public class ProjectController {
 		myModel.put("user", user);
 		myModel.put("tickets", ticketService.getTicketsByProjectId(project.getId()));
 		myModel.put("projectProgress", projectProgress);
+		
+		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
 
 		return new ModelAndView("project/projectView", myModel);
 	}
 	
-	@RequestMapping(value = "/project/viewProject/{projectId}/tasks", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/project/viewProject/{projectId}/tasks", method = RequestMethod.GET)
 	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
@@ -206,12 +208,12 @@ public class ProjectController {
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 
 		return new ModelAndView("project/projectTasksView", myModel);
-	}
+	}*/
 	
 	@RequestMapping(value = "/project/viewProject/{projectId}/tasks/{taskId}", method = RequestMethod.GET)
 	public ModelAndView viewProjectTaskBox(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @PathVariable Long taskId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-
+		
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
