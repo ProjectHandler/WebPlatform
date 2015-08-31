@@ -77,7 +77,7 @@
 					</a>
 				</li>
 				<li class="position-relative vertical-top display-table-cell padding-right">
-					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/profile/usersProfile"/>" title="gantt">
+					<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/profile/usersProfile"/>" title="users">
 						<span class="icon-user"></span>
 					</a>
 				</li>
