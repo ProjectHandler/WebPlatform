@@ -2,6 +2,7 @@ package fr.projecthandler.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -150,20 +151,32 @@ public class GanttServiceImpl implements GanttService {
 			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
 			} else {
-				Task t = new Task(taskDTO);
-				t.setProject(newProject);
-				t.setUsers(saveUsersOnTask(taskDTO));
-				t.setRow((long) (row + 1));
-
+				Task taskTosave;
 				if (taskDTO.getId().startsWith("tmp")) {
-					taskService.saveTask(t);
-					taskDTO.setId(t.getId().toString());
+					taskTosave = new Task(taskDTO);
+					taskTosave.setProject(newProject);
+					taskTosave.setUsers(saveUsersOnTask(taskDTO));
+					taskTosave.setRow((long) (row + 1));
+					taskService.saveTask(taskTosave);
+					taskDTO.setId(taskTosave.getId().toString());
 				} else {
-					t.setId(Long.parseLong(taskDTO.getId(), 10));
-					taskService.updateTask(t);
+					taskTosave = taskService.findTaskById(Long.parseLong(taskDTO.getId(), 10));
+					taskTosave.setUsers(saveUsersOnTask(taskDTO));
+					taskTosave.setRow((long) (row + 1));
+
+					taskTosave.setName(taskDTO.getName());
+					taskTosave.setProgress(taskDTO.getProgress());
+					taskTosave.setDescription(taskDTO.getDescription());
+					taskTosave.setLevel(taskDTO.getLevel());
+					taskTosave.setDuration(taskDTO.getDuration());
+					taskTosave.setStartingDate(new Date(taskDTO.getStart()));
+					taskTosave.setEndingDate(new Date(taskDTO.getEnd()));
+					taskTosave.setStatus(taskDTO.getStatus());
+					
+					taskService.updateTask(taskTosave);
 				}
-				rowId.put(row, t.getId());
-				lstTask.add(t);
+				rowId.put(row, taskTosave.getId());
+				lstTask.add(taskTosave);
 			}
 			++row;
 		}
