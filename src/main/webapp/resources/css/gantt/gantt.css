@@ -166,7 +166,7 @@ body{
 }
 
 .ganttButtonSeparator{
-  border-left:1px solid gray;
+  border-left:2px solid gray;
   padding-right:10px;
   margin-left:10px;
   font-size: 130%
@@ -645,4 +645,20 @@ input[readonly]{
     color: #000;
     cursor: pointer;
     text-decoration: none;
+}
+
+/* override css */
+.ganttPopupCenter {
+	text-align: center;
+	padding-top: 20px;
+}
+
+.ganttSelectProject {
+	padding: 2px; 
+	border-radius:4px; 
+	cursor:pointer; 
+	border: solid 3px #0071BC; 
+	color:#000; appearance:none; 
+	-webkit-appearance:none; 
+	-moz-appearance:none;
 }

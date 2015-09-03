@@ -108,7 +108,7 @@ h4 {
 
 .teamworkIcon {
   font-family: 'TeamworkRegular', arial, sans-serif;
-  color:#617777;
+  //color:#617777;
   font-weight:normal;
   font-size:120%
 }
@@ -181,7 +181,7 @@ TH, .tableHeader {
   font-weight: normal;
   color: #FFFFFF;
   border: none;
-  background-color: #91B4B7;
+  background-color: #0071BC;
   padding:2px
 }
 
@@ -203,7 +203,7 @@ TH a {
   font-family:Arial, sans-serif;
   color:#fff;
   cursor:pointer;
-  background-color:#373737;
+  background-color:#A4E21B;
    -moz-box-shadow:2px 2px 2px #999;
    -webkit-box-shadow:2px 2px 2px #999;
    -o-box-shadow:2px 2px 2px #999;
@@ -243,7 +243,7 @@ TH a {
 .button.textual, .button.buttonImg {
   border: none;
   background-color: transparent;
-  color:#68979B;
+  color: #0071BC ;
   -moz-box-shadow:0 0 0 #999;
    -webkit-box-shadow:0 0 0 #999;
    -o-box-shadow:0 0 0 #999;
@@ -297,7 +297,7 @@ form {
 }
 
 select {
-  border:1px solid #91B4B7;
+  border:1px solid #0071BC ;
   padding: 4px;
   font-size: 16px;
   font-family: Arial, Helvetica, sans-serif;

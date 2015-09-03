@@ -152,7 +152,8 @@
 					return;
 				}
 			}
-		
+			savePopup();
+		/*
 			var url = CONTEXT_PATH + "/gantt/save";
 			$.ajax({
 				type : "POST",
@@ -165,7 +166,8 @@
 				success: function(data) {
 					if (data == "success") {
 						alert("<spring:message code='projecthandler.gantt.saveSuccess'/>");
-						loadGanttFromServer();
+						savePopup();
+						//loadGanttFromServer();
 					} else {
 						alert("<spring:message code='projecthandler.gantt.saveFailed'/>");
 					}
@@ -173,7 +175,7 @@
 				error : function(error) {
 					alert("error " + error.statusCode);
 				}
-			});
+			});*/
 		//
 		}
 		
@@ -245,6 +247,15 @@
 		}
 		
 		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
+		function savePopup() {
+			var popup = $.JST.createFromTemplate({}, "RESOURCE_SAVE");
+			popup.find("#okBtn").click(function() {
+				ge.resources = newRes;
+				closeBlackPopup();
+				ge.redraw();
+			});
+			var ndo = createBlackPage(400, 160).append(popup);
+		}
 		
 		function editResources() {
 		
@@ -310,7 +321,7 @@
 	  <div class="__template__" type="GANTBUTTONS">
 	  <div class="ganttButtonBar noprint" style="margin-right: 100px">
 	    <div class="buttons">
-	    <select id="selectProject" onchange="loadGanttFromServer()" style="padding: 2px; border-radius:4px; cursor:pointer; border: solid 3px #617777; color:#68979b; appearance:none; -webkit-appearance:none; -moz-appearance:none;">
+	    <select id="selectProject" onchange="loadGanttFromServer()" class="ganttSelectProject" >
 			<c:forEach var="project" items="${projects}">
 				 <option value="${project.id}">${project.name}</option>
 			</c:forEach>
@@ -340,8 +351,8 @@
 	    <span class="ganttButtonSeparator"></span>
 	    <button onclick="editResources();" class="button textual" title="<spring:message code="projecthandler.gantt.editResources"/>"><span class="teamworkIcon">M</span></button>
 	    <span class="ganttButtonSeparator"></span>
-	    <button onclick='getFile();' class="button textual"><spring:message code='projecthandler.gantt.export'/></button>
-	    <span class="ganttButtonSeparator"></span>
+	    <!--<button onclick='getFile();' class="button textual"><spring:message code='projecthandler.gantt.export'/></button> 
+	    <span class="ganttButtonSeparator"></span>-->
 		<button onclick='saveGanttOnServer();' class="button textual"><spring:message code='projecthandler.gantt.save'/></button>
 		<span class="ganttButtonSeparator"></span>
 	    </div></div>
@@ -478,6 +489,18 @@
 	  	</div>-->
 	 </div>
 	
+	
+	 <div class="__template__" type="RESOURCE_SAVE"><!-- 
+	  	<div class="resourceEditor" style="padding: 5px;">
+	  		<h2><spring:message code='projecthandler.gantt.saveTitle'/></h2>
+	  		<div class="ganttPopupCenter">
+	  			<label><spring:message code='projecthandler.gantt.saveSuccess'/></label>
+			</div>
+			<div class="ganttPopupCenter">
+				<button id="okBtn" class="button big"><spring:message code='projecthandler.general.ok'/></button>
+			</div>				       					
+	  	</div>-->
+	 </div>
 	</div>
 </body>
 </html>
