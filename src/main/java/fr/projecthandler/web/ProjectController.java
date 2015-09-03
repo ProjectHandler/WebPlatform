@@ -228,7 +228,7 @@ public class ProjectController {
 		t.setProject(p);
 		t.setUsers(taskService.getUsersByTaskId(taskId));
 		List<TaskPriority> priorities = taskService.getAllTaskPriorities();
-		
+
 		myModel.put("task", t);
 		myModel.put("priorities", priorities);
 		myModel.put("user", userService.findUserById(userDetails.getId()));

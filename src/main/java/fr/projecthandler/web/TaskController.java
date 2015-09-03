@@ -55,7 +55,6 @@ public class TaskController {
 	
 	@RequestMapping(value = "task/changePriority", method = RequestMethod.GET)
 	public @ResponseBody String changePriority(Principal principal, @RequestParam("taskId") Long taskId, @RequestParam("priorityId") Long priority) {
-		System.out.println("priority=" + priority);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {

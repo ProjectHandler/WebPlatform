@@ -28,7 +28,7 @@ public class TaskPriorityDaoImpl extends AbstractDao implements TaskPriorityDao 
 	@Override
 	@Transactional
 	public void deleteTaskPrioritiesByIds(List<Long> taskPrioritiesIdsList) {
-		em.createQuery("DELETE FROM taskPriority tt WHERE tt.id IN (:taskPrioritiesIdsList)")
+		em.createQuery("DELETE FROM TaskPriority tt WHERE tt.id IN (:taskPrioritiesIdsList)")
 		.setParameter("taskPrioritiesIdsList", taskPrioritiesIdsList)
 		.executeUpdate();
 	}
@@ -42,8 +42,8 @@ public class TaskPriorityDaoImpl extends AbstractDao implements TaskPriorityDao 
 	}
 	@Override
 	public TaskPriority findTaskPriorityById(Long taskPriorityId) {
-		return (TaskPriority) Utilities.getSingleResultOrNull(em.createQuery("SELECT tt FROM taskPriority tt WHERE tt.id = :taskPriorityId")
-				.setParameter("TaskPriorityId", taskPriorityId));
+		return (TaskPriority) Utilities.getSingleResultOrNull(em.createQuery("SELECT tt FROM TaskPriority tt WHERE tt.id = :taskPriorityId")
+				.setParameter("taskPriorityId", taskPriorityId));
 	}
 
 	@Override

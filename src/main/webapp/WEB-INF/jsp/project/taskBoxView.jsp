@@ -22,16 +22,16 @@
 
 	function changePriority(item) {
 		var res = item.value.split("/");
-
-		console.log("CALL : " + res[0] + ", " + res[1]);
 	  	$.ajax({type: "GET", url: CONTEXT_PATH + "/task/changePriority", data: { taskId: res[0], priorityId: res[1] }, 
 	    	success: function(data) {
 	    		if (data.indexOf("KO:") != -1) {
 	    			var msg = data.replace("KO:", "");
 	    			alert(msg);
-	    		} else 
-	    			location.reload();}, 
-	    	error: function(data) {alert("error: " + data);} 
+	    		} 
+	    	}, 
+	    	error: function(data) {
+	    		alert("error: " + data);
+	    	} 
 	    });
 	}
 	</script>
