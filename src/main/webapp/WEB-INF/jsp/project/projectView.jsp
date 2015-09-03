@@ -24,12 +24,12 @@
 			return false;
 		}
 
-		function opendialog(page, id) {
-			  var $dialog = $("#modalForUserView").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>');
+		function loadModalContainer(page) {
+			$("#dynamicContainerForModal").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>');
 		}
 		
 		function openProfileViewBox(id) {
-			opendialog(CONTEXT_PATH + '/profile/viewProfileBox/' + id, id);
+			loadModalContainer(CONTEXT_PATH + '/profile/viewProfileBox/' + id);
 		}
 		</script>
 	</head>
@@ -51,15 +51,15 @@
 				</div>
 				<div class="display-table-cell full-width full-height position-relative">
 					
-					<div id="userprofile-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
+					<div id="main-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
 						<div class="full-width full-height display-table">
 							<div class="full-width full-height display-table-cell vertical-align">
 
 								<div class="inverted-bg fixedwidth-320 margin-auto overflow-hidden position-relative">
-									<div id="modalForUserView">
+									<div id="dynamicContainerForModal">
 									</div>
 									<div class="text-center">
-										<a href="#" class="reduced-btn-shape theme3-lighten1-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box">Fermer</a>
+										<a href="#" class="reduced-btn-shape theme3-lighten1-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box">Fermer</a>
 									</div>
 								</div>
 
@@ -177,7 +177,7 @@
 															<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
 				 												<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
 															</div>
-															<a title="${userInList.firstName} ${userInList.lastName}" href="#" class="cover-btn-shape default-btn-style5 circle animating-event" data-action="toggle-event" data-animation="pop-event" data-target="userprofile-modal-box" onClick="openProfileViewBox(${userInList.id})"></a> 
+															<a title="${userInList.firstName} ${userInList.lastName}" href="#" class="cover-btn-shape default-btn-style5 circle animating-event" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box" onClick="openProfileViewBox(${userInList.id})"></a> 
 														</div>
 													</c:forEach>
 												</div>
@@ -190,14 +190,14 @@
 									<jsp:include page="projectTasksView.jsp" />
 								</div>
 								
-								<hr class="theme3-primary-bg small-margin-bottom">
+								<div class="padding-top padding-bottom margin-top"><hr class="theme3-primary-bg"></div>
 
-								<div class="small-padding-bottom">
+								<div class="">
 								
 									<div id="ticketAccessBox" class="clearfix">
 										<c:forEach var="ticket" items="${tickets}">
 											<c:if test="${ticket.ticketStatus == 'OPEN'}">
-												<div class="position-relative small-container theme3-primary-boxshadow-raising-out radius float-left margin-right margin-top">
+												<div class="position-relative small-container theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr float-left margin-right margin-top">
 													<div class="">
 														<div>Ticket ouvert n° ${ticket.id}</div>
 														<div class="small-padding-left leftlined theme3-primary-bdr">

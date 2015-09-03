@@ -44,14 +44,14 @@
 						</div>
 						<div>
 				            <c:forEach var="project" items="${projectList}" varStatus="status">
-				                <div class="inverted-bg theme3-primary-boxshadow-raising-out margin-bottom margin-right float-left fixedwidth-256">
+				                <div class="inverted-bg theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
 				                    
 				                    <div class="small-container display-table">
 				                    	<div class="text-center display-table-cell vertical-align">
 					                    	<div class="display-inline-block">
 					                    		<div class="fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
 					                    			<div class="display-table full-width full-height">
-					                    				<div class="display-table-cell vertical-align full-width full-height">
+					                    				<div class="display-table-cell vertical-align full-width full-height text-h1">
 															<span class="icon-folder"></span>
 														</div>
 													</div>
@@ -106,14 +106,8 @@
 										</div>
 									</div>
 									<div class="small-container">
-										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
+										<a class="display-block full-width text-center small default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
 											<spring:message code="projecthandler.projectsList.goToProjectView"/>
-										</a>
-										<a class="display-block full-width text-center small small-margin-bottom default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
-											<spring:message code="projecthandler.projectsList.goToTickets"/>
-										</a>
-										<a class="display-block full-width text-center small default-btn-shape theme3-primary-btn-style1" href="${pageContext.request.contextPath}//project/viewProject/${project.id}/tasks">
-											<spring:message code="projecthandler.projectView.goToProjectTasksView"/>
 										</a>
 									</div>
 									
