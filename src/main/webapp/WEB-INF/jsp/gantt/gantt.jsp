@@ -101,7 +101,6 @@
 		});
 		
 		function loadGanttFromServer(taskId, callback) {
-		
 			//var taskId = $("#taskSelector").val();
 			var prof = new Profiler("loadServerSide");
 			prof.reset();
@@ -164,9 +163,7 @@
 				},
 				success: function(data) {
 					if (data == "success") {
-						//alert("<spring:message code='projecthandler.gantt.saveSuccess'/>");
 						savePopup("<spring:message code='projecthandler.gantt.saveSuccess'/>");
-						//loadGanttFromServer();
 					} else {
 						savePopup("<spring:message code='projecthandler.gantt.saveFailed'/>");
 						
@@ -184,9 +181,9 @@
 			popup.find("#msgPopup").text(message);
 			popup.find("#okBtn").click(function() {
 				closeBlackPopup();
-				loadGanttFromServer();
 			});
-			var ndo = createBlackPage(400, 160).append(popup);
+			
+			var ndo = createBlackPage(400, 160, loadGanttFromServer()).append(popup);
 		}
 		
 		//-------------------------------------------  Create some demo data ------------------------------------------------------
