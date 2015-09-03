@@ -258,7 +258,7 @@ public class ProjectController {
 			}
 		}
 		else
-			return new ModelAndView("redirect:" + "/");
+			return new ModelAndView("redirect:/");
 
 		return new ModelAndView("redirect:/project/projectsList");
 	}

@@ -30,21 +30,26 @@
 			});
 			
 			$(function() {
-			    $( "#dateBegin" ).datepicker();
-			});
-			
-			$("#dateBegin").focusout(function() {
-				validateDateBegin();
+			    $("#dateBegin").datepicker({
+			    	dateFormat: 'dd/mm/yy',
+			    	altField  : '#alt-dateBegin',
+			        altFormat : 'yy-mm-dd',
+			        onSelect : function() {
+			        	validateDateBegin();
+			        }
+			    });
 			});
 			
 			$(function() {
-			    $( "#dateEnd" ).datepicker();
+			    $("#dateEnd").datepicker({
+			    	dateFormat: 'dd/mm/yy',
+			    	altField  : '#alt-dateEnd',
+			        altFormat : 'yy-mm-dd',
+			        onSelect : function() {
+			        	validateDateEnd();
+			        }
+			    });
 			});
-			
-			$("#dateEnd").focusout(function() {
-				validateDateEnd();
-			});
-			
 		});
 		
 		function validateForm() {
@@ -63,8 +68,8 @@
 
 		// TO understand => it is supposed to be > 0 but does not work like this
 		function validateDateBegin() {
-			var dateBegin = new Date($("#dateBegin").val());
-			var dateEnd = new Date($("#dateEnd").val());
+			var dateBegin = new Date($("#alt-dateBegin").val());
+			var dateEnd = new Date($("#alt-dateEnd").val());
 			var res = dateEnd.getTime() - dateBegin.getTime();
 			$("#dateBeginError").html("");
 			$("#dateEndError").html("");
@@ -81,8 +86,8 @@
 		
 		// TO understand => it is supposed to be > 0 but does not work like this
 		function validateDateEnd() {
-			var dateBegin = new Date($("#dateBegin").val());
-			var dateEnd = new Date($("#dateEnd").val());
+			var dateBegin = new Date($("#alt-dateBegin").val());
+			var dateEnd = new Date($("#alt-dateEnd").val());
 			var res = dateEnd.getTime() - dateBegin.getTime();
 			$("#dateBeginError").html("");
 			$("#dateEndError").html("");
@@ -208,20 +213,22 @@
 									<div class="small-margin-bottom">
 										<div class="display-table-cell vertical-align">
 											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.beginDate" /></label>
-											<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="yyyy-MM-dd" /></div>
+											<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd/MM/yyyy" /></div>
 										</div>
 										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:input path="dateBegin" type="date" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" value="${dateBeginString}" id="dateBegin"/>
+											<form:input id="alt-dateBegin" path="dateBegin" type="hidden" value="${project.dateBegin}"/>
+											<input  id="dateBegin" value="${dateBeginString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
 											<span class="error" id="dateBeginError"></span>
 										</div>
-									</div>	
+									</div>
 									<div class="small-margin-bottom">
 										<div class="display-table-cell vertical-align">
 											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.endDate" /></label>
-											<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="yyyy-MM-dd" /></div>
+											<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd/MM/yyyy" /></div>
 										</div>
 										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:input path="dateEnd" type="date" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" value="${dateEndString}" id="dateEnd"/>
+											<form:input id="alt-dateEnd" path="dateEnd" type="hidden" value="${project.dateEnd}"/>
+											<input  id="dateEnd" value="${dateEndString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
 											<span class="error" id="dateEndError"></span>
 										</div>
 									</div>										
