@@ -100,6 +100,19 @@
 
 		});
 		
+		function popupAlert(title, message, error) {
+			var popup = $.JST.createFromTemplate({}, "RESOURCE_POPUP_ALERT");
+			popup.find("h2").text(title);
+			popup.find("#msgPopup").text(message);
+			popup.find("#okBtn").click(function() {
+				closeBlackPopup();
+			});
+			if (error)
+				popup.find("#okBtn").addClass('red');
+			
+			var ndo = createBlackPage(400, 160, loadGanttFromServer()).append(popup);
+		}
+		
 		function loadGanttFromServer(taskId, callback) {
 			//var taskId = $("#taskSelector").val();
 			var prof = new Profiler("loadServerSide");
@@ -124,7 +137,7 @@
 		
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
-					alert("status: " + xhr.status + " " + thrownError);
+					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownErrorS);
 				}
 			});
 		}
@@ -151,7 +164,7 @@
 					return;
 				}
 			}
-			
+
 			var url = CONTEXT_PATH + "/gantt/save";
 			$.ajax({
 				type : "POST",
@@ -166,14 +179,12 @@
 						savePopup("<spring:message code='projecthandler.gantt.saveSuccess'/>");
 					} else {
 						savePopup("<spring:message code='projecthandler.gantt.saveFailed'/>");
-						
 					}
 				},
 				error : function(error) {
-					alert("error " + error.statusCode);
+					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + error.statusCode);
 				}
 			});
-		//
 		}
 		
 		function savePopup(message) {
@@ -274,7 +285,7 @@
 				ge.redraw();
 			});
 		
-			var ndo = createBlackPage(400, 500).append(resourceEditor);
+			var ndo = createBlackPage(400, 300).append(resourceEditor);
 		
 			$('.userProjectSelection').selectivity({
 				multiple : true,
@@ -489,7 +500,7 @@
 	
 	
 	 <div class="__template__" type="RESOURCE_SAVE"><!-- 
-	  	<div class="resourceEditor" style="padding: 5px;">
+	  	<div style="padding: 5px;">
 	  		<h2><spring:message code='projecthandler.gantt.saveTitle'/></h2>
 	  		<div class="ganttPopupCenter">
 	  			<label id="msgPopup"></label>
@@ -499,6 +510,19 @@
 			</div>				       					
 	  	</div>-->
 	 </div>
+	 
+	  <div class="__template__" type="RESOURCE_POPUP_ALERT"><!-- 
+	  	<div style="padding: 5px;">
+	  		<h2></h2>
+	  		<div class="ganttPopupCenter">
+	  			<label id="msgPopup"></label>
+			</div>
+			<div class="ganttPopupCenter">
+				<button id="okBtn" class="button big"><spring:message code='projecthandler.general.ok'/></button>
+			</div>				       					
+	  	</div>-->
+	 </div>
+	 
 	</div>
 </body>
 </html>

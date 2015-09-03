@@ -662,3 +662,7 @@ input[readonly]{
 	-webkit-appearance:none; 
 	-moz-appearance:none;
 }
+
+.red {
+	background-color: #F00;
+}
