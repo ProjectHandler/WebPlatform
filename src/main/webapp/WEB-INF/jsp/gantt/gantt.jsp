@@ -152,8 +152,7 @@
 					return;
 				}
 			}
-			savePopup();
-		/*
+			
 			var url = CONTEXT_PATH + "/gantt/save";
 			$.ajax({
 				type : "POST",
@@ -165,18 +164,29 @@
 				},
 				success: function(data) {
 					if (data == "success") {
-						alert("<spring:message code='projecthandler.gantt.saveSuccess'/>");
-						savePopup();
+						//alert("<spring:message code='projecthandler.gantt.saveSuccess'/>");
+						savePopup("<spring:message code='projecthandler.gantt.saveSuccess'/>");
 						//loadGanttFromServer();
 					} else {
-						alert("<spring:message code='projecthandler.gantt.saveFailed'/>");
+						savePopup("<spring:message code='projecthandler.gantt.saveFailed'/>");
+						
 					}
 				},
 				error : function(error) {
 					alert("error " + error.statusCode);
 				}
-			});*/
+			});
 		//
+		}
+		
+		function savePopup(message) {
+			var popup = $.JST.createFromTemplate({}, "RESOURCE_SAVE");
+			popup.find("#msgPopup").text(message);
+			popup.find("#okBtn").click(function() {
+				closeBlackPopup();
+				loadGanttFromServer();
+			});
+			var ndo = createBlackPage(400, 160).append(popup);
 		}
 		
 		//-------------------------------------------  Create some demo data ------------------------------------------------------
@@ -247,15 +257,6 @@
 		}
 		
 		//-------------------------------------------  Open a black popup for managing resources. This is only an axample of implementation (usually resources come from server) ------------------------------------------------------
-		function savePopup() {
-			var popup = $.JST.createFromTemplate({}, "RESOURCE_SAVE");
-			popup.find("#okBtn").click(function() {
-				ge.resources = newRes;
-				closeBlackPopup();
-				ge.redraw();
-			});
-			var ndo = createBlackPage(400, 160).append(popup);
-		}
 		
 		function editResources() {
 		
@@ -494,7 +495,7 @@
 	  	<div class="resourceEditor" style="padding: 5px;">
 	  		<h2><spring:message code='projecthandler.gantt.saveTitle'/></h2>
 	  		<div class="ganttPopupCenter">
-	  			<label><spring:message code='projecthandler.gantt.saveSuccess'/></label>
+	  			<label id="msgPopup"></label>
 			</div>
 			<div class="ganttPopupCenter">
 				<button id="okBtn" class="button big"><spring:message code='projecthandler.general.ok'/></button>

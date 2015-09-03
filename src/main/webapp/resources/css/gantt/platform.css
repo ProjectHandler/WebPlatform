@@ -272,7 +272,7 @@ TH a {
 }
 
 .button:hover {
-  background-color: #4C4C4C;
+  background-color: #83B416;
 }
 .button.textual:hover, .button.buttonImg:hover {
   background-color: transparent;
