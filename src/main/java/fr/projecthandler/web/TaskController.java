@@ -17,10 +17,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import fr.projecthandler.model.Task;
-import fr.projecthandler.model.TaskPriority;
-import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.SubTaskService;
 import fr.projecthandler.service.TaskService;
-import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
 
 @Controller
@@ -29,17 +27,14 @@ public class TaskController {
 	UserService userService;
 
 	@Autowired
-	ProjectService projectService;
-	
-	@Autowired
 	TaskService taskService;
 
 	@Autowired
-	TicketService ticketService;
+	SubTaskService subTaskService;
 
 	@Autowired
 	HttpSession httpSession;
-	
+
 	@InitBinder
 	protected void initBinder(HttpServletRequest request,
 			ServletRequestDataBinder binder) throws Exception {
@@ -52,7 +47,7 @@ public class TaskController {
 			}
 		});
 	}
-	
+
 	@RequestMapping(value = "task/changePriority", method = RequestMethod.GET)
 	public @ResponseBody String changePriority(Principal principal, @RequestParam("taskId") Long taskId, @RequestParam("priorityId") Long priority) {
 		if (principal == null) {

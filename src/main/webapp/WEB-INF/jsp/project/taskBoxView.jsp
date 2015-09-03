@@ -7,17 +7,29 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<jsp:include page="../template/head.jsp" />
+	<spring:url value="/resources/js/jquery.tristate.js" var="tristate"/>
+	<script type="text/javascript" src="${tristate}"></script>
 	<title><spring:message code="projecthandler.taskBoxView.title"/></title>
 	<script>
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
 	$(document).ready(function(){
 		$( document ).tooltip();
-		
+
 		$('#prioritySelect').selectivity({
 		    multiple: false,
 		    placeholder: 'Change task priority'
 		});
+
 		$('#prioritySelect').on("change", changePriority);
+
+		$('#tristate').tristate({
+	        checked: "1",
+	        unchecked: "0",
+	        indeterminate: "2",
+	        change: function() {
+	        	alert($("#tristate").val());
+	        }
+	    });
 	});
 
 	function changePriority(item) {
@@ -89,7 +101,14 @@
 			</select>
 		</div>
 	</div>
-	<div class="subTasksList">
+	<div class="addSubTask-Box">
+		<button class="default-btn-shape theme2-primary-btn-style1" id="addSubTask">
+			<spring:message code="projecthandler.taskBoxView.addSubTask"/>
+		</button>
+		<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
+	</div>
+	<div class="subTaskList-Box">
+		
 	</div>
 	<div class="actions">
 		<div class="openNewTicket">
