@@ -26,9 +26,13 @@
 		$('.tristate').tristate({
 	        checked: "validated",
 	        unchecked: "empty",
-	        indeterminate: "taken"
+	        indeterminate: "taken",
+	        change: function(state, value) {
+	        	var tmp = $(this).attr("id").split("-");
+	        	changeSubTaskState(tmp[1]);
+	        }
 	    });
-		
+
 		$('#addSubTaskBox-description').hide();
 		
 		$('#addSubTaskBox-description').focusout(function() {
@@ -37,12 +41,14 @@
 	  			url: CONTEXT_PATH + "/subTask/save",
 	  			data: { description: desc, userId: "${user.id}", taskId: "${task.id}"}, 
 	    		success: function(data) {
-	    			if (data.indexOf("KO:") != -1) {
-	    				var msg = data.replace("KO:", "");
-	    				alert(msg);
-	    			}
-	    			switchTextareaForSubTaskDescription();
-	    			location.reload();
+	    			if (data == "KO")
+	    				alert("error: " + data);
+					else {
+						var subTask = jQuery.parseJSON(data)
+	    				createSubTask(subTask.id, subTask);
+						switchTextareaForSubTaskDescription();
+						$('#addSubTaskBox-description').val('');
+					}
 	    		},
 	    		error: function(data) {
 	    			alert("error: " + data);
@@ -55,38 +61,39 @@
 		var res = item.value.split("/");
 	  	$.ajax({type: "GET",
 	  			url: CONTEXT_PATH + "/task/changePriority",
-	  			data: { taskId: res[0], priorityId: res[1] }, 
+	  			data: { taskId: res[0],
+	  					priorityId: res[1]
+	  			}, 
 	    		success: function(data) {
 	    			if (data.indexOf("KO:") != -1) {
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
-	    			} 
-	    		}, 
+	    			}
+	    		},
 	    		error: function(data) {
 	    			alert("error: " + data);
-	    		} 
+	    		}
 	    });
 	}
 
 	function changeSubTaskState(id) {
-		console.log("ID=" + id);
-		console.log("VALUE=" + $("#tristate-" + id).val())
     	$.ajax({type: "GET",
-  			url: CONTEXT_PATH + "/subTask/update/state",
-  			data: {userId: "${user.id}",
-  				   subTaskId: id,
-  				   state: $("#tristate-" + id).val()
-  			},
-    		success: function(data) {
-    			if (data.indexOf("KO:") != -1) {
-    				var msg = data.replace("KO:", "");
-    				alert(msg);
+  				url: CONTEXT_PATH + "/subTask/update/state",
+  				data: {
+  					userId: "${user.id}",
+  				   	subTaskId: id,
+  				    state: $("#tristate-" + id).val()
+  				},
+    			success: function(data) {
+	    			if (data == "KO")
+	    				alert("error: " + data);
+					else {
+	    				refreshSubTask(id, jQuery.parseJSON(data));
+					}
+    			},
+    			error: function(data) {
+    				alert("error: " + data);
     			}
-    			location.reload();
-    		},
-    		error: function(data) {
-    			alert("error: " + data);
-    		}
     	});
     }
 	
@@ -96,6 +103,59 @@
 		else
 			$("#addSubTaskBox-description").show();
 		newSubTaskDescriptionShown = !newSubTaskDescriptionShown;
+	}
+
+	// Id is the subtask id and data is the content of the subtask
+	function generateSubTaskDiv(id, data) {
+		var htmlString = "<div class='display-inline-block'><input class='tristate' id='tristate-" + id + "' type='checkbox' value='";
+		if (data.validated == true) {
+			htmlString += "validated' checked='checked'";
+		} else if (data.taken == true) {
+			htmlString += "taken' indeterminate='intermediate'";
+		} else {
+			htmlString += "empty'";
+		}
+		htmlString += "></div><div class='display-inline-block'>" + data.description + " </div>";
+		htmlString += "<div class='display-inline-block vertical-align small-padding-right'>";
+		htmlString += "<div class='fixedwidth-64 fixedheight-64 circle img-as-background' style='background-image:url(" + CONTEXT_PATH + "/resources/img/no-img.png);' title='" + data.lastUserActivity.firstName + " " + data.lastUserActivity.lastName + "'>";
+		htmlString += "<div class='full-width full-height circle img-as-background' style='background-image:url('" + CONTEXT_PATH;
+		htmlString += "'/downloadAvatar/" + data.lastUserActivity.id + ");' title='" + data.lastUserActivity.firstName + " " + data.lastUserActivity.lastName + "'></div>";
+		htmlString += "</div></div>";
+
+		return htmlString;
+	}
+	
+	function refreshSubTask(id, data) {
+		var htmlString = generateSubTaskDiv(id, data);
+		// Setting html content
+		$('#subTaskContent-' + id).html(htmlString);
+		// Associating new content with tristate plugin
+		$('#tristate-' + id).tristate({
+	        checked: "validated",
+	        unchecked: "empty",
+	        indeterminate: "taken",
+	        change: function(state, value) {
+	        	var tmp = $(this).attr("id").split("-");
+	        	changeSubTaskState(tmp[1]);
+	        }
+	    });
+	}
+
+	function createSubTask(id, data) {
+		var htmlString = generateSubTaskDiv(id, data);
+		// Append html content
+		$(htmlString).appendTo('#subTaskList-Box');
+
+		// Associating new content with tristate plugin
+		$('#tristate-' + id).tristate({
+	        checked: "validated",
+	        unchecked: "empty",
+	        indeterminate: "taken",
+	        change: function(state, value) {
+	        	var tmp = $(this).attr("id").split("-");
+	        	changeSubTaskState(tmp[1]);
+	        }
+	    });
 	}
 	</script>
 </head>
@@ -160,7 +220,7 @@
 		</div>
 		<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
 	</div>
-	<div class="subTaskList-Box">
+	<div class="subTaskList-Box" id="subTaskList-Box">
 		<div>
 			<spring:message code="projecthandler.taskBoxView.subTaskList"/>
 		</div>
@@ -168,13 +228,13 @@
 		<div id="subTaskContent-${subTask.id}">
 			<div class="display-inline-block">
 				<c:if test="${subTask.validated == true}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked" onclick="changeSubTaskState(${subTask.id})">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked">
 				</c:if>
 				<c:if test="${subTask.taken == true}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="taken" indeterminate="intermediate" onclick="changeSubTaskState(${subTask.id})">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="taken" indeterminate="intermediate">
 				</c:if>
 				<c:if test="${subTask.validated == false && subTask.taken == false}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="empty" onclick="changeSubTaskState(${subTask.id})">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="empty">
 				</c:if>
 			</div>
 			<div class="display-inline-block">
@@ -188,7 +248,7 @@
 		</div>
 		</c:forEach>
 	</div>
-	<div class="actions">
+	<div class="taskActivityBox">
 		<div class="openNewTicket">
 			<!-- TODO : open a new ticket with task information pre registred -->
 		</div>

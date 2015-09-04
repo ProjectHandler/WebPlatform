@@ -125,7 +125,7 @@
 			var url = CONTEXT_PATH + "/project/fetchGroupUsers";
 			var groupId;
 			var usersInGroup;
-			
+
 			if (item.added) {
 				groupId = item.added.id;
 				$.ajax({

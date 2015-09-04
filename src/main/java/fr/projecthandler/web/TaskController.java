@@ -9,18 +9,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.enums.ProjectStatus;
-import fr.projecthandler.model.Project;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.service.SubTaskService;
@@ -79,10 +77,10 @@ public class TaskController {
 											@RequestParam("description") String description,
 											@RequestParam("userId") Long userId,
 											@RequestParam("taskId") Long taskId) {
+		SubTask subTask = new SubTask();
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = new SubTask();
 			subTask.setDescription(description);
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			subTask.setParentTask(taskService.findTaskById(taskId));
@@ -94,7 +92,8 @@ public class TaskController {
 				return "KO";
 			}
 		}
-		return "OK";
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(subTask);
 	}
 
 	// TODO checkbox text enum
@@ -141,10 +140,10 @@ public class TaskController {
 											  	   @RequestParam("userId") Long userId,
 											  	   @RequestParam("subTaskId") Long subTaskId,
 											  	   @RequestParam("state") String state) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
 				return "KO: subtask does not exists";
 			subTask.setLastUserActivity(userService.findUserById(userId));
@@ -168,17 +167,18 @@ public class TaskController {
 				return "KO";
 			}
 		}
-		return "OK";
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(subTask);
 	}
 	
 	@RequestMapping(value = "subTask/update/description", method = RequestMethod.GET)
 	public @ResponseBody String updateSubTaskDescription(Principal principal,
 											  			 @RequestParam("description") String description,
 											  			 @RequestParam("subTaskId") Long subTaskId) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
 				return "KO: subtask does not exists";
 			subTask.setDescription(description);
