@@ -16,7 +16,7 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	@Column(name = "description")
 	private String description;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "task_id")
 	private Task parentTask;
 

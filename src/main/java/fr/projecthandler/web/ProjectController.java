@@ -38,6 +38,7 @@ import fr.projecthandler.model.Task;
 import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.SubTaskService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
@@ -53,6 +54,9 @@ public class ProjectController {
 	
 	@Autowired
 	TaskService taskService;
+	
+	@Autowired
+	SubTaskService subTaskService;
 
 	@Autowired
 	TicketService ticketService;
@@ -232,6 +236,8 @@ public class ProjectController {
 		myModel.put("task", t);
 		myModel.put("priorities", priorities);
 		myModel.put("user", userService.findUserById(userDetails.getId()));
+		myModel.put("subTasks", subTaskService.getSubTasksByTaskId(t.getId()));
+		
 
 		return new ModelAndView("project/taskBoxView", myModel);
 	}

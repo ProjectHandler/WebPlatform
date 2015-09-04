@@ -12,6 +12,7 @@
 	<title><spring:message code="projecthandler.taskBoxView.title"/></title>
 	<script>
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
+	var newSubTaskDescriptionShown = false;
 	$(document).ready(function(){
 		$( document ).tooltip();
 
@@ -22,29 +23,79 @@
 
 		$('#prioritySelect').on("change", changePriority);
 
-		$('#tristate').tristate({
-	        checked: "1",
-	        unchecked: "0",
-	        indeterminate: "2",
-	        change: function() {
-	        	alert($("#tristate").val());
-	        }
+		$('.tristate').tristate({
+	        checked: "validated",
+	        unchecked: "empty",
+	        indeterminate: "taken"
 	    });
+		
+		$('#addSubTaskBox-description').hide();
+		
+		$('#addSubTaskBox-description').focusout(function() {
+			var desc = $('#addSubTaskBox-description').val();
+			$.ajax({type: "GET",
+	  			url: CONTEXT_PATH + "/subTask/save",
+	  			data: { description: desc, userId: "${user.id}", taskId: "${task.id}"}, 
+	    		success: function(data) {
+	    			if (data.indexOf("KO:") != -1) {
+	    				var msg = data.replace("KO:", "");
+	    				alert(msg);
+	    			}
+	    			switchTextareaForSubTaskDescription();
+	    			location.reload();
+	    		},
+	    		error: function(data) {
+	    			alert("error: " + data);
+	    		}
+	    	});
+		});
 	});
 
 	function changePriority(item) {
 		var res = item.value.split("/");
-	  	$.ajax({type: "GET", url: CONTEXT_PATH + "/task/changePriority", data: { taskId: res[0], priorityId: res[1] }, 
-	    	success: function(data) {
-	    		if (data.indexOf("KO:") != -1) {
-	    			var msg = data.replace("KO:", "");
-	    			alert(msg);
+	  	$.ajax({type: "GET",
+	  			url: CONTEXT_PATH + "/task/changePriority",
+	  			data: { taskId: res[0], priorityId: res[1] }, 
+	    		success: function(data) {
+	    			if (data.indexOf("KO:") != -1) {
+	    				var msg = data.replace("KO:", "");
+	    				alert(msg);
+	    			} 
+	    		}, 
+	    		error: function(data) {
+	    			alert("error: " + data);
 	    		} 
-	    	}, 
-	    	error: function(data) {
-	    		alert("error: " + data);
-	    	} 
 	    });
+	}
+
+	function changeSubTaskState(id) {
+		console.log("ID=" + id);
+		console.log("VALUE=" + $("#tristate-" + id).val())
+    	$.ajax({type: "GET",
+  			url: CONTEXT_PATH + "/subTask/update/state",
+  			data: {userId: "${user.id}",
+  				   subTaskId: id,
+  				   state: $("#tristate-" + id).val()
+  			},
+    		success: function(data) {
+    			if (data.indexOf("KO:") != -1) {
+    				var msg = data.replace("KO:", "");
+    				alert(msg);
+    			}
+    			location.reload();
+    		},
+    		error: function(data) {
+    			alert("error: " + data);
+    		}
+    	});
+    }
+	
+	function switchTextareaForSubTaskDescription() {
+		if (newSubTaskDescriptionShown)
+			$("#addSubTaskBox-description").hide();
+		else
+			$("#addSubTaskBox-description").show();
+		newSubTaskDescriptionShown = !newSubTaskDescriptionShown;
 	}
 	</script>
 </head>
@@ -102,13 +153,40 @@
 		</div>
 	</div>
 	<div class="addSubTask-Box">
-		<button class="default-btn-shape theme2-primary-btn-style1" id="addSubTask">
-			<spring:message code="projecthandler.taskBoxView.addSubTask"/>
-		</button>
+		<div>
+			<button class="default-btn-shape theme2-primary-btn-style1" id="addSubTask" onClick="switchTextareaForSubTaskDescription();">
+				<spring:message code="projecthandler.taskBoxView.addSubTask"/>
+			</button>
+		</div>
 		<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
 	</div>
 	<div class="subTaskList-Box">
-		
+		<div>
+			<spring:message code="projecthandler.taskBoxView.subTaskList"/>
+		</div>
+		<c:forEach var='subTask' items='${subTasks}'>
+		<div id="subTaskContent-${subTask.id}">
+			<div class="display-inline-block">
+				<c:if test="${subTask.validated == true}">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked" onclick="changeSubTaskState(${subTask.id})">
+				</c:if>
+				<c:if test="${subTask.taken == true}">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="taken" indeterminate="intermediate" onclick="changeSubTaskState(${subTask.id})">
+				</c:if>
+				<c:if test="${subTask.validated == false && subTask.taken == false}">
+					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="empty" onclick="changeSubTaskState(${subTask.id})">
+				</c:if>
+			</div>
+			<div class="display-inline-block">
+				${subTask.description}
+			</div>
+			<div class="display-inline-block vertical-align small-padding-right">
+					<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}">	
+							<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${subTask.lastUserActivity.id});" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}"></div>
+					</div>
+			</div>
+		</div>
+		</c:forEach>
 	</div>
 	<div class="actions">
 		<div class="openNewTicket">
