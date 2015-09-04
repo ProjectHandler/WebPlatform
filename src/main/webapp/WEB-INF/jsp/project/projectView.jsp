@@ -25,7 +25,7 @@
 		}
 
 		function loadModalContainer(page) {
-			$("#dynamicContainerForModal").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>');
+			$("#dynamicContainerForModal").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="512px"></iframe>');
 		}
 		
 		function openProfileViewBox(id) {
@@ -55,7 +55,7 @@
 						<div class="full-width full-height display-table">
 							<div class="full-width full-height display-table-cell vertical-align">
 
-								<div class="inverted-bg fixedwidth-320 margin-auto overflow-hidden position-relative">
+								<div class="inverted-bg fixedwidth-768 margin-auto overflow-hidden position-relative">
 									<div id="dynamicContainerForModal">
 									</div>
 									<div class="text-center">
