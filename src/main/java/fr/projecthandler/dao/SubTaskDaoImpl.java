@@ -27,6 +27,7 @@ public class SubTaskDaoImpl  extends AbstractDao implements SubTaskDao {
 	}
 
 	@Override
+	@Transactional
 	public void deleteSubTaskById(Long id) {
 		em.createQuery("DELETE FROM SubTask st WHERE st.id =:id").setParameter("id", id).executeUpdate();
 	}

@@ -2,6 +2,7 @@ package fr.projecthandler.web;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -56,6 +57,7 @@ public class TaskController {
 	public @ResponseBody String changePriority(Principal principal,
 											   @RequestParam("taskId") Long taskId,
 											   @RequestParam("priorityId") Long priority) {
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
@@ -66,17 +68,19 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "subTask/save", method = RequestMethod.GET)
 	public @ResponseBody String saveSubTask(Principal principal,
 											@RequestParam("description") String description,
 											@RequestParam("userId") Long userId,
 											@RequestParam("taskId") Long taskId) {
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
 		SubTask subTask = new SubTask();
 		if (principal == null) {
 			return "redirect:/accessDenied";
@@ -89,7 +93,8 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -103,12 +108,13 @@ public class TaskController {
 											  @RequestParam("userId") Long userId,
 											  @RequestParam("subTaskId") Long subTaskId,
 											  @RequestParam("state") String state) {
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setDescription(description);
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			if (state.equals("validated")) {
@@ -128,7 +134,8 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";
@@ -141,11 +148,12 @@ public class TaskController {
 											  	   @RequestParam("subTaskId") Long subTaskId,
 											  	   @RequestParam("state") String state) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			if (state.equals("validated")) {
 				subTask.setValidated(true);
@@ -164,7 +172,8 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -176,18 +185,45 @@ public class TaskController {
 											  			 @RequestParam("description") String description,
 											  			 @RequestParam("subTaskId") Long subTaskId) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setDescription(description);
 			try {
 				subTaskService.updateSubTask(subTask);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
+			}
+		}
+		return "OK";
+	}
+	
+	@RequestMapping(value = "subTask/delete", method = RequestMethod.GET)
+	public @ResponseBody String deleteSubTask(Principal principal,
+								  			  @RequestParam("userId") Long userId,
+								  			  @RequestParam("subTaskId") Long subTaskId) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			if (subTask == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
+			if (subTask.isTaken() && subTask.getLastUserActivity().getId() != userId)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.deleteSubTaskTakenByOther");
+			try {
+				subTaskService.deleteSubTaskById(subTaskId);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";
