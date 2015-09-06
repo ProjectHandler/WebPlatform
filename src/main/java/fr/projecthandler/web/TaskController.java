@@ -2,6 +2,7 @@ package fr.projecthandler.web;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,11 +58,14 @@ public class TaskController {
 	public @ResponseBody String changePriority(Principal principal,
 											   @RequestParam("taskId") Long taskId,
 											   @RequestParam("priorityId") Long priority) {
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			Task t = taskService.findTaskById(taskId);
+			if (t == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskNotExists");
 			t.setPriority(taskService.findTaskPriorityById(priority));
 			try {
 				taskService.updateTask(t);
@@ -74,13 +78,39 @@ public class TaskController {
 		}
 		return "OK";
 	}
+	
+	@RequestMapping(value = "task/updateProgress", method = RequestMethod.GET)
+	public @ResponseBody String updateProgress(Principal principal,
+											   @RequestParam("taskId") Long taskId,
+											   @RequestParam("progress") Long progress) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			Task t = taskService.findTaskById(taskId);
+			if (t == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskNotExists");
+			t.setProgress(progress); // compute Server side only ???
+			try {
+				taskService.updateTask(t);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged") +
+					   "\nError:" + e.getMessage();
+			}
+		}
+		return "OK";
+	}
 
 	@RequestMapping(value = "subTask/save", method = RequestMethod.GET)
 	public @ResponseBody String saveSubTask(Principal principal,
 											@RequestParam("description") String description,
 											@RequestParam("userId") Long userId,
 											@RequestParam("taskId") Long taskId) {
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		SubTask subTask = new SubTask();
 		if (principal == null) {
 			return "redirect:/accessDenied";
@@ -108,7 +138,8 @@ public class TaskController {
 											  @RequestParam("userId") Long userId,
 											  @RequestParam("subTaskId") Long subTaskId,
 											  @RequestParam("state") String state) {
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
@@ -148,7 +179,8 @@ public class TaskController {
 											  	   @RequestParam("subTaskId") Long subTaskId,
 											  	   @RequestParam("state") String state) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
@@ -185,7 +217,8 @@ public class TaskController {
 											  			 @RequestParam("description") String description,
 											  			 @RequestParam("subTaskId") Long subTaskId) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
@@ -209,7 +242,9 @@ public class TaskController {
 								  			  @RequestParam("userId") Long userId,
 								  			  @RequestParam("subTaskId") Long subTaskId) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
-		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages");
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {

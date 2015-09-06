@@ -54,6 +54,7 @@
 				    				createSubTask(subTask.id, subTask);
 									switchTextareaForSubTaskDescription();
 									$('#addSubTaskBox-description').val('');
+									updateTaskProgress();
 								}
 				    		},
 			    		error: function(data) {
@@ -63,6 +64,10 @@
 			}
 			else
 				switchTextareaForSubTaskDescription();
+		});
+		
+		$("#progressTask${task.id}").progressbar({
+			value: parseInt("${task.progress}", 10)
 		});
 	});
 
@@ -85,6 +90,40 @@
 	    });
 	}
 
+	// TODO : maybe only compute server side ??
+	function updateTaskProgress() {
+		var percentage = 0;
+		var count = 0;
+		var subTaskNumber = 0;
+		$(".tristate").each(function(key, value) {
+			console.log("KEY=" + key + "\nVALUE=" + value.id);
+			subTaskNumber++;
+			if ($(value).val() == "validated")
+				count++;
+		});
+		percentage = (count / subTaskNumber) * 100;
+
+		$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
+		$("#progressTask-Span").text(percentage.toFixed(0) + "%");
+
+		$.ajax({type: "GET",
+				url: CONTEXT_PATH + "/task/updateProgress",
+				data: {
+				   	taskId: "${task.id}",
+				    progress: parseInt(percentage.toFixed(0), 10)
+				},
+			success: function(data) {
+				if (data.indexOf("KO:") != -1) {
+    				var msg = data.replace("KO:", "");
+    				alert(msg);
+    			}
+			},
+			error: function(data) {
+				alert("error: " + data);
+			}
+		});
+	}
+
 	function changeSubTaskState(id) {
     	$.ajax({type: "GET",
   				url: CONTEXT_PATH + "/subTask/update/state",
@@ -99,6 +138,9 @@
 	    				alert(msg);
 	    			}
 					else {
+				    	console.log($("#tristate-" + id).val());
+				    	if ($("#tristate-" + id).val() == "validated")
+				    		updateTaskProgress();
 	    				refreshSubTask(id, jQuery.parseJSON(data));
 					}
     			},
@@ -107,7 +149,7 @@
     			}
     	});
     }
-	
+
 	function changeSubTaskDescription(id) {
 		$.ajax({type: "GET",
 				url: CONTEXT_PATH + "/subTask/update/description",
@@ -128,7 +170,7 @@
 	}
 
 	function deleteSubTask(id) {
-		if (confirm("<spring:message code='projecthandler.taskBoxView.confirmDeleteSubTask'/>"))
+		if (confirm("<spring:message code='projecthandler.taskBoxView.confirmDeleteSubTask'/>")) {
 			$.ajax({type: "GET",
 				url: CONTEXT_PATH + "/subTask/delete",
 				data: {
@@ -136,20 +178,23 @@
 					subTaskId: id
 				},
 				success: function(data) {
+					console.log(data);
 					if (data.indexOf("KO:") != -1) {
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
 	    			}
 					else {
 						$("#subTaskContent-" + id).remove();
+						updateTaskProgress();
 					}
 				},
 				error: function(data) {
 					alert("error: " + data);
 				}
 			});
+		}
 	}
-	
+
 	function switchTextareaForSubTaskDescription() {
 		if (newSubTaskDescriptionShown)
 			$("#addSubTaskBox-description").hide();
@@ -159,9 +204,10 @@
 	}
 
 	// Id is the subtask id and data is the content of the subtask
+	// TODO : make a separate .jsp file and use jquery.load() instead of doing this uggly thing!
 	function generateSubTaskDiv(id, data) {
 		// Main div
-		var htmlString = "<div id='subTaskContent-" + id + "' class='display-inline-block'>";
+		var htmlString = "<div id='subTaskContent-" + id + "' class='subTaskContent display-inline-block'>";
 		// tristate checkbox div
 		htmlString += "<div class='display-inline-block'><input class='tristate' id='tristate-" + id + "' type='checkbox' value=";
 		if (data.validated == true) {
@@ -299,12 +345,10 @@
 		<div class="display-inline-block">
 			Statut: ${task.status}
 		</div>
-		<div id="progressTask${task.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-			<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${task.progress}%; background: rgb(0, 128, 255);" >
-				<span style="color:black">
-					${task.progress}%
-				</span>
-			</div>
+		<div id="progressTask${task.id}">
+			<span id="progressTask-Span" style="color:black">
+				${task.progress}%
+			</span>
 		</div>
 		<div>
 			Description:
@@ -319,7 +363,7 @@
 			<c:forEach var="userInList" items="${task.users}">
 				<div class="display-table-cell vertical-align small-padding-right">
 					<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${userInList.firstName} ${userInList.lastName}">	
-							<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});" title="${userInList.firstName} ${userInList.lastName}"></div>
+						<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});" title="${userInList.firstName} ${userInList.lastName}"></div>
 					</div>
 				</div>
 			</c:forEach>
@@ -357,7 +401,7 @@
 			<spring:message code="projecthandler.taskBoxView.subTaskList"/>
 		</div>
 		<c:forEach var='subTask' items='${subTasks}'>
-		<div id="subTaskContent-${subTask.id}" class="display-inline-block">
+		<div id="subTaskContent-${subTask.id}" class="subTaskContent display-inline-block">
 			<div class="display-inline-block">
 				<c:if test="${subTask.validated == true}">
 					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked">
