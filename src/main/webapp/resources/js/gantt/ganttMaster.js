@@ -429,7 +429,7 @@ GanttMaster.prototype.loadTasks = function (tasks, selectedRow) {
           var err = this.__currentTransaction.errors.pop();
           msg = msg + err.msg + "\n\n";
         }
-        popupAlert("<spring:message code='projecthandler.general.error' />", msg, true);
+        popupAlert("Erreur", msg, true);
       }
       this.removeAllLinks(task,false);
     }
@@ -743,7 +743,7 @@ GanttMaster.prototype.indentCurrentTask=function(){
   if (!self.canWrite|| !self.currentTask.canWrite)
     return;
 
-  if (self.currentTask) {
+  if (self.currentTask && self.currentTask.level <= 3) { //<= lvl limite TODO -> set in variable
     self.beginTransaction();
     self.currentTask.indent();
     self.endTransaction();
@@ -895,7 +895,7 @@ GanttMaster.prototype.endTransaction = function () {
       var err = this.__currentTransaction.errors[i];
       msg = msg + err.msg + "\n\n";
     }
-    popupAlert("<spring:message code='projecthandler.general.error' />", msg, true);
+    popupAlert("Erreur", msg, true);
   }
   //reset transaction
   this.__currentTransaction = undefined;
