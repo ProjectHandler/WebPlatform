@@ -14,7 +14,7 @@
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
 	var newSubTaskDescriptionShown = false;
 	var savedSubTaskDescription = null;
-	$(document).ready(function(){
+	$(document).ready(function() {
 		$( document ).tooltip();
 
 		$('#prioritySelect').selectivity({
@@ -34,43 +34,48 @@
 	        }
 	    });
 
-		$('#addSubTaskBox-description').hide();
-		
-		$('#addSubTaskBox-description').focusout(function() {
-			var desc = $('#addSubTaskBox-description').val();
-			if (desc != "") {
-				$.ajax({type: "GET",
-		  			url: CONTEXT_PATH + "/subTask/save",
-		  			data: { description: desc,
-		  					userId: "${user.id}",
-		  					taskId: "${task.id}"}, 
-		    				success: function(data) {
-		    					if (data.indexOf("KO:") != -1) {
-		    	    				var msg = data.replace("KO:", "");
-		    	    				alert(msg);
-		    	    			}
-								else {
-									var subTask = jQuery.parseJSON(data);
-				    				createSubTask(subTask.id, subTask);
-									switchTextareaForSubTaskDescription();
-									$('#addSubTaskBox-description').val('');
-									updateTaskProgress();
-								}
-				    		},
-			    		error: function(data) {
-			    			alert("error: " + data);
-			    		}
-		    	});
-			}
-			else
-				switchTextareaForSubTaskDescription();
-		});
-		
+		$('#addSubTask-div').hide();
+
 		$("#progressTask${task.id}").progressbar({
 			value: parseInt("${task.progress}", 10)
 		});
 	});
 
+	function createNewTicket() {
+		var url = CONTEXT_PATH + "/ticket/new/${task.project.id}?title=[${task.name}]";
+		window.open(url);
+	}
+	
+	function validateAddSubTask() {
+		var desc = $('#addSubTaskBox-description').val();
+		if (desc != "") {
+			$.ajax({type: "GET",
+	  			url: CONTEXT_PATH + "/subTask/save",
+	  			data: { description: desc,
+	  					userId: "${user.id}",
+	  					taskId: "${task.id}"}, 
+	    				success: function(data) {
+	    					if (data.indexOf("KO:") != -1) {
+	    	    				var msg = data.replace("KO:", "");
+	    	    				alert(msg);
+	    	    			}
+							else {
+								var subTask = jQuery.parseJSON(data);
+			    				createSubTask(subTask.id, subTask);
+								switchTextareaForSubTaskDescription();
+								$('#addSubTaskBox-description').val('');
+								updateTaskProgress();
+							}
+			    		},
+		    		error: function(data) {
+		    			alert("error: " + data);
+		    		}
+	    	});
+		}
+		else
+			switchTextareaForSubTaskDescription();
+	}
+	
 	function changePriority(item) {
 		var res = item.value.split("/");
 	  	$.ajax({type: "GET",
@@ -96,7 +101,6 @@
 		var count = 0;
 		var subTaskNumber = 0;
 		$(".tristate").each(function(key, value) {
-			console.log("KEY=" + key + "\nVALUE=" + value.id);
 			subTaskNumber++;
 			if ($(value).val() == "validated")
 				count++;
@@ -112,15 +116,15 @@
 				   	taskId: "${task.id}",
 				    progress: parseInt(percentage.toFixed(0), 10)
 				},
-			success: function(data) {
-				if (data.indexOf("KO:") != -1) {
-    				var msg = data.replace("KO:", "");
-    				alert(msg);
-    			}
-			},
-			error: function(data) {
-				alert("error: " + data);
-			}
+				success: function(data) {
+					if (data.indexOf("KO:") != -1) {
+	    				var msg = data.replace("KO:", "");
+	    				alert(msg);
+	    			}
+				},
+				error: function(data) {
+					alert("error: " + data);
+				}
 		});
 	}
 
@@ -151,22 +155,26 @@
     }
 
 	function changeSubTaskDescription(id) {
-		$.ajax({type: "GET",
-				url: CONTEXT_PATH + "/subTask/update/description",
-				data: {
-				    description: $("#subTaskDescription-" + id).val(),
-					subTaskId: id
-				},
-				success: function(data) {
-					if (data.indexOf("KO:") != -1) {
-	    				var msg = data.replace("KO:", "");
-	    				alert(msg);
-	    			}
-				},
-				error: function(data) {
-					alert("error: " + data);
-				}
-		});
+		var desc = $("#subTaskDescription-" + id).val();
+		if (desc != "") {
+			$.ajax({type: "GET",
+					url: CONTEXT_PATH + "/subTask/update/description",
+					data: {
+					    description: $("#subTaskDescription-" + id).val(),
+						subTaskId: id
+					},
+					success: function(data) {
+						if (data.indexOf("KO:") != -1) {
+		    				var msg = data.replace("KO:", "");
+		    				alert(msg);
+		    			}
+					},
+					error: function(data) {
+						alert("error: " + data);
+					}
+			});
+		}
+		// TODO else error message => description can't be empty
 	}
 
 	function deleteSubTask(id) {
@@ -195,11 +203,15 @@
 		}
 	}
 
+	function reloadPage() {
+		location.reload();
+	}
+	
 	function switchTextareaForSubTaskDescription() {
 		if (newSubTaskDescriptionShown)
-			$("#addSubTaskBox-description").hide();
+			$("#addSubTask-div").hide();
 		else
-			$("#addSubTaskBox-description").show();
+			$("#addSubTask-div").show();
 		newSubTaskDescriptionShown = !newSubTaskDescriptionShown;
 	}
 
@@ -219,7 +231,7 @@
 		}
 		// description textarea div
 		htmlString += 	"<div class='display-inline-block'>" +
-						"<textarea id='subTaskDescription-" + id + "' disabled='disabled'>" + data.description + "</textarea></div>";
+						"<textarea id='subTaskDescription-" + id + "' disabled='disabled' maxlength='200'>" + data.description + " </textarea></div>";
 		// Done editing button div
 		htmlString +=	"<button id='doneEditingButton-" + id +"' class='display-none default-btn-shape theme2-primary-btn-style1' onClick='doneEditingSubTask(" + id + ");'>" +
 						"<spring:message code='projecthandler.taskBoxView.doneEditingSubTask'/></button>";
@@ -306,7 +318,7 @@
 		$(itemName).attr("disabled", "disabled");
 		$("#doneEditingButton-" + id).addClass("display-none");
 		$("#cancelEditingButton-" + id).addClass("display-none");
-		if ($(itemName).val() != savedSubTaskDescription) {
+		if ($(itemName).val() != savedSubTaskDescription && $(itemName).val() != "") {
 			changeSubTaskDescription(id);
 		}
 		savedSubTaskDescription = null;
@@ -320,6 +332,7 @@
 		$("#subTaskContent-" + id).off('focusout');
 		$(itemName).val(savedSubTaskDescription);
 		switchSubTaskEditing(id, itemName);
+		savedSubTaskDescription = null;
 	}
 
 	function switchSubTaskEditing(id, itemName) {
@@ -338,6 +351,12 @@
 	</script>
 </head>
 <body>
+	<button id="refreshTaskBoxView-Button" class="default-btn-shape theme2-primary-btn-style1" onClick="reloadPage();">
+			<spring:message code="projecthandler.taskBoxView.refreshView"/>
+	</button>
+	<button id="newTicketForTask-Button" class="default-btn-shape theme2-primary-btn-style1" onClick="createNewTicket();">
+			<spring:message code="projecthandler.taskBoxView.sendTicketForTask"/>
+	</button>
 	<div class="taskDescription small-container">
 		<div class="display-inline-block">
 			Name: ${task.name}
@@ -394,7 +413,15 @@
 				<spring:message code="projecthandler.taskBoxView.addSubTask"/>
 			</button>
 		</div>
-		<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
+		<div id="addSubTask-div">
+			<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
+			<button class="default-btn-shape theme2-primary-btn-style1" onClick="validateAddSubTask();">
+				<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
+			</button>
+			<button class="default-btn-shape theme2-primary-btn-style1" onClick="switchTextareaForSubTaskDescription();">
+				<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
+			</button>
+		</div>
 	</div>
 	<div class="subTaskList-Box" id="subTaskList-Box">
 		<div>
@@ -414,7 +441,7 @@
 				</c:if>
 			</div>
 			<div class="display-inline-block">
-				<textarea id="subTaskDescription-${subTask.id}" disabled="disabled">${subTask.description}</textarea>
+				<textarea id="subTaskDescription-${subTask.id}" disabled="disabled" maxlength="200">${subTask.description}</textarea>
 			</div>
 			<button id="doneEditingButton-${subTask.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onClick="doneEditingSubTask(${subTask.id});">
 				<spring:message code="projecthandler.taskBoxView.doneEditingSubTask"/>
@@ -436,10 +463,9 @@
 		</div>
 		</c:forEach>
 	</div>
-	<div class="taskActivityBox">
-		<div class="openNewTicket">
-			<!-- TODO : open a new ticket with task information pre registred -->
-		</div>
-	</div>
+	---------------------------------------------
+	<jsp:include page="./taskBoxMessages.jsp" />
+	---------------------------------------------
+	<jsp:include page="./taskBoxActivity.jsp" />
 </body>
 </html>

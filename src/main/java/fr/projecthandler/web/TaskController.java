@@ -1,6 +1,7 @@
 package fr.projecthandler.web;
 
 import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -23,7 +24,9 @@ import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskMessage;
 import fr.projecthandler.service.SubTaskService;
+import fr.projecthandler.service.TaskMessageService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
 
@@ -37,6 +40,9 @@ public class TaskController {
 
 	@Autowired
 	SubTaskService subTaskService;
+	
+	@Autowired
+	TaskMessageService taskMessageService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -72,8 +78,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged");
 			}
 		}
 		return "OK";
@@ -97,8 +102,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged");
 			}
 		}
 		return "OK";
@@ -123,8 +127,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -165,8 +168,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		return "OK";
@@ -204,8 +206,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -230,8 +231,7 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		return "OK";
@@ -257,10 +257,92 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted") +
-					   "\nError:" + e.getMessage();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted");
 			}
 		}
 		return "OK";
+	}
+	
+	@RequestMapping(value = "task/comment/save", method = RequestMethod.GET)
+	public @ResponseBody String saveNewComment(Principal principal,
+								  			   @RequestParam("content") String content,
+								  			   @RequestParam("userId") Long userId,
+								  			   @RequestParam("taskId") Long taskId) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		TaskMessage taskMessage = new TaskMessage();
+
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			taskMessage.setContent(content);
+			taskMessage.setOwner(userService.findUserById(userId));
+			taskMessage.setTask(taskService.findTaskById(taskId));
+			taskMessage.setUpdateDate(new Date());
+			try {
+				taskMessageService.saveTaskMessage(taskMessage);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotSaved");
+			}
+		}
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(taskMessage);
+	}
+	
+	@RequestMapping(value = "task/comment/delete", method = RequestMethod.GET)
+	public @ResponseBody String deleteComment(Principal principal,
+								  			  @RequestParam("commentId") Long commentId,
+								  			  @RequestParam("userId") Long userId) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			TaskMessage taskMessage = taskMessageService.findTaskMessageById(commentId);
+			if (taskMessage == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotFound");
+			if (taskMessage.getOwner().getId() != userId)
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
+			try {
+				taskMessageService.deleteTaskMessageById(commentId);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotDeleted");
+			}
+		}
+		return "OK";
+	}
+	
+	@RequestMapping(value = "task/comment/update", method = RequestMethod.GET)
+	public @ResponseBody String updateComment(Principal principal,
+											  @RequestParam("content") String content,
+								  			  @RequestParam("commentId") Long commentId,
+								  			  @RequestParam("userId") Long userId) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		TaskMessage taskMessage = taskMessageService.findTaskMessageById(commentId);
+
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			if (taskMessage == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotFound");
+			if (taskMessage.getOwner().getId() != userId)
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
+			taskMessage.setContent(content);
+			try {
+				taskMessageService.updateTaskMessage(taskMessage);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotUpdated");
+			}
+		}
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(taskMessage);
 	}
 }

@@ -39,6 +39,7 @@ import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.SubTaskService;
+import fr.projecthandler.service.TaskMessageService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
@@ -60,6 +61,9 @@ public class ProjectController {
 
 	@Autowired
 	TicketService ticketService;
+	
+	@Autowired
+	TaskMessageService taskMessageService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -237,7 +241,7 @@ public class ProjectController {
 		myModel.put("priorities", priorities);
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 		myModel.put("subTasks", subTaskService.getSubTasksByTaskId(t.getId()));
-		
+		myModel.put("taskMessages", taskMessageService.getTaskMessagesByTaskId(t.getId()));
 
 		return new ModelAndView("project/taskBoxView", myModel);
 	}
