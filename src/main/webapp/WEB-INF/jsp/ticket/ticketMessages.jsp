@@ -86,11 +86,14 @@
 				</span>
 			</div>
 		</c:forEach>
+		<%-- Test if ticket is open --%>
+		<c:if test="${ticket.ticketStatus == 'OPEN'}">
 		 	<form:form class="message-form" method="POST" action="${pageContext.request.contextPath}/ticket/${ticket.id}/message/save" modelAttribute="ticketMessage">
-			<form:label path="text">Nouveau message</form:label>
-			<form:textarea class="ticket-new-message" path="text"></form:textarea>
-			<input class="new-message-submit" value="Submit" type="submit">
-		</form:form>
+				<form:label path="text">Nouveau message</form:label>
+				<form:textarea class="ticket-new-message" path="text"></form:textarea>
+				<input class="new-message-submit" value="Submit" type="submit">
+			</form:form>
+		</c:if>
 	</div>
    	<jsp:include page="../template/footer.jsp" />
 </body>

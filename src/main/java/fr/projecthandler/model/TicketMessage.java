@@ -12,6 +12,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
 
 import fr.projecthandler.util.TimestampEntity;
 
@@ -37,6 +38,7 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
     @Column(name = "updated_at", nullable = false)
     private Date updatedAt;
     
+	@Size(min=1, max=500)
 	@Column(name = "text", length = 500)
 	private String text;
     

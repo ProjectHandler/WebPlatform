@@ -17,9 +17,11 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
@@ -34,9 +36,11 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@Column(name = "title", length = 100)
 	private String title;
 	
+	@Size(min=1, max=500)
 	@Column(name = "text", length = 500)
 	private String text;
 	
+	@NotNull
 	@Column(name = "ticket_status", nullable = false)
 	private TicketStatus ticketStatus;
 	

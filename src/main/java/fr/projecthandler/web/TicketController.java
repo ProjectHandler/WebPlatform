@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
@@ -47,7 +49,7 @@ public class TicketController {
 	ProjectService projectService;
 
 	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.GET)
-	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @RequestParam(required = false) String title) {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		if (userDetails == null) {
@@ -60,6 +62,7 @@ public class TicketController {
 		}
 		// TODO vérifier droit du user
 		Ticket ticket = new Ticket();
+		ticket.setTitle(title);
 		User u = userService.findUserById(userDetails.getId());
 		List<Project> projectList = projectService.getAllProjects();
 		List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
@@ -121,7 +124,7 @@ public class TicketController {
 	}
 
 	@RequestMapping(value = "/{ticketId}/message/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @ModelAttribute("ticketMessage") TicketMessage ticketMessage,
+	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @Valid @ModelAttribute("ticketMessage") TicketMessage ticketMessage,
 			BindingResult result, @PathVariable Long ticketId) {
 		Ticket ticket = ticketService.findTicketById(ticketId);
 
@@ -131,10 +134,13 @@ public class TicketController {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied");
 		}
-		if (ticket == null) {
+		if (ticket == null || ticket.getTicketStatus() == TicketStatus.CLOSED) {
 			// TODO mettre un Not Found, c'est pas un accessDenied
 			return new ModelAndView("accessDenied");
 		}
+		if (result.hasErrors()) {
+			return new ModelAndView("redirect:/ticket/" + ticketId + "/messages");
+        }
 		User u = userService.findUserById(userDetails.getId());
 
 		ticketMessage.setUser(u);

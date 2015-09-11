@@ -27,13 +27,9 @@ public class ProjectProgressDTO {
 
 		this.daysLeft = (int)((totalTime - elapsedTime) / dayInMs);
 
-		if (this.daysLeft < 0) {
-			this.dateProgress = 100;
-			this.daysLeft = 0;
-		}
-		else {
-			this.dateProgress = (int)Math.round((elapsedTime / totalTime) * 100);
-		}
+		this.dateProgress = (int)Math.round((elapsedTime / totalTime) * 100);
+		if (this.dateProgress < 0)
+			this.dateProgress = 0;
 	}
 	
 	private void computeTaskProgress(Set<Task> tasks) {
