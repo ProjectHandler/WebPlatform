@@ -118,7 +118,6 @@
 		$(row).find(".task-node-progress").css("width", tasklist[i].getProgress() + "%");
 		if (tasklist[i].getLevel() == 1) { $(row).find(".task-node-progress-container").html(""); }
 		if (tasklist[i].getLevel() == 1) { $(row).find(".task-node-link").addClass("display-none"); }
-		console.log(tasklist[i].getStatus());
 		$(row).find("." + tasklist[i].getStatus()).show();
 		$(row).appendTo("#sortedtasklist-container");
 		$(row).show();

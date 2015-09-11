@@ -2,6 +2,8 @@ package fr.projecthandler.web;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,18 +11,16 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.enums.ProjectStatus;
-import fr.projecthandler.model.Project;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.service.SubTaskService;
@@ -58,31 +58,63 @@ public class TaskController {
 	public @ResponseBody String changePriority(Principal principal,
 											   @RequestParam("taskId") Long taskId,
 											   @RequestParam("priorityId") Long priority) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			Task t = taskService.findTaskById(taskId);
+			if (t == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskNotExists");
 			t.setPriority(taskService.findTaskPriorityById(priority));
 			try {
 				taskService.updateTask(t);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";
 	}
 	
+	@RequestMapping(value = "task/updateProgress", method = RequestMethod.GET)
+	public @ResponseBody String updateProgress(Principal principal,
+											   @RequestParam("taskId") Long taskId,
+											   @RequestParam("progress") Long progress) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			Task t = taskService.findTaskById(taskId);
+			if (t == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskNotExists");
+			t.setProgress(progress); // compute Server side only ???
+			try {
+				taskService.updateTask(t);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged") +
+					   "\nError:" + e.getMessage();
+			}
+		}
+		return "OK";
+	}
+
 	@RequestMapping(value = "subTask/save", method = RequestMethod.GET)
 	public @ResponseBody String saveSubTask(Principal principal,
 											@RequestParam("description") String description,
 											@RequestParam("userId") Long userId,
 											@RequestParam("taskId") Long taskId) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		SubTask subTask = new SubTask();
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = new SubTask();
 			subTask.setDescription(description);
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			subTask.setParentTask(taskService.findTaskById(taskId));
@@ -91,10 +123,12 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
-		return "OK";
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(subTask);
 	}
 
 	// TODO checkbox text enum
@@ -104,12 +138,14 @@ public class TaskController {
 											  @RequestParam("userId") Long userId,
 											  @RequestParam("subTaskId") Long subTaskId,
 											  @RequestParam("state") String state) {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
 			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setDescription(description);
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			if (state.equals("validated")) {
@@ -129,7 +165,8 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";
@@ -141,12 +178,14 @@ public class TaskController {
 											  	   @RequestParam("userId") Long userId,
 											  	   @RequestParam("subTaskId") Long subTaskId,
 											  	   @RequestParam("state") String state) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setLastUserActivity(userService.findUserById(userId));
 			if (state.equals("validated")) {
 				subTask.setValidated(true);
@@ -165,29 +204,61 @@ public class TaskController {
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
 			}
 		}
-		return "OK";
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		return gson.toJson(subTask);
 	}
 	
 	@RequestMapping(value = "subTask/update/description", method = RequestMethod.GET)
 	public @ResponseBody String updateSubTaskDescription(Principal principal,
 											  			 @RequestParam("description") String description,
 											  			 @RequestParam("subTaskId") Long subTaskId) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
 			return "redirect:/accessDenied";
 		} else {
-			SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 			if (subTask == null)
-				return "KO: subtask does not exists";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
 			subTask.setDescription(description);
 			try {
 				subTaskService.updateSubTask(subTask);
 			}
 			catch (Exception e) {
 				e.printStackTrace();
-				return "KO";
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated") +
+					   "\nError:" + e.getMessage();
+			}
+		}
+		return "OK";
+	}
+	
+	@RequestMapping(value = "subTask/delete", method = RequestMethod.GET)
+	public @ResponseBody String deleteSubTask(Principal principal,
+								  			  @RequestParam("userId") Long userId,
+								  			  @RequestParam("subTaskId") Long subTaskId) {
+		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+
+		if (principal == null) {
+			return "redirect:/accessDenied";
+		} else {
+			if (subTask == null)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
+			if (subTask.isTaken() && subTask.getLastUserActivity().getId() != userId)
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.deleteSubTaskTakenByOther");
+			try {
+				subTaskService.deleteSubTaskById(subTaskId);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted") +
+					   "\nError:" + e.getMessage();
 			}
 		}
 		return "OK";

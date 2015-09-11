@@ -137,7 +137,7 @@
 		
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
-					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownErrorS);
+					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownErrorS, true);
 				}
 			});
 		}
@@ -177,12 +177,13 @@
 				success: function(data) {
 					if (data == "success") {
 						savePopup("<spring:message code='projecthandler.gantt.saveSuccess'/>");
+						//loadGanttFromServer();
 					} else {
 						savePopup("<spring:message code='projecthandler.gantt.saveFailed'/>");
 					}
 				},
 				error : function(error) {
-					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + error.statusCode);
+					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + error.statusCode, true);
 				}
 			});
 		}

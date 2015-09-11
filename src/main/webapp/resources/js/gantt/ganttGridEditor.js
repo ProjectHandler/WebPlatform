@@ -244,7 +244,7 @@ GridEditor.prototype.bindRowInputEvents = function (task, taskRow) {
       var inp = $(this);
       if (inp.isValueChanged()) {
         if (!Date.isValid(inp.val())) {
-          popupAlert("<spring:message code='projecthandler.general.error' />", GanttMaster.messages["INVALID_DATE_FORMAT"], true);
+          popupAlert("Erreur", GanttMaster.messages["INVALID_DATE_FORMAT"], true);
           inp.val(inp.getOldValue());
 
         } else {
@@ -548,7 +548,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
     }).blur(function () {
         var inp = $(this);
         if (!Date.isValid(inp.val())) {
-          popupAlert("<spring:message code='projecthandler.general.error' />", GanttMaster.messages["INVALID_DATE_FORMAT"], true);
+          popupAlert("Erreur", GanttMaster.messages["INVALID_DATE_FORMAT"], true);
           inp.val(inp.getOldValue());
         } else {
           endChangeCallback(Date.parseString(inp.val()))
