@@ -54,12 +54,12 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 	}
 
 	@Override
-	public Set<Task> getTasksByProjectIdWithDepends(Long projectId) {
+	public Set<Task> getTasksByTaskIdWithDepends(Long taskId) {
 		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(em
 				.createQuery(
-						"SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :projectId ORDER BY t.row asc")
-				.setParameter("projectId", projectId).getResultList());
+						"SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :taskId ORDER BY t.row ASC")
+				.setParameter("taskId", taskId).getResultList());
 		return result;
 	}
 
@@ -114,6 +114,27 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 								+ DateHelper.getTomorrowDate("yyyy-MM-dd")
 								+ "' AND :userId IN (u.id)")
 				.setParameter("userId", userId).getResultList());
+		return result;
+	}
+	
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId) {
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
+		result.addAll(em
+				.createQuery(
+						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks WHERE t.project.id = :projectId ORDER BY t.row ASC")
+				.setParameter("projectId", projectId).getResultList());
+		return result;
+	}
+	
+	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId) {
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
+		System.out.println("tashesh");
+		result.addAll(em
+				.createQuery(
+						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks JOIN t.users u WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC")
+				.setParameter("projectId", projectId)
+				.setParameter("userId", userId)
+				.getResultList());
 		return result;
 	}
 }

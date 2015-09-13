@@ -75,7 +75,7 @@
 	/>
 
 	<!-- - This bean resolves specific types of exceptions to corresponding logical - view names for error views. -->
-	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+	<bean class="fr.projecthandler.web.MyMappingExceptionResolver">
 		<!-- view name resolved using bean of type InternalResourceViewResolver	(declared in mvc-view-config.xml) -->
 		<property name="defaultErrorView" value="exception" />
 		<!-- results into 'WEB-INF/jsp/exception.jsp' -->

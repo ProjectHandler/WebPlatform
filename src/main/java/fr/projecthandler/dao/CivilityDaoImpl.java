@@ -12,27 +12,6 @@ import fr.projecthandler.util.Utilities;
 public class CivilityDaoImpl extends AbstractDao implements CivilityDao {
 
 	@Override
-	@Transactional
-	public void updateCivility(Civility civility) {
-		em.merge(civility);
-	}
-
-	@Override
-	@Transactional
-	public Long saveCivility(Civility civility) {
-		em.persist(civility);
-		
-		return civility.getId();
-	}
-
-	@Override
-	@Transactional
-	public void deleteCivilityById(Long civilityId) {
-		em.createQuery("DELETE FROM Civility tt WHERE tt.id = :civilityId")
-		.setParameter("civilityId", civilityId)
-		.executeUpdate();
-	}
-	@Override
 	public Civility findCivilityById(Long civilityId) {
 		return (Civility) Utilities.getSingleResultOrNull(em.createQuery("SELECT tt FROM Civility tt WHERE tt.id = :civilityId")
 				.setParameter("civilityId", civilityId));

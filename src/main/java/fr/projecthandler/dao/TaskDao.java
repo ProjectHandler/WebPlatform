@@ -18,7 +18,7 @@ public interface TaskDao {
 
 	public Set<Task> getTasksByProjectId(Long projectId);
 	
-	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
+	public Set<Task> getTasksByTaskIdWithDepends(Long taskId);
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 	
@@ -29,4 +29,8 @@ public interface TaskDao {
 	public Set<Task> getTodayTasksByUser(Long userId);
 	
 	public Set<Task> getTomorrowTasksByUser(Long userId);
+	
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
+	
+	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId);
 }

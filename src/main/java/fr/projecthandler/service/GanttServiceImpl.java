@@ -77,7 +77,7 @@ public class GanttServiceImpl implements GanttService {
 			for (Task t : tasks) {
 				GanttTaskDTO gt = new GanttTaskDTO(t);
 				
-				Set<Task> depends = taskService.getTasksByProjectIdWithDepends(t.getId());
+				Set<Task> depends = taskService.getTasksByTaskIdWithDepends(t.getId());
 				StringBuilder sb = new StringBuilder();
 				for (Task depend : depends)
 					sb.append(rowId.get(depend.getId()).toString() + ",");

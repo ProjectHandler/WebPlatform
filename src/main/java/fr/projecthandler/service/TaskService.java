@@ -19,7 +19,7 @@ public interface TaskService {
 
 	public Set<Task> getTasksByProjectId(Long projectId);
 	
-	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
+	public Set<Task> getTasksByTaskIdWithDepends(Long taskId);
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 	
@@ -42,4 +42,8 @@ public interface TaskService {
 	public TaskPriority findTaskPriorityById(Long taskPriorityId);
 
 	public List<TaskPriority> getAllTaskPriorities();
+	
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
+	
+	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId);
 }

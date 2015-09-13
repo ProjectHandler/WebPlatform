@@ -1,58 +1,32 @@
 package fr.projecthandler.api;
-/*
-import java.io.IOException;
-import java.io.StringWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.Principal;
-import java.util.ArrayList;
-import java.util.List;
 
-import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.enums.AccountStatus;
-import fr.projecthandler.enums.UserRole;
-import fr.projecthandler.model.Address;
+import fr.projecthandler.dto.MobileTaskDTO;
 import fr.projecthandler.model.Task;
-import fr.projecthandler.model.Ticket;
-import fr.projecthandler.model.Token;
-import fr.projecthandler.model.User;
-import fr.projecthandler.service.AddressService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
-import fr.projecthandler.util.TokenGenerator;
 
 @RestController
 @Transactional
@@ -60,34 +34,90 @@ import fr.projecthandler.util.TokenGenerator;
 public class TaskRestController {
 
 	@Autowired
-	TaskService taskService;
+	UserService userService;
 
 	@Autowired
 	TokenService tokenService;
 
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
-		Task task = taskService.findTaskById(id);
+	@Autowired
+	TaskService taskService;
 
-		if (task == null) {
+	@Autowired
+	private UserDetailsService customUserDetailsService;
+
+	
+	@RequestMapping(value = "/allByProject/{projectId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> getProjects(@PathVariable Long projectId,@CurrentUserDetails CustomUserDetails userDetails) {
+		Set<Task> taskList = taskService.getTasksByProjectIdWithDepends(projectId);
+		
+		if (taskList == null) {
 			return new ResponseEntity<String>(
-					"{\"status\":400, \"task\":\"Not found\"}",
+					"{\"status\":400, \"project\":\"Not found\"}",
 					HttpStatus.NOT_FOUND);
 		}
-
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
-		StringWriter stringEmp = new StringWriter();
+		
+		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
+		for (Task t : taskList) {
+			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
+			Set<MobileTaskDTO> depTaskDTO = new HashSet<MobileTaskDTO>();
+			
+			for (Task depTask : t.getDepend())
+				depTaskDTO.add(new MobileTaskDTO(depTask));
+			taskDTO.setDependtasks(depTaskDTO);
+			taskListDTO.add(taskDTO);
+		}
+		
+		Gson gson = new GsonBuilder().setExclusionStrategies(
+				new ApiExclusionStrategy()).create();
+		
 		try {
-			objectMapper.writeValue(stringEmp, task);
-		} catch (JsonGenerationException e) {
+			String json = gson.toJson(taskListDTO);
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
 			e.printStackTrace();
-		} catch (JsonMappingException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 
-		return new ResponseEntity<String>(stringEmp.toString(), HttpStatus.OK);
 	}
-}*/
+	
+	@RequestMapping(value = "/allByProjectAndUser/{projectId}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> getProjectsByUser(@PathVariable Long projectId,@CurrentUserDetails CustomUserDetails userDetails) {
+		
+		System.out.println("ok");
+		List<MobileTaskDTO> taskListDTO = null;
+		try {
+		Set<Task> taskList = taskService.getTasksByProjectIdAndUserIdWithDepends(projectId, userDetails.getId());
+		
+		if (taskList == null) {
+			return new ResponseEntity<String>(
+					"{\"status\":400, \"project\":\"Not found\"}",
+					HttpStatus.NOT_FOUND);
+		}
+		
+		taskListDTO = new ArrayList<MobileTaskDTO>();
+		for (Task t : taskList) {
+			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
+			Set<MobileTaskDTO> depTaskDTO = new HashSet<MobileTaskDTO>();
+			
+			for (Task depTask : t.getDepend())
+				depTaskDTO.add(new MobileTaskDTO(depTask));
+			taskDTO.setDependtasks(depTaskDTO);
+			taskListDTO.add(taskDTO);
+		}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+		
+		try {
+			String json = gson.toJson(taskListDTO);
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		}
+
+	}
+	
+}
+

@@ -41,8 +41,8 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getTasksByProjectId(projectId);
 	}
 
-	public Set<Task> getTasksByProjectIdWithDepends(Long projectId){
-		return taskDao.getTasksByProjectIdWithDepends(projectId);
+	public Set<Task> getTasksByTaskIdWithDepends(Long taskId){
+		return taskDao.getTasksByTaskIdWithDepends(taskId);
 	}
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId){
@@ -87,5 +87,13 @@ public class TaskServiceImpl implements TaskService {
 
 	public List<TaskPriority> getAllTaskPriorities() {
 		return taskPriorityDao.getAllTaskPriorities();
+	}
+	
+	public Set<Task> getTasksByProjectIdWithDepends(Long projectId) {
+		return taskDao.getTasksByProjectIdWithDepends(projectId);
+	}
+	
+	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId) {
+		return taskDao.getTasksByProjectIdAndUserIdWithDepends(projectId, userId);
 	}
 }

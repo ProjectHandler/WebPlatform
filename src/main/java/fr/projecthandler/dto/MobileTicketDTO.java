@@ -1,11 +1,12 @@
 package fr.projecthandler.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.model.Ticket;
+import fr.projecthandler.model.User;
 
 public class MobileTicketDTO {
 
@@ -16,7 +17,6 @@ public class MobileTicketDTO {
     private Long projectId;
     private MobileTicketTrackerDTO ticketTracker;
     private MobileTicketPriorityDTO ticketPriority;
-    //private List<MobileUserDTO> users = new ArrayList<MobileUserDTO>();;
     private Date createdAt;
     private Date updatedAt;
 	    
@@ -30,15 +30,13 @@ public class MobileTicketDTO {
 		this.text = ticket.getText();
 		this.ticketStatus = ticket.getTicketStatus();
 		this.projectId = ticket.getProject().getId();
-		this.ticketTracker = new MobileTicketTrackerDTO(ticket.getTicketTracker());
-		this.ticketPriority = new MobileTicketPriorityDTO(ticket.getTicketPriority());
-		//this.users = new ArrayList<MobileUserDTO>();
+		if (ticket.getTicketTracker() != null)
+			this.ticketTracker = new MobileTicketTrackerDTO(ticket.getTicketTracker());
+		if (ticket.getTicketPriority() != null)
+			this.ticketPriority = new MobileTicketPriorityDTO(ticket.getTicketPriority());
 		this.createdAt = ticket.getCreatedAt();
 		this.updatedAt = ticket.getUpdatedAt();
 		
-		/*for (User u : ticket.getUsers()) {
-			users.add(new MobileUserDTO(u));
-		}*/
 	}
 
 	public Long getId() {
@@ -96,14 +94,6 @@ public class MobileTicketDTO {
 	public void setTicketPriority(MobileTicketPriorityDTO ticketPriority) {
 		this.ticketPriority = ticketPriority;
 	}
-
-	/*public List<MobileUserDTO> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<MobileUserDTO> users) {
-		this.users = users;
-	}*/
 
 	public Date getCreatedAt() {
 		return createdAt;

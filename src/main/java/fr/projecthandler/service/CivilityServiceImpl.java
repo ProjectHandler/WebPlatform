@@ -14,18 +14,6 @@ public class CivilityServiceImpl implements CivilityService {
 	@Autowired
 	CivilityDao civilityDao;
 
-	public Long saveCivility(Civility civility) {
-		return civilityDao.saveCivility(civility);
-	}
-
-	public void updateCivility(Civility civility) {
-		civilityDao.updateCivility(civility);
-	}
-
-	public void deleteCivilityById(Long civilityId) {
-		civilityDao.deleteCivilityById(civilityId);
-	}
-
 	public Civility findCivilityById(Long civilityId) {
 		return civilityDao.findCivilityById(civilityId);
 	}

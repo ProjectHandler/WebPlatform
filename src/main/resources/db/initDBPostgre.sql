@@ -322,3 +322,55 @@ ALTER TABLE users_tasks
 ALTER TABLE users_tickets
   ADD CONSTRAINT users_tickets_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id),
   ADD CONSTRAINT users_tickets_ibfk_2 FOREIGN KEY (ticket_id) REFERENCES tickets (id);
+  
+  
+  
+  
+  
+--
+-- alter 
+--
+ CREATE TABLE IF NOT EXISTS event (
+  id BIGSERIAL,
+  title varchar(30) NOT NULL,
+  description varchar(500) DEFAULT NULL,
+  starting_date date NOT NULL,
+  ending_date date NOT NULL,
+  status varchar(30) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS users_events (
+  users_id BIGSERIAL,
+  events_id BIGSERIAL,
+  PRIMARY KEY (users_id,events_id)
+);
+
+ALTER TABLE users_events
+  ADD CONSTRAINT users_events_ibfk_2 FOREIGN KEY (events_id) REFERENCES event (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT users_events_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE users DROP civility;
+
+DELETE FROM civility;
+INSERT INTO civility(id, name) VALUES 
+	(1, 'projecthandler.civility.mister'),
+	(2, 'projecthandler.civility.mrs'),
+	(3, 'projecthandler.civility.miss');
+ 
+CREATE TABLE IF NOT EXISTS users_projects (
+  user_id BIGSERIAL,
+  project_id BIGSERIAL,
+  PRIMARY KEY (user_id, project_id),
+  KEY users_projects_ibfk_2 (project_id)
+);
+
+ALTER TABLE users_projects
+	ADD CONSTRAINT users_projects_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id),
+ 	ADD CONSTRAINT users_projects_ibfk_2 FOREIGN KEY (project_id) REFERENCES project (id);--pb ?!
+
+ALTER TABLE users ADD work_day VARCHAR(32) NOT NULL DEFAULT 'tttttff';
+ALTER TABLE users ADD daily_hour VARCHAR(32) NOT NULL DEFAULT '09:00 AM - 05:00 PM';
+
+ALTER TABLE users ADD avatar_file_name VARCHAR(100) NULL DEFAULT NULL ;
+ALTER TABLE users ADD avatar_base_64 text NULL DEFAULT NULL ;
