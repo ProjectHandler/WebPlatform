@@ -82,10 +82,6 @@ public class TaskRestController {
 	
 	@RequestMapping(value = "/allByProjectAndUser/{projectId}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> getProjectsByUser(@PathVariable Long projectId,@CurrentUserDetails CustomUserDetails userDetails) {
-		
-		System.out.println("ok");
-		List<MobileTaskDTO> taskListDTO = null;
-		try {
 		Set<Task> taskList = taskService.getTasksByProjectIdAndUserIdWithDepends(projectId, userDetails.getId());
 		
 		if (taskList == null) {
@@ -94,7 +90,7 @@ public class TaskRestController {
 					HttpStatus.NOT_FOUND);
 		}
 		
-		taskListDTO = new ArrayList<MobileTaskDTO>();
+		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
 			Set<MobileTaskDTO> depTaskDTO = new HashSet<MobileTaskDTO>();
@@ -104,9 +100,7 @@ public class TaskRestController {
 			taskDTO.setDependtasks(depTaskDTO);
 			taskListDTO.add(taskDTO);
 		}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
+		
 		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 		
 		try {
@@ -116,7 +110,6 @@ public class TaskRestController {
 			e.printStackTrace();
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
-
 	}
 	
 }

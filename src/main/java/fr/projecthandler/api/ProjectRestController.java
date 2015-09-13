@@ -64,12 +64,13 @@ public class ProjectRestController {
 		}
 	}
 
-	
 	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getProjects(@CurrentUserDetails CustomUserDetails userDetails) {
-		//Project project = projectService.findProjectById(id);
-		
-		List<Project> projectList = projectService.getProjectsByUserId(userDetails.getId());
+	public @ResponseBody ResponseEntity<String> getProjects(
+			@CurrentUserDetails CustomUserDetails userDetails) {
+		// Project project = projectService.findProjectById(id);
+
+		List<Project> projectList = projectService
+				.getProjectsByUserId(userDetails.getId());
 
 		if (projectList == null) {
 			return new ResponseEntity<String>(
@@ -81,7 +82,7 @@ public class ProjectRestController {
 		for (Project p : projectList) {
 			projectListDTO.add(new MobileProjectDTO(p));
 		}
-		
+
 		Gson gson = new GsonBuilder().setExclusionStrategies(
 				new ApiExclusionStrategy()).create();
 		try {
