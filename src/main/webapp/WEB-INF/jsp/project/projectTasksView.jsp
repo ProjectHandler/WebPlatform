@@ -35,7 +35,69 @@
 	</select>
 </div>
 
-<h3 class="theme3-primary-text margin-bottom">Liste des tâches</h3>
+<div>
+	<div class="display-table full-width margin-bottom position-relative">
+		<h3 class="theme3-primary-text display-table-cell full-width vertical-align">Liste des tâches</h3>
+		<div class="display-table-cell vertical-align">
+			<div class="display-table position-relative" style="width:30px;height:30px;">
+				<a class="cover-btn-shape default-btn-style5 circle animating-event" data-action="open-event" data-animation="pop-event" data-target="tasklist-helpbox" href="#"></a>
+				<div class="display-table-cell vertical-align full-width full-height util2-lighten2-bg inverted-text text-center circle text-h4" title="help">?</div>
+			</div>
+		</div>
+		<div id="tasklist-helpbox" class="pop-event focus-sensitive fixedwidth-256 inverted-text theme1-primary-bg position-absolute position-top position-right zindex-5">
+			<div class="display-table full-width position-relative small-container">
+				<h3 class="display-table-cell full-width vertical-align">Aide</h3>
+				<div class="display-table-cell vertical-align">
+					<a class="inverted-text animating-event text-h4" data-action="close-event" data-animation="pop-event" data-target="tasklist-helpbox" href="#"><span class="icon-cross"></span></a>
+				</div>
+			</div>
+			<hr class="inverted-bg">
+			<div class="small-container">
+				<div class="small-margin-bottom">
+					<div class="display-table-cell vertical-align">
+						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche terminée"><span class="icon-checkmark"></span></div></div>
+					</div>
+					<div class="display-table-cell vertical-align small-padding-left">
+						Tâche terminée
+					</div>
+				</div>
+				<div class="small-margin-bottom">
+					<div class="display-table-cell vertical-align">
+						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche en cours"><span class="icon-loop"></span></div></div>
+					</div>
+					<div class="display-table-cell vertical-align small-padding-left">
+						Tâche en cours
+					</div>
+				</div>
+				<div class="small-margin-bottom">
+					<div class="display-table-cell vertical-align">
+						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche suspendue"><span class="icon-history"></span></div></div>
+					</div>
+					<div class="display-table-cell vertical-align small-padding-left">
+						Tâche suspendue
+					</div>	
+				</div>
+				<div class="small-margin-bottom">
+					<div class="display-table-cell vertical-align">
+						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche abandonnée"><span class="icon-cross"></span></div></div>
+					</div>
+					<div class="display-table-cell vertical-align small-padding-left">
+						Tâche abandonnée
+					</div>
+				</div>
+				<div>
+					<div class="display-table-cell vertical-align">
+						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche indéterminée">?</div></div>	
+					</div>
+					<div class="display-table-cell vertical-align small-padding-left">
+						Tâche indéterminée
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	
 
 <div id="sortedtasklist-container"></div>
 		
