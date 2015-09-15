@@ -174,128 +174,132 @@
 			</div>
 			<div class="display-table-cell full-width full-height position-relative">
 				
-				<div class="position-absolute position-top position-left full-width full-height overflow-auto">
-					<div class="container">
-						<div class="margin-bottom clearfix">
-							<c:if test="${project.id == null}">
-								<h1 class="text-h2 util1-primary-text float-left">Creer un nouveau projet</h1>
-							</c:if>
-							<c:if test="${project.id != null}">
-								<h1 class="text-h2 util1-primary-text float-left">Editer le projet</h1>
-							</c:if>
-							<div class="text-h2 text-h1 float-right"><span class="icon-folder-plus"></span></div>
-						</div>
-						<div>
-						
-							<form:form method="POST" modelAttribute="project" id="addProject" action="${pageContext.request.contextPath}/project/save" onsubmit="return validateForm();">
-								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
-								
-									<div class="small-margin-bottom">
-										<div class="display-table-cell vertical-align">
-											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.name" />
-											<spring:message code="projecthandler.field.required"/></label></div>
-										</div>
-										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:input path="name" type="text" maxlength="30" id="name" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" value="${project.name}"></form:input>
-											<span class="error" id="nameError"></span>
-										</div>
-									</div>
-									
-									<div class="small-margin-bottom">
-										<div class="display-table-cell vertical-align fixedwidth-128">
-											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.description" /></label></div>
-										</div>
-										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:textarea path="description" id="description" maxlength="500" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" content="${project.description}"></form:textarea>
-										</div>
-									</div>
-									
-									<div class="small-margin-bottom">
-										<div class="display-table-cell vertical-align">
-											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.beginDate" /></label>
-											<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd/MM/yyyy" /></div>
-										</div>
-										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:input id="alt-dateBegin" path="dateBegin" type="hidden" value="${project.dateBegin}"/>
-											<input  id="dateBegin" value="${dateBeginString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
-											<span class="error" id="dateBeginError"></span>
-										</div>
-									</div>
-									<div class="small-margin-bottom">
-										<div class="display-table-cell vertical-align">
-											<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.endDate" /></label>
-											<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd/MM/yyyy" /></div>
-										</div>
-										<div class="display-table-cell vertical-align fixedmaxwidth-256">
-											<form:input id="alt-dateEnd" path="dateEnd" type="hidden" value="${project.dateEnd}"/>
-											<input  id="dateEnd" value="${dateEndString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
-											<span class="error" id="dateEndError"></span>
-										</div>
-									</div>										
-										
-									<div class="small-margin-bottom">
-										<div class="display-table-cell vertical-align fixedwidth-128">
-											<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
-										</div>
-										<div class="display-table-cell vertical-align">
-											<form:select path="users" class="userSelection" id="userSelection">
-												<c:forEach var='userInList' items='${users}'>
-													<c:set var="found" value= "false"/>
-													<c:if test="${project.users != null}">
-														<c:forEach var="userInProj" items="${project.users}">
-															<c:if test="${userInProj.id == userInList.id}">
-																<c:set var="found" value= "true"/>
-															</c:if>
-														</c:forEach>
-													</c:if>
-													<c:choose>
-													<c:when test="${found eq true}">
-														<form:option selected="selected" value="${userInList.id}">
-															${userInList.firstName} ${userInList.lastName}
-														</form:option>
-													</c:when>
-													<c:otherwise>
-														<form:option value="${userInList.id}">
-															${userInList.firstName} ${userInList.lastName}
-														</form:option>
-													</c:otherwise>
-													</c:choose>
-												</c:forEach>
-											</form:select>
-										</div>
-									</div>	
-									
-									<div class="margin-bottom">
-										<div class="display-table-cell vertical-align fixedwidth-128">
-											<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
-										</div>
-										<div class="display-table-cell vertical-align">
-											<select class="groupSelection"  multiple="multiple" id="groupSelection">
-											<c:forEach var='group' items='${groups}'>
-												<option value="${group.id}">
-													${group.name}
-												</option>
-											</c:forEach>
-											</select>
-										</div>
-									</div>						
-										
-									<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.project.edit.save"/></button>
-
-							</form:form>
-
-							<div style="margin-top:-36px;margin-left:130px;">
-							<c:if test="${project.id != null}">
-							<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
-								<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
-   	 							<button class="default-btn-shape util6-primary-btn-style1" type="submit" id="submit"><span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.project.edit.delete"/></button>
-							</form:form>
-							</c:if>
+				<div class="full-width full-height position-relative">
+					
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+						<div class="container">
+							<div class="margin-bottom clearfix">
+								<c:if test="${project.id == null}">
+									<h1 class="text-h2 util1-primary-text float-left">Creer un nouveau projet</h1>
+								</c:if>
+								<c:if test="${project.id != null}">
+									<h1 class="text-h2 util1-primary-text float-left">Editer le projet</h1>
+								</c:if>
+								<div class="text-h2 text-h1 float-right"><span class="icon-folder-plus"></span></div>
 							</div>
-
-						</div>
+							<div>
+							
+								<form:form method="POST" modelAttribute="project" id="addProject" action="${pageContext.request.contextPath}/project/save" onsubmit="return validateForm();">
+									<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
+									
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align">
+												<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.name" />
+												<spring:message code="projecthandler.field.required"/></label></div>
+											</div>
+											<div class="display-table-cell vertical-align fixedmaxwidth-256">
+												<form:input path="name" type="text" maxlength="30" id="name" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" value="${project.name}"></form:input>
+												<span class="error" id="nameError"></span>
+											</div>
+										</div>
+										
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align fixedwidth-128">
+												<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.description" /></label></div>
+											</div>
+											<div class="display-table-cell vertical-align fixedmaxwidth-256">
+												<form:textarea path="description" id="description" maxlength="500" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" content="${project.description}"></form:textarea>
+											</div>
+										</div>
+										
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align">
+												<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.beginDate" /></label>
+												<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd/MM/yyyy" /></div>
+											</div>
+											<div class="display-table-cell vertical-align fixedmaxwidth-256">
+												<form:input id="alt-dateBegin" path="dateBegin" type="hidden" value="${project.dateBegin}"/>
+												<input  id="dateBegin" value="${dateBeginString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
+												<span class="error" id="dateBeginError"></span>
+											</div>
+										</div>
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align">
+												<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.endDate" /></label>
+												<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd/MM/yyyy" /></div>
+											</div>
+											<div class="display-table-cell vertical-align fixedmaxwidth-256">
+												<form:input id="alt-dateEnd" path="dateEnd" type="hidden" value="${project.dateEnd}"/>
+												<input  id="dateEnd" value="${dateEndString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
+												<span class="error" id="dateEndError"></span>
+											</div>
+										</div>										
+											
+										<div class="small-margin-bottom">
+											<div class="display-table-cell vertical-align fixedwidth-128">
+												<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
+											</div>
+											<div class="display-table-cell vertical-align">
+												<form:select path="users" class="userSelection" id="userSelection">
+													<c:forEach var='userInList' items='${users}'>
+														<c:set var="found" value= "false"/>
+														<c:if test="${project.users != null}">
+															<c:forEach var="userInProj" items="${project.users}">
+																<c:if test="${userInProj.id == userInList.id}">
+																	<c:set var="found" value= "true"/>
+																</c:if>
+															</c:forEach>
+														</c:if>
+														<c:choose>
+														<c:when test="${found eq true}">
+															<form:option selected="selected" value="${userInList.id}">
+																${userInList.firstName} ${userInList.lastName}
+															</form:option>
+														</c:when>
+														<c:otherwise>
+															<form:option value="${userInList.id}">
+																${userInList.firstName} ${userInList.lastName}
+															</form:option>
+														</c:otherwise>
+														</c:choose>
+													</c:forEach>
+												</form:select>
+											</div>
+										</div>	
+										
+										<div class="margin-bottom">
+											<div class="display-table-cell vertical-align fixedwidth-128">
+												<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
+											</div>
+											<div class="display-table-cell vertical-align">
+												<select class="groupSelection"  multiple="multiple" id="groupSelection">
+												<c:forEach var='group' items='${groups}'>
+													<option value="${group.id}">
+														${group.name}
+													</option>
+												</c:forEach>
+												</select>
+											</div>
+										</div>						
+											
+										<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.project.edit.save"/></button>
+	
+								</form:form>
+	
+								<div style="margin-top:-36px;margin-left:130px;">
+								<c:if test="${project.id != null}">
+								<form:form method="POST" modelAttribute="project" action="${pageContext.request.contextPath}/project/delete" onsubmit="return confirmDelete();">
+									<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
+	   	 							<button class="default-btn-shape util6-primary-btn-style1" type="submit" id="submit"><span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.project.edit.delete"/></button>
+								</form:form>
+								</c:if>
+								</div>
+	
+							</div>
+						</div>	
 					</div>	
-				</div>	
+				
+				</div>
 			</div>
 		</div>		
 	</div>

@@ -34,88 +34,92 @@
 					<hr class="inverted-bg">	
 				</div>
 			</div>
-			<div class="display-table-cell full-width full-height position-relative">
+			<div class="display-table-cell full-width full-height">
 				
-				<div class="position-absolute position-top position-left full-width full-height overflow-auto">
-					<div class="container">
-						<div class="margin-bottom clearfix">
-							<h1 class="text-h2 util1-primary-text float-left">Liste des projets</h1>
-							<div class="text-h2 text-h1 float-right"><span class="icon-folder-open"></span></div>
-						</div>
-						<div>
-				            <c:forEach var="project" items="${projectList}" varStatus="status">
-				                <div class="inverted-bg theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
-				                    
-				                    <div class="small-container display-table">
-				                    	<div class="text-center display-table-cell vertical-align">
-					                    	<div class="display-inline-block">
-					                    		<div class="fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
-					                    			<div class="display-table full-width full-height">
-					                    				<div class="display-table-cell vertical-align full-width full-height text-h1">
-															<span class="icon-folder"></span>
+				<div class="full-width full-height position-relative">
+					
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+						<div class="container">
+							<div class="margin-bottom clearfix">
+								<h1 class="text-h2 util1-primary-text float-left">Liste des projets</h1>
+								<div class="text-h2 text-h1 float-right"><span class="icon-folder-open"></span></div>
+							</div>
+							<div>
+					            <c:forEach var="project" items="${projectList}" varStatus="status">
+					                <div class="inverted-bg theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
+					                    
+					                    <div class="small-container display-table">
+					                    	<div class="text-center display-table-cell vertical-align">
+						                    	<div class="display-inline-block">
+						                    		<div class="fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
+						                    			<div class="display-table full-width full-height">
+						                    				<div class="display-table-cell vertical-align full-width full-height text-h1">
+																<span class="icon-folder"></span>
+															</div>
 														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-										<div class=" display-table-cell vertical-align ful-width small-padding-left">
-					                    	<h3 class="text-capitalize text-p">${project.name}</h3>
-											<div class="small theme3-primary-text">${project.status}</div>
-										</div>
-				                    </div>
-				                    
-				                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
-			                    	<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:-8px;margin-right:10px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
-										<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
-									</a>
-									</c:if>
-
-									<div class="small-container theme3-lighten1-bg">
-										<div class="fixedwidth-192 margin-auto">
-											<div class="display-table-cell vertical-align text-h1">
-												<span class="icon-stopwatch"></span>
+											<div class=" display-table-cell vertical-align ful-width small-padding-left">
+						                    	<h3 class="text-capitalize text-p">${project.name}</h3>
+												<div class="small theme3-primary-text">${project.status}</div>
 											</div>
-											<div class="display-table-cell vertical-align small padding-left">
-						                    	<div>
-						                    		Débute le 
-													<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
-													<span class="theme1-primary-text">${dateBeginString}</span>
-												</div>					
-												<div>
-													Finit le
-													<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
-													<span class="theme1-primary-text">${dateEndString}</span>
+					                    </div>
+					                    
+					                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
+				                    	<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:-8px;margin-right:10px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
+											<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
+										</a>
+										</c:if>
+	
+										<div class="small-container theme3-lighten1-bg">
+											<div class="fixedwidth-192 margin-auto">
+												<div class="display-table-cell vertical-align text-h1">
+													<span class="icon-stopwatch"></span>
+												</div>
+												<div class="display-table-cell vertical-align small padding-left">
+							                    	<div>
+							                    		Débute le 
+														<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
+														<span class="theme1-primary-text">${dateBeginString}</span>
+													</div>					
+													<div>
+														Finit le
+														<fmt:formatDate value="${project.dateEnd}" var="dateEndString" pattern="dd-MM-yyyy" />
+														<span class="theme1-primary-text">${dateEndString}</span>
+													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="small-container padding-top">									
-										<div class="small-margin-bottom">
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
-											<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].dateProgress}%;" ></div>
+										<div class="small-container padding-top">									
+											<div class="small-margin-bottom">
+												<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
+												<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+													<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].dateProgress}%;" ></div>
+												</div>
+												<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].dateProgress}%</div></div>	
 											</div>
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].dateProgress}%</div></div>	
-										</div>
-										<div>
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Avancée</div></div>	
-											<div id="progressTask${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].tasksProgress}%;" ></div>
+											<div>
+												<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Avancée</div></div>	
+												<div id="progressTask${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+													<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgressList[status.index].tasksProgress}%;" ></div>
+												</div>
+												<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].tasksProgress}%</div></div>	
 											</div>
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgressList[status.index].tasksProgress}%</div></div>	
 										</div>
-									</div>
-									<div class="small-container">
-										<a class="display-block full-width text-center small default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
-											<spring:message code="projecthandler.projectsList.goToProjectView"/>
-										</a>
-									</div>
-									
-								 </div>
-				            </c:forEach>
-						</div>
+										<div class="small-container">
+											<a class="display-block full-width text-center small default-btn-shape theme1-primary-btn-style1" href="${pageContext.request.contextPath}/project/viewProject/${project.id}">
+												<spring:message code="projecthandler.projectsList.goToProjectView"/>
+											</a>
+										</div>
+										
+									 </div>
+					            </c:forEach>
+							</div>
+						</div>	
 					</div>	
-				</div>	
+			
+				</div>
 			</div>
 		</div>		
 	</body>

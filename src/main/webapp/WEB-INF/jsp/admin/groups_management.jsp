@@ -60,48 +60,52 @@
 						<hr class="inverted-bg">	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height position-relative">
-					
-					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
-						<div class="container">
-							<div class="margin-bottom clearfix">
-								<h1 class="text-h2 util1-primary-text float-left"><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
-								<div class="text-h2 text-h1 float-right"><span class="icon-tree"></span></div>
-							</div>
-							<div class="margin-bottom">
-								<h2 class="text-h3 small-margin-bottom"><spring:message code="projecthandler.group.create"/></h2>
-								<input type="text" name="groupName" id="groupName"  maxlength="50" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your group name here ..."/>
-								<button id="btnCreate" class="default-btn-shape util3-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
-							</div>
-							<div>
-								<h2 class="text-h3 small-margin-bottom">Liste des groupes</h2>
-								<div class="clearfix">
-									<c:forEach var="group" items="${groups}">
-										<div class="position-relative fixedheight-128 theme3-primary-boxshadow-raising-out margin-right margin-bottom float-left overflow-hidden" style="width:100px;">
-											<a href="#" class="cover-btn-shape default-btn-style5 zindex-10 animating-event" data-action="open-event" data-animation="pop-event" data-target="groupdeletingvalidation-${group.id}"></a>
-											<div id="groupdeletingvalidation-${group.id}" class="pop-event focus-sensitive position-absolute position-top position-left full-width full-height util6-primary-transpbg zindex-20">
-												<div>
-													<button class="default-btn-shape inverted-text default-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="groupdeletingvalidation-${group.id}">
-														<span class="icon-cross"></span>
-													</button>
-												</div>
-												<div>
-													<button class="default-btn-shape full-width text-center small-margin-top inverted-text default-btn-style6" ONCLICK="deleteGroup('${group.id}')">
-														Supprimer
-													</button>
-												</div>
-											</div>
-											<div class="small-container text-center"><div class="display-inline-block"><div class="display-table-cell vertical-align fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
-												<span class="icon-tree"></span>
-											</div></div></div>
-											<div class="text-center small-container small"><c:out value="${group.name}"/></div>
-										</div>
-									</c:forEach>
+				<div class="display-table-cell full-width full-height">
+				
+					<div class="full-width full-height position-relative">
+						
+						<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+							<div class="container">
+								<div class="margin-bottom clearfix">
+									<h1 class="text-h2 util1-primary-text float-left"><spring:message code="projecthandler.admin.groupManagementTitle"/></h1>
+									<div class="text-h2 text-h1 float-right"><span class="icon-tree"></span></div>
 								</div>
-								
-							</div>
+								<div class="margin-bottom">
+									<h2 class="text-h3 small-margin-bottom"><spring:message code="projecthandler.group.create"/></h2>
+									<input type="text" name="groupName" id="groupName"  maxlength="50" class="textfield fixedmaxwidth-384 surrounded theme3-primary-bdr" placeholder="Your group name here ..."/>
+									<button id="btnCreate" class="default-btn-shape util3-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
+								</div>
+								<div>
+									<h2 class="text-h3 small-margin-bottom">Liste des groupes</h2>
+									<div class="clearfix">
+										<c:forEach var="group" items="${groups}">
+											<div class="position-relative fixedheight-128 theme3-primary-boxshadow-raising-out margin-right margin-bottom float-left overflow-hidden" style="width:100px;">
+												<a href="#" class="cover-btn-shape default-btn-style5 zindex-10 animating-event" data-action="open-event" data-animation="pop-event" data-target="groupdeletingvalidation-${group.id}"></a>
+												<div id="groupdeletingvalidation-${group.id}" class="pop-event focus-sensitive position-absolute position-top position-left full-width full-height util6-primary-transpbg zindex-20">
+													<div>
+														<button class="default-btn-shape inverted-text default-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="groupdeletingvalidation-${group.id}">
+															<span class="icon-cross"></span>
+														</button>
+													</div>
+													<div>
+														<button class="default-btn-shape full-width text-center small-margin-top inverted-text default-btn-style6" ONCLICK="deleteGroup('${group.id}')">
+															Supprimer
+														</button>
+													</div>
+												</div>
+												<div class="small-container text-center"><div class="display-inline-block"><div class="display-table-cell vertical-align fixedwidth-64 fixedheight-64 theme3-lighten1-bg theme3-darken1-text circle margin-auto text-h3">
+													<span class="icon-tree"></span>
+												</div></div></div>
+												<div class="text-center small-container small"><c:out value="${group.name}"/></div>
+											</div>
+										</c:forEach>
+									</div>
+									
+								</div>
+							</div>	
 						</div>	
-					</div>	
+						
+					</div>
 				</div>
 			</div>		
 		</div>

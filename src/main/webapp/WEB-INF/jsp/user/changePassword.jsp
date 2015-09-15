@@ -88,47 +88,51 @@
 						<hr class="inverted-bg">	
 					</div>
 				</div>
-				<div class="display-table-cell full-width full-height position-relative">
+				<div class="display-table-cell full-width full-height">
 					
-					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
-						<div class="container">
-							<div class="margin-bottom clearfix">
-								<h1 class="text-h2 util1-primary-text float-left">Mon mot de passe</h1>
-								<div class="text-h2 text-h1 float-right"><span class="icon-key"></span></div>
-							</div>
-							<div>
-
-								<c:if test="${isPasswordChanged == true}">
-									<p>Votre mot de passe a bien été enregistré.<p>
-								</c:if>
-								<form id="passwordForm" name="passwordForm" method="post">
-									<input type="hidden" name="userId" id="userId" value="${user.id}"/>
-									<ul class="form">
-										<li class="small-margin-bottom">
-											<div class="display-table-cell fixedwidth-192 vertical-align">
-												<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
-											</div>
-											<div class="display-table-cell vertical-align">
-												<input type="password" name="password" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="password" autocomplete="off" maxlength="70"/>
-											</div>
-											<span class="error" id="passwordError"></span>
-											<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
-										</li>
-										<li class="small-margin-bottom">
-											<div class="display-table-cell fixedwidth-192 vertical-align">
-												<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
-											</div>
-											<div class="display-table-cell vertical-align">
-												<input type="password" name="passwordConfirm" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="passwordConfirm" autocomplete="off" maxlength="70"/>
-											</div>
-											<span class="error" id="passwordConfirmError"></span>
-										</li>
-									</ul>
-								</form>
-								<button id="btnSave" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
-							</div>
+					<div class="full-width full-height position-relative">
+						
+						<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+							<div class="container">
+								<div class="margin-bottom clearfix">
+									<h1 class="text-h2 util1-primary-text float-left">Mon mot de passe</h1>
+									<div class="text-h2 text-h1 float-right"><span class="icon-key"></span></div>
+								</div>
+								<div>
+	
+									<c:if test="${isPasswordChanged == true}">
+										<p>Votre mot de passe a bien été enregistré.<p>
+									</c:if>
+									<form id="passwordForm" name="passwordForm" method="post">
+										<input type="hidden" name="userId" id="userId" value="${user.id}"/>
+										<ul class="form">
+											<li class="small-margin-bottom">
+												<div class="display-table-cell fixedwidth-192 vertical-align">
+													<label><spring:message code="projecthandler.changePassword.newPassword"/><spring:message code="projecthandler.field.required"/></label>
+												</div>
+												<div class="display-table-cell vertical-align">
+													<input type="password" name="password" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="password" autocomplete="off" maxlength="70"/>
+												</div>
+												<span class="error" id="passwordError"></span>
+												<p id="mdpInfo"><spring:message code="projecthandler.password.syntax"/></p>
+											</li>
+											<li class="small-margin-bottom">
+												<div class="display-table-cell fixedwidth-192 vertical-align">
+													<label><spring:message code="projecthandler.signup.passwordConfirm"/><spring:message code="projecthandler.field.required"/></label>
+												</div>
+												<div class="display-table-cell vertical-align">
+													<input type="password" name="passwordConfirm" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="passwordConfirm" autocomplete="off" maxlength="70"/>
+												</div>
+												<span class="error" id="passwordConfirmError"></span>
+											</li>
+										</ul>
+									</form>
+									<button id="btnSave" class="default-btn-shape theme2-primary-btn-style1"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.signup.create" /></button>
+								</div>
+							</div>	
 						</div>	
-					</div>	
+					
+					</div>
 				</div>
 			</div>		
 		</div>	
