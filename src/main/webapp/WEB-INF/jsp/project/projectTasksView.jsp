@@ -22,22 +22,22 @@
 	}
 </script>
 
-<div id="tasksearch-toolBar" class="small-container display-none">
-	<spring:message code="projecthandler.projectTasksView.researchTask"/>: 
-	<select class="display-inline-block" id="taskSelection">
-		<c:forEach var='taskSelectable' items='${tasks}'>
-			<c:if test="${taskSelectable.level == 2}">
-				<option id="${taskSelectable.id}" value="${project.id}/${taskSelectable.id}">
-					${taskSelectable.name} (<spring:message code="projecthandler.projectTasksView.state"/>: ${taskSelectable.status})
-				</option>
-			</c:if>
-		</c:forEach>
-	</select>
-</div>
-
 <div>
 	<div class="display-table full-width margin-bottom position-relative">
-		<h3 class="theme3-primary-text display-table-cell full-width vertical-align">Liste des tâches</h3>
+		<h3 class="theme3-primary-text display-table-cell vertical-align"><div class="fixedwidth-192">Liste des tâches</div></h3>
+		<div class="display-table-cell vertical-align full-width">		
+			<div id="tasksearch-toolBar" class="small-container">
+				<select class="display-inline-block" id="taskSelection">
+					<c:forEach var='taskSelectable' items='${tasks}'>
+						<c:if test="${taskSelectable.level == 2}">
+							<option id="${taskSelectable.id}" value="${project.id}/${taskSelectable.id}">
+								${taskSelectable.name}
+							</option>
+						</c:if>
+					</c:forEach>
+				</select>
+			</div>		
+		</div>
 		<div class="display-table-cell vertical-align">
 			<div class="display-table position-relative" style="width:30px;height:30px;">
 				<a class="cover-btn-shape default-btn-style5 circle animating-event" data-action="open-event" data-animation="pop-event" data-target="tasklist-helpbox" href="#"></a>
@@ -53,46 +53,11 @@
 			</div>
 			<hr class="inverted-bg">
 			<div class="small-container">
-				<div class="small-margin-bottom">
-					<div class="display-table-cell vertical-align">
-						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche terminée"><span class="icon-checkmark"></span></div></div>
-					</div>
-					<div class="display-table-cell vertical-align small-padding-left">
-						Tâche terminée
-					</div>
-				</div>
-				<div class="small-margin-bottom">
-					<div class="display-table-cell vertical-align">
-						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche en cours"><span class="icon-loop"></span></div></div>
-					</div>
-					<div class="display-table-cell vertical-align small-padding-left">
-						Tâche en cours
-					</div>
-				</div>
-				<div class="small-margin-bottom">
-					<div class="display-table-cell vertical-align">
-						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche suspendue"><span class="icon-history"></span></div></div>
-					</div>
-					<div class="display-table-cell vertical-align small-padding-left">
-						Tâche suspendue
-					</div>	
-				</div>
-				<div class="small-margin-bottom">
-					<div class="display-table-cell vertical-align">
-						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche abandonnée"><span class="icon-cross"></span></div></div>
-					</div>
-					<div class="display-table-cell vertical-align small-padding-left">
-						Tâche abandonnée
-					</div>
-				</div>
-				<div>
-					<div class="display-table-cell vertical-align">
-						<div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche indéterminée">?</div></div>	
-					</div>
-					<div class="display-table-cell vertical-align small-padding-left">
-						Tâche indéterminée
-					</div>
-				</div>
+				<div class="small-margin-bottom"><div class="display-table-cell vertical-align"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche terminée"><span class="icon-checkmark"></span></div></div></div><div class="display-table-cell vertical-align small-padding-left">Tâche terminée</div></div>
+				<div class="small-margin-bottom"><div class="display-table-cell vertical-align"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche en cours"><span class="icon-loop"></span></div></div></div><div class="display-table-cell vertical-align small-padding-left">Tâche en cours</div></div>
+				<div class="small-margin-bottom"><div class="display-table-cell vertical-align"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche suspendue"><span class="icon-history"></span></div></div></div><div class="display-table-cell vertical-align small-padding-left">Tâche suspendue</div></div>
+				<div class="small-margin-bottom"><div class="display-table-cell vertical-align"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche abandonnée"><span class="icon-cross"></span></div></div></div><div class="display-table-cell vertical-align small-padding-left">Tâche abandonnée</div></div>
+				<div><div class="display-table-cell vertical-align"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4 surrounded inverted-bdr" title="Tâche indéterminée">?</div></div>	</div><div class="display-table-cell vertical-align small-padding-left">Tâche indéterminée</div></div>
 			</div>
 		</div>
 	</div>
