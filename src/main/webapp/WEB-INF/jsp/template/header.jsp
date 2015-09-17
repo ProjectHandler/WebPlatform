@@ -23,37 +23,33 @@
 					<a class="display-none default-box-p display-table-cell vertical-align default-btn-style5 util3-primary-text text-h1 text-center radius animating-event" data-action="toggle-event" data-animation="pop-event" data-target="debuggingmenu" title="debugging menu" href="#" title="home">
 						<span class="icon-equalizer"></span>
 					</a>
-					
-					<div id="debuggingmenu" class="pop-event focus-sensitive fixedwidth-384 position-absolute position-left margin-top container theme3-darken2-boxshadow-raising-out inverted-bg zindex-50">
-					
-						<h1 class="margin-bottom">Debugging menu</h1>
-						
-						<sec:authorize access="isAuthenticated()">
+					<sec:authorize access="isAuthenticated()">
+						<div id="debuggingmenu" class="pop-event focus-sensitive fixedwidth-384 position-absolute position-left margin-top container theme3-darken2-boxshadow-raising-out inverted-bg zindex-50">
+
+							<h1 class="margin-bottom">Debugging menu</h1>
+
 							<p class="margin-bottom">you are logged as : <span class="theme2-primary-text"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></span></p>
-						</sec:authorize>
-						
-			           	<ul class="margin-bottom">
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a></li> 
-							<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/users_management"/>">				<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/groups_management"/>">			<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
-							</sec:authorize>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/calendar"/>">							<spring:message code="projecthandler.menu.calendar"/></a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/changePassword"/>">						<spring:message code="projecthandler.menu.changePassword"/></a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/project/projectsList"/>">projects list</a></li>
-							<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/gantt"/>">test Gantt</a></li>
-						</ul>
-			
-						<div class="clearfix">
-							<sec:authorize access="isAuthenticated()">
+							
+							<ul class="margin-bottom">
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a></li> 
+								<sec:authorize access="hasRole('ROLE_ADMIN')">
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/users_management"/>">				<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/groups_management"/>">			<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
+								</sec:authorize>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/calendar"/>">							<spring:message code="projecthandler.menu.calendar"/></a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/changePassword"/>">						<spring:message code="projecthandler.menu.changePassword"/></a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/project/projectsList"/>">projects list</a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/gantt"/>">test Gantt</a></li>
+							</ul>
+
+							<div class="clearfix">
 								<a class="default-btn-shape util4-primary-btn-style1 float-right" href="<c:url value="/j_spring_security_logout" />"><spring:message code="projecthandler.menu.logout"/></a>
-							</sec:authorize>
+							</div>
+							
 						</div>
-						
-					</div>				
-				
-				
+					</sec:authorize>
+
 				</li>
 				
 				<li class="position-relative vertical-top display-table-cell padding-right">

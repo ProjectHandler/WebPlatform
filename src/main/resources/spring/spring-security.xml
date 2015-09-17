@@ -44,9 +44,9 @@
 		
 		<intercept-url pattern="/gantt*"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 
-		<intercept-url pattern="/project/save"					access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/project/edit*"					access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/project/delete"				access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/project/save"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
+		<intercept-url pattern="/project/edit*"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
+		<intercept-url pattern="/project/delete"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
 		<intercept-url pattern="/project/projectsList"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/project/viewProject*"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/project/fetchGroupUsers"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>

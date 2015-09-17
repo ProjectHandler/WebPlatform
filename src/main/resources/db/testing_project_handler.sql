@@ -15,25 +15,6 @@ INSERT INTO `civility` (`id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `depend_tasks`
---
-
-INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
-(82, 81),
-(83, 82),
-(84, 83),
-(87, 84),
-(86, 85),
-(90, 87),
-(89, 88),
-(92, 91),
-(124, 123),
-(127, 126),
-(133, 132);
-
--- --------------------------------------------------------
-
---
 -- Dumping data for table `groups`
 --
 
@@ -201,5 +182,25 @@ INSERT INTO `users_projects` (`user_id`, `project_id`) VALUES
 
 INSERT INTO `users_tasks` (`users_id`, `tasks_id`) VALUES
 (4, 132);
+
+-- --------------------------------------------------------
+
+--
+-- Dumping data for table `depend_tasks`
+--
+
+INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
+(82, 81),
+(83, 82),
+(84, 83),
+(87, 84),
+(86, 85),
+(90, 87),
+(89, 88),
+(92, 91),
+(124, 123),
+(127, 126),
+(133, 132);
+
 
 -- --------------------------------------------------------
