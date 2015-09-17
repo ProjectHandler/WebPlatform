@@ -1,4 +1,4 @@
---04/09/2015 table for subtasks
+-- 04/09/2015 table for subtasks
 
 CREATE TABLE IF NOT EXISTS `subtask` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `subtask` (
   UNIQUE KEY `id` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
 
---11/09/2015 table for task messages
+-- 11/09/2015 table for task messages
 CREATE TABLE IF NOT EXISTS `task_messages` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `user_id` bigint(20) NOT NULL,
