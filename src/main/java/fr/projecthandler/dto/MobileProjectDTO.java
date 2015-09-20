@@ -2,7 +2,10 @@ package fr.projecthandler.dto;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import fr.projecthandler.model.Project;
+import fr.projecthandler.service.TaskService;
 
 public class MobileProjectDTO {
 
@@ -14,6 +17,9 @@ public class MobileProjectDTO {
 	private Date dateBegin;
 	private Date dateEnd;
 	private String status;
+	private Integer dateProgress;
+	private Integer daysLeft;
+	private Integer tasksProgress;
 
 	public MobileProjectDTO() {
 	}
@@ -36,7 +42,7 @@ public class MobileProjectDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -91,6 +97,30 @@ public class MobileProjectDTO {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Integer getDateProgress() {
+		return dateProgress;
+	}
+
+	public void setDateProgress(Integer dateProgress) {
+		this.dateProgress = dateProgress;
+	}
+
+	public Integer getDaysLeft() {
+		return daysLeft;
+	}
+
+	public void setDaysLeft(Integer daysLeft) {
+		this.daysLeft = daysLeft;
+	}
+
+	public Integer getTasksProgress() {
+		return tasksProgress;
+	}
+
+	public void setTasksProgress(Integer tasksProgress) {
+		this.tasksProgress = tasksProgress;
 	}
 
 }

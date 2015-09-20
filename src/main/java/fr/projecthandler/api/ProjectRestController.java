@@ -19,8 +19,10 @@ import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.MobileProjectDTO;
+import fr.projecthandler.dto.ProjectProgressDTO;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
@@ -38,6 +40,9 @@ public class ProjectRestController {
 
 	@Autowired
 	ProjectService projectService;
+
+	@Autowired
+	TaskService taskService;
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
@@ -67,7 +72,6 @@ public class ProjectRestController {
 	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> getProjects(
 			@CurrentUserDetails CustomUserDetails userDetails) {
-		// Project project = projectService.findProjectById(id);
 
 		List<Project> projectList = projectService
 				.getProjectsByUserId(userDetails.getId());
@@ -79,15 +83,22 @@ public class ProjectRestController {
 		}
 
 		List<MobileProjectDTO> projectListDTO = new ArrayList<MobileProjectDTO>();
-		for (Project p : projectList) {
-			projectListDTO.add(new MobileProjectDTO(p));
+		for (Project project : projectList) {
+			MobileProjectDTO projectDTO = new MobileProjectDTO(project);
+			project.setTasks(taskService.getTasksByProjectId(project.getId()));
+			ProjectProgressDTO projectProgressDTO = new ProjectProgressDTO(
+					project);
+			projectDTO.setDateProgress(projectProgressDTO.getDateProgress());
+			projectDTO.setDaysLeft(projectProgressDTO.getDaysLeft());
+			projectDTO.setTasksProgress(projectProgressDTO.getTasksProgress());
+			projectListDTO.add(projectDTO);
 		}
 
 		Gson gson = new GsonBuilder().setExclusionStrategies(
 				new ApiExclusionStrategy()).create();
 		try {
 			String json = gson.toJson(projectListDTO);
-
+			System.out.println("json: " + json);
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

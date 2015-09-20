@@ -126,11 +126,12 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		return result;
 	}
 
-	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId) {
+	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId,
+			Long userId) {
 		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(em
 				.createQuery(
-						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks JOIN t.users u WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC")
+						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks LEFT JOIN FETCH t.users u WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC")
 				.setParameter("projectId", projectId)
 				.setParameter("userId", userId).getResultList());
 		return result;

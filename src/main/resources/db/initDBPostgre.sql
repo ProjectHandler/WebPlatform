@@ -7,16 +7,6 @@
 -- Database: project_handler
 --
 
-DROP DATABASE project_handler;
-
-CREATE DATABASE project_handler
-  WITH OWNER = postgres
-       ENCODING = 'UTF8'
-       TABLESPACE = pg_default
-       LC_COLLATE = 'English_United Kingdom.1252'
-       LC_CTYPE = 'English_United Kingdom.1252'
-       CONNECTION LIMIT = -1;
-
 -- --------------------------------------------------------
 
 --
@@ -71,7 +61,7 @@ CREATE TABLE IF NOT EXISTS event (
   starting_date date NOT NULL,
   ending_date date NOT NULL,
   status varchar(30) DEFAULT NULL,
-  PRIMARY KEY (id),
+  PRIMARY KEY (id)
 );
 
 -- --------------------------------------------------------
@@ -83,7 +73,7 @@ CREATE TABLE IF NOT EXISTS event (
 CREATE TABLE IF NOT EXISTS files_upload (
   upload_id BIGSERIAL,
   file_name varchar(128) DEFAULT NULL,
-  file_data longblob,
+  file_data bytea,
   PRIMARY KEY (upload_id)
 );
 
@@ -134,10 +124,9 @@ CREATE TABLE IF NOT EXISTS task (
   ending_date date DEFAULT NULL,
   status varchar(30) DEFAULT NULL,
   project_id BIGSERIAL,
-  row BIGSERIAL DEFAULT NULL,
-  task_priority_id BIGSERIAL DEFAULT NULL,
-  PRIMARY KEY (id),
-  KEY task_priority_id (task_priority_id)
+  row bigint DEFAULT NULL,
+  task_priority_id bigint DEFAULT NULL,
+  PRIMARY KEY (id)
 );
 
 -- --------------------------------------------------------
@@ -148,7 +137,7 @@ CREATE TABLE IF NOT EXISTS task (
 
 CREATE TABLE IF NOT EXISTS task_priority (
   id BIGSERIAL NOT NULL,
-  value int(11) NOT NULL,
+  value integer NOT NULL,
   name varchar(50) NOT NULL,
   PRIMARY KEY (id)
 );
@@ -250,9 +239,7 @@ CREATE TABLE IF NOT EXISTS users (
   work_day varchar(32) NOT NULL DEFAULT 'tttttff',
   daily_hour varchar(32) NOT NULL DEFAULT '09:00 AM - 05:00 PM',
   avatar_file_name varchar(100) DEFAULT NULL,
-  PRIMARY KEY (id),
-  KEY address (address),
-  KEY civility_ibfk (civility_id)
+  PRIMARY KEY (id)
 );
 
 --
@@ -272,10 +259,8 @@ INSERT INTO users (id, first_name, last_name, password, email, address, phone, m
 CREATE TABLE IF NOT EXISTS users_events (
   users_id BIGSERIAL NOT NULL,
   events_id BIGSERIAL NOT NULL,
-  PRIMARY KEY (users_id,events_id),
-  KEY users_id (users_id),
-  KEY events_id (events_id)
-};
+  PRIMARY KEY (users_id, events_id)
+);
 
 -- --------------------------------------------------------
 
@@ -298,8 +283,7 @@ CREATE TABLE IF NOT EXISTS users_groups (
 CREATE TABLE IF NOT EXISTS users_projects (
   user_id BIGSERIAL,
   project_id BIGSERIAL,
-  PRIMARY KEY (user_id, project_id),
-  KEY users_projects_ibfk_2 (project_id)
+  PRIMARY KEY (user_id, project_id)
 );
 
 -- --------------------------------------------------------
@@ -328,6 +312,29 @@ CREATE TABLE IF NOT EXISTS users_tickets (
 
 -- --------------------------------------------------------
 
+
+CREATE TABLE IF NOT EXISTS subtask (
+  id BIGSERIAL NOT NULL,
+  description varchar(200) DEFAULT NULL,
+  task_id bigint NOT NULL,
+  user_id bigint NOT NULL,
+  validated BOOLEAN NOT NULL DEFAULT FALSE,
+  taken BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (id)
+);
+
+-- 11/09/2015 table for task messages
+CREATE TABLE IF NOT EXISTS task_messages (
+  id BIGSERIAL NOT NULL,
+  user_id bigint NOT NULL,
+  update_date date NOT NULL,
+  task_id bigint NOT NULL,
+  content varchar(200) DEFAULT NULL,
+  PRIMARY KEY (id)
+);
+
+-- --------------------------------------------------------
+
 --
 -- Constraints for dumped tables
 --
@@ -335,77 +342,76 @@ CREATE TABLE IF NOT EXISTS users_tickets (
 --
 -- Constraints for table `address`
 --
-ALTER TABLE `address`
-  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE address
+  ADD CONSTRAINT address_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `depend_tasks`
+-- Constraints for table depend_tasks
 --
-ALTER TABLE `depend_tasks`
-  ADD CONSTRAINT `depend_tasks_ibfk_1` FOREIGN KEY (`task_id1`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `depend_tasks_ibfk_2` FOREIGN KEY (`task_id2`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE depend_tasks
+  ADD CONSTRAINT depend_tasks_ibfk_1 FOREIGN KEY (task_id1) REFERENCES task (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT depend_tasks_ibfk_2 FOREIGN KEY (task_id2) REFERENCES task (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `task`
+-- Constraints for table task
 --
-ALTER TABLE `task`
-  ADD CONSTRAINT `task_priority_ibkf` FOREIGN KEY (`task_priority_id`) REFERENCES `task_priority` (`id`);
+ALTER TABLE task
+  ADD CONSTRAINT task_priority_ibkf FOREIGN KEY (task_priority_id) REFERENCES task_priority (id);
 
 --
--- Constraints for table `tickets`
+-- Constraints for table tickets
 --
-ALTER TABLE `tickets`
-  ADD CONSTRAINT `fk_ticket_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_ticket_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `ticket_priority_ibkf` FOREIGN KEY (`ticket_priority_id`) REFERENCES `ticket_priority` (`id`),
-  ADD CONSTRAINT `ticket_tracker_ibfk` FOREIGN KEY (`ticket_tracker_id`) REFERENCES `ticket_tracker` (`id`);
+ALTER TABLE tickets
+  ADD CONSTRAINT fk_ticket_project FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE,
+  ADD CONSTRAINT fk_ticket_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+  ADD CONSTRAINT ticket_priority_ibkf FOREIGN KEY (ticket_priority_id) REFERENCES ticket_priority (id),
+  ADD CONSTRAINT ticket_tracker_ibfk FOREIGN KEY (ticket_tracker_id) REFERENCES ticket_tracker (id);
 
 --
--- Constraints for table `ticket_messages`
+-- Constraints for table ticket_messages
 --
-ALTER TABLE `ticket_messages`
-  ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+ALTER TABLE ticket_messages
+  ADD CONSTRAINT fk_ticketmessage_ticket FOREIGN KEY (ticket_id) REFERENCES tickets (id) ON DELETE CASCADE,
+  ADD CONSTRAINT fk_ticketmessage_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE;
 
 --
--- Constraints for table `users`
+-- Constraints for table users
 --
-ALTER TABLE `users`
-  ADD CONSTRAINT `civility_ibfk` FOREIGN KEY (`civility_id`) REFERENCES `civility` (`id`),
-  ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`address`) REFERENCES `address` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE users
+  ADD CONSTRAINT civility_ibfk FOREIGN KEY (civility_id) REFERENCES civility (id),
+  ADD CONSTRAINT users_ibfk_1 FOREIGN KEY (address) REFERENCES address (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `users_events`
+-- Constraints for table users_events
 --
-ALTER TABLE `users_events`
-  ADD CONSTRAINT `users_events_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_events_ibfk_2` FOREIGN KEY (`events_id`) REFERENCES `event` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE users_events
+  ADD CONSTRAINT users_events_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT users_events_ibfk_2 FOREIGN KEY (events_id) REFERENCES event (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `users_groups`
+-- Constraints for table users_groups
 --
-ALTER TABLE `users_groups`
-  ADD CONSTRAINT `users_groups_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_groups_ibfk_2` FOREIGN KEY (`groups_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE users_groups
+  ADD CONSTRAINT users_groups_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT users_groups_ibfk_2 FOREIGN KEY (groups_id) REFERENCES groups (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `users_projects`
+-- Constraints for table users_projects
 --
-ALTER TABLE `users_projects`
-  ADD CONSTRAINT `users_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
+ALTER TABLE users_projects
+  ADD CONSTRAINT users_projects_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id),
+  ADD CONSTRAINT users_projects_ibfk_2 FOREIGN KEY (project_id) REFERENCES project (id) ON DELETE CASCADE;
 
 --
--- Constraints for table `users_tasks`
+-- Constraints for table users_tasks
 --
-ALTER TABLE `users_tasks`
-  ADD CONSTRAINT `users_tasks_ibfk_1` FOREIGN KEY (`users_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `users_tasks_ibfk_2` FOREIGN KEY (`tasks_id`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE users_tasks
+  ADD CONSTRAINT users_tasks_ibfk_1 FOREIGN KEY (users_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT users_tasks_ibfk_2 FOREIGN KEY (tasks_id) REFERENCES task (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Constraints for table `users_tickets`
+-- Constraints for table users_tickets
 --
-ALTER TABLE `users_tickets`
-  ADD CONSTRAINT `users_tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `users_tickets_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
-  
+ALTER TABLE users_tickets
+  ADD CONSTRAINT users_tickets_ibfk_1 FOREIGN KEY (user_id) REFERENCES users (id),
+  ADD CONSTRAINT users_tickets_ibfk_2 FOREIGN KEY (ticket_id) REFERENCES tickets (id) ON DELETE CASCADE;
