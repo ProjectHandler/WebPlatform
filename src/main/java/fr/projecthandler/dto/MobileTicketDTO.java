@@ -1,12 +1,9 @@
 package fr.projecthandler.dto;
 
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.model.Ticket;
-import fr.projecthandler.model.User;
 
 public class MobileTicketDTO {
 

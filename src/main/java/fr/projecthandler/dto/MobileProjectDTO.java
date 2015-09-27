@@ -2,10 +2,7 @@ package fr.projecthandler.dto;
 
 import java.util.Date;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
 import fr.projecthandler.model.Project;
-import fr.projecthandler.service.TaskService;
 
 public class MobileProjectDTO {
 

@@ -72,7 +72,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 				.setParameter("userId", userId).getResultList());
 		return result;
 	}
-
+		
 	@Override
 	public List<User> getUsersByTaskId(Long taskId) {
 		return (List<User>) em
@@ -136,4 +136,14 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 				.setParameter("userId", userId).getResultList());
 		return result;
 	}
+	
+	@Override
+	public Set<Task> getTasksByUser(Long userId) {
+		Set<Task> result = new HashSet<Task>();
+		result.addAll(em
+				.createQuery("SELECT t FROM Task t LEFT JOIN FETCH t.users u WHERE u.id = :userId ORDER BY t.row ASC")
+				.setParameter("userId", userId).getResultList());
+		return result;
+	}
+	
 }

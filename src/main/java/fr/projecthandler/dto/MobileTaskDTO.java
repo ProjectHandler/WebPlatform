@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Task;
-import fr.projecthandler.model.User;
 
 public class MobileTaskDTO {
 
@@ -23,6 +22,7 @@ public class MobileTaskDTO {
     private List<MobileUserDTO> users;
     private Long row;
     private Set<MobileTaskDTO> dependtasks;
+    private Set<MobileSubTaskDTO> mobileSubTaskDTO;
     
     public MobileTaskDTO() {
     	
@@ -41,7 +41,6 @@ public class MobileTaskDTO {
         this.users = new ArrayList<MobileUserDTO>();
         this.row = task.getRow();
         this.dependtasks = new HashSet<MobileTaskDTO>();
-        
         /*for (User u : task.getUsers()) {
         	this.users.add(new MobileUserDTO(u));
         } */
@@ -141,6 +140,14 @@ public class MobileTaskDTO {
 
 	public void setDependtasks(Set<MobileTaskDTO> dependtasks) {
 		this.dependtasks = dependtasks;
+	}
+
+	public Set<MobileSubTaskDTO> getMobileSubTaskDTO() {
+	    return mobileSubTaskDTO;
+	}
+
+	public void setMobileSubTaskDTO(Set<MobileSubTaskDTO> mobileSubTaskDTO) {
+	    this.mobileSubTaskDTO = mobileSubTaskDTO;
 	}
     
 }
