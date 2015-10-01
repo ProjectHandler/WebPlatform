@@ -12,6 +12,7 @@ public class  CalendarDTO {
 	private String description;
 	private Date start;
 	private Date end;
+	private Boolean editable;
 	private Boolean allDay;
 		
 	public CalendarDTO(Task task) {
@@ -20,16 +21,22 @@ public class  CalendarDTO {
 		this.description = task.getDescription();
 		this.start = task.getStartingDate();
 		this.end = task.getEndingDate();
-		this.allDay = false;
+		this.editable = false;
+		this.allDay = true;
 	}
 	
 	public CalendarDTO(Event event) {
+		Long moreThanOneDay	= 5184000l;	// 1 jours ms
 		this.id = event.getId();
 		this.title = event.getTitle();
 		this.description = event.getDescription();
 		this.start = event.getStartingDate();
 		this.end = event.getEndingDate();
-		this.allDay = false;
+		this.editable = true;
+		if (event.getStartingDate().getTime() - event.getEndingDate().getTime() > moreThanOneDay)
+			this.allDay = true;
+		else
+			this.allDay = false;
 	}
 
 	public Long getId() {
@@ -72,6 +79,14 @@ public class  CalendarDTO {
 		this.end = end;
 	}
 	
+	public Boolean getEditable() {
+		return editable;
+	}
+
+	public void setEditable(Boolean editable) {
+		this.editable = editable;
+	}
+
 	public Boolean getAllDay() {
 		return allDay;
 	}
@@ -82,7 +97,7 @@ public class  CalendarDTO {
 
 	@Override
 	public String toString() {
-		return "Calendar [title=" + title + ", description=" + description + ", start=" + start + ", end=" + end + ", allDay=" + allDay + "]";
+		return "Calendar [title=" + title + ", description=" + description + ", start=" + start + ", end=" + end + ", editable=" + editable  + ", allDay=" + allDay + "]";
 	}
 	
 }

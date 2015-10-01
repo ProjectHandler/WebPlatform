@@ -9,6 +9,7 @@ import java.security.Principal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -227,9 +228,11 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
+				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
 				User u = userService.findUserById(userDetails.getId());
 				myModel.put("user", u);
 				List<User> users = new ArrayList<User>();
+				
 				users.add(u);
 				
 				String title = Utilities.getRequestParameter(request, "title");
@@ -252,9 +255,56 @@ public class UserController {
 				}
 			}
 		}
-		return new ModelAndView("user/calendar", myModel);
+		return new ModelAndView("user/calendar");
 	}
 	
+	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
+	public ModelAndView updateEvent(Principal principal, HttpServletRequest request) throws IOException {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
+				System.out.println("updateEvent");
+
+				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
+				User u = userService.findUserById(userDetails.getId());
+				myModel.put("user", u);
+				List<User> users = new ArrayList<User>();
+				users.add(u);
+				
+				Event event = eventService.findEventById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
+				String title = Utilities.getRequestParameter(request, "title");
+				String description = Utilities.getRequestParameter(request, "description");
+				String daterange = Utilities.getRequestParameter(request, "daterange");
+				String date[] = daterange.split("-", 0);
+				try {
+					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[0]);
+					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[1]);
+					
+					event.setTitle(title);
+					event.setDescription(description);
+					event.setStartingDate(startingDate);
+					event.setEndingDate(endingDate);
+					event.setUsers(users);
+					eventService.updateEvent(event);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return new ModelAndView("user/calendar");
+	}
+	
+	@RequestMapping(value = "/deleteEvent", method = RequestMethod.POST)
+	public void deleteEvent(Principal principal, HttpServletRequest request) throws IOException {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
+				List<Long> eventIds = Arrays.asList(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
+				eventService.deleteEventsByIds(eventIds);
+			}
+		}
+	}
 	
 
 	@RequestMapping(value = "/calendarDetails", method = RequestMethod.GET)
@@ -292,7 +342,7 @@ public class UserController {
 		}
 	}
 
-	@RequestMapping(value = "/calendar", method = RequestMethod.GET)
+	@RequestMapping(value = "/calendar", method = { RequestMethod.GET, RequestMethod.POST })
 	public ModelAndView calendar(Principal principal, HttpServletRequest request) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 

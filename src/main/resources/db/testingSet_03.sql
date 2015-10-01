@@ -4,9 +4,6 @@
 --
 
 INSERT INTO `groups` (`id`, `name`) VALUES
-(4, 'Superhéros'),
-(5, 'Footballeurs'),
-(7, 'Managers'),
 (8, 'Superméchants'),
 (9, 'Conférence');
 
