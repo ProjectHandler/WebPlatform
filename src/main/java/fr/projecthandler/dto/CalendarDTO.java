@@ -3,6 +3,7 @@ package fr.projecthandler.dto;
 import java.util.Date;
 
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 
 public class  CalendarDTO {
@@ -10,6 +11,7 @@ public class  CalendarDTO {
 	private Long id;
 	private String title;
 	private String description;
+	private String type;
 	private Date start;
 	private Date end;
 	private Boolean editable;
@@ -19,6 +21,7 @@ public class  CalendarDTO {
 		this.id = task.getId();
 		this.title = task.getName();
 		this.description = task.getDescription();
+		this.type = "task";
 		this.start = task.getStartingDate();
 		this.end = task.getEndingDate();
 		this.editable = false;
@@ -30,6 +33,7 @@ public class  CalendarDTO {
 		this.id = event.getId();
 		this.title = event.getTitle();
 		this.description = event.getDescription();
+		this.type = "event";
 		this.start = event.getStartingDate();
 		this.end = event.getEndingDate();
 		this.editable = true;
@@ -37,6 +41,17 @@ public class  CalendarDTO {
 			this.allDay = true;
 		else
 			this.allDay = false;
+	}
+
+	public CalendarDTO(SubTask subTask) {
+		this.id = subTask.getId();
+		this.title = " ";
+		this.description = subTask.getDescription();
+		this.type = "subtask";
+		this.start = subTask.getStartingDate();
+		this.end = subTask.getEndingDate();
+		this.editable = true;
+		this.allDay = false;
 	}
 
 	public Long getId() {
@@ -85,6 +100,14 @@ public class  CalendarDTO {
 
 	public void setEditable(Boolean editable) {
 		this.editable = editable;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public Boolean getAllDay() {

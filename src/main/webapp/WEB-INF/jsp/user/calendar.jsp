@@ -35,6 +35,39 @@
 
 		<style>
 
+		
+	
+	#external-subtask {
+		float: left;
+		width: 150px;
+		padding: 0 10px;
+		border: 1px solid #ccc;
+		background: #eee;
+		text-align: left;
+	}
+		
+	#external-subtask h4 {
+		font-size: 16px;
+		margin-top: 0;
+		padding-top: 1em;
+	}
+		
+	#external-subtask .fc-event {
+		margin: 10px 0;
+		cursor: pointer;
+	}
+		
+	#external-subtask p {
+		margin: 1.5em 0;
+		font-size: 11px;
+		color: #666;
+	}
+		
+	#external-subtask p input {
+		margin: 0;
+		vertical-align: middle;
+	}
+
 	#calendar {
 		max-width: 40%;
 		margin: 0 auto;
@@ -46,10 +79,11 @@
 		<jsp:include page="../template/header.jsp" />
 		
 		<div class="bootstrap">
-				
+			<div id='external-subtask'>
+				<h4><spring:message code="projecthandler.calendar.basket" /></h4>
+			</div>
 			<div id='calendar'></div>
-			
-			
+		</div>
 			
 			<div id="eventModal" style="display:none;">
 			<form id="appointmentForm" class="form-horizontal" method="POST">
@@ -77,16 +111,49 @@
 			    </div>
 		    </form>
 			</div>
-
-		</div>
-		
+			
 		<script type="text/javascript">
 				
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
-
-		
 		$(document).ready(function() {
+			
+			var url = CONTEXT_PATH+"/calendarDetailsSubtaskUnplanned";
+			$.ajax({
+				  dataType: "json",
+				  url: url,
+				  async: false,
+				  success: function (subTasks) {
+					  $.each(subTasks, function (key, value) {
+						  $('#external-subtask').append('<div data-subtask-id="' + value.id + '" data-type="subtask" class="fc-event">' + value.description + '</div>');
+				      });
+				  }
+				});
+			
+			/* initialize the external events (panier)
+			-----------------------------------------------------------------*/
+			$('#external-subtask .fc-event').each(function() {
+				// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+				// it doesn't need to have a start or end
+				var eventObject = {
+					id: $(this).id,
+					title: $(this).text(),
+					stick: true
+				};
+				// store the Event Object in the DOM element so we can get to it later
+				$(this).data('eventObject', eventObject);
+				// make the event draggable using jQuery UI
+				$(this).draggable({
+					zIndex: 999,
+					scroll: false,		// prevent overflow issue
+					revert: true,      	// will cause the event to go back to its
+					revertDuration: 0  	//  original position after the drag
+				});
+			});
+			/* initialize the external events (panier)						end
+			-----------------------------------------------------------------*/
+			
+			
 			//get businessHours from user
 			var userDailyHour = '${user.dailyHour}'.split("-");
 			var start = convertTo24h(userDailyHour[0]);
@@ -106,58 +173,106 @@
 			}
 
             var calendar = $('#calendar').fullCalendar({
-            	businessHours: 	{
-            	        start: start,
-            	        end: end,
-            	        dow: workDay
-            	    			},
+            	businessHours: {
+	       	        start: start,
+	       	        end: end,
+	       	        dow: workDay
+       	    			},
                 header: {
                     left: 'today prev,next',
                     center: 'title',
                     right: 'month,agendaWeek,agendaDay'
                         },
-                    firstDay:1,
-                    defaultView: 'agendaWeek',
-                    theme:false,
-                    selectable: true,
-                    selectHelper: true,
-
-                select: function(start, end, allDay) {
-                	buildModal(true, start, end, "", "", "new");
-                        },
+                firstDay:1,
+                defaultView: 'agendaWeek',
+                theme: false,
+                selectable: true,
+                selectHelper: true,
                 editable: true,
+       			droppable: true,
+       			dragRevertDuration: 0,
+                select: function(start, end, allDay) {buildModal(true, start, end, "", "", "new");},
+    			drop: function(date) { // this function is called when something is dropped
+    				// retrieve the dropped element's stored Event Object
+    				var originalEventObject = $(this).data('eventObject');
+    				// we need to copy it, so that multiple events don't have a reference to the same object
+    				var copiedEventObject = $.extend({}, originalEventObject);
+    				// assign it the date that was reported
+    				var tempDate = new Date(date);
+    				copiedEventObject.start = date;
+    				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours()));// + 1 hour from start
+    				copiedEventObject.allDay = false; 
+    				
+    				copiedEventObject.id = $(this).data("subtask-id");
+    				copiedEventObject.type = $(this).data("type");
+    				
+    				// last `true` argument determines the event "sticks" 
+    				//(specifying stick as true will cause the event to be permanently fixed to the calendar)
+    				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+   					$(this).remove();
+   					
+   					updateEventWithoutModal(copiedEventObject);
+    			},
+                eventDragStop: function(event, jsEvent, ui, view) {
+                    if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
+                    	// remove subtask from calendar
+                        $('#calendar').fullCalendar('removeEvents', event._id);
+                        var el = $("<div class='fc-event'>").appendTo('#external-subtask').text(event.title);
+                        el.draggable({
+                          zIndex: 999,
+                          revert: true, 
+                          revertDuration: 0 
+                        });
+                        el.data('event', {title: event.title, id :event.id, stick: true});
+                    }
+                },
                 eventSources: [{
-                            url: CONTEXT_PATH+'/calendarDetails',
-                            type: 'GET',
-                            data: {
-                                start: 'start',
-                                end: 'end',
-                                id: 'id',
-                                title: 'title',
-                                description: 'description',
-                                editable: 'editable',
-                             //   allDay: 'allDay'
-                            },
-                            error: function () {
-                                alert('there was an error while fetching events!');
-                            }
-                    }],
-                        eventRender: function(event, element) {//edit event
-                          	element.click(function() {
-                          		$("#eventId").val(event.id);
-                          		if (event.editable)
-                          			buildModal(false, moment(event.start), moment(event.end), event.title, event.description, event.id);
-                          	});
-                            element.find('.fc-title').append("<br/>" + event.description != undefined ? event.description : "");
-                        },
-                        eventResize: function(event) {
-                        	updateEventWithoutModal(event);
-                        },
-                        eventDrop: function(event) {
-                        	updateEventWithoutModal(event);
-                        }
-                    });
-            });
+	                url: CONTEXT_PATH+'/calendarDetails',
+	                type: 'GET',
+	                data: {
+	                    start: 'start',
+	                    end: 'end',
+	                    id: 'id',
+	                    title: 'title',
+	                    description: 'description',
+	                    editable: 'editable',
+	                    type: 'type' //solve the diff beetween subtask and event
+	                 //   allDay: 'allDay'
+	                },
+	                error: function () {
+	                    alert('there was an error while fetching events!');
+	                }
+                  }],
+                  eventRender: function(event, element) {//edit event
+               		element.click(function() {
+	               		$("#eventId").val(event.id);
+	               		if (event.editable)
+	               			buildModal(false, moment(event.start), moment(event.end), event.title, event.description, event.id);
+                   	});
+                    element.find('.fc-title').append("<br>" + ((event.description != undefined) ? event.description : ""));
+                  },
+                  eventResize: function(event) {updateEventWithoutModal(event);},
+                  eventDrop: function(event) {updateEventWithoutModal(event);}
+                        
+                        
+            }); // END calendar
+            
+          //Unplanned subtask (return to basket)
+            var isEventOverDiv = function(x, y) {
+                var external_events = $('#external-subtask');
+                var offset = external_events.offset();
+                offset.right = external_events.width() + offset.left;
+                offset.bottom = external_events.height() + offset.top;
+
+                // Compare
+                if (x >= offset.left
+                    && y >= offset.top
+                    && x <= offset.right
+                    && y <= offset .bottom) { return true; }
+                return false;
+            }
+
+        });
 
 		function updateEventWithoutModal(event) {
 			$("#eventId").val(event.id);
@@ -174,7 +289,10 @@
             $("#daterange").data('daterangepicker').setEndDate(event.end);
             $("#title").val(event.title);
             $("#description").val(event.description);
-            updateEvent();
+            if (event.type == "event")
+            	updateEvent();
+            else if (event.type == "subtask")
+            	updateSubtask();
 		}
 		
 		function buildModal(isNewEvent, start, end, title, description, id) {
@@ -206,6 +324,16 @@
           
             $("#submitEventButton").html(saveButton);
             $("#eventModal").dialog({ modal: true, title: titleModal, width:500});
+		}
+		
+		function updateSubtask(){
+			var url = CONTEXT_PATH+"/updateSubtask";
+			var values = $('#appointmentForm').serialize();
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: values
+		    });
 		}
 		
 		function creatNewEvent() {

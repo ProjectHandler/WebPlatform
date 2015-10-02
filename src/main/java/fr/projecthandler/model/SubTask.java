@@ -1,5 +1,7 @@
 package fr.projecthandler.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,6 +38,12 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	@Column(name = "taken")
 	@Expose
 	private boolean taken;
+	
+	@Column(name = "starting_date")
+	private Date startingDate;
+
+	@Column(name = "ending_date")
+	private Date endingDate;
 
 	public String getDescription() {
 		return description;
@@ -75,6 +83,22 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 
 	public void setTaken(boolean taken) {
 		this.taken = taken;
+	}
+	
+	public Date getStartingDate() {
+		return startingDate;
+	}
+
+	public void setStartingDate(Date startingDate) {
+		this.startingDate = startingDate;
+	}
+
+	public Date getEndingDate() {
+		return endingDate;
+	}
+
+	public void setEndingDate(Date endingDate) {
+		this.endingDate = endingDate;
 	}
 
 	@Override

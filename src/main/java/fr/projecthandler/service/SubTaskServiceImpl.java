@@ -45,4 +45,19 @@ public class SubTaskServiceImpl implements SubTaskService {
 	public Set<SubTask> getSubTasksByTaskId(Long taskId) {
 		return subTaskDao.getSubTasksByTaskId(taskId);
 	}
+
+	@Override
+	public Set<SubTask> getSubTasksByUser(Long userId) {
+		return subTaskDao.getSubTasksByUser(userId);
+	}
+	
+	@Override
+	public Set<SubTask> getSubTasksPlannedByUser(Long userId) {
+		return subTaskDao.getSubTasksPlannedByUser(userId);
+	}
+	
+	@Override
+	public Set<SubTask> getSubTasksUnplannedByUser(Long userId) {
+		return subTaskDao.getSubTasksUnplannedByUser(userId);
+	}
 }

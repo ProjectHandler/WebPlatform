@@ -55,4 +55,31 @@ public class SubTaskDaoImpl  extends AbstractDao implements SubTaskDao {
 		return result;
 	}
 
+	@Override
+	public Set<SubTask> getSubTasksByUser(Long userId) {
+		LinkedHashSet<SubTask> result = new LinkedHashSet<SubTask>();
+		result.addAll(em.createQuery(
+		"SELECT st FROM SubTask st WHERE st.lastUserActivity.id = :lastUserActivity AND st.taken = true")
+				.setParameter("lastUserActivity", userId).getResultList());
+		return result;
+	}
+	
+	@Override
+	public Set<SubTask> getSubTasksUnplannedByUser(Long userId) {
+		LinkedHashSet<SubTask> result = new LinkedHashSet<SubTask>();
+		result.addAll(em.createQuery(
+		"SELECT st FROM SubTask st WHERE st.lastUserActivity.id = :lastUserActivity AND st.startingDate IS NULL AND st.endingDate IS NULL AND st.taken = true")
+				.setParameter("lastUserActivity", userId).getResultList());
+		return result;
+	}
+	
+	@Override
+	public Set<SubTask> getSubTasksPlannedByUser(Long userId) {
+		LinkedHashSet<SubTask> result = new LinkedHashSet<SubTask>();
+		result.addAll(em.createQuery(
+		"SELECT st FROM SubTask st WHERE st.lastUserActivity.id = :lastUserActivity AND st.startingDate IS NOT NULL AND st.endingDate IS NOT NULL AND st.taken = true")
+				.setParameter("lastUserActivity", userId).getResultList());
+		return result;
+	}
+
 }

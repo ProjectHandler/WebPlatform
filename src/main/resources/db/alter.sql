@@ -24,3 +24,6 @@ CREATE TABLE IF NOT EXISTS `task_messages` (
 
 -- Update to have date + time in task_messages table
 ALTER TABLE `task_messages` CHANGE `update_date` `update_date` DATETIME NOT NULL;
+
+-- Add columns date for subTask (02/10/2015)
+ALTER TABLE `subtask` ADD `starting_date` DATETIME NULL DEFAULT NULL , ADD `ending_date` DATETIME NULL DEFAULT NULL ;

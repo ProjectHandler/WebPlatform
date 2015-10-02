@@ -50,6 +50,7 @@ import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Event;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
@@ -57,6 +58,7 @@ import fr.projecthandler.service.CivilityService;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.InputAutocompleteService;
 import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.SubTaskService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
@@ -75,7 +77,10 @@ public class UserController {
 
 	@Autowired
 	TaskService 				taskService;
-
+	
+	@Autowired
+	SubTaskService 				subTaskService;
+	
 	@Autowired
 	ProjectService				projectService;
 	
@@ -223,17 +228,17 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/createEvent", method = RequestMethod.POST)
-	public ModelAndView createEvent(Principal principal, HttpServletRequest request) throws IOException {
-		Map<String, Object> myModel = new HashMap<String, Object>();
+	public void createEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
 				User u = userService.findUserById(userDetails.getId());
-				myModel.put("user", u);
 				List<User> users = new ArrayList<User>();
-				
 				users.add(u);
+				/*
+				 * TODO add users
+				 */
 				
 				String title = Utilities.getRequestParameter(request, "title");
 				String description = Utilities.getRequestParameter(request, "description");
@@ -255,22 +260,21 @@ public class UserController {
 				}
 			}
 		}
-		return new ModelAndView("user/calendar");
 	}
 	
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
-	public ModelAndView updateEvent(Principal principal, HttpServletRequest request) throws IOException {
-		Map<String, Object> myModel = new HashMap<String, Object>();
+	public void updateEvent(Principal principal, HttpServletRequest request) throws IOException {
+		System.out.println("//updateEvent");
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				System.out.println("updateEvent");
-
 				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
 				User u = userService.findUserById(userDetails.getId());
-				myModel.put("user", u);
 				List<User> users = new ArrayList<User>();
 				users.add(u);
+				/*
+				 * TODO add users
+				 */
 				
 				Event event = eventService.findEventById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
 				String title = Utilities.getRequestParameter(request, "title");
@@ -292,7 +296,6 @@ public class UserController {
 				}
 			}
 		}
-		return new ModelAndView("user/calendar");
 	}
 	
 	@RequestMapping(value = "/deleteEvent", method = RequestMethod.POST)
@@ -302,6 +305,61 @@ public class UserController {
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				List<Long> eventIds = Arrays.asList(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
 				eventService.deleteEventsByIds(eventIds);
+			}
+		}
+	}
+	
+	@RequestMapping(value = "/updateSubtask", method = RequestMethod.POST)
+	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
+		System.out.println("/updateSubtask");
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			SubTask subTask = subTaskService.findSubTaskById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
+			if (subTask.isTaken() == true && userDetails.getId().equals(subTask.getLastUserActivity().getId())) {
+				String title = Utilities.getRequestParameter(request, "title");
+				String daterange = Utilities.getRequestParameter(request, "daterange");
+				String date[] = daterange.split("-", 0);
+				try {
+					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[0]);
+					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[1]);
+					subTask.setDescription(title);
+					subTask.setStartingDate(startingDate);
+					subTask.setEndingDate(endingDate);
+					subTaskService.updateSubTask(subTask);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
+	@RequestMapping(value = "/calendarDetailsSubtaskUnplanned", method = RequestMethod.GET)
+	public void calendarDetailsSubtaskUnplanned(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
+		System.out.println("/calendarDetailsSubtaskUnplanned");
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			User u = userService.findUserById(userDetails.getId());
+
+			Set<SubTask> listSubTask = new HashSet<SubTask>();
+			try {
+				listSubTask = subTaskService.getSubTasksUnplannedByUser(u.getId());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			List<CalendarDTO> listForCalendar = new ArrayList<>();
+			for (SubTask subTask : listSubTask)
+				listForCalendar.add(new CalendarDTO(subTask));
+			
+			//Convert FullCalendar from Java to JSON
+			String jsonAppointment = new Gson().toJson(listForCalendar);
+			//Printout the JSON
+			respsonse.setContentType("application/json");
+			respsonse.setCharacterEncoding("UTF-8");
+			try {
+				respsonse.getWriter().write(jsonAppointment);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -316,18 +374,22 @@ public class UserController {
 			//Get the entire list of appointments available by user
 			Set<Task> listTask = new HashSet<Task>();
 			Set<Event> listEvent = new HashSet<Event>();
+			Set<SubTask> listSubTask = new HashSet<SubTask>();
 			try {
 				listTask = taskService.getTasksByUserAndFetchUsers(u.getId());
 				listEvent = eventService.getEventsByUser(u.getId());
+				listSubTask = subTaskService.getSubTasksPlannedByUser(u.getId());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//Convert appointment to FullCalendar (A class I created to facilitate the JSON)
+			//Convert appointment to FullCalendar (A class created to facilitate the JSON)
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
 			for (Task task : listTask)
 				listForCalendar.add(new CalendarDTO(task));
 			for (Event event : listEvent)
 				listForCalendar.add(new CalendarDTO(event));
+			for (SubTask subTask : listSubTask)
+				listForCalendar.add(new CalendarDTO(subTask));
 			
 			//Convert FullCalendar from Java to JSON
 			String jsonAppointment = new Gson().toJson(listForCalendar);
