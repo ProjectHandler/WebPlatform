@@ -1,9 +1,6 @@
 package fr.projecthandler.dto;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Task;
@@ -19,10 +16,8 @@ public class MobileTaskDTO {
     private Date startingDate;
     private Date endingDate;
     private String status;
-    private List<MobileUserDTO> users;
     private Long row;
-    private Set<MobileTaskDTO> dependtasks;
-    private Set<MobileSubTaskDTO> mobileSubTaskDTO;
+    private Set<MobileSubTaskDTO> subTask;
     
     public MobileTaskDTO() {
     	
@@ -38,12 +33,7 @@ public class MobileTaskDTO {
         this.startingDate = task.getStartingDate();
         this.endingDate = task.getEndingDate();
         this.status = task.getStatus();
-        this.users = new ArrayList<MobileUserDTO>();
         this.row = task.getRow();
-        this.dependtasks = new HashSet<MobileTaskDTO>();
-        /*for (User u : task.getUsers()) {
-        	this.users.add(new MobileUserDTO(u));
-        } */
     }
 
 	public Long getId() {
@@ -118,14 +108,6 @@ public class MobileTaskDTO {
 		this.status = status;
 	}
 
-	public List<MobileUserDTO> getUsers() {
-		return users;
-	}
-
-	public void setUsers(List<MobileUserDTO> users) {
-		this.users = users;
-	}
-
 	public Long getRow() {
 		return row;
 	}
@@ -134,20 +116,12 @@ public class MobileTaskDTO {
 		this.row = row;
 	}
 
-	public Set<MobileTaskDTO> getDependtasks() {
-		return dependtasks;
+	public Set<MobileSubTaskDTO> getSubTask() {
+	    return subTask;
 	}
 
-	public void setDependtasks(Set<MobileTaskDTO> dependtasks) {
-		this.dependtasks = dependtasks;
-	}
-
-	public Set<MobileSubTaskDTO> getMobileSubTaskDTO() {
-	    return mobileSubTaskDTO;
-	}
-
-	public void setMobileSubTaskDTO(Set<MobileSubTaskDTO> mobileSubTaskDTO) {
-	    this.mobileSubTaskDTO = mobileSubTaskDTO;
+	public void setSubTask(Set<MobileSubTaskDTO> subTask) {
+	    this.subTask = subTask;
 	}
     
 }

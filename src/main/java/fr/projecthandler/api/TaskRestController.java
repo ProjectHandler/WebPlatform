@@ -66,18 +66,14 @@ public class TaskRestController {
 		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
-			Set<MobileTaskDTO> depTaskDTO = new HashSet<MobileTaskDTO>();
 
-			for (Task depTask : t.getDepend())
-				depTaskDTO.add(new MobileTaskDTO(depTask));
-			taskDTO.setDependtasks(depTaskDTO);
 
 			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
 			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 			for (SubTask subTask : listSubTask) {
 			    listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 			}
-			taskDTO.setMobileSubTaskDTO(listSubTaskDTO);
+			taskDTO.setSubTask(listSubTaskDTO);
 			taskListDTO.add(taskDTO);
 		}
 
@@ -111,11 +107,12 @@ public class TaskRestController {
 		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
-			Set<MobileTaskDTO> depTaskDTO = new HashSet<MobileTaskDTO>();
-
-			for (Task depTask : t.getDepend())
-				depTaskDTO.add(new MobileTaskDTO(depTask));
-			taskDTO.setDependtasks(depTaskDTO);
+			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
+			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
+			for (SubTask subTask : listSubTask) {
+			    listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
+			}
+			taskDTO.setSubTask(listSubTaskDTO);
 			taskListDTO.add(taskDTO);
 		}
 
@@ -150,7 +147,7 @@ public class TaskRestController {
 		    for (SubTask subTask : listSubTask) {
 			listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 		    }
-		    taskDTO.setMobileSubTaskDTO(listSubTaskDTO);
+		    taskDTO.setSubTask(listSubTaskDTO);
 		    taskListDTO.add(taskDTO);
 		}
 
