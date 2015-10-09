@@ -21,7 +21,7 @@ public enum TicketStatus implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
+
 	public String getValue() {
 		return value;
 	}
@@ -49,7 +49,7 @@ public enum TicketStatus implements Serializable {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 }

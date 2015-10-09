@@ -34,7 +34,7 @@ public class GanttController {
 
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	GanttService ganttService;
 
@@ -56,7 +56,7 @@ public class GanttController {
 		try {
 			String projectId = Utilities.getRequestParameter(request, "projectId");
 			if (projectId != null) {
-				String json =  ganttService.load(Long.parseLong(projectId));
+				String json = ganttService.load(Long.parseLong(projectId));
 				jsonElement = new JsonParser().parse(json);
 			}
 		} catch (Exception e) {
@@ -66,7 +66,7 @@ public class GanttController {
 	}
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
-	public @ResponseBody String  saveGantt(HttpServletRequest request, Principal principal) {
+	public @ResponseBody String saveGantt(HttpServletRequest request, Principal principal) {
 		try {
 			ganttService.save(request.getParameter("prj"));
 			return "success";

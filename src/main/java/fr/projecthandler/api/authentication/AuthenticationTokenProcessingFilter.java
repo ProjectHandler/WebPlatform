@@ -22,43 +22,43 @@ import fr.projecthandler.service.UserService;
 
 public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 
-    @Autowired
-    UserService userService;
-    
-    @Autowired
-    TokenService tokenService;
+	@Autowired
+	UserService userService;
+
+	@Autowired
+	TokenService tokenService;
 
 	@Autowired
 	UserDetailsService customUserDetailsService;
-	
-    public AuthenticationTokenProcessingFilter() {
-    }
 
-    @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public AuthenticationTokenProcessingFilter() {
+	}
+
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpServletRequest httpRequest = this.getAsHttpRequest(request);
 
 		String token = extractAuthToken(httpRequest);
 		User user = tokenService.findUserByToken(token);
 
-            if (user != null) {
-            	UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
-            	//Build an Authentication object with the user's info
-                UsernamePasswordAuthenticationToken authentication = 
-                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
-                //Set the authentication into the SecurityContext
-                SecurityContextHolder.getContext().setAuthentication(authentication);     
-            }
-            
-        chain.doFilter(request, response);
-    }
-    
+		if (user != null) {
+			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+			// Build an Authentication object with the user's info
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
+					userDetails.getAuthorities());
+			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
+			// Set the authentication into the SecurityContext
+			SecurityContextHolder.getContext().setAuthentication(authentication);
+		}
+
+		chain.doFilter(request, response);
+	}
+
 	private String extractAuthToken(HttpServletRequest request) {
-		//Get the token from header
+		// Get the token from header
 		String authToken = request.getHeader("X-Auth-Token");
 
-		//If the token not found in the header, get it from the request parameters
+		// If the token not found in the header, get it from the request parameters
 		if (authToken == null) {
 			authToken = request.getParameter("token");
 		}

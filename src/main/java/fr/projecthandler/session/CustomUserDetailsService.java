@@ -41,9 +41,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 		boolean credentialsNonExpired = true;
 		boolean accountNonLocked = true;
 
-		CustomUserDetails userDetails = new CustomUserDetails(user.getId(), user.getEmail(), user.getPassword(), enabled, accountNonExpired, 
-				credentialsNonExpired, accountNonLocked, getAuthorities(user), user.getFirstName(),
-				user.getLastName(), user.getAccountStatus(), user.getUserRole(), user.getAvatarFileName());
+		CustomUserDetails userDetails = new CustomUserDetails(user.getId(), user.getEmail(), user.getPassword(), enabled, accountNonExpired,
+				credentialsNonExpired, accountNonLocked, getAuthorities(user), user.getFirstName(), user.getLastName(), user.getAccountStatus(),
+				user.getUserRole(), user.getAvatarFileName());
 
 		return userDetails;
 	}
@@ -56,7 +56,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	public List<String> getRoles(User user) {
 		List<String> roles = new ArrayList<String>();
 		roles.add(user.getUserRole().name());
-		//roles.add(user.getAccountStatus().name());
+		// roles.add(user.getAccountStatus().name());
 		return roles;
 	}
 

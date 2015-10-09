@@ -129,8 +129,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public File getUserAvatarFile(Long userId) {
 		User user = userDao.findUserById(userId);
-		if (user == null || user.getAvatarFileName() == null
-				|| user.getAvatarFileName().length() == 0)
+		if (user == null || user.getAvatarFileName() == null || user.getAvatarFileName().length() == 0)
 			return null;
 
 		Configuration config = null;
@@ -141,8 +140,7 @@ public class UserServiceImpl implements UserService {
 		}
 
 		String path = config.getString("folder.path");
-		File directory = new File(new File(path, "users"
-				+ Long.toString(user.getId())), "avatars");
+		File directory = new File(new File(path, "users" + Long.toString(user.getId())), "avatars");
 		if (!directory.exists())
 			directory.mkdirs();
 

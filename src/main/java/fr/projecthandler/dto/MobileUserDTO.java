@@ -4,8 +4,8 @@ import fr.projecthandler.model.User;
 
 public class MobileUserDTO {
 
-	private Long id;
-	private String civility;
+    private Long id;
+    private String civility;
     private String firstName;
     private String lastName;
     private String userRole;
@@ -13,93 +13,93 @@ public class MobileUserDTO {
     private String phone;
     private String mobilePhone;
     private String accountStatus;
-	    
-	public MobileUserDTO() {
-		
-	}
-	
-	public MobileUserDTO(User user) {
-		this.id = user.getId();
-		this.civility = user.getCivility().getName();
-		this.firstName = user.getFirstName();
-		this.lastName = user.getLastName();
-		this.userRole = user.getUserRole().toString();
-		this.email = user.getEmail();
-		this.phone = user.getPhone();
-		this.mobilePhone = user.getMobilePhone();
-		this.accountStatus = user.getAccountStatus().getValue();
-	}
 
-	public Long getId() {
-		return id;
-	}
+    public MobileUserDTO() {
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    }
 
-	public String getCivility() {
-		return civility;
-	}
+    public MobileUserDTO(User user) {
+	this.id = user.getId();
+	this.civility = user.getCivility().getName();
+	this.firstName = user.getFirstName();
+	this.lastName = user.getLastName();
+	this.userRole = user.getUserRole().toString();
+	this.email = user.getEmail();
+	this.phone = user.getPhone();
+	this.mobilePhone = user.getMobilePhone();
+	this.accountStatus = user.getAccountStatus().getValue();
+    }
 
-	public void setCivility(String civility) {
-		this.civility = civility;
-	}
+    public Long getId() {
+	return id;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setId(Long id) {
+	this.id = id;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getCivility() {
+	return civility;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setCivility(String civility) {
+	this.civility = civility;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getFirstName() {
+	return firstName;
+    }
 
-	public String getUserRole() {
-		return userRole;
-	}
+    public void setFirstName(String firstName) {
+	this.firstName = firstName;
+    }
 
-	public void setUserRole(String userRole) {
-		this.userRole = userRole;
-	}
+    public String getLastName() {
+	return lastName;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public void setLastName(String lastName) {
+	this.lastName = lastName;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public String getUserRole() {
+	return userRole;
+    }
 
-	public String getPhone() {
-		return phone;
-	}
+    public void setUserRole(String userRole) {
+	this.userRole = userRole;
+    }
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
+    public String getEmail() {
+	return email;
+    }
 
-	public String getMobilePhone() {
-		return mobilePhone;
-	}
+    public void setEmail(String email) {
+	this.email = email;
+    }
 
-	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
-	}
+    public String getPhone() {
+	return phone;
+    }
 
-	public String getAccountStatus() {
-		return accountStatus;
-	}
+    public void setPhone(String phone) {
+	this.phone = phone;
+    }
 
-	public void setAccountStatus(String accountStatus) {
-		this.accountStatus = accountStatus;
-	}
-	
+    public String getMobilePhone() {
+	return mobilePhone;
+    }
+
+    public void setMobilePhone(String mobilePhone) {
+	this.mobilePhone = mobilePhone;
+    }
+
+    public String getAccountStatus() {
+	return accountStatus;
+    }
+
+    public void setAccountStatus(String accountStatus) {
+	this.accountStatus = accountStatus;
+    }
+
 }

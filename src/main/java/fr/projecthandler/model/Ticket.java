@@ -22,38 +22,37 @@ import javax.validation.constraints.Size;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
-
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
 
 @Entity
 @Table(name = "tickets")
-public class Ticket extends BaseEntity implements java.io.Serializable, TimestampEntity  {
+public class Ticket extends BaseEntity implements java.io.Serializable, TimestampEntity {
 
 	private static final long serialVersionUID = 254665316357554236L;
 
-	@Size(min=1, max=100)
+	@Size(min = 1, max = 100)
 	@Column(name = "title", length = 100)
 	private String title;
-	
-	@Size(min=1, max=500)
+
+	@Size(min = 1, max = 500)
 	@Column(name = "text", length = 500)
 	private String text;
-	
+
 	@NotNull
 	@Column(name = "ticket_status", nullable = false)
 	private TicketStatus ticketStatus;
-	
-	//Author
+
+	// Author
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id", nullable = false)
 	@Valid
 	private Project project;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ticket_tracker_id")
 	private TicketTracker ticketTracker;
@@ -62,34 +61,34 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@JoinColumn(name = "ticket_priority_id")
 	private TicketPriority ticketPriority;
 
-	//@JsonIgnore
-	//List of recipients
+	// @JsonIgnore
+	// List of recipients
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tickets", joinColumns = { @JoinColumn(name = "ticket_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private List<User> users = new ArrayList<User>();;
-	
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false, updatable=false)
-    private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", nullable = false)
-    private Date updatedAt;
-    
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Date createdAt;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at", nullable = false)
+	private Date updatedAt;
+
 	public Ticket() {
 		this.setTicketStatus(TicketStatus.OPEN);
 	}
-	
-    @PrePersist
-    protected void createAtTimestamp() {
-    	updatedAt = createdAt = new Date();
-    }
 
-    @PreUpdate
-    protected void updateAtTimestamp() {
-    	updatedAt = new Date();
-    }
-    
+	@PrePersist
+	protected void createAtTimestamp() {
+		updatedAt = createdAt = new Date();
+	}
+
+	@PreUpdate
+	protected void updateAtTimestamp() {
+		updatedAt = new Date();
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -168,14 +167,5 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public void setUsers(List<User> users) {
 		this.users = users;
-	}
-
-	@Override
-	public String toString() {
-		return "Ticket [title=" + title + ", text=" + text + ", ticketStatus="
-				+ ticketStatus + ", user=" + user + ", project=" + project
-				+ ", ticketTracker=" + ticketTracker + ", ticketPriority="
-				+ ticketPriority + ", users=" + users + ", createdAt="
-				+ createdAt + ", updatedAt=" + updatedAt + "]";
 	}
 }

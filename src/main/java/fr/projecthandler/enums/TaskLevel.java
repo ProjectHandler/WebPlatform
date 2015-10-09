@@ -4,10 +4,10 @@ import java.util.Arrays;
 
 public enum TaskLevel {
 	PROJECT(0l, "Project"), MILESTONE(1l, "Milestone"), TASK(2l, "Task"), EVENT(3l, "Event");
-	
-	private Long id;		// Long to match task level type
+
+	private Long id; // Long to match task level type
 	private String value;
-	
+
 	TaskLevel(Long id, String value) {
 		this.id = id;
 		this.value = value;
@@ -28,7 +28,7 @@ public enum TaskLevel {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
+
 	public String getValueById(Integer id) {
 		if (id != null) {
 			return Arrays.asList(TaskLevel.values()).get(id).getValue();

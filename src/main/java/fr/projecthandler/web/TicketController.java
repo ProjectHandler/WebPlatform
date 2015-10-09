@@ -49,7 +49,8 @@ public class TicketController {
 	ProjectService projectService;
 
 	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.GET)
-	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @RequestParam(required = false) String title) {
+	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId,
+			@RequestParam(required = false) String title) {
 		Map<String, Object> model = new HashMap<String, Object>();
 
 		if (userDetails == null) {
@@ -86,9 +87,9 @@ public class TicketController {
 			return new ModelAndView("accessDenied");
 		}
 		if (result.hasErrors()) {
-			//TODO redirect
+			// TODO redirect
 			return new ModelAndView("redirect:/");
-        }
+		}
 		// TODO check des permissions, check si les ID sont valides
 		User user = userService.findUserById(userDetails.getId());
 		ticket.setUser(user);
@@ -124,8 +125,8 @@ public class TicketController {
 	}
 
 	@RequestMapping(value = "/{ticketId}/message/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @Valid @ModelAttribute("ticketMessage") TicketMessage ticketMessage,
-			BindingResult result, @PathVariable Long ticketId) {
+	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails,
+			@Valid @ModelAttribute("ticketMessage") TicketMessage ticketMessage, BindingResult result, @PathVariable Long ticketId) {
 		Ticket ticket = ticketService.findTicketById(ticketId);
 
 		// TODO ajouter les autres tests pour confirmer que ce User peut écrire
@@ -140,7 +141,7 @@ public class TicketController {
 		}
 		if (result.hasErrors()) {
 			return new ModelAndView("redirect:/ticket/" + ticketId + "/messages");
-        }
+		}
 		User u = userService.findUserById(userDetails.getId());
 
 		ticketMessage.setUser(u);

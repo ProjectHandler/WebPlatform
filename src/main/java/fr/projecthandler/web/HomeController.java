@@ -29,20 +29,20 @@ public class HomeController {
 
 	@Autowired
 	UserService userService;
-	
+
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	EventService eventService;
 
 	@Autowired
 	HttpSession httpSession;
 
-//	@RequestMapping(value = "home", method = RequestMethod.GET)
-//	public ModelAndView home(Principal principal) {
-//		return new ModelAndView("home", null);
-//	}
+	// @RequestMapping(value = "home", method = RequestMethod.GET)
+	// public ModelAndView home(Principal principal) {
+	// return new ModelAndView("home", null);
+	// }
 
 	@RequestMapping(value = "accessDenied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
@@ -78,7 +78,7 @@ public class HomeController {
 				tneTomorrow.add(new HomeContentWrapperDTO(t));
 			for (Event e : tomorrowEvents)
 				tneTomorrow.add(new HomeContentWrapperDTO(e));
-		
+
 			myModel.put("user", u);
 			myModel.put("tneYesterday", tneYesterday);
 			myModel.put("tneToday", tneToday);

@@ -34,15 +34,14 @@ public class GanttServiceImpl implements GanttService {
 
 	@Autowired
 	TaskService taskService;
-		
+
 	@Override
 	public String load(Long projectId) {
 		try {
-			/*ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-			return ow.writeValueAsString(loadProject(projectId));*/
+			/* ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter(); return ow.writeValueAsString(loadProject(projectId)); */
 			Gson gson = new Gson();
 			return gson.toJson(loadProject(projectId));
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -58,31 +57,31 @@ public class GanttServiceImpl implements GanttService {
 		listTaskDTO.addAll(loadTasks(projectId));
 		prorojectDTO.setTasks(listTaskDTO);
 		prorojectDTO.setResources(loadProjectResources(projectId));
-		
+
 		return prorojectDTO;
 	}
-	
+
 	private List<GanttTaskDTO> loadTasks(Long projectId) {
 		List<GanttTaskDTO> listTaskDTO = new ArrayList<GanttTaskDTO>();
 		Set<Task> tasks = taskService.getTasksByProjectId(projectId);
-		
-		if (tasks != null) {		
+
+		if (tasks != null) {
 			Map<Long, Integer> rowId = new HashMap<Long, Integer>();
-			Integer row = 2;//1 = project
+			Integer row = 2;// 1 = project
 			for (Task t : tasks) {
 				rowId.put(t.getId(), row);
 				++row;
 			}
-			
+
 			for (Task t : tasks) {
 				GanttTaskDTO gt = new GanttTaskDTO(t);
-				
+
 				Set<Task> depends = taskService.getTasksByTaskIdWithDepends(t.getId());
 				StringBuilder sb = new StringBuilder();
 				for (Task depend : depends)
 					sb.append(rowId.get(depend.getId()).toString() + ",");
 				if (sb.length() != 0)
-					gt.setDepends(sb.substring(0, sb.length()-1));
+					gt.setDepends(sb.substring(0, sb.length() - 1));
 				else
 					gt.setDepends("");
 
@@ -92,7 +91,7 @@ public class GanttServiceImpl implements GanttService {
 		}
 		return listTaskDTO;
 	}
-	
+
 	private List<GanttResourceDTO> loadProjectResources(Long projectId) {
 		List<GanttResourceDTO> listResources = new ArrayList<GanttResourceDTO>();
 		List<User> users = projectService.getUsersByProjectId(projectId);
@@ -100,7 +99,7 @@ public class GanttServiceImpl implements GanttService {
 			listResources.add(new GanttResourceDTO(user));
 		return listResources;
 	}
-	
+
 	private List<GanttAssigsDTO> loadTaskResources(Long taskId) {
 		List<GanttAssigsDTO> listAssigsDTO = new ArrayList<GanttAssigsDTO>();
 		List<User> users = taskService.getUsersByTaskId(taskId);
@@ -112,42 +111,42 @@ public class GanttServiceImpl implements GanttService {
 		}
 		return listAssigsDTO;
 	}
-	
+
 	@Override
 	public void save(String ganttGson) {
 		Gson gson = new Gson();
 		final GanttProjectDTO prj = gson.fromJson(ganttGson, GanttProjectDTO.class);
-		
-		//System.out.println(ganttGson);
-		
+
+		// System.out.println(ganttGson);
+
 		List<Task> lstTask = new ArrayList<Task>();
 		List<GanttTaskDTO> listTaskDTO = prj.getTasks();
 		Map<Integer, Long> rowId = new HashMap<Integer, Long>();
-		
+
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
 			if (taskDTO.getId().startsWith("project_"))
 				taskDTO.setId(taskDTO.getId().substring(8, taskDTO.getId().length()));
 			else if (taskDTO.getId().startsWith("task_"))
-				taskDTO.setId(taskDTO.getId().substring(5,  taskDTO.getId().length()));
+				taskDTO.setId(taskDTO.getId().substring(5, taskDTO.getId().length()));
 		}
-		
+
 		Project newProject = saveProjectAndTask(lstTask, listTaskDTO, rowId);
 		saveDependsTasks(listTaskDTO, rowId);
 		saveDeletedTask(prj);
-		
+
 		Set<Task> setTasks = new HashSet<Task>();
 		setTasks.addAll(lstTask);
 		newProject.setTasks(setTasks);
-		
+
 		saveUsersOnProject(prj, newProject);
 		projectService.updateProject(newProject);
 	}
-		
+
 	private Project saveProjectAndTask(List<Task> lstTask, List<GanttTaskDTO> listTaskDTO, Map<Integer, Long> rowId) {
 		Project newProject = null;
 		int row = 0;
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
-			
+
 			if (taskDTO.getLevel() == 0) { // project
 				newProject = new Project(taskDTO);
 			} else {
@@ -172,7 +171,7 @@ public class GanttServiceImpl implements GanttService {
 					taskTosave.setStartingDate(new Date(taskDTO.getStart()));
 					taskTosave.setEndingDate(new Date(taskDTO.getEnd()));
 					taskTosave.setStatus(taskDTO.getStatus());
-					
+
 					taskService.updateTask(taskTosave);
 				}
 				rowId.put(row, taskTosave.getId());
@@ -182,23 +181,22 @@ public class GanttServiceImpl implements GanttService {
 		}
 		return newProject;
 	}
-	
+
 	private void saveDependsTasks(List<GanttTaskDTO> listTaskDTO, Map<Integer, Long> rowId) {
-		
+
 		for (GanttTaskDTO taskDTO : listTaskDTO) {
 			if (taskDTO.getLevel() != 0) {
 				String depends = taskDTO.getDepends();
 				Set<Task> depend = new HashSet<Task>();
-				
+
 				if (StringUtils.isEmpty(depends) == false) {
 					String[] tokens = depends.split(",");
-					if (tokens.length !=0) {
+					if (tokens.length != 0) {
 						for (String s : tokens) {
 							int rowNb = Integer.parseInt(s);
-							depend.add(taskService.findTaskById(rowId.get(rowNb-1)));
+							depend.add(taskService.findTaskById(rowId.get(rowNb - 1)));
 						}
-					}
-					else {
+					} else {
 						depend.add(taskService.findTaskById(Long.parseLong(depends)));
 					}
 				}
@@ -208,30 +206,30 @@ public class GanttServiceImpl implements GanttService {
 			}
 		}
 	}
-	
+
 	private void saveDeletedTask(GanttProjectDTO prj) {
 		for (String taskId : prj.getDeletedTaskIds()) {
 			if (taskId.startsWith("task_"))
-				taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId.substring(5,  taskId.length()))));
+				taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId.substring(5, taskId.length()))));
 			else
 				taskService.deleteTasksByIds(Arrays.asList(Long.parseLong(taskId)));
 		}
 	}
-	
+
 	private void saveUsersOnProject(GanttProjectDTO projectDTO, Project project) {
 		List<GanttResourceDTO> listResource = projectDTO.getResources();
-		
+
 		for (GanttResourceDTO resourceDTO : listResource) {
 			User user = userService.findUserById(Long.parseLong(resourceDTO.getId()));
 			if (user != null)
 				project.addUser(user);
 		}
 	}
-	
+
 	private List<User> saveUsersOnTask(GanttTaskDTO taskDTO) {
 		List<GanttAssigsDTO> listAssigsDTO = taskDTO.getAssigs();
 		List<User> listUsers = new ArrayList<User>();
-		
+
 		for (GanttAssigsDTO assigsDTO : listAssigsDTO) {
 			assigsDTO.getResourceId();
 			User user = userService.findUserById(Long.parseLong(assigsDTO.getResourceId()));

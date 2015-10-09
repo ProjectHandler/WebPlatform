@@ -9,6 +9,6 @@ public interface TokenService {
 	public Token findTokenByUserId(Long userId);
 
 	public void deleteTokenByUserId(Long id);
-	
+
 	public User findUserByToken(String token);
 }

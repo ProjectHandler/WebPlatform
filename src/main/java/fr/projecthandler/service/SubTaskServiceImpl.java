@@ -14,7 +14,7 @@ public class SubTaskServiceImpl implements SubTaskService {
 
 	@Autowired
 	SubTaskDao subTaskDao;
-	
+
 	@Override
 	public Long saveSubtask(SubTask subTask) {
 		return subTaskDao.saveSubtask(subTask);
@@ -35,7 +35,6 @@ public class SubTaskServiceImpl implements SubTaskService {
 		subTaskDao.deleteSubTaskById(id);
 	}
 
-
 	@Override
 	public SubTask findSubTaskById(Long subTaskId) {
 		return subTaskDao.findSubTaskById(subTaskId);
@@ -50,12 +49,12 @@ public class SubTaskServiceImpl implements SubTaskService {
 	public Set<SubTask> getSubTasksByUser(Long userId) {
 		return subTaskDao.getSubTasksByUser(userId);
 	}
-	
+
 	@Override
 	public Set<SubTask> getSubTasksPlannedByUser(Long userId) {
 		return subTaskDao.getSubTasksPlannedByUser(userId);
 	}
-	
+
 	@Override
 	public Set<SubTask> getSubTasksUnplannedByUser(Long userId) {
 		return subTaskDao.getSubTasksUnplannedByUser(userId);

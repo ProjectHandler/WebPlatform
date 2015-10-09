@@ -52,13 +52,10 @@ public class ProjectRestController {
 		Project project = projectService.findProjectById(id);
 
 		if (project == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"project\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 		try {
 			String json = gson.toJson(project);
 
@@ -70,32 +67,26 @@ public class ProjectRestController {
 	}
 
 	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getProjects(
-			@CurrentUserDetails CustomUserDetails userDetails) {
+	public @ResponseBody ResponseEntity<String> getProjects(@CurrentUserDetails CustomUserDetails userDetails) {
 
-		List<Project> projectList = projectService
-				.getProjectsByUserId(userDetails.getId());
+		List<Project> projectList = projectService.getProjectsByUserId(userDetails.getId());
 
 		if (projectList == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"project\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
 		List<MobileProjectDTO> projectListDTO = new ArrayList<MobileProjectDTO>();
 		for (Project project : projectList) {
 			MobileProjectDTO projectDTO = new MobileProjectDTO(project);
 			project.setTasks(taskService.getTasksByProjectId(project.getId()));
-			ProjectProgressDTO projectProgressDTO = new ProjectProgressDTO(
-					project);
+			ProjectProgressDTO projectProgressDTO = new ProjectProgressDTO(project);
 			projectDTO.setDateProgress(projectProgressDTO.getDateProgress());
 			projectDTO.setDaysLeft(projectProgressDTO.getDaysLeft());
 			projectDTO.setTasksProgress(projectProgressDTO.getTasksProgress());
 			projectListDTO.add(projectDTO);
 		}
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 		try {
 			String json = gson.toJson(projectListDTO);
 			System.out.println("json: " + json);

@@ -13,24 +13,24 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "calendar")
-public class  Calendar extends BaseEntity implements java.io.Serializable {
+public class Calendar extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4903546468464810423L;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@Column(name = "title")
 	private String title;
-	
+
 	@Column(name = "text")
 	private String text;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "start_date", length = 10)
 	private Date start;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "end_date", length = 10)
 	private Date end;
@@ -79,5 +79,5 @@ public class  Calendar extends BaseEntity implements java.io.Serializable {
 	public String toString() {
 		return "Calendar [userId=" + user + ", title=" + title + ", text=" + text + ", start=" + start + ", end=" + end + "]";
 	}
-	
+
 }

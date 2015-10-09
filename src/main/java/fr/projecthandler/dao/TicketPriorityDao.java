@@ -5,7 +5,7 @@ import java.util.List;
 import fr.projecthandler.model.TicketPriority;
 
 public interface TicketPriorityDao {
-	
+
 	public Long saveTicketPriority(TicketPriority ticketPriority);
 
 	public void updateTicketPriority(TicketPriority ticketPriority);

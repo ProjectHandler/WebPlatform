@@ -46,39 +46,32 @@ public class TaskRestController {
 
 	@Autowired
 	SubTaskService subTaskService;
-	
+
 	@Autowired
 	private UserDetailsService customUserDetailsService;
 
 	@RequestMapping(value = "/allByProject/{projectId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getProjects(
-			@PathVariable Long projectId,
-			@CurrentUserDetails CustomUserDetails userDetails) {
-		Set<Task> taskList = taskService
-				.getTasksByProjectIdWithDepends(projectId);
+	public @ResponseBody ResponseEntity<String> getProjects(@PathVariable Long projectId, @CurrentUserDetails CustomUserDetails userDetails) {
+		Set<Task> taskList = taskService.getTasksByProjectIdWithDepends(projectId);
 
 		if (taskList == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"project\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
 		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
 
-
 			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
 			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 			for (SubTask subTask : listSubTask) {
-			    listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
+				listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 			}
 			taskDTO.setSubTask(listSubTaskDTO);
 			taskListDTO.add(taskDTO);
 		}
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 
 		try {
 			String json = gson.toJson(taskListDTO);
@@ -91,17 +84,11 @@ public class TaskRestController {
 	}
 
 	@RequestMapping(value = "/allByProjectAndUser/{projectId}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getProjectsByUser(
-			@PathVariable Long projectId,
-			@CurrentUserDetails CustomUserDetails userDetails) {
-		Set<Task> taskList = taskService
-				.getTasksByProjectIdAndUserIdWithDepends(projectId,
-						userDetails.getId());
+	public @ResponseBody ResponseEntity<String> getProjectsByUser(@PathVariable Long projectId, @CurrentUserDetails CustomUserDetails userDetails) {
+		Set<Task> taskList = taskService.getTasksByProjectIdAndUserIdWithDepends(projectId, userDetails.getId());
 
 		if (taskList == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"project\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
 		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
@@ -110,14 +97,13 @@ public class TaskRestController {
 			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
 			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 			for (SubTask subTask : listSubTask) {
-			    listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
+				listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 			}
 			taskDTO.setSubTask(listSubTaskDTO);
 			taskListDTO.add(taskDTO);
 		}
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 
 		try {
 			String json = gson.toJson(taskListDTO);
@@ -127,35 +113,32 @@ public class TaskRestController {
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getAllByUser(
-			@CurrentUserDetails CustomUserDetails userDetails) {
-		Set<Task> taskList = taskService.getTasksByUser(userDetails.getId());
-
-		if (taskList == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"project\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
-		}
-
-		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
-		for (Task t : taskList) {
-		    MobileTaskDTO taskDTO = new MobileTaskDTO(t);
-		    Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
-		    Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
-		    for (SubTask subTask : listSubTask) {
-			listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
-		    }
-		    taskDTO.setSubTask(listSubTaskDTO);
-		    taskListDTO.add(taskDTO);
-		}
-
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
-
+	public @ResponseBody ResponseEntity<String> getAllByUser(@CurrentUserDetails CustomUserDetails userDetails) {
 		try {
+			Set<Task> taskList = taskService.getTasksByUser(userDetails.getId());
+
+			if (taskList == null) {
+				return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
+			}
+
+			List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
+			for (Task t : taskList) {
+				MobileTaskDTO taskDTO = new MobileTaskDTO(t);
+				Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
+				Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
+				for (SubTask subTask : listSubTask) {
+					listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
+				}
+				taskDTO.setSubTask(listSubTaskDTO);
+				taskListDTO.add(taskDTO);
+			}
+
+			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+
 			String json = gson.toJson(taskListDTO);
+			System.out.println(json);
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();

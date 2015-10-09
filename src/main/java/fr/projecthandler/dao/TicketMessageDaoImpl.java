@@ -21,7 +21,7 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 	@Transactional
 	public Long saveTicketMessage(TicketMessage ticketMessage) {
 		em.persist(ticketMessage);
-		
+
 		return ticketMessage.getId();
 	}
 
@@ -29,17 +29,16 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 	@Transactional
 	public void deleteTicketMessagesByIds(List<Long> ticketMessagesIdsList) {
 		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id IN (:ticketMessagesIdsList)")
-		.setParameter("ticketMessagesIdsList", ticketMessagesIdsList)
-		.executeUpdate();
+				.setParameter("ticketMessagesIdsList", ticketMessagesIdsList).executeUpdate();
 	}
 
 	@Override
 	@Transactional
 	public void deleteTicketMessageById(Long ticketMessageId) {
-		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id = :ticketMessageId")
-		.setParameter("ticketMessageId", ticketMessageId)
-		.executeUpdate();
+		em.createQuery("DELETE FROM TicketMessage tm WHERE tm.id = :ticketMessageId").setParameter("ticketMessageId", ticketMessageId)
+				.executeUpdate();
 	}
+
 	@Override
 	public TicketMessage findTicketMessageById(Long ticketMessageId) {
 		return (TicketMessage) Utilities.getSingleResultOrNull(em.createQuery("SELECT tm FROM TicketMessage tm WHERE tm.id = :ticketMessageId")
@@ -48,15 +47,13 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 
 	@Override
 	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId) {
-		return (List<TicketMessage>)em.createQuery("FROM TicketMessage tm WHERE tm.ticket.id = :ticketId")
-				.setParameter("ticketId", ticketId)
+		return (List<TicketMessage>) em.createQuery("FROM TicketMessage tm WHERE tm.ticket.id = :ticketId").setParameter("ticketId", ticketId)
 				.getResultList();
 	}
 
 	@Override
 	public List<TicketMessage> getAllTicketMessages() {
-		return (List<TicketMessage>)em.createQuery("SELECT tm FROM TicketMessage tm")
-				.getResultList();
+		return (List<TicketMessage>) em.createQuery("SELECT tm FROM TicketMessage tm").getResultList();
 	}
 
 }

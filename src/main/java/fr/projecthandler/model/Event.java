@@ -33,8 +33,8 @@ public class Event extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "status", length = 30)
 	private String status;
-	
-	//@JsonIgnore
+
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_events", joinColumns = { @JoinColumn(name = "events_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;

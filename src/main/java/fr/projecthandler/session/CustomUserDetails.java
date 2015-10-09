@@ -11,7 +11,7 @@ import fr.projecthandler.enums.UserRole;
 public class CustomUserDetails implements UserDetails {
 
 	private static final long serialVersionUID = 1354773215595633736L;
-	
+
 	private Long id;
 	private Collection<? extends GrantedAuthority> authorities;
 	private String password;
@@ -19,7 +19,7 @@ public class CustomUserDetails implements UserDetails {
 	private String lastName;
 	private String avatarFileName;
 	private String username;
-	//private String fullname;
+	// private String fullname;
 	private boolean accountNonExpired;
 	private boolean accountNonLocked;
 	private boolean credentialsNonExpired;
@@ -28,7 +28,8 @@ public class CustomUserDetails implements UserDetails {
 	private UserRole userRole;
 
 	public CustomUserDetails(Long id, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
-			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName, AccountStatus accountStatus, UserRole userRole, String avatarFileName) {
+			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,
+			AccountStatus accountStatus, UserRole userRole, String avatarFileName) {
 		this.id = id;
 		this.authorities = authorities;
 		this.accountNonExpired = accountNonExpired;

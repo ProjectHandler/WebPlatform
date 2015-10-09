@@ -68,38 +68,38 @@ import fr.projecthandler.util.Utilities;
 
 @Controller
 public class UserController {
-	
-	@Autowired
-	UserService					userService;
 
 	@Autowired
-	TokenService				tokenService;
+	UserService userService;
 
 	@Autowired
-	TaskService 				taskService;
-	
-	@Autowired
-	SubTaskService 				subTaskService;
-	
-	@Autowired
-	ProjectService				projectService;
-	
-	@Autowired
-	EventService				eventService;
+	TokenService tokenService;
 
 	@Autowired
-	CivilityService				civilityService;
+	TaskService taskService;
 
 	@Autowired
-	BCryptPasswordEncoder		passwordEncoder;
+	SubTaskService subTaskService;
 
 	@Autowired
-	InputAutocompleteService	inputAutocompleteService;
+	ProjectService projectService;
 
 	@Autowired
-	private UserDetailsService	customUserDetailsService;
+	EventService eventService;
 
-	private static final Long	maximumTokenValidity	= 10368000l;	// 2 jours ms
+	@Autowired
+	CivilityService civilityService;
+
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	InputAutocompleteService inputAutocompleteService;
+
+	@Autowired
+	private UserDetailsService customUserDetailsService;
+
+	private static final Long maximumTokenValidity = 10368000l; // 2 jours ms
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -155,7 +155,7 @@ public class UserController {
 
 		return new ModelAndView("signup", myModel);
 	}
-	
+
 	@RequestMapping(value = "/saveUser", method = RequestMethod.POST)
 	public String saveUser(Principal principal, HttpServletRequest request) {
 		if (principal != null) {
@@ -184,7 +184,7 @@ public class UserController {
 				u.setPhone(phone);
 			} else
 				isValid = false;
-			
+
 			String password = Utilities.getRequestParameter(request, "password");
 			if (u.getAccountStatus() != AccountStatus.ACTIVE && password != null && password.length() > 0) {
 				u.setPassword(passwordEncoder.encode(password));
@@ -202,7 +202,7 @@ public class UserController {
 			userService.updateUser(u);
 			tokenService.deleteTokenByUserId(u.getId());
 
-			//Refresh his session to display his information
+			// Refresh his session to display his information
 			CustomUserDetails newUserDetails = (CustomUserDetails) customUserDetailsService.loadUserByUsername(u.getEmail());
 			Authentication auth = new PreAuthenticatedAuthenticationToken(newUserDetails, null, newUserDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
@@ -210,7 +210,6 @@ public class UserController {
 
 		return "redirect:/";
 	}
-	
 
 	@RequestMapping(value = "/changePassword", method = RequestMethod.GET)
 	public ModelAndView changePassword(Principal principal) {
@@ -223,10 +222,10 @@ public class UserController {
 			myModel.put("user", u);
 			myModel.put("isPasswordChanged", false);
 		}
-		
+
 		return new ModelAndView("user/changePassword", myModel);
 	}
-	
+
 	@RequestMapping(value = "/createEvent", method = RequestMethod.POST)
 	public void createEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
@@ -236,10 +235,8 @@ public class UserController {
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
-				/*
-				 * TODO add users
-				 */
-				
+				/* TODO add users */
+
 				String title = Utilities.getRequestParameter(request, "title");
 				String description = Utilities.getRequestParameter(request, "description");
 				String daterange = Utilities.getRequestParameter(request, "daterange");
@@ -247,7 +244,7 @@ public class UserController {
 				try {
 					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[0]);
 					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[1]);
-					
+
 					Event event = new Event();
 					event.setTitle(title);
 					event.setDescription(description);
@@ -261,7 +258,7 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
 	public void updateEvent(Principal principal, HttpServletRequest request) throws IOException {
 		System.out.println("//updateEvent");
@@ -272,10 +269,8 @@ public class UserController {
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
-				/*
-				 * TODO add users
-				 */
-				
+				/* TODO add users */
+
 				Event event = eventService.findEventById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
 				String title = Utilities.getRequestParameter(request, "title");
 				String description = Utilities.getRequestParameter(request, "description");
@@ -284,7 +279,7 @@ public class UserController {
 				try {
 					Date startingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[0]);
 					Date endingDate = new SimpleDateFormat("dd/MM/yyyy hh:mm aa").parse(date[1]);
-					
+
 					event.setTitle(title);
 					event.setDescription(description);
 					event.setStartingDate(startingDate);
@@ -297,7 +292,7 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/deleteEvent", method = RequestMethod.POST)
 	public void deleteEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
@@ -308,7 +303,7 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/updateSubtask", method = RequestMethod.POST)
 	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
 		System.out.println("/updateSubtask");
@@ -332,7 +327,7 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/calendarDetailsSubtaskUnplanned", method = RequestMethod.GET)
 	public void calendarDetailsSubtaskUnplanned(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
 		System.out.println("/calendarDetailsSubtaskUnplanned");
@@ -346,14 +341,14 @@ public class UserController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
 			for (SubTask subTask : listSubTask)
 				listForCalendar.add(new CalendarDTO(subTask));
-			
-			//Convert FullCalendar from Java to JSON
+
+			// Convert FullCalendar from Java to JSON
 			String jsonAppointment = new Gson().toJson(listForCalendar);
-			//Printout the JSON
+			// Printout the JSON
 			respsonse.setContentType("application/json");
 			respsonse.setCharacterEncoding("UTF-8");
 			try {
@@ -363,7 +358,6 @@ public class UserController {
 			}
 		}
 	}
-	
 
 	@RequestMapping(value = "/calendarDetails", method = RequestMethod.GET)
 	public void calendarDetails(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
@@ -371,7 +365,7 @@ public class UserController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
-			//Get the entire list of appointments available by user
+			// Get the entire list of appointments available by user
 			Set<Task> listTask = new HashSet<Task>();
 			Set<Event> listEvent = new HashSet<Event>();
 			Set<SubTask> listSubTask = new HashSet<SubTask>();
@@ -382,7 +376,7 @@ public class UserController {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			//Convert appointment to FullCalendar (A class created to facilitate the JSON)
+			// Convert appointment to FullCalendar (A class created to facilitate the JSON)
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
 			for (Task task : listTask)
 				listForCalendar.add(new CalendarDTO(task));
@@ -390,10 +384,10 @@ public class UserController {
 				listForCalendar.add(new CalendarDTO(event));
 			for (SubTask subTask : listSubTask)
 				listForCalendar.add(new CalendarDTO(subTask));
-			
-			//Convert FullCalendar from Java to JSON
+
+			// Convert FullCalendar from Java to JSON
 			String jsonAppointment = new Gson().toJson(listForCalendar);
-			//Printout the JSON
+			// Printout the JSON
 			respsonse.setContentType("application/json");
 			respsonse.setCharacterEncoding("UTF-8");
 			try {
@@ -416,13 +410,13 @@ public class UserController {
 
 		return new ModelAndView("user/calendar", myModel);
 	}
-	
+
 	@RequestMapping(value = "/downloadAvatar/{userId}", method = RequestMethod.GET)
 	public void downloadAvatar(@PathVariable Long userId, HttpServletResponse response) {
 		File avatarFile = userService.getUserAvatarFile(userId);
 		Utilities.writeFileAsResponseStream(avatarFile, response);
 	}
-	
+
 	@RequestMapping(value = "/saveAvatar", method = RequestMethod.POST)
 	public String saveAvatar(Principal principal, @RequestParam MultipartFile avatar) throws Exception {
 		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -454,7 +448,7 @@ public class UserController {
 					file = new File(directory, fileName);
 					String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 					if (mimeType.equals("image/jpeg") || mimeType.equals("image/pjpeg") || mimeType.equals("image/x-png")
-					|| mimeType.equals("image/png") || mimeType.equals("image/gif")) {
+							|| mimeType.equals("image/png") || mimeType.equals("image/gif")) {
 						out = new BufferedOutputStream(new FileOutputStream(file));
 						out.write(avatar.getBytes());
 						if (out != null) {
@@ -487,15 +481,15 @@ public class UserController {
 			myModel.put("isPasswordChanged", true);
 		}
 
-		return new ModelAndView("user/changePassword", myModel);	
+		return new ModelAndView("user/changePassword", myModel);
 	}
-	
+
 	// TODO : CLEAN CODE
 	@RequestMapping(value = "/verifyUser", method = RequestMethod.GET)
 	public ModelAndView verifyUserEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
-		
+
 		if (token != null && token.length() > 0 && principal != null) {
 			User user = tokenService.findUserByToken(token);
 			if (user == null)
@@ -524,7 +518,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/ajax/search/{projectId}/user", method = RequestMethod.GET)
-	//"@RequestParam String q" c'est quoi 'q' ???
+	// "@RequestParam String q" c'est quoi 'q' ???
 	public @ResponseBody String userSearch(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @RequestParam String q) {
 		if (userDetails == null) {
 			return "[]";
@@ -543,7 +537,7 @@ public class UserController {
 			return "[]";
 		}
 
-		//TODO une requète pour la recherche (enabled users seulement ?)
+		// TODO une requète pour la recherche (enabled users seulement ?)
 		List<User> userList = inputAutocompleteService.getMatchingUsers(projectService.getUsersByProjectId(projectId), q);
 
 		return inputAutocompleteService.userListToJson(userList);
@@ -569,7 +563,7 @@ public class UserController {
 
 		return new ModelAndView("user/profileViewBox", myModel);
 	}
-	
+
 	@RequestMapping(value = "/profile/usersProfile", method = RequestMethod.GET)
 	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails) {
 		Map<String, Object> myModel = new HashMap<String, Object>();

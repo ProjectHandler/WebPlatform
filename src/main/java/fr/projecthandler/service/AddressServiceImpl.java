@@ -10,7 +10,7 @@ import fr.projecthandler.model.Address;
 
 @Service
 public class AddressServiceImpl implements AddressService {
-	
+
 	@Autowired
 	AddressDao addressDao;
 
@@ -23,7 +23,7 @@ public class AddressServiceImpl implements AddressService {
 	public void deleteAddressesByIds(List<Long> addressesIdsList) {
 		addressDao.deleteAddressesByIds(addressesIdsList);
 	}
-	
+
 	@Override
 	public void updateAddress(Address a) {
 		addressDao.updateAddress(a);
@@ -33,5 +33,5 @@ public class AddressServiceImpl implements AddressService {
 	public List<Address> getAddressesByUser(Long id) {
 		return addressDao.getAddressesByUser(id);
 	}
-	
+
 }

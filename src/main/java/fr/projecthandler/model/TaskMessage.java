@@ -37,14 +37,14 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 
 	public TaskMessage() {
 	}
-	
+
 	public TaskMessage(String content, User owner, Date updateDate, Task task) {
 		this.content = content;
 		this.owner = owner;
 		this.updateDate = updateDate;
 		this.task = task;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}

@@ -27,7 +27,7 @@ public class Utilities {
 		}
 		return list.get(0);
 	}
-	
+
 	public static <T> T getSingleResultOrNullWithoutSettingMaxResults(Query query) {
 		List<T> list = query.getResultList();
 		if (list.isEmpty()) {
@@ -42,7 +42,7 @@ public class Utilities {
 		}
 		return null;
 	}
-	
+
 	public static File resizeImage(File fileInput, int width, int height) {
 		File fileOutput = fileInput;
 		try {
@@ -60,7 +60,7 @@ public class Utilities {
 
 		return fileOutput;
 	}
-	
+
 	public static void writeFileAsResponseStream(File file, HttpServletResponse response) {
 		if (file != null) {
 			response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());

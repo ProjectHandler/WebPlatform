@@ -10,15 +10,15 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tokens")
 public class Token extends BaseEntity implements java.io.Serializable {
-	
+
 	private static final long serialVersionUID = 0L;
-	
+
 	@Column(name = "token", length = 50)
 	private String token;
-	
+
 	@Column(name = "time_stamp")
 	private Long timeStamp;
-	
+
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
@@ -46,11 +46,10 @@ public class Token extends BaseEntity implements java.io.Serializable {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Token [token=" + token + ", timeStamp=" + timeStamp + ", user="
-				+ user + "]";
+		return "Token [token=" + token + ", timeStamp=" + timeStamp + ", user=" + user + "]";
 	}
 
 }

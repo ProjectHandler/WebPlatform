@@ -1,6 +1,5 @@
 package fr.projecthandler.dao;
 
-
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -16,10 +15,10 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 	@Transactional
 	public Long saveAddress(Address address) {
 		em.persist(address);
-		
+
 		return address.getId();
 	}
-	
+
 	@Override
 	@Transactional
 	public void updateAddress(Address address) {
@@ -33,21 +32,18 @@ public class AddressDaoImpl extends AbstractDao implements AddressDao {
 
 	@Override
 	public Address findAddressById(Long id) {
-		return (Address) Utilities.getSingleResultOrNull(
-				em.createQuery("FROM Address a WHERE a.id =:id").setParameter("id", id));
+		return (Address) Utilities.getSingleResultOrNull(em.createQuery("FROM Address a WHERE a.id =:id").setParameter("id", id));
 	}
 
 	@Override
 	public List<Address> getAddressesByUser(Long userId) {
-		return (List<Address>)em.createQuery("FROM Address a WHERE a.user.id = :userId")
-				.setParameter("userId", userId).getResultList();
+		return (List<Address>) em.createQuery("FROM Address a WHERE a.user.id = :userId").setParameter("userId", userId).getResultList();
 	}
 
 	@Override
 	@Transactional
 	public void deleteAddressesByIds(List<Long> addressesIdsList) {
-		em.createQuery("DELETE FROM Address a WHERE a.id IN :addressesIdsList")
-		.setParameter("addressesIdsList", addressesIdsList).executeUpdate();
+		em.createQuery("DELETE FROM Address a WHERE a.id IN :addressesIdsList").setParameter("addressesIdsList", addressesIdsList).executeUpdate();
 	}
-	
+
 }

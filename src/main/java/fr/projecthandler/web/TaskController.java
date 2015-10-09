@@ -40,7 +40,7 @@ public class TaskController {
 
 	@Autowired
 	SubTaskService subTaskService;
-	
+
 	@Autowired
 	TaskMessageService taskMessageService;
 
@@ -48,10 +48,8 @@ public class TaskController {
 	HttpSession httpSession;
 
 	@InitBinder
-	protected void initBinder(HttpServletRequest request,
-			ServletRequestDataBinder binder) throws Exception {
-		binder.registerCustomEditor(List.class, new CustomCollectionEditor(
-				List.class) {
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+		binder.registerCustomEditor(List.class, new CustomCollectionEditor(List.class) {
 			@Override
 			protected Object convertElement(Object element) {
 				String userId = (String) element;
@@ -61,9 +59,7 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "task/changePriority", method = RequestMethod.GET)
-	public @ResponseBody String changePriority(Principal principal,
-											   @RequestParam("taskId") Long taskId,
-											   @RequestParam("priorityId") Long priority) {
+	public @ResponseBody String changePriority(Principal principal, @RequestParam("taskId") Long taskId, @RequestParam("priorityId") Long priority) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
@@ -75,19 +71,16 @@ public class TaskController {
 			t.setPriority(taskService.findTaskPriorityById(priority));
 			try {
 				taskService.updateTask(t);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged");
 			}
 		}
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "task/updateProgress", method = RequestMethod.GET)
-	public @ResponseBody String updateProgress(Principal principal,
-											   @RequestParam("taskId") Long taskId,
-											   @RequestParam("progress") Long progress) {
+	public @ResponseBody String updateProgress(Principal principal, @RequestParam("taskId") Long taskId, @RequestParam("progress") Long progress) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
@@ -99,8 +92,7 @@ public class TaskController {
 			t.setProgress(progress); // compute Server side only ???
 			try {
 				taskService.updateTask(t);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged");
 			}
@@ -109,10 +101,8 @@ public class TaskController {
 	}
 
 	@RequestMapping(value = "subTask/save", method = RequestMethod.GET)
-	public @ResponseBody String saveSubTask(Principal principal,
-											@RequestParam("description") String description,
-											@RequestParam("userId") Long userId,
-											@RequestParam("taskId") Long taskId) {
+	public @ResponseBody String saveSubTask(Principal principal, @RequestParam("description") String description,
+			@RequestParam("userId") Long userId, @RequestParam("taskId") Long taskId) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		SubTask subTask = new SubTask();
@@ -124,8 +114,7 @@ public class TaskController {
 			subTask.setParentTask(taskService.findTaskById(taskId));
 			try {
 				subTaskService.saveSubtask(subTask);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
@@ -136,11 +125,8 @@ public class TaskController {
 
 	// TODO checkbox text enum
 	@RequestMapping(value = "subTask/update/full", method = RequestMethod.GET)
-	public @ResponseBody String updateSubTask(Principal principal,
-											  @RequestParam("description") String description,
-											  @RequestParam("userId") Long userId,
-											  @RequestParam("subTaskId") Long subTaskId,
-											  @RequestParam("state") String state) {
+	public @ResponseBody String updateSubTask(Principal principal, @RequestParam("description") String description,
+			@RequestParam("userId") Long userId, @RequestParam("subTaskId") Long subTaskId, @RequestParam("state") String state) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		if (principal == null) {
@@ -154,32 +140,27 @@ public class TaskController {
 			if (state.equals("validated")) {
 				subTask.setValidated(true);
 				subTask.setTaken(false);
-			}
-			else if (state.equals("taken")) {
+			} else if (state.equals("taken")) {
 				subTask.setTaken(true);
 				subTask.setValidated(false);
-			}
-			else {
+			} else {
 				subTask.setTaken(false);
 				subTask.setValidated(false);
 			}
 			try {
 				subTaskService.updateSubTask(subTask);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		return "OK";
 	}
-	
+
 	// TODO checkbox text enum
 	@RequestMapping(value = "subTask/update/state", method = RequestMethod.GET)
-	public @ResponseBody String updateSubTaskState(Principal principal,
-											  	   @RequestParam("userId") Long userId,
-											  	   @RequestParam("subTaskId") Long subTaskId,
-											  	   @RequestParam("state") String state) {
+	public @ResponseBody String updateSubTaskState(Principal principal, @RequestParam("userId") Long userId,
+			@RequestParam("subTaskId") Long subTaskId, @RequestParam("state") String state) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
@@ -192,19 +173,16 @@ public class TaskController {
 			if (state.equals("validated")) {
 				subTask.setValidated(true);
 				subTask.setTaken(false);
-			}
-			else if (state.equals("taken")) {
+			} else if (state.equals("taken")) {
 				subTask.setTaken(true);
 				subTask.setValidated(false);
-			}
-			else {
+			} else {
 				subTask.setTaken(false);
 				subTask.setValidated(false);
 			}
 			try {
 				subTaskService.updateSubTask(subTask);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
@@ -212,11 +190,10 @@ public class TaskController {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(subTask);
 	}
-	
+
 	@RequestMapping(value = "subTask/update/description", method = RequestMethod.GET)
-	public @ResponseBody String updateSubTaskDescription(Principal principal,
-											  			 @RequestParam("description") String description,
-											  			 @RequestParam("subTaskId") Long subTaskId) {
+	public @ResponseBody String updateSubTaskDescription(Principal principal, @RequestParam("description") String description,
+			@RequestParam("subTaskId") Long subTaskId) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
@@ -228,19 +205,16 @@ public class TaskController {
 			subTask.setDescription(description);
 			try {
 				subTaskService.updateSubTask(subTask);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "subTask/delete", method = RequestMethod.GET)
-	public @ResponseBody String deleteSubTask(Principal principal,
-								  			  @RequestParam("userId") Long userId,
-								  			  @RequestParam("subTaskId") Long subTaskId) {
+	public @ResponseBody String deleteSubTask(Principal principal, @RequestParam("userId") Long userId, @RequestParam("subTaskId") Long subTaskId) {
 		SubTask subTask = subTaskService.findSubTaskById(subTaskId);
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
@@ -254,20 +228,17 @@ public class TaskController {
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.deleteSubTaskTakenByOther");
 			try {
 				subTaskService.deleteSubTaskById(subTaskId);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted");
 			}
 		}
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "task/comment/save", method = RequestMethod.GET)
-	public @ResponseBody String saveNewComment(Principal principal,
-								  			   @RequestParam("content") String content,
-								  			   @RequestParam("userId") Long userId,
-								  			   @RequestParam("taskId") Long taskId) {
+	public @ResponseBody String saveNewComment(Principal principal, @RequestParam("content") String content, @RequestParam("userId") Long userId,
+			@RequestParam("taskId") Long taskId) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		TaskMessage taskMessage = new TaskMessage();
@@ -281,8 +252,7 @@ public class TaskController {
 			taskMessage.setUpdateDate(new Date());
 			try {
 				taskMessageService.saveTaskMessage(taskMessage);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotSaved");
 			}
@@ -290,11 +260,9 @@ public class TaskController {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(taskMessage);
 	}
-	
+
 	@RequestMapping(value = "task/comment/delete", method = RequestMethod.GET)
-	public @ResponseBody String deleteComment(Principal principal,
-								  			  @RequestParam("commentId") Long commentId,
-								  			  @RequestParam("userId") Long userId) {
+	public @ResponseBody String deleteComment(Principal principal, @RequestParam("commentId") Long commentId, @RequestParam("userId") Long userId) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 
@@ -308,20 +276,17 @@ public class TaskController {
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
 			try {
 				taskMessageService.deleteTaskMessageById(commentId);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotDeleted");
 			}
 		}
 		return "OK";
 	}
-	
+
 	@RequestMapping(value = "task/comment/update", method = RequestMethod.GET)
-	public @ResponseBody String updateComment(Principal principal,
-											  @RequestParam("content") String content,
-								  			  @RequestParam("commentId") Long commentId,
-								  			  @RequestParam("userId") Long userId) {
+	public @ResponseBody String updateComment(Principal principal, @RequestParam("content") String content,
+			@RequestParam("commentId") Long commentId, @RequestParam("userId") Long userId) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		TaskMessage taskMessage = taskMessageService.findTaskMessageById(commentId);
@@ -336,8 +301,7 @@ public class TaskController {
 			taskMessage.setContent(content);
 			try {
 				taskMessageService.updateTaskMessage(taskMessage);
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotUpdated");
 			}

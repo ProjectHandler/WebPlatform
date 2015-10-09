@@ -19,15 +19,14 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 
 	@Override
 	public Token findTokenByUserId(Long userId) {
-		return (Token) Utilities.getSingleResultOrNull( em.createQuery("SELECT t FROM Token t WHERE t.user.id = :userId")
-				.setParameter("userId", userId));
+		return (Token) Utilities.getSingleResultOrNull(em.createQuery("SELECT t FROM Token t WHERE t.user.id = :userId").setParameter("userId",
+				userId));
 	}
 
 	@Override
 	@Transactional
 	public void deleteTokenByUserId(Long userId) {
-		em.createQuery("DELETE FROM Token t WHERE t.user.id = :userId")
-		.setParameter("userId", userId).executeUpdate();
+		em.createQuery("DELETE FROM Token t WHERE t.user.id = :userId").setParameter("userId", userId).executeUpdate();
 	}
 
 	@Override

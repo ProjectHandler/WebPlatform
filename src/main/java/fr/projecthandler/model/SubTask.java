@@ -38,7 +38,7 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	@Column(name = "taken")
 	@Expose
 	private boolean taken;
-	
+
 	@Column(name = "starting_date")
 	private Date startingDate;
 
@@ -84,7 +84,7 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	public void setTaken(boolean taken) {
 		this.taken = taken;
 	}
-	
+
 	public Date getStartingDate() {
 		return startingDate;
 	}

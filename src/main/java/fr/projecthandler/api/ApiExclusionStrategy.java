@@ -6,11 +6,9 @@ import com.google.gson.FieldAttributes;
 import fr.projecthandler.annotation.ApiExclude;
 
 /**
- * This class defines custom exclusion policy. We want to ignore all fields that
- * have been annotated with the Country annotation. Note that we can also ignore
- * fields based on name or type. This same policy can be applied to any class.
- * In this example we apply to the CAT class, but it is not limited to the cat
- * class.
+ * This class defines custom exclusion policy. We want to ignore all fields that have been annotated with the Country annotation. Note that we can
+ * also ignore fields based on name or type. This same policy can be applied to any class. In this example we apply to the CAT class, but it is not
+ * limited to the cat class.
  *
  */
 public class ApiExclusionStrategy implements ExclusionStrategy {

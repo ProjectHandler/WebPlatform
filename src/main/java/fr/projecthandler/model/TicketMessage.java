@@ -18,34 +18,34 @@ import fr.projecthandler.util.TimestampEntity;
 
 @Entity
 @Table(name = "ticket_messages")
-public class TicketMessage extends BaseEntity implements java.io.Serializable, TimestampEntity  {
+public class TicketMessage extends BaseEntity implements java.io.Serializable, TimestampEntity {
 
 	private static final long serialVersionUID = 254665316357554236L;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "ticket_id", nullable = false)
 	private Ticket ticket;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_at", nullable = false, updatable=false)
-    private Date createdAt;
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "created_at", nullable = false, updatable = false)
+	private Date createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "updated_at", nullable = false)
-    private Date updatedAt;
-    
-	@Size(min=1, max=500)
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "updated_at", nullable = false)
+	private Date updatedAt;
+
+	@Size(min = 1, max = 500)
 	@Column(name = "text", length = 500)
 	private String text;
-    
+
 	public TicketMessage() {
 	}
-	
-    public Ticket getTicket() {
+
+	public Ticket getTicket() {
 		return ticket;
 	}
 
@@ -54,14 +54,14 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
 	}
 
 	@PrePersist
-    protected void createAtTimestamp() {
-    	updatedAt = createdAt = new Date();
-    }
+	protected void createAtTimestamp() {
+		updatedAt = createdAt = new Date();
+	}
 
-    @PreUpdate
-    protected void updateAtTimestamp() {
-    	updatedAt = new Date();
-    }
+	@PreUpdate
+	protected void updateAtTimestamp() {
+		updatedAt = new Date();
+	}
 
 	public String getText() {
 		return text;

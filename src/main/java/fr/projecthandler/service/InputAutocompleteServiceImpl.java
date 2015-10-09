@@ -13,26 +13,25 @@ import fr.projecthandler.model.User;
 public class InputAutocompleteServiceImpl implements InputAutocompleteService {
 
 	final int USER_JSON_SIZE = 80;
-	
-	//TODO delete and replace by an appropriate query
+
+	// TODO delete and replace by an appropriate query
 	public List<User> getMatchingUsers(final List<User> userList, String search) {
-		
+
 		List<User> result = new ArrayList<User>();
 
 		for (Iterator<User> iterator = userList.iterator(); iterator.hasNext();) {
-		    User u = iterator.next();
+			User u = iterator.next();
 			String firstName = u.getFirstName() == null ? "" : u.getFirstName();
 			String lastName = u.getLastName() == null ? "" : u.getLastName();
 			String fullName = firstName + " " + lastName;
 			String reverseFullName = lastName + " " + firstName;
-			
-			if (fullName.toLowerCase().contains(search.toLowerCase())
-					|| reverseFullName.toLowerCase().contains(search.toLowerCase())
+
+			if (fullName.toLowerCase().contains(search.toLowerCase()) || reverseFullName.toLowerCase().contains(search.toLowerCase())
 					|| u.getEmail().toLowerCase().contains(search.toLowerCase())) {
 				result.add(u);
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -43,21 +42,18 @@ public class InputAutocompleteServiceImpl implements InputAutocompleteService {
 		result.append('[');
 		for (User u : userList) {
 			String firstName = u.getFirstName() == null ? "" : u.getFirstName();
-//			String lastName = u.getLastName() == null ? "" : u.getLastName();
+			// String lastName = u.getLastName() == null ? "" : u.getLastName();
 			if (comma) {
 				result.append(',');
 			}
 			result.append("{\"id\":\"").append(u.getId()).append("\",");
-			result.append("\"name\":\"").append(
-					Encode.forJavaScript(Encode.forHtml(firstName)));
-			result.append(" &lt;mail:")
-					.append(Encode.forJavaScript(Encode.forHtml(u.getEmail())))
-					.append("&gt;");
+			result.append("\"name\":\"").append(Encode.forJavaScript(Encode.forHtml(firstName)));
+			result.append(" &lt;mail:").append(Encode.forJavaScript(Encode.forHtml(u.getEmail()))).append("&gt;");
 			result.append("\"}");
 			comma = true;
 		}
 		result.append(']');
-		
+
 		return result.toString();
 	}
 

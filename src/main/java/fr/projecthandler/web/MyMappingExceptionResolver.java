@@ -15,16 +15,14 @@ public class MyMappingExceptionResolver extends SimpleMappingExceptionResolver {
 
 	@Override
 	public String buildLogMessage(Exception e, HttpServletRequest req) {
-		
+
 		return "MVC exception: " + e.getLocalizedMessage();
 	}
 
 	@Override
-	protected ModelAndView doResolveException(HttpServletRequest request,
-			HttpServletResponse response, Object handler, Exception exception) {
+	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
 		// Call super method to get the ModelAndView
-		ModelAndView mav = super.doResolveException(request, response, handler,
-				exception);
+		ModelAndView mav = super.doResolveException(request, response, handler, exception);
 
 		// Make the full URL available to the view - note ModelAndView uses
 		// addObject()

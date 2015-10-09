@@ -35,13 +35,15 @@ public class EventDaoImpl extends AbstractDao implements EventDao {
 
 	@Override
 	public Event findEventById(Long eventId) {
-		return (Event) Utilities.getSingleResultOrNull(em.createQuery("SELECT t FROM Event t WHERE t.id = :eventId").setParameter("eventId", eventId));
+		return (Event) Utilities
+				.getSingleResultOrNull(em.createQuery("SELECT t FROM Event t WHERE t.id = :eventId").setParameter("eventId", eventId));
 	}
-	
+
 	@Override
-	public Set<Event> getEventsByUser(Long userId){
+	public Set<Event> getEventsByUser(Long userId) {
 		Set<Event> result = new HashSet<Event>();
-		result.addAll(em.createQuery("SELECT e FROM Event e JOIN FETCH e.users u WHERE :userId IN (u.id)").setParameter("userId", userId).getResultList());
+		result.addAll(em.createQuery("SELECT e FROM Event e JOIN FETCH e.users u WHERE :userId IN (u.id)").setParameter("userId", userId)
+				.getResultList());
 		return result;
 	}
 
@@ -57,7 +59,7 @@ public class EventDaoImpl extends AbstractDao implements EventDao {
 		result.addAll(em.createQuery(sb.toString()).setParameter("userId", userId).getResultList());
 		return result;
 	}
-	
+
 	@Override
 	public Set<Event> getTodayEventsByUser(Long userId) {
 		Set<Event> result = new HashSet<Event>();

@@ -52,16 +52,16 @@ public class ProjectController {
 
 	@Autowired
 	ProjectService projectService;
-	
+
 	@Autowired
 	TaskService taskService;
-	
+
 	@Autowired
 	SubTaskService subTaskService;
 
 	@Autowired
 	TicketService ticketService;
-	
+
 	@Autowired
 	TaskMessageService taskMessageService;
 
@@ -69,10 +69,8 @@ public class ProjectController {
 	HttpSession httpSession;
 
 	@InitBinder
-	protected void initBinder(HttpServletRequest request,
-			ServletRequestDataBinder binder) throws Exception {
-		binder.registerCustomEditor(List.class, new CustomCollectionEditor(
-				List.class) {
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+		binder.registerCustomEditor(List.class, new CustomCollectionEditor(List.class) {
 			@Override
 			protected Object convertElement(Object element) {
 				String userId = (String) element;
@@ -92,18 +90,17 @@ public class ProjectController {
 			myModel.put("user", u);
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				projectList = projectService.getAllProjects();
-			}
-			else {
+			} else {
 				projectList = projectService.getProjectsByUserId(u.getId());
 			}
 			myModel.put("projectList", projectList);
-			
+
 			List<ProjectProgressDTO> projectProgressList = new ArrayList<>();
 			for (Project p : projectList) {
 				p.setTasks(taskService.getTasksByProjectId(p.getId()));
 				projectProgressList.add(new ProjectProgressDTO(p));
 			}
-			
+
 			myModel.put("projectProgressList", projectProgressList);
 		} else {
 			// TODO redirect to login
@@ -122,8 +119,7 @@ public class ProjectController {
 		// TODO validation des données, date de fin après le début
 		if (principal != null) {
 			Project project = new Project();
-			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal)
-					.getPrincipal();
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
 			project.setDateBegin(new Date());
@@ -139,18 +135,18 @@ public class ProjectController {
 
 		return new ModelAndView("project/editProject", myModel);
 	}
-	
+
 	// call when click on corresponding edit button in projectList page
 	@RequestMapping(value = "/project/edit/{projectId}", method = RequestMethod.GET)
 	public ModelAndView editProject(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		
+
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
-		
+
 		Project project = projectService.findProjectById(projectId);
-		
+
 		if (project == null) {
 			// TODO not found
 			return new ModelAndView("redirect:/");
@@ -160,25 +156,25 @@ public class ProjectController {
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 		myModel.put("users", userService.getAllActiveUsers());
 		myModel.put("groups", userService.getAllNonEmptyGroups());
-		
+
 		return new ModelAndView("project/editProject", myModel);
 	}
 
 	@RequestMapping(value = "/project/viewProject/{projectId}", method = RequestMethod.GET)
 	public ModelAndView viewProject(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		
+
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
-		
+
 		Project project = projectService.findProjectById(projectId);
 
 		if (project == null) {
 			// TODO not found
 			return new ModelAndView("redirect:/");
 		}
-		
+
 		project.setUsers(projectService.getUsersByProjectId(project.getId()));
 		project.setTasks(taskService.getTasksByProjectId(project.getId()));
 		ProjectProgressDTO projectProgress = new ProjectProgressDTO(project);
@@ -191,37 +187,29 @@ public class ProjectController {
 		myModel.put("user", user);
 		myModel.put("tickets", ticketService.getTicketsByProjectId(project.getId()));
 		myModel.put("projectProgress", projectProgress);
-		
+
 		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
 
 		return new ModelAndView("project/projectView", myModel);
 	}
-	
-/*	@RequestMapping(value = "/project/viewProject/{projectId}/tasks", method = RequestMethod.GET)
-	public ModelAndView viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
 
-		if (userDetails == null) {
-			return new ModelAndView("redirect:/");
-		}
+	/* @RequestMapping(value = "/project/viewProject/{projectId}/tasks", method = RequestMethod.GET) public ModelAndView
+	 * viewProjectTasks(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) { Map<String, Object> myModel = new
+	 * HashMap<String, Object>();
+	 * 
+	 * if (userDetails == null) { return new ModelAndView("redirect:/"); }
+	 * 
+	 * Project project = projectService.findProjectById(projectId);
+	 * 
+	 * if (project == null) { // TODO not found return new ModelAndView("redirect:/"); } myModel.put("project", project); myModel.put("tasks",
+	 * taskService.getTasksByProjectId(project.getId())); myModel.put("user", userService.findUserById(userDetails.getId()));
+	 * 
+	 * return new ModelAndView("project/projectTasksView", myModel); } */
 
-		Project project = projectService.findProjectById(projectId);
-
-		if (project == null) {
-			// TODO not found
-			return new ModelAndView("redirect:/");
-		}
-		myModel.put("project", project);
-		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
-		myModel.put("user", userService.findUserById(userDetails.getId()));
-
-		return new ModelAndView("project/projectTasksView", myModel);
-	}*/
-	
 	@RequestMapping(value = "/project/viewProject/{projectId}/tasks/{taskId}", method = RequestMethod.GET)
 	public ModelAndView viewProjectTaskBox(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @PathVariable Long taskId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		
+
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
@@ -231,7 +219,7 @@ public class ProjectController {
 
 		if (p == null || t == null)
 			return new ModelAndView("redirect:/");
-		
+
 		p.setUsers(projectService.getUsersByProjectId(projectId));
 		t.setProject(p);
 		t.setUsers(taskService.getUsersByTaskId(taskId));
@@ -248,7 +236,7 @@ public class ProjectController {
 
 	@RequestMapping(value = "/project/save", method = RequestMethod.POST)
 	public ModelAndView saveProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
-		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
+		// CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 		if (principal != null) {
 			long diff = project.getDateEnd().getTime() - project.getDateBegin().getTime();
 			float duration = (float) diff / (24 * 60 * 60 * 1000);
@@ -259,15 +247,13 @@ public class ProjectController {
 				project.setProgress(0l);
 				project.setStatus(ProjectStatus.ACTIVE.getValue());
 				projectService.saveProject(project);
-			}
-			else { // project exists
+			} else { // project exists
 				Project p = projectService.findProjectById(project.getId());
 				project.setProgress(p.getProgress());
 				project.setStatus(p.getStatus());
 				projectService.updateProject(project);
 			}
-		}
-		else
+		} else
 			return new ModelAndView("redirect:/");
 
 		return new ModelAndView("redirect:/project/projectsList");
@@ -277,16 +263,14 @@ public class ProjectController {
 	public ModelAndView deleteProject(Principal principal, @ModelAttribute("project") Project project, BindingResult result) {
 		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 		User u = userService.findUserById(userDetails.getId());
-		
+
 		if (principal != null && u.getUserRole().equals(UserRole.ROLE_ADMIN)) {
 			try {
 				projectService.deleteProjectById(project.getId());
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		else
+		} else
 			return new ModelAndView("accessDenied");
 
 		return new ModelAndView("redirect:/project/projectsList");

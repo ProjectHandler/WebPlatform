@@ -18,19 +18,19 @@ public interface TaskService {
 	public void deleteTasksByIds(List<Long> TasksIdsList);
 
 	public Set<Task> getTasksByProjectId(Long projectId);
-	
+
 	public Set<Task> getTasksByTaskIdWithDepends(Long taskId);
-	
+
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
-	
+
 	public List<User> getUsersByTaskId(Long taskId);
-	
+
 	public Set<Task> getYesterdayTasksByUser(Long userId);
-	
+
 	public Set<Task> getTodayTasksByUser(Long userId);
-	
+
 	public Set<Task> getTomorrowTasksByUser(Long userId);
-	
+
 	public Long saveTaskPriority(TaskPriority taskPriority);
 
 	public void updateTaskPriority(TaskPriority taskPriority);
@@ -42,10 +42,10 @@ public interface TaskService {
 	public TaskPriority findTaskPriorityById(Long taskPriorityId);
 
 	public List<TaskPriority> getAllTaskPriorities();
-	
+
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId);
-	
+
 	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId);
-	
+
 	public Set<Task> getTasksByUser(Long userId);
 }

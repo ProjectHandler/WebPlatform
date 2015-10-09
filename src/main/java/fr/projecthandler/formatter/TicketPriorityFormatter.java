@@ -15,14 +15,14 @@ public class TicketPriorityFormatter implements Formatter<TicketPriority> {
 
 	@Autowired
 	private TicketService ticketService;
-	
-    @Override
-    public String print(TicketPriority project, Locale locale) {
-        return project.getId().toString();
-    }
 
-    @Override
-    public TicketPriority parse(String projectId, Locale locale) throws ParseException {
-        return ticketService.findTicketPriorityById(Long.parseLong(projectId));
-    }
+	@Override
+	public String print(TicketPriority project, Locale locale) {
+		return project.getId().toString();
+	}
+
+	@Override
+	public TicketPriority parse(String projectId, Locale locale) throws ParseException {
+		return ticketService.findTicketPriorityById(Long.parseLong(projectId));
+	}
 }

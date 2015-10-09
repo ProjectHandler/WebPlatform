@@ -41,19 +41,19 @@ import fr.projecthandler.util.TokenGenerator;
 public class AdminController {
 
 	@Autowired
-	UserService					userService;
+	UserService userService;
 
 	@Autowired
-	MailService					mailService;
+	MailService mailService;
 
 	@Autowired
-	TokenService				tokenService;
-	
+	TokenService tokenService;
+
 	@Autowired
-	ProjectService				projectService;
-	
+	ProjectService projectService;
+
 	@Autowired
-	TaskService					taskService;
+	TaskService taskService;
 
 	@RequestMapping(value = "admin/signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -178,7 +178,7 @@ public class AdminController {
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
-			//check number of administrator
+			// check number of administrator
 			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
 				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
 				if (usersAdmin.size() <= 1)
@@ -205,7 +205,7 @@ public class AdminController {
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
-			//check number of administrator
+			// check number of administrator
 			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
 				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
 				if (usersAdmin.size() <= 1)
@@ -232,7 +232,7 @@ public class AdminController {
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
 		try {
 			User user = userService.findUserById(Long.parseLong(userId));
-			//check number of administrator
+			// check number of administrator
 			if (user.getUserRole() == UserRole.ROLE_ADMIN) {
 				List<User> usersAdmin = userService.getUsersByRole(UserRole.ROLE_ADMIN);
 				if (usersAdmin.size() <= 1)
@@ -244,11 +244,10 @@ public class AdminController {
 				StringBuilder str = new StringBuilder();
 				str.append("KO: ");
 				str.append(bundle.getString("projecthandler.admin.error.deleteUserInProject"));
-				for(Project p : user.getProjects())
+				for (Project p : user.getProjects())
 					str.append("\n-" + p.getName());
 				return str.toString();
-			}
-			else if (user.getTasks().size() > 0)
+			} else if (user.getTasks().size() > 0)
 				return "KO:" + bundle.getString("projecthandler.admin.error.deleteUserHasTasks");
 			tokenService.deleteTokenByUserId(user.getId());
 			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
@@ -332,7 +331,8 @@ public class AdminController {
 	}
 
 	@RequestMapping(value = "admin/users_management/changeGroup", method = RequestMethod.GET)
-	public @ResponseBody String changeGroup(Principal principal, @RequestParam("userId") String userId, @RequestParam("groupId") String groupId, @RequestParam("action") String action) {
+	public @ResponseBody String changeGroup(Principal principal, @RequestParam("userId") String userId, @RequestParam("groupId") String groupId,
+			@RequestParam("action") String action) {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)

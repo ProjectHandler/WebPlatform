@@ -17,10 +17,10 @@ public class ProjectServiceImpl implements ProjectService {
 
 	@Autowired
 	ProjectDao projectDao;
-	
+
 	@Autowired
 	TicketService ticketService;
-	
+
 	@Autowired
 	TaskService taskService;
 
@@ -68,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
 				taskService.deleteTasksByIds(tasksIds);
 			List<Ticket> tickets = ticketService.getTicketsByProjectId(projectId);
 			List<Long> ticketsIdsList = new ArrayList<Long>();
-			for(Ticket t : tickets) {
+			for (Ticket t : tickets) {
 				ticketsIdsList.add(t.getId());
 			}
 			if (ticketsIdsList.size() > 0)
@@ -81,7 +81,7 @@ public class ProjectServiceImpl implements ProjectService {
 	public Project loadGantt(Long projectId) {
 		return projectDao.findProjectById(projectId);
 	}
-	
+
 	@Override
 	public List<User> getUsersByProjectId(Long projectId) {
 		return projectDao.getUsersByProjectId(projectId);

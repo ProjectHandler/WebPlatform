@@ -18,21 +18,21 @@ public class UserListFormatter implements Formatter<List<User>> {
 
 	@Autowired
 	private UserService userService;
-	
+
 	private final String delimiter = ",";
-	
-    @Override
+
+	@Override
 	public String print(List<User> userList, Locale locale) {
 		String str = new String();
 
 		for (User user : userList) {
 			str += user.getId() + delimiter;
 		}
-		
+
 		return str;
 	}
 
-    @Override
+	@Override
 	public List<User> parse(String userListString, Locale locale) throws ParseException {
 		String[] array = userListString.split(delimiter);
 		List<User> userList = new ArrayList<User>();

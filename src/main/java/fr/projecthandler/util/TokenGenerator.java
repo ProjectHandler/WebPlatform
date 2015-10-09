@@ -11,7 +11,7 @@ public class TokenGenerator {
 		java.util.Date currentDate = new java.util.Date();
 		return currentDate.getTime();
 	}
-	
+
 	// returns true if the token is out of date (compared to maximumTime)
 	public static boolean checkTimestamp(Long timestamp, Long maximumTime) {
 		java.util.Date currentDate = new java.util.Date();

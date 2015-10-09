@@ -24,7 +24,7 @@ import fr.projecthandler.enums.UserRole;
 
 @Entity
 @Table(name = "users")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5538144362291281238L;
@@ -32,7 +32,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "civility_id")
 	private Civility civility;
-	
+
 	@Column(name = "first_name", length = 30)
 	@Expose
 	private String firstName;
@@ -41,7 +41,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Expose
 	private String lastName;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@Column(name = "password", length = 70)
 	private String password;
 
@@ -54,50 +54,50 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "email", length = 50)
 	private String email;
-	
+
 	@Column(name = "phone", length = 10)
 	private String phone;
-	
+
 	@Column(name = "mobile_phone", length = 10)
 	private String mobilePhone;
-	
+
 	@Column(name = "account_status")
 	private AccountStatus accountStatus;
-	
+
 	@Column(name = "work_day")
 	private String workDay;
-	
+
 	@Column(name = "daily_hour")
 	private String dailyHour;
-	
+
 	@Column(name = "avatar_file_name")
 	private String avatarFileName;
-	
+
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") })
 	private List<Project> projects;
-	
-	//@JsonIgnore
+
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") })
 	private List<Task> tasks;
-	
+
 	public User() {
 	}
 
 	public Civility getCivility() {
 		return civility;
 	}
-	
+
 	public void setCivility(Civility civility) {
 		this.civility = civility;
 	}
-	
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -197,44 +197,42 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public List<Group> getGroups() {
 		return this.groups;
 	}
-	
+
 	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
-	
+
 	public void addGroup(Group group) {
 		this.groups.add(group);
 	}
-	
+
 	public void removeGroup(Group group) {
 		this.groups.remove(group);
 	}
-	
+
 	public List<Project> getProjects() {
 		return this.projects;
 	}
-	
+
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
 	}
-	
+
 	public List<Task> getTasks() {
 		return this.tasks;
 	}
-	
+
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((firstName == null) ? 0 : firstName.hashCode());
-		result = prime * result
-				+ ((lastName == null) ? 0 : lastName.hashCode());
+		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		return result;
 	}
 
@@ -267,9 +265,8 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "User is : [civility="+ civility +", firstName=" + firstName + ", lastName=" + lastName
-				+ ", password=" /*+ password*/ + ", address=" + address
-				+ ", email=" + email + "]";
+		return "User is : [civility=" + civility + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" /* + password */
+				+ ", address=" + address + ", email=" + email + "]";
 	}
-	
+
 }

@@ -20,6 +20,6 @@ public interface ProjectDao {
 	public List<Project> getProjectsByUserId(Long userId);
 
 	public void deleteProjectById(Long projectId);
-	
+
 	public List<User> getUsersByProjectId(Long projectId);
 }

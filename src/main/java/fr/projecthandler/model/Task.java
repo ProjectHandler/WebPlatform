@@ -46,35 +46,34 @@ public class Task extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "status", length = 30)
 	private String status;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "task_priority_id")
 	private TaskPriority priority;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;
 
 	@Column(name = "row")
 	private Long row;
-	
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "project_id")
 	private Project project;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "depend_tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, 
-			inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })
+	@JoinTable(name = "depend_tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })
 	private Set<Task> dependtasks;
-	
+
 	public Task() {
 	}
 
 	public Task(GanttTaskDTO taskDTO) {
-		//if (taskDTO.getId() != null)
-		//	this.id = Long.parseLong(taskDTO.getId(), 10);
+		// if (taskDTO.getId() != null)
+		// this.id = Long.parseLong(taskDTO.getId(), 10);
 		this.name = taskDTO.getName();
 		this.progress = taskDTO.getProgress();
 		this.description = taskDTO.getDescription();
@@ -176,7 +175,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	public Project getProject() {
 		return project;
 	}
-	
+
 	public void setProject(Project project) {
 		this.project = project;
 	}

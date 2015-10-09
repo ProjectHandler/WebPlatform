@@ -15,12 +15,12 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "groups")
-//@JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Group extends BaseEntity implements java.io.Serializable {
-	
+
 	private static final long serialVersionUID = 7777936323140047759L;
 
-	@Column(name = "name", length=50)
+	@Column(name = "name", length = 50)
 	private String name;
 
 	@ManyToMany(fetch = FetchType.EAGER)
@@ -42,5 +42,5 @@ public class Group extends BaseEntity implements java.io.Serializable {
 	public void setUsers(List<User> users) {
 		this.users = users;
 	}
-	
+
 }

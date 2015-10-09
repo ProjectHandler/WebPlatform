@@ -49,11 +49,11 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	@Column(name = "status", length = 30)
 	private String status;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "project")
 	private Set<Task> tasks;
 
-	//@JsonIgnore
+	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private List<User> users = new ArrayList<User>();
@@ -147,7 +147,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	public void addUser(User user) {
 		this.users.add(user);
 	}
-	
+
 	public void addUsers(List<User> users) {
 		this.users.addAll(users);
 	}
@@ -155,7 +155,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	public boolean removeUser(User user) {
 		return this.users.remove(user);
 	}
-	
+
 	public void removeAllUsers() {
 		this.users.clear();
 	}

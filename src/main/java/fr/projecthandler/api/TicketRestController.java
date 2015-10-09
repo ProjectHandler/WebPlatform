@@ -19,6 +19,7 @@ import com.google.gson.GsonBuilder;
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.MobileTicketDTO;
 import fr.projecthandler.model.Ticket;
+import fr.projecthandler.model.TicketMessage;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
@@ -40,28 +41,28 @@ public class TicketRestController {
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
-		
+
 	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> getProjects(@CurrentUserDetails CustomUserDetails userDetails) {
 		try {
 			List<Ticket> ticketList = ticketService.getTicketsByUser(userDetails.getId());
-			
 			if (ticketList == null) {
-				return new ResponseEntity<String>(
-						"{\"status\":400, \"project\":\"Not found\"}",
-						HttpStatus.NOT_FOUND);
+				return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 			}
-	
 			List<MobileTicketDTO> ticketListDTO = new ArrayList<MobileTicketDTO>();
-			for (Ticket t : ticketList) {
-				ticketListDTO.add(new MobileTicketDTO(t));
+
+			for (Ticket ticket : ticketList) {
+				MobileTicketDTO mobileTicketDTO = new MobileTicketDTO(ticket);
+				List<TicketMessage> listTicketMessage = ticketService.getTicketMessagesByTicketId(ticket.getId());
+				mobileTicketDTO.setMessage(listTicketMessage);
+				ticketListDTO.add(mobileTicketDTO);
 			}
-			
+
 			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 			String json = gson.toJson(ticketListDTO);
-			
+
 			return new ResponseEntity<String>(json, HttpStatus.OK);
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}

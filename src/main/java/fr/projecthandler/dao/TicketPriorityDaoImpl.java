@@ -21,7 +21,7 @@ public class TicketPriorityDaoImpl extends AbstractDao implements TicketPriority
 	@Transactional
 	public Long saveTicketPriority(TicketPriority ticketPriority) {
 		em.persist(ticketPriority);
-		
+
 		return ticketPriority.getId();
 	}
 
@@ -29,17 +29,16 @@ public class TicketPriorityDaoImpl extends AbstractDao implements TicketPriority
 	@Transactional
 	public void deleteTicketPrioritiesByIds(List<Long> ticketPrioritiesIdsList) {
 		em.createQuery("DELETE FROM TicketPriority tt WHERE tt.id IN (:ticketPrioritiesIdsList)")
-		.setParameter("ticketPrioritiesIdsList", ticketPrioritiesIdsList)
-		.executeUpdate();
+				.setParameter("ticketPrioritiesIdsList", ticketPrioritiesIdsList).executeUpdate();
 	}
 
 	@Override
 	@Transactional
 	public void deleteTicketPriorityById(Long ticketPriorityId) {
-		em.createQuery("DELETE FROM TicketPriority tt WHERE tt.id = :ticketPriorityId")
-		.setParameter("ticketPriorityId", ticketPriorityId)
-		.executeUpdate();
+		em.createQuery("DELETE FROM TicketPriority tt WHERE tt.id = :ticketPriorityId").setParameter("ticketPriorityId", ticketPriorityId)
+				.executeUpdate();
 	}
+
 	@Override
 	public TicketPriority findTicketPriorityById(Long ticketPriorityId) {
 		return (TicketPriority) Utilities.getSingleResultOrNull(em.createQuery("SELECT tt FROM TicketPriority tt WHERE tt.id = :ticketPriorityId")
@@ -48,8 +47,7 @@ public class TicketPriorityDaoImpl extends AbstractDao implements TicketPriority
 
 	@Override
 	public List<TicketPriority> getAllTicketPriorities() {
-		return (List<TicketPriority>)em.createQuery("SELECT tt FROM TicketPriority tt")
-				.getResultList();
+		return (List<TicketPriority>) em.createQuery("SELECT tt FROM TicketPriority tt").getResultList();
 	}
 
 }

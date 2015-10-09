@@ -17,7 +17,7 @@ public class TaskServiceImpl implements TaskService {
 
 	@Autowired
 	TaskDao taskDao;
-	
+
 	@Autowired
 	TaskPriorityDao taskPriorityDao;
 
@@ -41,30 +41,30 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getTasksByProjectId(projectId);
 	}
 
-	public Set<Task> getTasksByTaskIdWithDepends(Long taskId){
+	public Set<Task> getTasksByTaskIdWithDepends(Long taskId) {
 		return taskDao.getTasksByTaskIdWithDepends(taskId);
 	}
-	
-	public Set<Task> getTasksByUserAndFetchUsers(Long userId){
+
+	public Set<Task> getTasksByUserAndFetchUsers(Long userId) {
 		return taskDao.getTasksByUserAndFetchUsers(userId);
 	}
-	
+
 	public List<User> getUsersByTaskId(Long taskId) {
 		return taskDao.getUsersByTaskId(taskId);
 	}
-	
+
 	public Set<Task> getYesterdayTasksByUser(Long userId) {
 		return taskDao.getYesterdayTasksByUser(userId);
 	}
-	
+
 	public Set<Task> getTodayTasksByUser(Long userId) {
 		return taskDao.getTodayTasksByUser(userId);
 	}
-	
+
 	public Set<Task> getTomorrowTasksByUser(Long userId) {
 		return taskDao.getTomorrowTasksByUser(userId);
 	}
-	
+
 	public Long saveTaskPriority(TaskPriority taskPriority) {
 		return taskPriorityDao.saveTaskPriority(taskPriority);
 	}
@@ -88,16 +88,16 @@ public class TaskServiceImpl implements TaskService {
 	public List<TaskPriority> getAllTaskPriorities() {
 		return taskPriorityDao.getAllTaskPriorities();
 	}
-	
+
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId) {
 		return taskDao.getTasksByProjectIdWithDepends(projectId);
 	}
-	
+
 	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId) {
 		return taskDao.getTasksByProjectIdAndUserIdWithDepends(projectId, userId);
 	}
-	
+
 	public Set<Task> getTasksByUser(Long userId) {
-	    return taskDao.getTasksByUser(userId);
+		return taskDao.getTasksByUser(userId);
 	}
 }

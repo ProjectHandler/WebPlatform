@@ -34,15 +34,15 @@ public class EventServiceImpl implements EventService {
 	public Set<Event> getEventsByUser(Long userId) {
 		return eventDao.getEventsByUser(userId);
 	}
-	
+
 	public Set<Event> getYesterdayEventsByUser(Long userId) {
 		return eventDao.getYesterdayEventsByUser(userId);
 	}
-	
+
 	public Set<Event> getTodayEventsByUser(Long userId) {
 		return eventDao.getTodayEventsByUser(userId);
 	}
-	
+
 	public Set<Event> getTomorrowEventsByUser(Long userId) {
 		return eventDao.getTomorrowEventsByUser(userId);
 	}

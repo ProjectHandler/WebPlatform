@@ -15,14 +15,14 @@ public class ProjectFormatter implements Formatter<Project> {
 
 	@Autowired
 	private ProjectService projectService;
-	
-    @Override
-    public String print(Project project, Locale locale) {
-        return project.getId().toString();
-    }
 
-    @Override
-    public Project parse(String projectId, Locale locale) throws ParseException {
-        return projectService.findProjectById(Long.parseLong(projectId));
-    }
+	@Override
+	public String print(Project project, Locale locale) {
+		return project.getId().toString();
+	}
+
+	@Override
+	public Project parse(String projectId, Locale locale) throws ParseException {
+		return projectService.findProjectById(Long.parseLong(projectId));
+	}
 }

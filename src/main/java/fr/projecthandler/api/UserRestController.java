@@ -55,24 +55,18 @@ public class UserRestController {
 	private UserDetailsService customUserDetailsService;
 
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-	public @ResponseBody Object authenticate(
-			@RequestParam("email") String email,
-			@RequestParam("password") String password) {
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-				email, password);
+	public @ResponseBody Object authenticate(@RequestParam("email") String email, @RequestParam("password") String password) {
+		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
 		Authentication authentication = null;
 
 		try {
 			authentication = this.authManager.authenticate(authenticationToken);
 		} catch (AuthenticationException e) {
-			return new ResponseEntity<String>(
-					"{\"status\":401, \"message\":\"Bad credentials\"}",
-					HttpStatus.UNAUTHORIZED);
+			return new ResponseEntity<String>("{\"status\":401, \"message\":\"Bad credentials\"}", HttpStatus.UNAUTHORIZED);
 		}
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		CustomUserDetails userDetails = (CustomUserDetails) this.customUserDetailsService
-				.loadUserByUsername(email);
+		CustomUserDetails userDetails = (CustomUserDetails) this.customUserDetailsService.loadUserByUsername(email);
 		Token token = tokenService.findTokenByUserId(userDetails.getId());
 
 		// Generate a token if the user doesn't have one.
@@ -81,9 +75,7 @@ public class UserRestController {
 			token = new Token();
 
 			if (u == null) {
-				return new ResponseEntity<String>(
-						"{\"status\":505, \"message\":\"Internal Server Error\"}",
-						HttpStatus.INTERNAL_SERVER_ERROR);
+				return new ResponseEntity<String>("{\"status\":505, \"message\":\"Internal Server Error\"}", HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			// TODO make sure token is unique ?
 			token.setToken(TokenGenerator.generateToken());
@@ -92,22 +84,18 @@ public class UserRestController {
 			tokenService.saveToken(token);
 		}
 
-		return new ResponseEntity<String>("{\"token\":" + token.getToken()
-				+ "}", HttpStatus.OK);
+		return new ResponseEntity<String>("{\"token\":" + token.getToken() + "}", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
 		User user = userService.findUserById(id);
-	
+
 		if (user == null) {
-			return new ResponseEntity<String>(
-					"{\"status\":400, \"message\":\"Not found\"}",
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>("{\"status\":400, \"message\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
-		
-		Gson gson = new GsonBuilder().setExclusionStrategies(
-				new ApiExclusionStrategy()).create();
+
+		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 		try {
 			String json = gson.toJson(new UserDTO(user));
 			return new ResponseEntity<String>(json, HttpStatus.OK);
@@ -119,13 +107,10 @@ public class UserRestController {
 
 	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<String> save(
-			@CurrentUserDetails CustomUserDetails userDetails,
-			@Valid User user, BindingResult result) {
+	public ResponseEntity<String> save(@CurrentUserDetails CustomUserDetails userDetails, @Valid User user, BindingResult result) {
 		if (userDetails == null) {
 			// TODO redirect to login
-			return new ResponseEntity<String>("Acces denied",
-					HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("Acces denied", HttpStatus.BAD_REQUEST);
 		}
 		System.out.println(user.toString());
 		user.setAccountStatus(AccountStatus.ACTIVE);

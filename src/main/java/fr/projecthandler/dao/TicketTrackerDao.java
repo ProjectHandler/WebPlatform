@@ -5,7 +5,7 @@ import java.util.List;
 import fr.projecthandler.model.TicketTracker;
 
 public interface TicketTrackerDao {
-	
+
 	public Long saveTicketTracker(TicketTracker ticketTracker);
 
 	public void updateTicketTracker(TicketTracker ticketTracker);

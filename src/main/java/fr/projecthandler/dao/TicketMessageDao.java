@@ -5,7 +5,7 @@ import java.util.List;
 import fr.projecthandler.model.TicketMessage;
 
 public interface TicketMessageDao {
-	
+
 	public Long saveTicketMessage(TicketMessage ticketMessage);
 
 	public void updateTicketMessage(TicketMessage ticketMessage);

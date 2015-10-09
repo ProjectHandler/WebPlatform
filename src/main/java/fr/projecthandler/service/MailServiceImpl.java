@@ -17,34 +17,30 @@ public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private MailSender mailSender;
-	
 
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Override
 	public void sendEmail(String from, String to, String subject, String msg) {
 		try {
-		SimpleMailMessage mailMessage = new SimpleMailMessage();
-		mailMessage.setFrom(from);
-		mailMessage.setSubject(subject);
-		mailMessage.setTo(to);
-		mailMessage.setText(msg);
-		mailSender.send(mailMessage);
+			SimpleMailMessage mailMessage = new SimpleMailMessage();
+			mailMessage.setFrom(from);
+			mailMessage.setSubject(subject);
+			mailMessage.setTo(to);
+			mailMessage.setText(msg);
+			mailSender.send(mailMessage);
 		} catch (MailException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void sendEmailUserCreation(User user, String url) { // Locale locale
 		Locale locale = Locale.FRANCE;
-		/*
-		 * TODO found method to use local.FRANCE dynamically
-		 * messageSource.getMessage("selfmed.clientController.retreat", null, locale)
-		 */
+		/* TODO found method to use local.FRANCE dynamically messageSource.getMessage("selfmed.clientController.retreat", null, locale) */
 		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
-		String subject 	= 	bundle.getString("projecthandler.mail.subject.signup");
-		String msg 		=	bundle.getString("projecthandler.mail.content.signup");
+		String subject = bundle.getString("projecthandler.mail.subject.signup");
+		String msg = bundle.getString("projecthandler.mail.content.signup");
 		SimpleMailMessage mailMessage = new SimpleMailMessage();
 		StringBuilder msg_url = new StringBuilder();
 		msg_url.append(msg);
@@ -54,5 +50,5 @@ public class MailServiceImpl implements MailService {
 		mailMessage.setTo(user.getEmail());
 		mailSender.send(mailMessage);
 	}
-		
+
 }

@@ -21,7 +21,7 @@ public class TicketTrackerDaoImpl extends AbstractDao implements TicketTrackerDa
 	@Transactional
 	public Long saveTicketTracker(TicketTracker ticketTracker) {
 		em.persist(ticketTracker);
-		
+
 		return ticketTracker.getId();
 	}
 
@@ -29,17 +29,16 @@ public class TicketTrackerDaoImpl extends AbstractDao implements TicketTrackerDa
 	@Transactional
 	public void deleteTicketTrackersByIds(List<Long> ticketTrackersIdsList) {
 		em.createQuery("DELETE FROM TicketTracker tt WHERE tt.id IN (:ticketTrackersIdsList)")
-		.setParameter("ticketTrackersIdsList", ticketTrackersIdsList)
-		.executeUpdate();
+				.setParameter("ticketTrackersIdsList", ticketTrackersIdsList).executeUpdate();
 	}
 
 	@Override
 	@Transactional
 	public void deleteTicketTrackerById(Long ticketTrackerId) {
-		em.createQuery("DELETE FROM TicketTracker tt WHERE tt.id = :ticketTrackerId")
-		.setParameter("ticketTrackerId", ticketTrackerId)
-		.executeUpdate();
+		em.createQuery("DELETE FROM TicketTracker tt WHERE tt.id = :ticketTrackerId").setParameter("ticketTrackerId", ticketTrackerId)
+				.executeUpdate();
 	}
+
 	@Override
 	public TicketTracker findTicketTrackerById(Long ticketTrackerId) {
 		return (TicketTracker) Utilities.getSingleResultOrNull(em.createQuery("SELECT tt FROM TicketTracker tt WHERE tt.id = :ticketTrackerId")
@@ -48,15 +47,13 @@ public class TicketTrackerDaoImpl extends AbstractDao implements TicketTrackerDa
 
 	@Override
 	public List<TicketTracker> getTicketTrackersByTicketId(Long ticketId) {
-		return (List<TicketTracker>)em.createQuery("FROM TicketTracker tt WHERE tt.ticket.id = :ticketId")
-				.setParameter("ticketId", ticketId)
+		return (List<TicketTracker>) em.createQuery("FROM TicketTracker tt WHERE tt.ticket.id = :ticketId").setParameter("ticketId", ticketId)
 				.getResultList();
 	}
 
 	@Override
 	public List<TicketTracker> getAllTicketTrackers() {
-		return (List<TicketTracker>)em.createQuery("SELECT tt FROM TicketTracker tt")
-				.getResultList();
+		return (List<TicketTracker>) em.createQuery("SELECT tt FROM TicketTracker tt").getResultList();
 	}
 
 }

@@ -14,7 +14,7 @@ public class TaskMessageServiceImpl implements TaskMessageService {
 
 	@Autowired
 	TaskMessageDao taskMessageDao;
-	
+
 	@Override
 	public Long saveTaskMessage(TaskMessage taskMessage) {
 		return taskMessageDao.saveTaskMessage(taskMessage);
