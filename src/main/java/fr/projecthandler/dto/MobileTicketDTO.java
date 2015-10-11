@@ -104,9 +104,9 @@ public class MobileTicketDTO {
 	}
 
 	public void setMessage(List<TicketMessage> listTicketMessage) {
-		List<MobileTicketMessageDTO> ticketMessageDTO = new ArrayList<MobileTicketMessageDTO>();
+		this.ticketMessage = new ArrayList<MobileTicketMessageDTO>();
 		for (TicketMessage message : listTicketMessage) {
-			ticketMessageDTO.add(new MobileTicketMessageDTO(message));
+			this.ticketMessage.add(new MobileTicketMessageDTO(message));
 		}
 	}
 

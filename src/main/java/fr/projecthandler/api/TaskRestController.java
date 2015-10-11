@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -138,6 +139,29 @@ public class TaskRestController {
 			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 
 			String json = gson.toJson(taskListDTO);
+			System.out.println(json);
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = "/updateSubTask/{id}/{isValidated}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> updateSubTask(@PathVariable Long id, @PathVariable Boolean isValidated,
+			@CurrentUserDetails CustomUserDetails userDetails) {
+		
+		try {
+			SubTask subTask = subTaskService.findSubTaskById(id);
+			subTask.setValidated(isValidated);
+			subTaskService.updateSubTask(subTask);
+
+			System.out.println("ok");
+			System.out.println("id: " + id + " isValidated:" + isValidated);
+			
+			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+
+			String json = gson.toJson(new MobileSubTaskDTO(subTask));
 			System.out.println(json);
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {

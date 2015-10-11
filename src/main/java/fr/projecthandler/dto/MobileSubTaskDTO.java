@@ -4,6 +4,7 @@ import fr.projecthandler.model.SubTask;
 
 public class MobileSubTaskDTO {
 
+	private Long id;
 	private String description;
 	private boolean validated;
 	private boolean taken;
@@ -13,9 +14,18 @@ public class MobileSubTaskDTO {
 	}
 	
 	public MobileSubTaskDTO(SubTask subTask) {
+		this.id = subTask.getId();
 		this.description = subTask.getDescription();
 		this.validated = subTask.isValidated();
 		this.taken = subTask.isTaken();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
