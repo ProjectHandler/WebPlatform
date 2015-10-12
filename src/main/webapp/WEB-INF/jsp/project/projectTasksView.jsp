@@ -84,11 +84,11 @@
 			</div>
 		</div>
 		<div class="display-table-cell vertical-align text-right small small-padding-left">
-			<div class="display-none STATUS_DONE"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4" title="Tâche terminée"><span class="icon-checkmark"></span></div></div></div>
-			<div class="display-none STATUS_ACTIVE"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4" title="Tâche en cours"><span class="icon-loop"></span></div></div></div>
-			<div class="display-none STATUS_SUSPENDED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4" title="Tâche suspendue"><span class="icon-history"></span></div></div></div>
-			<div class="display-none STATUS_FAILED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4" title="Tâche abandonnée"><span class="icon-cross"></span></div></div></div>
-			<div class="display-none STATUS_UNDEFINED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4" title="Tâche indéterminée">?</div></div></div>
+			<div class="display-none STATUS_DONE"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
+			<div class="display-none STATUS_ACTIVE"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
+			<div class="display-none STATUS_SUSPENDED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
+			<div class="display-none STATUS_FAILED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
+			<div class="display-none STATUS_UNDEFINED"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
 		</div>
 	</div>
 	<a class="cover-btn-shape default-btn-style5 animating-event task-node-link" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box" href="#"></a>
