@@ -351,12 +351,41 @@
 	</script>
 </head>
 <body>
-	<button id="refreshTaskBoxView-Button" class="default-btn-shape theme2-primary-btn-style1" onClick="reloadPage();">
-			<spring:message code="projecthandler.taskBoxView.refreshView"/>
-	</button>
-	<button id="newTicketForTask-Button" class="default-btn-shape theme2-primary-btn-style1" onClick="createNewTicket();">
+	<div class="container display-table full-width">
+		<h1 class="text-h1 theme3-darken1-text display-table-cell full-width vertical-align"><span class="icon-clipboard small-margin-right"></span>${task.name}</h1>
+		<div class="display-table-cell vertical-align">
+			<button id="refreshTaskBoxView-Button" class="default-btn-shape text-h1 theme3-primary-text theme1-lighten2-btn-style6" onClick="reloadPage();" title="<spring:message code="projecthandler.taskBoxView.refreshView"/>">
+				<span class="icon-loop2"></span>
+			</button>
+		</div>
+	</div>
+	
+	<div class="padding-left padding-right">
+		<hr class="theme3-lighten1-bg">
+	</div>
+	
+	<div class="container">
+	
+		<div class="small-container margin-bottom">									
+			<div class="">
+				<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
+				<div class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+					<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${task.progress}%;" ></div>
+				</div>
+				<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${task.progress}%</div></div>	
+			</div>
+		</div>	
+	
+	
+		<div class="container radius theme3-lighten1-bg">
+			${task.description}
+		</div>
+	</div>
+
+	<button id="newTicketForTask-Button" class="default-btn-shape theme2-primary-btn-style1 display-none" onClick="createNewTicket();">
 			<spring:message code="projecthandler.taskBoxView.sendTicketForTask"/>
 	</button>
+	
 	<div class="taskDescription small-container">
 		<div class="display-inline-block">
 			Name: ${task.name}
@@ -369,13 +398,8 @@
 				${task.progress}%
 			</span>
 		</div>
-		<div>
-			Description:
-		</div>
-		<div>
-			 ${task.description}
-		</div>
 	</div>
+	
 	<div class="taskDetails">
 		<div class="members display-inline-block">
 			<spring:message code="projecthandler.taskBoxView.taskMembers"/>: 

@@ -53,14 +53,14 @@
 					<div class="full-width full-height position-relative">
 					
 						<div id="main-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
-							<div class="full-width full-height display-table">
+							<div class="full-width full-height display-table position-relative">
+								<div class="position-absolute position-top position-right">
+									<a href="#" class="default-btn-shape text-h2 inverted-text util6-lighten2-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="main-modal-box"><span class="icon-cross"></span></a>
+								</div>
 								<div class="full-width full-height display-table-cell vertical-align">
 	
 									<div class="inverted-bg fixedwidth-768 margin-auto overflow-hidden position-relative">
 										<div id="dynamicContainerForModal">
-										</div>
-										<div class="text-center">
-											<a href="#" class="reduced-btn-shape theme3-lighten1-btn-style1 animating-event" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box">Fermer</a>
 										</div>
 									</div>
 	

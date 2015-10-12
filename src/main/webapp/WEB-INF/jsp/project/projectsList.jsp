@@ -49,7 +49,7 @@
 					                <div class="inverted-bg position-relative overflow-hidden theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
 					                    
 					                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
-					                    <a href="${pageContext.request.contextPath}/project/edit/${project.id}" title="Editer le projet" class="position-absolute position-top position-right circle util5-primary-btn-style1" style="width:50px;height:50px;margin:-25px -25px 0 0;">
+					                    <a href="${pageContext.request.contextPath}/project/edit/${project.id}" title="Editer le projet" class="position-absolute position-top position-right circle util5-lighten2-btn-style1" style="width:50px;height:50px;margin:-25px -25px 0 0;">
 					                    	<div style="margin:27px 0 0 7px;"><span class="icon-pencil2"></span></div>
 					                    </a>
 					                    </c:if>
