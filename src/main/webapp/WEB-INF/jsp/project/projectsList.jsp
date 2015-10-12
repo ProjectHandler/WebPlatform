@@ -46,7 +46,13 @@
 							</div>
 							<div>
 					            <c:forEach var="project" items="${projectList}" varStatus="status">
-					                <div class="inverted-bg theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
+					                <div class="inverted-bg position-relative overflow-hidden theme3-primary-boxshadow-raising-out surrounded theme3-primary-bdr margin-bottom margin-right float-left fixedwidth-256">
+					                    
+					                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
+					                    <a href="${pageContext.request.contextPath}/project/edit/${project.id}" title="Editer le projet" class="position-absolute position-top position-right circle util5-primary-btn-style1" style="width:50px;height:50px;margin:-25px -25px 0 0;">
+					                    	<div style="margin:27px 0 0 7px;"><span class="icon-pencil2"></span></div>
+					                    </a>
+					                    </c:if>
 					                    
 					                    <div class="small-container display-table">
 					                    	<div class="text-center display-table-cell vertical-align">
@@ -65,12 +71,7 @@
 												<div class="small theme3-primary-text">${project.status}</div>
 											</div>
 					                    </div>
-					                    
-					                    <c:if test="${user.userRole == 'ROLE_ADMIN'}">
-				                    	<a class="reduced-btn-shape rounded util5-primary-btn-style1 small float-right" style="margin-top:-8px;margin-right:10px;" href="${pageContext.request.contextPath}/project/edit/${project.id}">
-											<span class="icon-pencil2"> </span><spring:message code="projecthandler.projectsList.edit"/>
-										</a>
-										</c:if>
+					                
 	
 										<div class="small-container theme3-lighten1-bg">
 											<div class="fixedwidth-192 margin-auto">
