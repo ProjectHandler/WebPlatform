@@ -352,13 +352,57 @@
 </head>
 <body>
 	<div class="container display-table full-width">
-		<h1 class="text-h1 theme3-darken1-text display-table-cell full-width vertical-align"><span class="icon-clipboard small-margin-right"></span>${task.name}</h1>
+		
+		<div id="task-tag-list" class="display-table-cell vertical-align padding-right">
+			<div class="display-none STATUS_DONE" title="Tâche terminée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
+			<div class="display-none STATUS_ACTIVE" title="Tâche en cours"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
+			<div class="display-none STATUS_SUSPENDED" title="Tâche suspendue"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
+			<div class="display-none STATUS_FAILED" title="Tâche abandonnée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
+			<div class="display-none STATUS_UNDEFINED" title="Tâche indéterminée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
+			<script>
+				$("#task-tag-list").find("." + '${task.status}').show();
+			</script>
+		</div>	
+		
+		<h1 class="text-h1 theme3-darken1-text display-table-cell vertical-align padding-right full-width">${task.name}</h1>
+		
+		
+		<div class="display-table-cell vertical-align small-padding-right">
+			<spring:message code="projecthandler.taskBoxView.priority"/>
+		</div>
+		
+		<div class="taskDetails display-table-cell vertical-align padding-right">
+			<div class="priority">
+				<select id="prioritySelect">
+					<c:forEach var="priority" items="${priorities}">
+						<c:choose>
+						<c:when test="${task.priority.name != null}">
+							<option selected="selected" value="${task.id}/${priority.id}">
+								${priority.name}
+							</option>
+						</c:when>
+						<c:otherwise>
+							<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
+								${priority.name}
+							</option>
+						</c:otherwise>
+						</c:choose>
+					</c:forEach>
+				</select>
+			</div>
+		</div>		
+		
 		<div class="display-table-cell vertical-align">
 			<button id="refreshTaskBoxView-Button" class="default-btn-shape text-h1 theme3-primary-text theme1-lighten2-btn-style6" onClick="reloadPage();" title="<spring:message code="projecthandler.taskBoxView.refreshView"/>">
 				<span class="icon-loop2"></span>
 			</button>
 		</div>
+		
 	</div>
+	
+	<button id="newTicketForTask-Button" class="default-btn-shape theme2-primary-btn-style1 display-none" onClick="createNewTicket();">
+		<spring:message code="projecthandler.taskBoxView.sendTicketForTask"/>
+	</button>
 	
 	<div class="padding-left padding-right">
 		<hr class="theme3-lighten1-bg">
@@ -375,62 +419,29 @@
 				<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${task.progress}%</div></div>	
 			</div>
 		</div>	
-	
-	
+		
 		<div class="container radius theme3-lighten1-bg">
 			${task.description}
 		</div>
-	</div>
 
-	<button id="newTicketForTask-Button" class="default-btn-shape theme2-primary-btn-style1 display-none" onClick="createNewTicket();">
-			<spring:message code="projecthandler.taskBoxView.sendTicketForTask"/>
-	</button>
-	
-	<div class="taskDescription small-container">
-		<div class="display-inline-block">
-			Name: ${task.name}
-		</div>
-		<div class="display-inline-block">
-			Statut: ${task.status}
-		</div>
-		<div id="progressTask${task.id}">
-			<span id="progressTask-Span" style="color:black">
-				${task.progress}%
-			</span>
-		</div>
-	</div>
-	
-	<div class="taskDetails">
-		<div class="members display-inline-block">
-			<spring:message code="projecthandler.taskBoxView.taskMembers"/>: 
-			<c:forEach var="userInList" items="${task.users}">
-				<div class="display-table-cell vertical-align small-padding-right">
-					<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${userInList.firstName} ${userInList.lastName}">	
-						<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});" title="${userInList.firstName} ${userInList.lastName}"></div>
+		<div class="small-margin-top display-table full-width">
+			<div class="text-right">
+				<div id="projectInfoBox" class="display-inline-block">
+					<div id="usersAccessBox" class="clearfix">
+						<c:forEach var='userInList' items='${task.users}'>
+							<div class="float-left small-margin-right position-relative">
+								<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${userInList.firstName} ${userInList.lastName}">	
+									<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
+								</div>
+							</div>
+						</c:forEach>
 					</div>
-				</div>
-			</c:forEach>
-		</div>
-		<div class="priority display-inline-block">
-			<spring:message code="projecthandler.taskBoxView.priority"/>:
-			<select id="prioritySelect">
-				<c:forEach var="priority" items="${priorities}">
-					<c:choose>
-					<c:when test="${task.priority.name != null}">
-						<option selected="selected" value="${task.id}/${priority.id}">
-							${priority.name}
-						</option>
-					</c:when>
-					<c:otherwise>
-						<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-							${priority.name}
-						</option>
-					</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</select>
-		</div>
+				</div>										
+			</div>
+		</div>	
+		
 	</div>
+	
 	<div class="addSubTask-Box">
 		<div>
 			<button class="default-btn-shape theme2-primary-btn-style1" id="addSubTask" onClick="switchTextareaForSubTaskDescription();">
