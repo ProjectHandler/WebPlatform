@@ -261,7 +261,7 @@
 	}
 	
 	function refreshSubTask(id, data) {
-		var htmlString = generateSubTaskDiv(id, data);
+		// var htmlString = generateSubTaskDiv(id, data); ca, c juste ultra la mort !!
 		$('#subTaskContent-' + id).html(htmlString);
 
 		$('#tristate-' + id).tristate({
@@ -273,6 +273,18 @@
 	        	changeSubTaskState(tmp[1]);
 	        }
 	    });
+		
+		
+		/////////////////////////////////////////////////////////////////
+		// Pour le moment je reload la page en mode bourin
+		// Fait quelque chose de clean pour ton add de subtask
+		// Ne duplique pas le code HTML comme tu l'as fait
+		// Soit tu generes tout en js
+		// Soit tu fais un template html d'une row en display-none que tu clones et que tu feed comme dans projecttasksview
+		// Soit tu clones la derniere subtask et tu la feed
+		// Mais la c pas possible de passer derrière ca
+		/////////////////////////////////////////////////////////////////
+		location.reload();		
 	}
 
 	// Add subTask to subTaskList-Box once successfully added in db.
