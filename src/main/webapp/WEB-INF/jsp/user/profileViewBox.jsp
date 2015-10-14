@@ -32,17 +32,17 @@
 				</div>
 			</div>
 			
-			<div style="padding:50px 0 0 50px;">
+			<div style="padding:40px 0 0 50px;">
 				<div class="text-h1 margin-bottom padding-bottom">Projets en cours</div>
-				<div class="overflow-auto fixedwidth-640" style="height:100px;">
+				<div class="overflow-auto theme3-lighten1-bg padding-top padding-bottom" style="width:660px;height:130px;">
 				<c:forEach var="project" items="${userToFind.projects}">
 					<div class="margin-left margin-bottom">
-						<div class="text-h1 display-table-cell vertical-align theme3-lighten1-text padding-right">
+						<div class="text-h1 display-table-cell vertical-align theme3-darken2-text padding-right">
 							<span class="icon-folder"></span>
 						</div>
 						<div class="display-table-cell vertical-align">
 							<div class="text-h3">${project.name}</div>
-							<div class="small theme3-primary-text">${project.status}</div>
+							<div class="small theme3-darken2-text">${project.status}</div>
 						</div>
 					</div>
 				</c:forEach>
