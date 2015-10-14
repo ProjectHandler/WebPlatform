@@ -290,6 +290,19 @@
 	        	changeSubTaskState(tmp[1]);
 	        }
 	    });
+		
+		
+		/////////////////////////////////////////////////////////////////
+		// Pour le moment je reload la page en mode bourin
+		// Fait quelque chose de clean pour ton add de subtask
+		// Ne duplique pas le code HTML comme tu l'as fait
+		// Soit tu generes tout en js
+		// Soit tu fais un template html d'une row en display-none que tu clones et que tu feed comme dans projecttasksview
+		// Soit tu clones la derniere subtask et tu la feed
+		// Mais la c pas possible de passer derrière ca
+		/////////////////////////////////////////////////////////////////
+		location.reload();
+		
 	}
 
 	// Called when a user clicks edit button on a subTask.
@@ -316,8 +329,9 @@
 	function doneEditingSubTask(id) {
 		var itemName = "#subTaskDescription-" + id;
 		$(itemName).attr("disabled", "disabled");
-		$("#doneEditingButton-" + id).addClass("display-none");
-		$("#cancelEditingButton-" + id).addClass("display-none");
+		//$("#doneEditingButton-" + id).addClass("display-none");
+		//$("#cancelEditingButton-" + id).addClass("display-none");
+		$("#boxEditingMode-" + id).addClass("display-none");
 		if ($(itemName).val() != savedSubTaskDescription && $(itemName).val() != "") {
 			changeSubTaskDescription(id);
 		}
@@ -339,13 +353,15 @@
 		var disabled = $(itemName).attr("disabled");
 		if (disabled == "disabled") {
 			$(itemName).removeAttr("disabled");
-			$("#doneEditingButton-" + id).removeClass("display-none");
-			$("#cancelEditingButton-" + id).removeClass("display-none");
+			//$("#doneEditingButton-" + id).removeClass("display-none");
+			//$("#cancelEditingButton-" + id).removeClass("display-none");
+			$("#boxEditingMode-" + id).removeClass("display-none");
 		}
 		else {
 			$(itemName).attr("disabled", "disabled");
-			$("#doneEditingButton-" + id).addClass("display-none");
-			$("#cancelEditingButton-" + id).addClass("display-none");
+			//$("#doneEditingButton-" + id).addClass("display-none");
+			//$("#cancelEditingButton-" + id).addClass("display-none");
+			$("#boxEditingMode-" + id).addClass("display-none");
 		}
 	}
 	</script>
@@ -412,7 +428,7 @@
 	
 		<div class="small-container margin-bottom">									
 			<div class="">
-				<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Deadline</div></div>	
+				<div class="display-table-cell vertical-align theme3-darken1-text small"><div style="width:84px;" class="text-left">Completed</div></div>	
 				<div class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 					<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${task.progress}%;" ></div>
 				</div>
@@ -442,65 +458,105 @@
 		
 	</div>
 	
-	<div class="addSubTask-Box">
-		<div>
-			<button class="default-btn-shape theme2-primary-btn-style1" id="addSubTask" onClick="switchTextareaForSubTaskDescription();">
-				<spring:message code="projecthandler.taskBoxView.addSubTask"/>
+	<div class="padding-left padding-right">
+		<hr class="theme3-lighten1-bg">
+	</div>	
+	
+	<div class="addSubTask-Box container margin-left small-margin-right small-margin-bottom small-margin-top">
+
+		<div class="display-table-cell vertical-align small-padding-right text-h1 theme3-darken1-text">
+			<span class="icon-clipboard"></span>
+		</div>	
+
+		<div class="display-table-cell vertical-align padding-right">
+			<h2 class="text-h1 theme3-darken1-text fixedwidth-320"><spring:message code="projecthandler.taskBoxView.subTaskList"/></h2>
+		</div>
+
+		<div class="display-table-cell vertical-align full-width text-right">
+			<button class="default-btn-shape theme3-darken1-text theme1-lighten2-btn-style6 radius" id="addSubTask" onClick="switchTextareaForSubTaskDescription();">
+				<span class="icon-plus small-margin-right"></span><spring:message code="projecthandler.taskBoxView.addSubTask"/>
 			</button>
 		</div>
-		<div id="addSubTask-div">
-			<textarea id="addSubTaskBox-description" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
-			<button class="default-btn-shape theme2-primary-btn-style1" onClick="validateAddSubTask();">
-				<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
-			</button>
-			<button class="default-btn-shape theme2-primary-btn-style1" onClick="switchTextareaForSubTaskDescription();">
-				<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
-			</button>
+
+	</div>
+	
+	<div id="addSubTask-div" class="theme3-lighten1-bg container display-none" style="margin-bottom:40px;">
+		<div style="margin-left:70px;">
+			<div class="display-table-cell vertical-align padding-right">
+				<textarea id="addSubTaskBox-description" maxlength="200" rows="2" class="textfield surrounded theme3-darken3-bdr theme3-primary-bg radius"></textarea>
+			</div>
+			<div class="display-table-cell vertical-align">
+				<button class="default-btn-shape util3-lighten1-btn-style6" onClick="validateAddSubTask();">
+					<span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.validateComment"/>
+				</button>
+				/
+				<button class="default-btn-shape util5-lighten1-btn-style6" onClick="switchTextareaForSubTaskDescription();">
+					<span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
+				</button>
+			</div>
 		</div>
 	</div>
-	<div class="subTaskList-Box" id="subTaskList-Box">
-		<div>
-			<spring:message code="projecthandler.taskBoxView.subTaskList"/>
-		</div>
+	
+	<div class="subTaskList-Box container margin-left no-padding-top" id="subTaskList-Box">
 		<c:forEach var='subTask' items='${subTasks}'>
-		<div id="subTaskContent-${subTask.id}" class="subTaskContent display-inline-block">
-			<div class="display-inline-block">
-				<c:if test="${subTask.validated == true}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked">
-				</c:if>
-				<c:if test="${subTask.taken == true}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="taken" indeterminate="intermediate">
-				</c:if>
-				<c:if test="${subTask.validated == false && subTask.taken == false}">
-					<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="empty">
-				</c:if>
-			</div>
-			<div class="display-inline-block">
-				<textarea id="subTaskDescription-${subTask.id}" disabled="disabled" maxlength="200">${subTask.description}</textarea>
-			</div>
-			<button id="doneEditingButton-${subTask.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onClick="doneEditingSubTask(${subTask.id});">
-				<spring:message code="projecthandler.taskBoxView.doneEditingSubTask"/>
-			</button>
-			<button id="cancelEditingButton-${subTask.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onmousedown="cancelEditingSubTask(${subTask.id});">
-				<spring:message code="projecthandler.taskBoxView.cancelEditSubTask"/>
-			</button>
-			<div class="display-inline-block vertical-align small-padding-right">
-				<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}">	
-					<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${subTask.lastUserActivity.id});" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}"></div>
+		
+			<div id="subTaskContent-${subTask.id}" class="subTaskContent margin-left margin-bottom">
+			
+				<div class="display-table-cell vertical-align small-padding-right">
+					<c:if test="${subTask.validated == true}">
+						<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="validated" checked="checked">
+					</c:if>
+					<c:if test="${subTask.taken == true}">
+						<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="taken" indeterminate="intermediate">
+					</c:if>
+					<c:if test="${subTask.validated == false && subTask.taken == false}">
+						<input class="tristate" id="tristate-${subTask.id}" type="checkbox" value="empty">
+					</c:if>
 				</div>
+				
+				<div class="display-table-cell vertical-align padding-right">
+					<textarea class="textfield surrounded radius theme3-primary-bdr" id="subTaskDescription-${subTask.id}" disabled="disabled" maxlength="200">${subTask.description}</textarea>
+				</div>
+				
+				<div class="display-table-cell vertical-align position-relative">
+					<div class="display-inline-block vertical-align margin-right" style="width:30px;height:30px;">
+						<div class="full-width full-height circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}">	
+							<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${subTask.lastUserActivity.id});" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}"></div>
+						</div>
+					</div>
+					<button id="editSubTaskButton-${subTask.id}" class="text-h3 reduced-btn-shape theme3-lighten1-text util2-primary-btn-style6 small-margin-right" onClick="startEditingSubTask(${subTask.id});" title="<spring:message code="projecthandler.taskBoxView.editSubTask"/>">
+						<span class="icon-pencil2"></span>
+					</button>
+					<button class="text-h3 reduced-btn-shape theme3-lighten1-text util6-primary-btn-style6" onClick="deleteSubTask(${subTask.id});" title="<spring:message code="projecthandler.taskBoxView.deleteSubTask"/>">
+						<span class="icon-cross"></span>
+					</button>
+					
+					<div  id="boxEditingMode-${subTask.id}" class="display-none position-absolute position-top position-left fixedwidth-320 full-height inverted-bg zindex-10">
+						<div class="display-table full-width full-height">
+							<div class="display-table-cell full-width full-height vertical-align">
+								<button id="doneEditingButton-${subTask.id}" class="default-btn-shape util3-lighten1-btn-style6" onClick="doneEditingSubTask(${subTask.id});">
+									<span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.taskBoxView.doneEditingSubTask"/>
+								</button>
+								/
+								<button id="cancelEditingButton-${subTask.id}" class="default-btn-shape util6-lighten1-btn-style6" onmousedown="cancelEditingSubTask(${subTask.id});">
+									<span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.taskBoxView.cancelEditSubTask"/>
+								</button>
+							</div>
+						</div>
+					</div>					
+					
+				</div>
+
 			</div>
-			<button id="editSubTaskButton-${subTask.id}" class="default-btn-shape theme2-primary-btn-style1" onClick="startEditingSubTask(${subTask.id});">
-				<spring:message code="projecthandler.taskBoxView.editSubTask"/>
-			</button>
-			<button class="default-btn-shape theme2-primary-btn-style1" onClick="deleteSubTask(${subTask.id});">
-				<spring:message code="projecthandler.taskBoxView.deleteSubTask"/>
-			</button>
-		</div>
+		
 		</c:forEach>
 	</div>
-	---------------------------------------------
+	
+	<div class="padding-left padding-right">
+		<hr class="theme3-lighten1-bg">
+	</div>	
+	
 	<jsp:include page="./taskBoxMessages.jsp" />
-	---------------------------------------------
 	<jsp:include page="./taskBoxActivity.jsp" />
 </body>
 </html>
