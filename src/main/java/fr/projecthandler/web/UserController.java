@@ -261,7 +261,6 @@ public class UserController {
 
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
 	public void updateEvent(Principal principal, HttpServletRequest request) throws IOException {
-		System.out.println("//updateEvent");
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
@@ -306,7 +305,6 @@ public class UserController {
 
 	@RequestMapping(value = "/updateSubtask", method = RequestMethod.POST)
 	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
-		System.out.println("/updateSubtask");
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			SubTask subTask = subTaskService.findSubTaskById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
@@ -327,10 +325,22 @@ public class UserController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/unplannedSubtask", method = RequestMethod.POST)
+	public void unplannedSubtask(Principal principal, HttpServletRequest request) throws IOException, ParseException {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			SubTask subTask = subTaskService.findSubTaskById(Long.parseLong(Utilities.getRequestParameter(request, "subtaskId")));
+			if (subTask.isTaken() == true && userDetails.getId().equals(subTask.getLastUserActivity().getId())) {
+				subTask.setStartingDate(null);
+				subTask.setEndingDate(null);
+				subTaskService.updateSubTask(subTask);
+			}
+		}
+	}
 
 	@RequestMapping(value = "/calendarDetailsSubtaskUnplanned", method = RequestMethod.GET)
 	public void calendarDetailsSubtaskUnplanned(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
-		System.out.println("/calendarDetailsSubtaskUnplanned");
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());

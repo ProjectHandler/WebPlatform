@@ -125,7 +125,7 @@
 				  async: false,
 				  success: function (subTasks) {
 					  $.each(subTasks, function (key, value) {
-						  $('#external-subtask').append('<div data-subtask-id="' + value.id + '" data-type="subtask" class="fc-event">' + value.description + '</div>');
+						  $('#external-subtask').append('<div data-subtask-id="' + value.id + '" data-type="subtask" class="fc-event">' + value.title + '</div>');
 				      });
 				  }
 				});
@@ -200,7 +200,7 @@
     				// assign it the date that was reported
     				var tempDate = new Date(date);
     				copiedEventObject.start = date;
-    				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours()));// + 1 hour from start
+    				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours()));// + 2 hour from start
     				copiedEventObject.allDay = false; 
     				
     				copiedEventObject.id = $(this).data("subtask-id");
@@ -212,18 +212,34 @@
    					$(this).remove();
    					
    					updateEventWithoutModal(copiedEventObject);
+                    //fix temp, 
+                    //bug clone subtask on calendar
+ /*
+ * TODO
+ */
+
+                    location.reload();
     			},
                 eventDragStop: function(event, jsEvent, ui, view) {
                     if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
                     	// remove subtask from calendar
                         $('#calendar').fullCalendar('removeEvents', event._id);
-                        var el = $("<div class='fc-event'>").appendTo('#external-subtask').text(event.title);
+                        var el = $("<div data-subtask-id='" + event._id + "' data-type='subtask' class='fc-event'>").appendTo('#external-subtask').text(event.title);
                         el.draggable({
                           zIndex: 999,
                           revert: true, 
                           revertDuration: 0 
                         });
                         el.data('event', {title: event.title, id :event.id, stick: true});
+                        unplannedSubtask(event.id);
+                        
+                        //fix temp, 
+                        //bug clone subtask on calendar
+/*
+ * TODO
+ */
+
+                        location.reload();
                     }
                 },
                 eventSources: [{
@@ -254,7 +270,6 @@
                   eventResize: function(event) {updateEventWithoutModal(event);},
                   eventDrop: function(event) {updateEventWithoutModal(event);}
                         
-                        
             }); // END calendar
             
           //Unplanned subtask (return to basket)
@@ -273,6 +288,15 @@
             }
 
         });
+		
+		function unplannedSubtask(subtaskId) {
+			var url = CONTEXT_PATH + "/unplannedSubtask";
+			$.ajax({
+				type: "POST",
+				url: url,
+				data: {subtaskId: subtaskId}
+	   		});
+		}
 
 		function updateEventWithoutModal(event) {
 			$("#eventId").val(event.id);

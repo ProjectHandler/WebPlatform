@@ -45,8 +45,8 @@ public class  CalendarDTO {
 
 	public CalendarDTO(SubTask subTask) {
 		this.id = subTask.getId();
-		this.title = " ";
-		this.description = subTask.getDescription();
+		this.title = subTask.getDescription();
+		//this.description = " ";
 		this.type = "subtask";
 		this.start = subTask.getStartingDate();
 		this.end = subTask.getEndingDate();
