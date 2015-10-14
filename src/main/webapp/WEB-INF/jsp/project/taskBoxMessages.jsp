@@ -152,47 +152,89 @@
 			});
 		}
 	</script>
-	<div>
-		<button class="default-btn-shape theme2-primary-btn-style1" onClick="switchDivForNewComment();">
-			<spring:message code="projecthandler.taskBoxMessages.addComment"/>
-		</button>
-		<div id="newComment-div">
-			<textarea id="newComment-textarea" maxlength="200" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr"></textarea>
-			<button class="default-btn-shape theme2-primary-btn-style1" onClick="validateAddComment();">
-				<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
-			</button>
-			<button class="default-btn-shape theme2-primary-btn-style1" onClick="switchDivForNewComment();">
-				<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
+	<div class="container margin-left small-margin-right small-margin-bottom small-margin-top">
+
+		<div class="display-table-cell vertical-align small-padding-right text-h1 theme3-darken1-text">
+			<span class="icon-bubbles"></span>
+		</div>	
+
+		<div class="display-table-cell vertical-align padding-right">
+			<h2 class="text-h1 theme3-darken1-text fixedwidth-320">Commentaires</h2>
+		</div>
+
+		<div class="display-table-cell vertical-align full-width text-right">
+			<button class="default-btn-shape theme3-darken1-text theme1-lighten2-btn-style6 radius" onClick="switchDivForNewComment();">
+				<span class="icon-plus small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.addComment"/>
 			</button>
 		</div>
+
 	</div>
-	<div id="commentContainer">
-		<c:forEach var='message' items='${taskMessages}'>
-		<div id="messageBox-${message.id}">
-			<div class="display-inline-block display-table-cell vertical-align small-padding-right">
-				<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${message.owner.firstName} ${message.owner.lastName}">	
-					<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${message.owner.id});" title="${message.owner.firstName} ${message.owner.lastName}"></div>
-				</div>
+	
+	<div id="newComment-div" class="theme3-lighten1-bg container display-none" style="margin-bottom:40px;">
+		<div id="newComment-div" style="margin-left:70px;">
+			<div class="display-table-cell vertical-align padding-right">
+				<textarea id="newComment-textarea" maxlength="200" rows="2" class="textfield surrounded theme3-darken3-bdr theme3-primary-bg radius"></textarea>
 			</div>
-			<textarea id="message-${message.id}" disabled="disabled" maxlength="200" style="width: 50%;" class="display-inline-block">${message.content}</textarea>
-			<button id="validateEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onClick="doneEditingComment(${message.id});">
-				<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
-			</button>
-			<button id="cancelEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onmousedown="cancelEditingComment(${message.id});">
-				<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
-			</button>
-			<c:if test="${user.id == message.owner.id}">
-				<button class="default-btn-shape theme2-primary-btn-style1" onClick="startEditingComment(${message.id});">
-					<spring:message code="projecthandler.taskBoxMessages.editComment"/>
+			<div class="display-table-cell vertical-align">
+				<button class="default-btn-shape util3-lighten1-btn-style6" onClick="validateAddComment();">
+					<span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.validateComment"/>
 				</button>
-				<button class="default-btn-shape theme2-primary-btn-style1" onClick="deleteComment(${message.id});">
-					<spring:message code="projecthandler.taskBoxMessages.deleteComment"/>
+				/
+				<button class="default-btn-shape util5-lighten1-btn-style6" onClick="switchDivForNewComment();">
+					<span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
 				</button>
-			</c:if>
-			<div>
-				${message.updateDate}
 			</div>
 		</div>
+	</div>	
+	
+	<div id="commentContainer" class="container margin-left no-padding-top margin-right">
+		<c:forEach var='message' items='${taskMessages}'>
+		
+			<div id="messageBox-${message.id}">
+		
+				<div class="display-table">
+				
+					<div class="display-table-cell vertical-align padding-right">
+						<div class="display-table-cell vertical-align">
+							<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${message.owner.firstName} ${message.owner.lastName}">	
+								<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${message.owner.id});" title="${message.owner.firstName} ${message.owner.lastName}"></div>
+							</div>
+						</div>
+					</div>
+					<div class="display-table-cell vertical-align full-width">
+						<textarea id="message-${message.id}" disabled="disabled" maxlength="200" class="textfield surrounded theme3-primary-bdr radius" style="width:100%;max-width:100%;">${message.content}</textarea>
+					</div>
+				</div>
+			
+				<div class="clearfix margin-bottom" style="margin-top:-5px;">
+					<div class="float-right">
+						<button id="validateEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onClick="doneEditingComment(${message.id});">
+							<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
+						</button>
+						<button id="cancelEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onmousedown="cancelEditingComment(${message.id});">
+							<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
+						</button>
+						
+						<c:if test="${user.id == message.owner.id}">
+							<div>
+								<button class="reduced-btn-shape small theme1-primary-btn-style6" onClick="startEditingComment(${message.id});">
+									<spring:message code="projecthandler.taskBoxMessages.editComment"/>
+								</button>
+								<button class="reduced-btn-shape small util6-primary-btn-style6" onClick="deleteComment(${message.id});">
+									<spring:message code="projecthandler.taskBoxMessages.deleteComment"/>
+								</button>
+							</div>
+						</c:if>
+					</div>
+					
+					<div class="float-left small theme3-primary-text" style="margin-left:90px;padding-top:2px;">
+						${message.updateDate}
+					</div>
+				</div>
+			
+			</div>
+			
 		</c:forEach>
 	</div>
+	
 </div>
