@@ -19,57 +19,101 @@
 		});
 
 		function changeUser(event) {
-			openProfileViewBox(event.id);
+			$("#modal-btn-" + event.id).click();
 			return false;
 		}
 
-		function opendialog(page, id) {
-			var $dialog = $('#' + id)
-			  .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
-			  .dialog({
-			    title: '<spring:message code="projechandler.profileViewBox.title"/>',
-			    autoOpen: false,
-			    dialogClass: 'dialog_fixed,ui-widget-header',
-			    modal: true,
-			    height: 700,
-			    minWidth: 1000,
-			    minHeight: 700,
-			    draggable:false,
-			    buttons: { "Ok": function () {$(this).dialog("close"); }
-			  }
-			  }); 
-			  $dialog.dialog('open');
+		function loadModalContainer(page) {
+			$("#dynamicContainerForModal").html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="620px"></iframe>');
 		}
 		
 		function openProfileViewBox(id) {
-			opendialog(CONTEXT_PATH + '/profile/viewProfileBox/' + id, id);
-		}
+			loadModalContainer(CONTEXT_PATH + '/profile/viewProfileBox/' + id);
+		}		
+
 		</script>
 	</head>
 	<body>
-	<div>
-		<jsp:include page="../template/header.jsp" />		
-	</div>
-	<div>
-		<spring:message code="projecthandler.projectProfileView.research"/>: 
-		<select class="userSelection display-inline-block" id="userSelection">
-			<c:forEach var='userSelectable' items='${usersList}'>
-				<option id="${userSelectable.id}" value="${userSelectable.id}">
-					${userSelectable.firstName} ${userSelectable.lastName}
-				</option>
-			</c:forEach>
-		</select>
-	</div>
-	<div>
-		<c:forEach var='userInList' items='${usersList}'>
-			<div>
-			<div class="userView" id="${userInList.id}"></div>
-			<!-- TODO just show photo + firstname + lastName -->
-			<button class="display-block" onClick="openProfileViewBox(${userInList.id})">
-				${userInList.firstName} ${userInList.lastName}
-			</button>
+		<div class="display-table full-width full-height">
+			<div class="display-table-row">
+				<jsp:include page="../template/header.jsp" />		
 			</div>
-		</c:forEach>
-	</div>
-</body>
+			<div class="display-table full-width full-height">
+				<div class="display-table-cell full-height theme1-primary-bg">
+					<div class="fixedwidth-320">
+						<h1 class="text-h2 container inverted-text"><span class="icon-user margin-right"></span>Utilisateurs</h1>
+						<hr class="inverted-bg">
+						<div class="container">
+							<div class="inverted-text small-margin-bottom">
+								<span class="icon-search small-margin-right"></span><spring:message code="projecthandler.projectProfileView.research"/>
+							</div>
+							<div>
+								<select class="userSelection display-inline-block" id="userSelection">
+									<c:forEach var='userSelectable' items='${usersList}'>
+										<option id="${userSelectable.id}" value="${userSelectable.id}">
+											${userSelectable.firstName} ${userSelectable.lastName}
+										</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>	
+						<hr class="inverted-bg">	
+					</div>
+				</div>
+				<div class="display-table-cell full-width full-height">
+					<div class="full-width full-height position-relative">
+					
+						<div id="main-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
+							<div class="full-width full-height display-table position-relative">
+								<div class="position-absolute position-top position-right">
+									<a href="#" class="default-btn-shape text-h2 inverted-text util6-lighten2-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="main-modal-box"><span class="icon-cross"></span></a>
+								</div>
+								<div class="full-width full-height display-table-cell vertical-align">
+	
+									<div class="inverted-bg fixedwidth-768 margin-auto overflow-hidden position-relative">
+										<div id="dynamicContainerForModal">
+										</div>
+									</div>
+	
+								</div>
+							</div>
+						</div>
+						
+						<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+							<div class="container">
+								<div class="margin-bottom clearfix">
+									<h1 class="text-h2 util1-primary-text float-left">Liste des utilisateurs</h1>
+									<div class="text-h2 text-h1 float-right"><span class="icon-user"></span></div>
+								</div>
+								<div>	
+								
+									<div class="">
+										<c:forEach var='userInList' items='${usersList}'>
+											<div class="float-left margin-left margin-bottom position-relative rounded overflow-hidden">
+											
+												<div class="fixedwidth-128 fixedheight-128 img-as-background rounded" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
+													<div class="full-width full-height img-as-background rounded" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
+												</div>
+											
+												<div class="position-absolute position-bottom position-right small-container default-transpbg radius inverted-text" style="margin:0 0 30px 0;">
+													<p class="small">${userInList.firstName}</p>
+													<p class="small">${userInList.lastName}</p>
+												</div>
+									
+												<a id="modal-btn-${userInList.id}" href="#" class="cover-btn-shape rounded default-btn-style5 animating-event" data-action="open-event" data-animation="pop-event" data-target="main-modal-box" onClick="openProfileViewBox(${userInList.id})"></a>
+											</div>
+										</c:forEach>
+									</div>
+									
+								</div>
+							</div>
+						</div>	
+					
+					</div>
+				</div>	
+			</div>
+		</div>
+		
+		
+	</body>
 </html>
