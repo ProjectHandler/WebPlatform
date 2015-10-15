@@ -359,24 +359,31 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/project/task/save", method = RequestMethod.POST)
-	public ModelAndView saveProject(Principal principal, @ModelAttribute("task") Task task, BindingResult result) {
+	public ModelAndView saveTask(Principal principal, @ModelAttribute("task") Task task, BindingResult result) {
 		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
+
 		if (principal != null) {
 
 			// task does not exist
 			if (task.getId() == null) {
 				task.setProgress(0l);
 				task.setStatus("STATUS_UNDEFINED");
-				System.out.println("Start = " + task.getStartingDate());
 				task.setDuration(DateHelper.getDaysDuration(task.getStartingDate(), task.getEndingDate()));
 				task.setRow(taskService.findMaxTaskRowByProjectId(task.getProject().getId()));
-				taskService.saveTask(task);
+				
+				try {
+					taskService.saveTask(task);
+				}
+				catch (Exception e) {
+					e.printStackTrace();
+					return new ModelAndView("redirect:/");
+				}
 			}
 			// Else edit Task
 		}
 		else
 			return new ModelAndView("redirect:/");
 
-		return new ModelAndView("redirect:/project/viewProject/" + task.getProject().getId());
+		return new ModelAndView("redirect:/project/createTask/" + task.getProject().getId());
 	}
 }

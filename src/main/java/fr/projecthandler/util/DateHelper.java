@@ -28,8 +28,6 @@ public final class DateHelper {
 	}
 	
 	public static Long getDaysDuration(Date start, Date end) {
-		System.out.println("start time = " + start.getTime());
-		System.out.println("end time = " + end.getTime());
 		return new Long((end.getTime() - start.getTime()) / DateHelper.MILISECONDS_IN_ONE_DAY);
 	}
 }

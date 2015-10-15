@@ -129,7 +129,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 	@Override
 	public Long findMaxTaskRowByProjectId(Long projectId) {
 		Long maxRow = Utilities.getSingleResultOrNull(em
-									.createQuery("SELECT MAX(t.row) FROM Task t WHERE t.project = :projectId ")
+									.createQuery("SELECT MAX(t.row) FROM Task t WHERE t.project.id = :projectId ")
 									.setParameter("projectId", projectId));
 		if (maxRow == null)
 			return new Long(0);

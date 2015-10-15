@@ -24,8 +24,8 @@
 		});
 		
 		var dateBegin = new Date();
-		$('#alt-dateBegin').prop('value', dateBegin.getDate() + "/" + (dateBegin.getMonth() + 1) + "/" + dateBegin.getFullYear());
-		$('#alt-dateEnd').prop('value', dateBegin.getDate() + "/" + (dateBegin.getMonth() + 1) + "/" + dateBegin.getFullYear());
+		$('#alt-dateBegin').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
+		$('#alt-dateEnd').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
 		
 		$(function() {
 		    $("#dateBegin").datepicker({
@@ -69,6 +69,7 @@
 	});
 	
 	function validateForm() {
+		$('#task-taskLevel').prop('value', currentTaskType);
 		return validateName() && validateDateBegin() && validateDateEnd();
 	}
 	
@@ -109,9 +110,9 @@
 	function validateDateEnd() {
 		var dateBegin = new Date($("#alt-dateBegin").val());
 		var dateEnd = new Date($("#alt-dateEnd").val());
-		alert(dateBegin + " AND " + dateEnd);
 		var res = dateEnd.getTime() - dateBegin.getTime();
 		var dateEndProject = new Date('${project.dateEnd}');
+
 		$("#dateBeginError").html("");
 		$("#dateEndError").html("");
 		if((dateEnd == null || (res < 0))) {
@@ -216,7 +217,7 @@
 		<!-- PROJECT -->
 		<form:input type="hidden" path="id" name="taskId" id="taskId" value="${task.id}"/>
 		<form:input id="task-projectId" path="project" type="hidden" value="${project.id}"/>
-		<form:input id="task-taskLevel" path="level" type="hidden" value="currentTaskType"/>
+		<form:input id="task-taskLevel" path="level" type="hidden"/>
 
 		<!-- TASK NAME -->
 		<div class="small-margin-bottom">

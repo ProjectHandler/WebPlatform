@@ -59,7 +59,7 @@
 						<div id="main-modal-box" class="pop-event full-width full-height position-absolute position-top position-left default-transpbg zindex-10">
 							<div class="full-width full-height display-table position-relative">
 								<div class="position-absolute position-top position-right">
-									<a href="#" class="default-btn-shape text-h2 inverted-text util6-lighten2-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="main-modal-box"><span class="icon-cross"></span></a>
+									<a href="#" class="default-btn-shape text-h2 inverted-text util6-lighten2-btn-style6 animating-event" data-action="close-event" data-animation="pop-event" data-target="main-modal-box" onClick="location.reload();"><span class="icon-cross"></span></a>
 								</div>
 								<div class="full-width full-height display-table-cell vertical-align">
 	

@@ -29,6 +29,10 @@
 				validateName();
 			});
 			
+			var dateBegin = new Date();
+			$('#alt-dateBegin').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
+			$('#alt-dateEnd').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
+			
 			$(function() {
 			    $("#dateBegin").datepicker({
 			    	dateFormat: 'dd/mm/yy',
@@ -159,7 +163,7 @@
 <body>
 	<div class="display-table full-width full-height">
 		<div class="display-table-row">
-			<jsp:include page="../template/header.jsp" />		
+			<jsp:include page="../template/header.jsp" />
 		</div>
 		<div class="display-table full-width full-height">
 			<div class="display-table-cell full-height theme1-primary-bg">
