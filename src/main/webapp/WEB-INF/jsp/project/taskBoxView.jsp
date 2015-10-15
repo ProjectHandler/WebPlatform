@@ -138,8 +138,10 @@
 	    				alert(msg);
 	    			}
 					else {
-						$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
-						$("#progressTask-Span").text(percentage.toFixed(0) + "%");
+						//$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
+						//$("#progressTask-Span").text(percentage.toFixed(0) + "%");
+						$("#task-progress-div-${task.id}").css("width", parseInt(percentage.toFixed(0), 10) + "%");
+						$("#task-progress-text-${task.id}").html(parseInt(percentage.toFixed(0), 10) + "%");
 					}
 				},
 				error: function(data) {
@@ -454,9 +456,9 @@
 			<div class="">
 				<div class="display-table-cell vertical-align theme3-darken1-text small"><div style="width:84px;" class="text-left">Completed</div></div>	
 				<div class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-					<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${task.progress}%;" ></div>
+					<div id="task-progress-div-${task.id}" class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${task.progress}%;" ></div>
 				</div>
-				<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${task.progress}%</div></div>	
+				<div class="display-table-cell vertical-align theme3-darken1-text small"><div id="task-progress-text-${task.id}"" class="text-right" style="width:45px;">${task.progress}%</div></div>	
 			</div>
 		</div>	
 		
