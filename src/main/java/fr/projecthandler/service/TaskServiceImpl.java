@@ -100,4 +100,8 @@ public class TaskServiceImpl implements TaskService {
 	public Set<Task> getTasksByUser(Long userId) {
 		return taskDao.getTasksByUser(userId);
 	}
+	
+	public Long findMaxTaskRowByProjectId(Long projectId) {
+		return taskDao.findMaxTaskRowByProjectId(projectId);
+	}
 }

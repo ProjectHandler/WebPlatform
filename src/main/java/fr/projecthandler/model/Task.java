@@ -15,6 +15,9 @@ import javax.persistence.Table;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import fr.projecthandler.dto.GanttTaskDTO;
 
 @Entity
@@ -39,9 +42,11 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	private Long duration;
 
 	@Column(name = "starting_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startingDate;
 
 	@Column(name = "ending_date")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endingDate;
 
 	@Column(name = "status", length = 30)

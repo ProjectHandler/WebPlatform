@@ -9,7 +9,7 @@
 		<jsp:include page="../template/head.jsp" />
 		<title><spring:message code="projechandler.projectView.title"/></title>
 		<script type="text/javascript">
-		$(document).ready(function(){
+		$(document).ready(function() {
 			$('.projectSelection').selectivity({
 			    multiple: false,
 			    placeholder: 'Type to search a project'
@@ -30,6 +30,10 @@
 		
 		function openProfileViewBox(id) {
 			loadModalContainer(CONTEXT_PATH + '/profile/viewProfileBox/' + id);
+		}
+		
+		function openCreateTasksBox(projectId) {
+			loadModalContainer(CONTEXT_PATH + '/project/createTask/' + projectId);
 		}
 		</script>
 	</head>
@@ -101,6 +105,9 @@
 											</select>
 										</div>
 										<div class="display-table-cell vertical-align full-width text-right">
+											<a class="default-btn-shape theme1-primary-btn-style1 animating-event" href="#" onclick="openCreateTasksBox(${project.id})" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box">
+												<spring:message code="projecthandler.projectView.goToCreateTasks"/>
+											</a>
 											<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
 												<span class="icon-folder-open small-margin-right"></span><spring:message code="projecthandler.projectView.goToProjectsList"/>
 											</a>

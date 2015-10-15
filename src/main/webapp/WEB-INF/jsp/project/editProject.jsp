@@ -12,7 +12,7 @@
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
 		$(document).ready(function() {
-			// TODO : type to search a group / user => fichier de langue
+			// TODO : type to search a group / user => language files
 			$('.userSelection').selectivity({
 			    multiple: true,
 			    placeholder: 'Type to search a user'
@@ -78,7 +78,7 @@
 				return false;
 			}
 			else if (res == 0) {
-				$("#dateEndError").html('<spring:message javaScriptEscape="true" code="projecthandler.project.edit.error.minimumDuration"/>');
+				$("#dateBeginError").html('<spring:message javaScriptEscape="true" code="projecthandler.project.edit.error.minimumDuration"/>');
 				return false;
 			}
 			return true;
@@ -280,7 +280,7 @@
 												</c:forEach>
 												</select>
 											</div>
-										</div>						
+										</div>					
 											
 										<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit"><span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.project.edit.save"/></button>
 	

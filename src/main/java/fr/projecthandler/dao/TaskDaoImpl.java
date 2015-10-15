@@ -32,6 +32,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 	@Override
 	@Transactional
 	public void deleteTasksByIds(List<Long> tasksIds) {
+		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)")
+				.setParameter("tasksIds", tasksIds).executeUpdate();
 		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)").setParameter("tasksIds", tasksIds).executeUpdate();
 	}
 
@@ -124,4 +126,14 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		return result;
 	}
 
+	@Override
+	public Long findMaxTaskRowByProjectId(Long projectId) {
+		Long maxRow = Utilities.getSingleResultOrNull(em
+									.createQuery("SELECT MAX(t.row) FROM Task t WHERE t.project = :projectId ")
+									.setParameter("projectId", projectId));
+		if (maxRow == null)
+			return new Long(0);
+		else
+			return maxRow;
+	}
 }

@@ -20,7 +20,14 @@ public class TaskPriority extends BaseEntity implements java.io.Serializable {
 
 	public TaskPriority() {
 	}
+	
 
+	public TaskPriority(Priority priority) {
+		this.id = new Long(priority.getValue());
+		this.value = priority.getValue();
+		this.name = priority.getName();
+	}
+	
 	public TaskPriority(Integer id) {
 		this.id = new Long(id);
 		this.value = id;

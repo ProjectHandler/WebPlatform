@@ -35,4 +35,6 @@ public interface TaskDao {
 	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId);
 
 	public Set<Task> getTasksByUser(Long userId);
+	
+	public Long findMaxTaskRowByProjectId(Long projectId);
 }

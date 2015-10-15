@@ -31,7 +31,9 @@ import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.ProjectProgressDTO;
+import fr.projecthandler.enums.Priority;
 import fr.projecthandler.enums.ProjectStatus;
+import fr.projecthandler.enums.TaskLevel;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
@@ -44,6 +46,7 @@ import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TicketService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
+import fr.projecthandler.util.DateHelper;
 
 @Controller
 public class ProjectController {
@@ -279,11 +282,11 @@ public class ProjectController {
 	// We chose to authorize adding inactive users via group.
 	// Called from edit project to fetch users of a given group
 	@RequestMapping(value = "project/fetchGroupUsers", method = RequestMethod.GET)
-	public @ResponseBody String fetchGroupUsers(Principal principal, @RequestParam("groupId") String groupId) {
+	public @ResponseBody String fetchGroupUsers(Principal principal, @RequestParam("groupId") Long groupId) {
 		List<User> users = new ArrayList<>();
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		try {
-			users = userService.getGroupUsersByGroupId(Long.parseLong(groupId));
+			users = userService.getGroupUsersByGroupId(groupId);
 			String json = gson.toJson(users);
 
 			return json;
@@ -291,5 +294,89 @@ public class ProjectController {
 			e.printStackTrace();
 			return "KO";
 		}
+	}
+
+	// We chose to authorize adding inactive users via group.
+	// Called from edit/save task. It gets users found that are both in the current project and group
+	@RequestMapping(value = "project/task/fetchGroupUsers", method = RequestMethod.GET)
+	public @ResponseBody String fetchGroupUsersForTask(Principal principal,
+													   @RequestParam("groupId") Long groupId,
+													   @RequestParam("projectId") Long projectId) {
+		List<User> users = new ArrayList<>();
+		List<User> usersInProject = new ArrayList<>();
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		try {
+			users = userService.getGroupUsersByGroupId(groupId);
+			usersInProject = projectService.getUsersByProjectId(projectId);
+			
+			// getting list intersection
+			users.retainAll(usersInProject);
+
+			String json = gson.toJson(users);
+
+			return json;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "KO";
+		}
+	}
+	
+	@RequestMapping(value = "project/createTask/{projectId}", method = RequestMethod.GET)
+	public ModelAndView createTaskForProject(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+		
+		Project project = projectService.findProjectById(projectId);
+		
+		if (project == null) {
+			// TODO not found
+			return new ModelAndView("redirect:/");
+		}
+		List<User> users = projectService.getUsersByProjectId(project.getId());
+		myModel.put("user", userService.findUserById(userDetails.getId()));
+		myModel.put("users", users);
+
+		project.setUsers(users);
+		myModel.put("project", project);
+		
+		List<TaskPriority> priorities = taskService.getAllTaskPriorities();
+		myModel.put("priorities", priorities);
+
+		Task task = new Task();
+		task.setStartingDate(new Date());
+		task.setEndingDate(new Date());
+		task.setPriority(new TaskPriority(Priority.LOW));
+		myModel.put("task", task);
+		
+		myModel.put("groups", userService.getAllNonEmptyGroups());
+		
+		myModel.put("taskType", TaskLevel.TASK.getId());
+		myModel.put("milestoneType", TaskLevel.MILESTONE.getId());
+		
+		return new ModelAndView("project/createTasks", myModel);
+	}
+	
+	@RequestMapping(value = "/project/task/save", method = RequestMethod.POST)
+	public ModelAndView saveProject(Principal principal, @ModelAttribute("task") Task task, BindingResult result) {
+		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
+		if (principal != null) {
+
+			// task does not exist
+			if (task.getId() == null) {
+				task.setProgress(0l);
+				task.setStatus("STATUS_UNDEFINED");
+				System.out.println("Start = " + task.getStartingDate());
+				task.setDuration(DateHelper.getDaysDuration(task.getStartingDate(), task.getEndingDate()));
+				task.setRow(taskService.findMaxTaskRowByProjectId(task.getProject().getId()));
+				taskService.saveTask(task);
+			}
+			// Else edit Task
+		}
+		else
+			return new ModelAndView("redirect:/");
+
+		return new ModelAndView("redirect:/project/viewProject/" + task.getProject().getId());
 	}
 }

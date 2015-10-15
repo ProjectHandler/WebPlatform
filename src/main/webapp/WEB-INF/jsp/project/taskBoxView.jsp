@@ -27,12 +27,10 @@
 		$('.tristate').tristate({
 	        checked: "validated",
 	        unchecked: "empty",
-	        indeterminate: "taken",
-	        change: function(state, value) {
-	        	var tmp = $(this).attr("id").split("-");
-	        	changeSubTaskState(tmp[1]);
-	        }
+	        indeterminate: "taken"
 	    });
+		
+		setTristateClickEventHandler();
 
 		$('#addSubTask-div').hide();
 
@@ -41,6 +39,28 @@
 		});
 	});
 
+	function setTristateClickEventHandler() {
+		$('.tristate').click(function() {
+			var state = $(this).tristate('state');
+			var tmp = $(this).attr("id").split("-");
+			
+			if (state === null) {
+				$(this).tristate('state', true);
+				$(this).tristate('value', "validated");
+			}
+			else if (state === true) {
+				$(this).tristate('state', false);
+				$(this).tristate('value', "empty");
+			}
+			else {
+				$(this).tristate('state', null);
+				$(this).tristate('value', "taken");
+			}
+
+			changeSubTaskState(tmp[1]);
+		});
+	}
+	
 	function createNewTicket() {
 		var url = CONTEXT_PATH + "/ticket/new/${task.project.id}?title=[${task.name}]";
 		window.open(url);
@@ -54,22 +74,22 @@
 	  			data: { description: desc,
 	  					userId: "${user.id}",
 	  					taskId: "${task.id}"}, 
-	    				success: function(data) {
-	    					if (data.indexOf("KO:") != -1) {
-	    	    				var msg = data.replace("KO:", "");
-	    	    				alert(msg);
-	    	    			}
-							else {
-								var subTask = jQuery.parseJSON(data);
-			    				createSubTask(subTask.id, subTask);
-								switchTextareaForSubTaskDescription();
-								$('#addSubTaskBox-description').val('');
-								updateTaskProgress();
-							}
-			    		},
-		    		error: function(data) {
-		    			alert("error: " + data);
-		    		}
+	    		success: function(data) {
+   					if (data.indexOf("KO:") != -1) {
+   	    				var msg = data.replace("KO:", "");
+   	    				alert(msg);
+   	    			}
+					else {
+						var subTask = jQuery.parseJSON(data);
+	    				createSubTask(subTask.id, subTask);
+						switchTextareaForSubTaskDescription();
+						$('#addSubTaskBox-description').val('');
+						updateTaskProgress();
+					}
+	    		},
+		    	error: function(data) {
+	    			alert("error: " + data);
+	    		}
 	    	});
 		}
 		else
@@ -106,10 +126,6 @@
 				count++;
 		});
 		percentage = (count / subTaskNumber) * 100;
-
-		$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
-		$("#progressTask-Span").text(percentage.toFixed(0) + "%");
-
 		$.ajax({type: "GET",
 				url: CONTEXT_PATH + "/task/updateProgress",
 				data: {
@@ -121,6 +137,10 @@
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
 	    			}
+					else {
+						$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
+						$("#progressTask-Span").text(percentage.toFixed(0) + "%");
+					}
 				},
 				error: function(data) {
 					alert("error: " + data);
@@ -142,9 +162,6 @@
 	    				alert(msg);
 	    			}
 					else {
-				    	console.log($("#tristate-" + id).val());
-				    	if ($("#tristate-" + id).val() == "validated")
-				    		updateTaskProgress();
 	    				refreshSubTask(id, jQuery.parseJSON(data));
 					}
     			},
@@ -267,24 +284,11 @@
 		$('#tristate-' + id).tristate({
 	        checked: "validated",
 	        unchecked: "empty",
-	        indeterminate: "taken",
-	        change: function(state, value) {
-	        	var tmp = $(this).attr("id").split("-");
-	        	changeSubTaskState(tmp[1]);
-	        }
+	        indeterminate: "taken"
 	    });
 		
-		
-		/////////////////////////////////////////////////////////////////
-		// Pour le moment je reload la page en mode bourin
-		// Fait quelque chose de clean pour ton add de subtask
-		// Ne duplique pas le code HTML comme tu l'as fait
-		// Soit tu generes tout en js
-		// Soit tu fais un template html d'une row en display-none que tu clones et que tu feed comme dans projecttasksview
-		// Soit tu clones la derniere subtask et tu la feed
-		// Mais la c pas possible de passer derri√®re ca
-		/////////////////////////////////////////////////////////////////
-		location.reload();		
+		setTristateClickEventHandler();
+    	updateTaskProgress();
 	}
 
 	// Add subTask to subTaskList-Box once successfully added in db.
@@ -311,7 +315,7 @@
 		// Soit tu generes tout en js
 		// Soit tu fais un template html d'une row en display-none que tu clones et que tu feed comme dans projecttasksview
 		// Soit tu clones la derniere subtask et tu la feed
-		// Mais la c pas possible de passer derri√®re ca
+		// Mais la c pas possible de passer derriËre ca
 		/////////////////////////////////////////////////////////////////
 		location.reload();
 		
@@ -382,11 +386,11 @@
 	<div class="container display-table full-width">
 		
 		<div id="task-tag-list" class="display-table-cell vertical-align padding-right">
-			<div class="display-none STATUS_DONE" title="T√¢che termin√©e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
-			<div class="display-none STATUS_ACTIVE" title="T√¢che en cours"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
-			<div class="display-none STATUS_SUSPENDED" title="T√¢che suspendue"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
-			<div class="display-none STATUS_FAILED" title="T√¢che abandonn√©e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
-			<div class="display-none STATUS_UNDEFINED" title="T√¢che ind√©termin√©e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
+			<div class="display-none STATUS_DONE" title="T‚che terminÈe"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
+			<div class="display-none STATUS_ACTIVE" title="T‚che en cours"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
+			<div class="display-none STATUS_SUSPENDED" title="T‚che suspendue"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
+			<div class="display-none STATUS_FAILED" title="T‚che abandonnÈe"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
+			<div class="display-none STATUS_UNDEFINED" title="T‚che indÈterminÈe"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
 			<script>
 				$("#task-tag-list").find("." + '${task.status}').show();
 			</script>
