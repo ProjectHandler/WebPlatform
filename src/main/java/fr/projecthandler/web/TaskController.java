@@ -316,6 +316,7 @@ public class TaskController {
 			if (taskMessage.getOwner().getId() != userId)
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
 			taskMessage.setContent(content);
+			taskMessage.setUpdateDate(new Date());
 			try {
 				taskMessageService.updateTaskMessage(taskMessage);
 			} catch (Exception e) {

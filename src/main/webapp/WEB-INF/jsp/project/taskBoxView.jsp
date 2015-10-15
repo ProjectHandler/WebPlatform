@@ -30,7 +30,7 @@
 	        indeterminate: "taken"
 	    });
 		
-		setTristateClickEventHandler();
+		initTristateClickEventHandler();
 
 		$('#addSubTask-div').hide();
 
@@ -39,8 +39,30 @@
 		});
 	});
 
-	function setTristateClickEventHandler() {
+	function initTristateClickEventHandler() {
 		$('.tristate').click(function() {
+			var state = $(this).tristate('state');
+			var tmp = $(this).attr("id").split("-");
+			
+			if (state === null) {
+				$(this).tristate('state', true);
+				$(this).tristate('value', "validated");
+			}
+			else if (state === true) {
+				$(this).tristate('state', false);
+				$(this).tristate('value', "empty");
+			}
+			else {
+				$(this).tristate('state', null);
+				$(this).tristate('value', "taken");
+			}
+
+			changeSubTaskState(tmp[1]);
+		});
+	}
+	
+	function setTristateClickEventHandler(id) {
+		$('#tristate-' + id).click(function() {
 			var state = $(this).tristate('state');
 			var tmp = $(this).attr("id").split("-");
 			
@@ -81,10 +103,14 @@
    	    			}
 					else {
 						var subTask = jQuery.parseJSON(data);
-	    				createSubTask(subTask.id, subTask);
-						switchTextareaForSubTaskDescription();
-						$('#addSubTaskBox-description').val('');
-						updateTaskProgress();
+						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
+	    				$("#subTaskList-Box").load(url + " #subTaskList-Box",
+	    											function () {
+														createSubTask(subTask.id);
+														switchTextareaForSubTaskDescription();
+														$('#addSubTaskBox-description').val('');
+														updateTaskProgress();
+	    				});
 					}
 	    		},
 		    	error: function(data) {
@@ -114,7 +140,7 @@
 	    		}
 	    });
 	}
-
+	
 	// TODO : maybe only compute server side ??
 	function updateTaskProgress() {
 		var percentage = 0;
@@ -138,8 +164,6 @@
 	    				alert(msg);
 	    			}
 					else {
-						//$("#progressTask${task.id}").progressbar("option", "value", parseInt(percentage.toFixed(0), 10));
-						//$("#progressTask-Span").text(percentage.toFixed(0) + "%");
 						$("#task-progress-div-${task.id}").css("width", parseInt(percentage.toFixed(0), 10) + "%");
 						$("#task-progress-text-${task.id}").html(parseInt(percentage.toFixed(0), 10) + "%");
 					}
@@ -164,7 +188,12 @@
 	    				alert(msg);
 	    			}
 					else {
-	    				refreshSubTask(id, jQuery.parseJSON(data));
+						var parsedData = jQuery.parseJSON(data);
+						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
+	    				$("#subTaskContent-" + parsedData.id).load(url + " #subTaskContent-" + parsedData.id,
+	    														function () {
+	    															refreshSubTask(parsedData.id);
+	    				});
 					}
     			},
     			error: function(data) {
@@ -234,71 +263,19 @@
 		newSubTaskDescriptionShown = !newSubTaskDescriptionShown;
 	}
 
-	// Id is the subtask id and data is the content of the subtask
-	// TODO : make a separate .jsp file and use jquery.load() instead of doing this uggly thing!
-	function generateSubTaskDiv(id, data) {
-		// Main div
-		var htmlString = "<div id='subTaskContent-" + id + "' class='subTaskContent display-inline-block'>";
-		// tristate checkbox div
-		htmlString += "<div class='display-inline-block'><input class='tristate' id='tristate-" + id + "' type='checkbox' value=";
-		if (data.validated == true) {
-			htmlString += "'validated' checked='checked'></div>";
-		} else if (data.taken == true) {
-			htmlString += "'taken' indeterminate='intermediate'></div>";
-		} else {
-			htmlString += "'empty'></div>";
-		}
-		// description textarea div
-		htmlString += 	"<div class='display-inline-block'>" +
-						"<textarea id='subTaskDescription-" + id + "' disabled='disabled' maxlength='200'>" + data.description + " </textarea></div>";
-		// Done editing button div
-		htmlString +=	"<button id='doneEditingButton-" + id +"' class='display-none default-btn-shape theme2-primary-btn-style1' onClick='doneEditingSubTask(" + id + ");'>" +
-						"<spring:message code='projecthandler.taskBoxView.doneEditingSubTask'/></button>";
-		// Cancel editing button div
-		htmlString +=	"<button id='cancelEditingButton-" + id + "' class='display-none default-btn-shape theme2-primary-btn-style1' onmousedown='cancelEditingSubTask(" + id + ");'>" +
-						"<spring:message code='projecthandler.taskBoxView.cancelEditSubTask'/></button>";
-		// User image div
-		htmlString += 	"<div class='display-inline-block vertical-align small-padding-right'>" +
-						"<div class='fixedwidth-64 fixedheight-64 circle img-as-background' style='background-image:url(" +
-								CONTEXT_PATH + "/resources/img/no-img.png);' title='" + data.lastUserActivity.firstName + " " +
-								data.lastUserActivity.lastName + "'>" +
-						"<div class='full-width full-height circle img-as-background' style='background-image:url(" +
-								CONTEXT_PATH + "/downloadAvatar/" + data.lastUserActivity.id + ");' title='" +
-								data.lastUserActivity.firstName + " " + data.lastUserActivity.lastName + "'>" +
-						"</div></div></div>";
-		// Edit button div
-		htmlString +=	"<button id='editSubTaskButton-" + id + "' class='default-btn-shape theme2-primary-btn-style1' onClick='startEditingSubTask(" + id + ");'>" +
-						"<spring:message code='projecthandler.taskBoxView.editSubTask'/></button>";
-		// Delete button div
-		htmlString +=	"<button class='default-btn-shape theme2-primary-btn-style1' onClick='deleteSubTask(" + id + ");'>" +
-						"<spring:message code='projecthandler.taskBoxView.deleteSubTask'/></button>";
-
-		// Closing main div
-		htmlString += "</div>";
-
-		return htmlString;
-	}
-	
-	function refreshSubTask(id, data) {
-		var htmlString = generateSubTaskDiv(id, data);
-		$('#subTaskContent-' + id).html(htmlString);
-
+	function refreshSubTask(id) {
 		$('#tristate-' + id).tristate({
 	        checked: "validated",
 	        unchecked: "empty",
 	        indeterminate: "taken"
 	    });
-
-		setTristateClickEventHandler();
+		setTristateClickEventHandler(id);
     	updateTaskProgress();
 	}
 
 	// Add subTask to subTaskList-Box once successfully added in db.
 	// Called when focus is lost from addSubTask textarea. (add a validation button better?)
-	function createSubTask(id, data) {
-		var htmlString = generateSubTaskDiv(id, data);
-		$(htmlString).appendTo('#subTaskList-Box');
-
+	function createSubTask(id) {
 		$('#tristate-' + id).tristate({
 	        checked: "validated",
 	        unchecked: "empty",
@@ -319,7 +296,7 @@
 		// Soit tu clones la derniere subtask et tu la feed
 		// Mais la c pas possible de passer derri�re ca
 		/////////////////////////////////////////////////////////////////
-		location.reload();
+		//location.reload();
 		
 	}
 
