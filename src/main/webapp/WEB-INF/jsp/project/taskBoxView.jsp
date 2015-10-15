@@ -107,11 +107,17 @@
 						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
 	    				$("#subTaskList-BoxContainer").load(url + " #subTaskList-Box",
 	    											function () {
-														createSubTask(subTask.id);
+								    					$('.tristate').tristate({
+								    				        checked: "validated",
+								    				        unchecked: "empty",
+								    				        indeterminate: "taken"
+								    				    });
 														switchTextareaForSubTaskDescription();
 														$('#addSubTaskBox-description').val('');
 														updateTaskProgress();
+														initTristateClickEventHandler();
 	    				});
+	    				
 					}
 	    		},
 		    	error: function(data) {
@@ -252,7 +258,8 @@
 	    			}
 					else {
 						$("#subTaskContent-" + id).remove();
-						updateTaskProgress();
+						if (!$("#subTaskList-BoxContainer").find(".tristate"))
+							updateTaskProgress();
 					}
 				},
 				error: function(data) {
@@ -286,7 +293,7 @@
 
 	// Add subTask to subTaskList-Box once successfully added in db.
 	// Called when focus is lost from addSubTask textarea. (add a validation button better?)
-	function createSubTask(id) {
+/* 	function createSubTask(id) {
 		$('#tristate-' + id).tristate({
 	        checked: "validated",
 	        unchecked: "empty",
@@ -296,7 +303,7 @@
 	        	changeSubTaskState(tmp[1]);
 	        }
 	    });
-	}
+	} */
 
 	// Called when a user clicks edit button on a subTask.
 	function startEditingSubTask(id) {
