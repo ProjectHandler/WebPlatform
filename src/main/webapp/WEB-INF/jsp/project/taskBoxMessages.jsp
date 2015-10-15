@@ -55,13 +55,15 @@
 			var disabled = $(itemName).attr("disabled");
 			if (disabled == "disabled") {
 				$(itemName).removeAttr("disabled");
-				$("#validateEditingCommentButton-" + id).removeClass("display-none");
-				$("#cancelEditingCommentButton-" + id).removeClass("display-none");
+				//$("#validateEditingCommentButton-" + id).removeClass("display-none");
+				//$("#cancelEditingCommentButton-" + id).removeClass("display-none");
+				$("#editingCommentButtonBox-" + id).removeClass("display-none");
 			}
 			else {
 				$(itemName).attr("disabled", "disabled");
-				$("#validateEditingCommentButton-" + id).addClass("display-none");
-				$("#cancelEditingCommentButton-" + id).addClass("display-none");
+				//$("#validateEditingCommentButton-" + id).addClass("display-none");
+				//$("#cancelEditingCommentButton-" + id).addClass("display-none");
+				$("#editingCommentButtonBox-" + id).addClass("display-none");
 			}
 		}
 
@@ -95,8 +97,9 @@
 		function doneEditingComment(id) {
 			var itemName = "#message-" + id;
 			$(itemName).attr("disabled", "disabled");
-			$("#validateEditingCommentButton-" + id).addClass("display-none");
-			$("#cancelEditingCommentButton-" + id).addClass("display-none");
+			//$("#validateEditingCommentButton-" + id).addClass("display-none");
+			//$("#cancelEditingCommentButton-" + id).addClass("display-none");
+			$("#editingCommentButtonBox-" + id).addClass("display-none");
 			if ($(itemName).val() != savedComment && $(itemName).val() != "") {
 				changeCommentContent(id);
 			}
@@ -206,14 +209,19 @@
 					</div>
 				</div>
 			
-				<div class="clearfix margin-bottom" style="margin-top:-5px;">
+				<div class="clearfix margin-bottom position-relative" style="margin-top:-5px;">
+				
+					<div id="editingCommentButtonBox-${message.id}" class="display-none text-right zindex-10 position-absolute position-top position-right inverted-bg fixedwidth-256">
+						<button id="validateEditingCommentButton-${message.id}" class=" reduced-btn-shape small theme2-primary-btn-style6" onClick="doneEditingComment(${message.id});">
+							<span class="icon-checkmark small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.validateComment"/>
+						</button>
+						/
+						<button id="cancelEditingCommentButton-${message.id}" class=" reduced-btn-shape small util6-primary-btn-style6" onmousedown="cancelEditingComment(${message.id});">
+							<span class="icon-cross small-margin-right"></span><spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
+						</button>
+					</div>
+				
 					<div class="float-right">
-						<button id="validateEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onClick="doneEditingComment(${message.id});">
-							<spring:message code="projecthandler.taskBoxMessages.validateComment"/>
-						</button>
-						<button id="cancelEditingCommentButton-${message.id}" class="display-none default-btn-shape theme2-primary-btn-style1" onmousedown="cancelEditingComment(${message.id});">
-							<spring:message code="projecthandler.taskBoxMessages.cancelComment"/>
-						</button>
 						
 						<c:if test="${user.id == message.owner.id}">
 							<div>
