@@ -14,6 +14,7 @@
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
 	var newSubTaskDescriptionShown = false;
 	var savedSubTaskDescription = null;
+	var currTaskStatus = '${task.status}';
 	$(document).ready(function() {
 		$( document ).tooltip();
 
@@ -164,6 +165,16 @@
 	    				alert(msg);
 	    			}
 					else {
+						if (percentage == 100) {
+							$("#task-tag-list").find("." + currTaskStatus).hide();
+							$("#task-tag-list").find(".STATUS_DONE").show();
+							currTaskStatus = "STATUS_DONE";
+						}
+						else {
+							$("#task-tag-list").find("." + currTaskStatus).hide();
+							$("#task-tag-list").find(".STATUS_ACTIVE").show();
+							currTaskStatus = "STATUS_ACTIVE";
+						}
 						$("#task-progress-div-${task.id}").css("width", parseInt(percentage.toFixed(0), 10) + "%");
 						$("#task-progress-text-${task.id}").html(parseInt(percentage.toFixed(0), 10) + "%");
 					}
