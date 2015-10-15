@@ -23,8 +23,9 @@
 			validateName();
 		});
 		
-		var dateBegin = new Date('${task.startingDate}');
-		$('#alt-dateBegin').prop('value', $.datepicker.formatDate("dd/mm/yyyy", dateBegin));
+		var dateBegin = new Date();
+		$('#alt-dateBegin').prop('value', dateBegin.getDate() + "/" + (dateBegin.getMonth() + 1) + "/" + dateBegin.getFullYear());
+		$('#alt-dateEnd').prop('value', dateBegin.getDate() + "/" + (dateBegin.getMonth() + 1) + "/" + dateBegin.getFullYear());
 		
 		$(function() {
 		    $("#dateBegin").datepicker({

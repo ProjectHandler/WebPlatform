@@ -23,7 +23,7 @@
 		});
 
 		$('#prioritySelect').on("change", changePriority);
-
+		
 		$('.tristate').tristate({
 	        checked: "validated",
 	        unchecked: "empty",
@@ -278,7 +278,7 @@
 	}
 	
 	function refreshSubTask(id, data) {
-		// var htmlString = generateSubTaskDiv(id, data); ca, c juste ultra la mort !!
+		var htmlString = generateSubTaskDiv(id, data);
 		$('#subTaskContent-' + id).html(htmlString);
 
 		$('#tristate-' + id).tristate({
@@ -286,7 +286,7 @@
 	        unchecked: "empty",
 	        indeterminate: "taken"
 	    });
-		
+
 		setTristateClickEventHandler();
     	updateTaskProgress();
 	}
@@ -315,7 +315,7 @@
 		// Soit tu generes tout en js
 		// Soit tu fais un template html d'une row en display-none que tu clones et que tu feed comme dans projecttasksview
 		// Soit tu clones la derniere subtask et tu la feed
-		// Mais la c pas possible de passer derrière ca
+		// Mais la c pas possible de passer derriï¿½re ca
 		/////////////////////////////////////////////////////////////////
 		location.reload();
 		
@@ -386,32 +386,40 @@
 	<div class="container display-table full-width">
 		
 		<div id="task-tag-list" class="display-table-cell vertical-align padding-right">
-			<div class="display-none STATUS_DONE" title="Tâche terminée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
-			<div class="display-none STATUS_ACTIVE" title="Tâche en cours"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
-			<div class="display-none STATUS_SUSPENDED" title="Tâche suspendue"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
-			<div class="display-none STATUS_FAILED" title="Tâche abandonnée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
-			<div class="display-none STATUS_UNDEFINED" title="Tâche indéterminée"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
+			<div class="display-none STATUS_DONE" title="Tï¿½che terminï¿½e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util2-primary-bg inverted-text text-center circle text-h4"><span class="icon-checkmark"></span></div></div></div>
+			<div class="display-none STATUS_ACTIVE" title="Tï¿½che en cours"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util3-primary-bg inverted-text text-center circle text-h4"><span class="icon-loop"></span></div></div></div>
+			<div class="display-none STATUS_SUSPENDED" title="Tï¿½che suspendue"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util5-primary-bg inverted-text text-center circle text-h4"><span class="icon-history"></span></div></div></div>
+			<div class="display-none STATUS_FAILED" title="Tï¿½che abandonnï¿½e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util6-primary-bg inverted-text text-center circle text-h4"><span class="icon-cross"></span></div></div></div>
+			<div class="display-none STATUS_UNDEFINED" title="Tï¿½che indï¿½terminï¿½e"><div class="display-table" style="width:30px;height:30px;"><div class="display-table-cell vertical-align full-width full-height util1-primary-bg inverted-text text-center circle text-h4">?</div></div></div>
 			<script>
 				$("#task-tag-list").find("." + '${task.status}').show();
 			</script>
-		</div>	
+		</div>
 		
 		<h1 class="text-h1 theme3-darken1-text display-table-cell vertical-align padding-right full-width">${task.name}</h1>
-		
-		
+
 		<div class="display-table-cell vertical-align small-padding-right">
 			<spring:message code="projecthandler.taskBoxView.priority"/>
 		</div>
-		
+
 		<div class="taskDetails display-table-cell vertical-align padding-right">
 			<div class="priority">
 				<select id="prioritySelect">
 					<c:forEach var="priority" items="${priorities}">
 						<c:choose>
 						<c:when test="${task.priority.name != null}">
-							<option selected="selected" value="${task.id}/${priority.id}">
-								${priority.name}
-							</option>
+							<c:choose>
+								<c:when test="${task.priority.name eq priority.name}">
+									<option selected="selected" id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
+										${priority.name}
+									</option>
+								</c:when>
+								<c:otherwise>
+									<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
+										${priority.name}
+									</option>
+								</c:otherwise>
+							</c:choose>
 						</c:when>
 						<c:otherwise>
 							<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
