@@ -107,6 +107,10 @@ public class TaskController {
 			if (t == null)
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskNotExists");
 			t.setProgress(progress); // compute Server side only ???
+			if (progress == 100)
+				t.setStatus("STATUS_DONE");
+			else
+				t.setStatus("STATUS_ACTIVE");
 			try {
 				taskService.updateTask(t);
 			} catch (Exception e) {
