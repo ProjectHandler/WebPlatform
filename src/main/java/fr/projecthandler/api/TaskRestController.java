@@ -147,22 +147,18 @@ public class TaskRestController {
 		}
 	}
 	
-	@RequestMapping(value = "/updateSubTask/{id}/{isValidated}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> updateSubTask(@PathVariable Long id, @PathVariable Boolean isValidated,
+	@RequestMapping(value = "/updateSubTask/{id}/{isTaken}/{isValidated}", method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> updateSubTask(@PathVariable Long id, @PathVariable Boolean isTaken, @PathVariable Boolean isValidated,
 			@CurrentUserDetails CustomUserDetails userDetails) {
 		
 		try {
 			SubTask subTask = subTaskService.findSubTaskById(id);
+			subTask.setTaken(isTaken);
 			subTask.setValidated(isValidated);
 			subTaskService.updateSubTask(subTask);
 
-			System.out.println("ok");
-			System.out.println("id: " + id + " isValidated:" + isValidated);
-			
 			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
-
 			String json = gson.toJson(new MobileSubTaskDTO(subTask));
-			System.out.println(json);
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
