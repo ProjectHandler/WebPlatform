@@ -17,6 +17,8 @@ public interface TicketService {
 
 	public void updateTicket(Ticket t);
 
+	public void deleteTicketById(Long id);
+
 	public void deleteTicketsByIds(List<Long> ticketsIdsList);
 
 	public List<Ticket> getTicketsByProjectId(Long projectId);

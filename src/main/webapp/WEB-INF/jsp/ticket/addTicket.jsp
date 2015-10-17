@@ -10,6 +10,7 @@
 		
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/js/jquery.tokeninput.min.js"></script>
+		<script type="text/javascript" src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/tokeninput/token-input-facebook.css">
 		<title>Nouveau ticket</title>
 		<script type="text/javascript">
@@ -66,8 +67,11 @@
 				</tr>
 				<tr>
 					<td><form:label path="text">Message</form:label></td>
-					<td><form:textarea path="text"></form:textarea></td>
+					<td><form:textarea path="text" id="text-ckeditor"></form:textarea></td>
 				</tr>
+				<script>
+                CKEDITOR.replace( 'text-ckeditor' );
+	            </script>
 				<tr>
 					<td colspan="2"><input value="Submit" type="submit">
 					</td>

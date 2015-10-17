@@ -69,13 +69,13 @@
 	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a></span>
 	<h1>Ticket</h1>
 	<h2>Titre: ${ticket.title}</h2>
-	<p class="ticket-message-fisrt">
+	<div class="ticket-message-fisrt">
 		${ticket.text}
 		<span class="ticket-message-info">
 			Auteur: ${ticket.user.firstName} ${ticket.user.lastName} Date:
 			<fmt:formatDate value="${ticket.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" />
 		</span>
-	</p>
+	</div>
 	<div class="ticket-messages">
 		<c:forEach items="${ticketMessages}" var="message">
 			<div class="ticket-message">

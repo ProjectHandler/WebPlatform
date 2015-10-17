@@ -26,6 +26,7 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 	}
 
 	@Override
+	@Transactional
 	public void deleteTicketById(Long id) {
 		em.createQuery("DELETE FROM Ticket t WHERE t.id =:id").setParameter("id", id).executeUpdate();
 	}

@@ -20,6 +20,9 @@
 			                2: { sorter: "shortDate" }
 			              }
  */			        });
+					$(".comfirm-delete").submit(function () {
+						return confirm('<spring:message code="projecthandler.project.edit.deleteConfirm"/>');
+					});
 			    }
 		);
 		</script>
@@ -57,6 +60,12 @@
 						<td>${ticket.user.firstName}  ${ticket.user.lastName}</td>
 						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="MM-dd-yyyy HH:mm" /></td>
 						<td><spring:message javaScriptEscape="true" code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
+						<td colspan="2">
+							<form method="POST" class="comfirm-delete" action="${pageContext.request.contextPath}/ticket/delete">
+									<input type="hidden" name="ticketId" id="ticketId" value="${ticket.id}"/>
+									<input value="Delete" type="submit">
+							</form>
+						</td>
 					</tr>
 				</c:forEach>
 			</tbody>

@@ -35,7 +35,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 	}
 
 	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletRequest httpRequest = this.getAsHttpRequest(request);
 
 		String token = extractAuthToken(httpRequest);
@@ -44,8 +45,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 		if (user != null) {
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
 			// Build an Authentication object with the user's info
-			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null,
-					userDetails.getAuthorities());
+			UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails,
+					null, userDetails.getAuthorities());
 			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
 			// Set the authentication into the SecurityContext
 			SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -58,7 +59,8 @@ public class AuthenticationTokenProcessingFilter extends GenericFilterBean {
 		// Get the token from header
 		String authToken = request.getHeader("X-Auth-Token");
 
-		// If the token not found in the header, get it from the request parameters
+		// If the token not found in the header, get it from the request
+		// parameters
 		if (authToken == null) {
 			authToken = request.getParameter("token");
 		}

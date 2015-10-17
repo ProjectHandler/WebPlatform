@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.TicketStatus;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
@@ -172,4 +173,26 @@ public class TicketController {
 		return new ModelAndView("ticket/ticketList", model);
 	}
 
+	//TODO check what happens if invalid ticket id
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	public ModelAndView deleteTicket(@CurrentUserDetails CustomUserDetails userDetails,
+			@RequestParam Long ticketId) {
+		User u = userService.findUserById(userDetails.getId());
+		Ticket ticket = ticketService.findTicketById(ticketId);
+		
+		if (userDetails == null
+				|| ticket == null
+				|| (userDetails.getUserRole() != UserRole.ROLE_ADMIN && userDetails.getId() != ticket.getUser().getId())) {
+			return new ModelAndView("accessDenied");
+		}
+
+		Long projectId = ticket.getProject().getId();
+		try {
+			ticketService.deleteTicketById(ticket.getId());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return new ModelAndView("redirect:/ticket/list/project/" + projectId);
+	}
 }

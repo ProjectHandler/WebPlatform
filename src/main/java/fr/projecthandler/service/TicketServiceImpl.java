@@ -43,6 +43,10 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.deleteTicketsByIds(ticketsIdsList);
 	}
 
+	public void deleteTicketById(Long id) {
+		ticketDao.deleteTicketById(id);
+	}
+
 	@Override
 	public void updateTicket(Ticket a) {
 		ticketDao.updateTicket(a);
