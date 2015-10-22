@@ -743,7 +743,7 @@ GanttMaster.prototype.indentCurrentTask=function(){
   if (!self.canWrite|| !self.currentTask.canWrite)
     return;
 
-  if (self.currentTask && self.currentTask.level <= 3) { //<= lvl limite TODO -> set in variable
+  if (self.currentTask && self.currentTask.level <= 2) { //<= lvl limite TODO -> set in variable
     self.beginTransaction();
     self.currentTask.indent();
     self.endTransaction();
@@ -770,6 +770,17 @@ GanttMaster.prototype.addBelowCurrentTask=function(){
     task.rowElement.click();
     task.rowElement.find("[name=name]").focus();
   }
+  
+  if (task.level == 1) { //if milestone add automaticaly 1 task.
+	task.name="Milestone "+(row);
+  	ch = factory.build("tmp_fk" + new Date().getTime(), "", "", level+1, start, 1);
+  	ch.name="Task "+(row+1);
+    task = self.addTask(ch, row+1)
+  } else {
+	  task.name="Task "+(row+1);
+  }
+  
+  
   self.endTransaction();
 };
 

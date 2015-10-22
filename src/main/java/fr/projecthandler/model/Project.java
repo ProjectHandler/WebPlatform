@@ -26,13 +26,13 @@ public class Project extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4903605340425810423L;
 
-	@Column(name = "name")
+	@Column(name = "name", length = 30)
 	private String name;
 
 	@Column(name = "progress")
 	private Long progress;
 
-	@Column(name = "description")
+	@Column(name = "description", length = 500)
 	private String description;
 
 	@Column(name = "duration")

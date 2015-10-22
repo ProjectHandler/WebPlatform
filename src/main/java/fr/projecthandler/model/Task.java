@@ -26,13 +26,13 @@ public class Task extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5813872400960722390L;
 
-	@Column(name = "name")
+	@Column(name = "name", length = 30)
 	private String name;
 
 	@Column(name = "progress")
 	private Long progress;
 
-	@Column(name = "description")
+	@Column(name = "description", length = 500)
 	private String description;
 
 	@Column(name = "level")

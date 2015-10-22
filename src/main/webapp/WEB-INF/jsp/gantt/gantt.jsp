@@ -137,7 +137,8 @@
 		
 				},
 				error : function(xhr, ajaxOptions, thrownError) {
-					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownErrorS, true);
+					//popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownError, true);
+					console.log("status: " + xhr.status + " " + thrownError);
 				}
 			});
 		}
@@ -373,9 +374,7 @@
 	    <thead>
 	    <tr style="height:40px">
 	      <th class="gdfColHeader" style="width:35px;"></th>
-	      <th class="gdfColHeader" style="width:25px;"></th>
-	      <th class="gdfColHeader gdfResizable" style="width:30px;"><spring:message code="projecthandler.gantt.code"/></th>
-	
+	      <th class="gdfColHeader" style="width:25px;"></th>	
 	      <th class="gdfColHeader gdfResizable" style="width:300px;"><spring:message code="projecthandler.gantt.name"/></th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;"><spring:message code="projecthandler.gantt.start"/></th>
 	      <th class="gdfColHeader gdfResizable" style="width:80px;"><spring:message code="projecthandler.gantt.end"/></th>
@@ -391,10 +390,9 @@
 	  <tr taskId="(#=obj.id#)" class="taskEditRow" level="(#=level#)">
 	    <th class="gdfCell edit" align="right" style="cursor:pointer;"><span class="taskRowIndex">(#=obj.getRow()+1#)</span> <span class="teamworkIcon" style="font-size:12px;" >e</span></th>
 	    <td class="gdfCell noClip" align="center"><div class="taskStatus cvcColorSquare" status="(#=obj.status#)"></div></td>
-	    <td class="gdfCell"><input type="text" name="code" value="(#=obj.code?obj.code:''#)"></td>
 	    <td class="gdfCell indentCell" style="padding-left:(#=obj.level*10#)px;">
 	      <div class="(#=obj.isParent()?'exp-controller expcoll exp':'exp-controller'#)" align="center"></div>
-	      <input type="text" name="name" value="(#=obj.name#)">
+	      <input type="text" name="name" value="(#=obj.name#)" max="30">
 	    </td>
 	
 	    <td class="gdfCell"><input type="text" name="start"  value="" class="date"></td>
@@ -409,7 +407,6 @@
 	  <tr class="taskEditRow emptyRow" >
 	    <th class="gdfCell" align="right"></th>
 	    <td class="gdfCell noClip" align="center"></td>
-	    <td class="gdfCell"></td>
 	    <td class="gdfCell"></td>
 	    <td class="gdfCell"></td>
 	    <td class="gdfCell"></td>
@@ -444,20 +441,18 @@
 	  
 	
 	  <div class="__template__" type="TASK_EDITOR"><!--
-	  <div class="ganttTaskEditor" style="padding: 5px;">
+	  <div class="ganttTaskEditor" style="padding: 5px; height: 100%">
 	  <table width="100%" style="padding: 5px;">
 	    <tr>
 	      <td>
 	        <table cellpadding="5">
 	          <tr>
-	            <td style="padding: 10px;"><label for="code"><spring:message code='projecthandler.gantt.code'/></label><br><input type="text" name="code" id="code" value="" class="formElements"></td>
-	           </tr><tr>
-	            <td style="padding: 10px;"><label for="name"><spring:message code='projecthandler.gantt.name'/></label><br><input type="text" name="name" id="name" value=""  size="35" class="formElements"></td>
+	            <td style="padding: 10px;"><label for="name"><spring:message code='projecthandler.gantt.name'/></label><br><input type="text" name="name" id="name" value=""  size="30" class="formElements"></td>
 	          </tr>
 	          <tr></tr>
 	            <td style="padding: 10px;">
 	              <label for="description"><spring:message code='projecthandler.gantt.description'/></label><br>
-	              <textarea rows="5" cols="30" id="description" name="description" class="formElements"></textarea>
+	              <textarea rows="5" cols="30" id="description" name="description" class="formElements" max="500"></textarea>
 	            </td>
 	          </tr>
 	        </table>
@@ -467,7 +462,7 @@
 	          <tr>
 	          <td colspan="2" style="padding: 10px;"><label for="status"><spring:message code='projecthandler.gantt.status'/></label><br><div id="status" class="taskStatus" status=""></div></td>
 	          <tr>
-	          <td colspan="2" style="padding: 10px;"><label for="progress"><spring:message code='projecthandler.gantt.progress'/></label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
+	          <td colspan="2" style="padding: 10px;" hidden ><label for="progress"><spring:message code='projecthandler.gantt.progress'/></label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
 	          </tr>
 	          <tr>
 	          <td style="padding: 10px;"><label for="start"><spring:message code='projecthandler.gantt.start'/></label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
@@ -479,11 +474,13 @@
 	    </tr>
 	    </table>
 	
-	  <h2 style="padding: 5px 10px;"><spring:message code='projecthandler.gantt.assignees'/></h2>
-	  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%; padding: 5px 10px;">
-	  </select>
-	
-	  <div style="padding: 10px; text-align: right; padding-top: 20px"><button id="saveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>
+	  <div id="taskAssignation">
+		  <h2 style="padding: 5px 10px;"><spring:message code='projecthandler.gantt.assignees'/></h2>
+		  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%; padding: 5px 10px;">
+		  </select>
+	  </div>
+	 
+	  <div style="padding: 20px 10px 10px; position: relative; vertical-align: bottom; text-align: right; bottom: 0px;"><button id="saveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>
 	  </div>
 	  --></div>
 	

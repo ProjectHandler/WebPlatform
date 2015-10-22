@@ -33,6 +33,11 @@ GridEditor.prototype.fillEmptyLines = function () {
   //console.debug("GridEditor.fillEmptyLines");
   var rowsToAdd = 30 - this.element.find(".taskEditRow").size();
 
+  // add empty row 
+  var rowCount = $('.gdfTable >tbody >tr').length;
+  if (rowsToAdd <= 0 && (rowCount - this.element.find(".taskEditRow").size() <= 1))
+	  rowsToAdd = 5;
+
   //fill with empty lines
   for (var i = 0; i < rowsToAdd; i++) {
     var emptyRow = $.JST.createFromTemplate({}, "TASKEMPTYROW");
@@ -57,7 +62,14 @@ GridEditor.prototype.fillEmptyLines = function () {
       emptyRow.prevAll(".emptyRow").andSelf().each(function () {
         var ch = factory.build("tmp_fk" + new Date().getTime(), "", "", level, start, 1);
         var task = master.addTask(ch);
+        
         lastTask = ch;
+        if (level == 1) { //if milestone add automaticaly 1 task.
+        	task.name="Milestone "+(lastTask.getRow()+1);
+        	ch = factory.build("tmp_fk" + new Date().getTime(), "", "", level+1, start, 1);
+        	ch.name="Task "+(lastTask.getRow()+1);
+            task = master.addTask(ch);
+        }
       });
       master.endTransaction();
       lastTask.rowElement.click();
@@ -116,8 +128,13 @@ GridEditor.prototype.addTask = function (task, row, hideIfParentCollapsed) {
     var collapsedDescendant = this.master.getCollapsedDescendant();
     if(collapsedDescendant.indexOf(task) >= 0) taskRow.hide();
   }
-          
-
+  
+  //TODO milestone + check only new task
+  //GridEditor.prototype.fillEmptyLines;
+  if (task.id.startsWith("tmp_")) {
+	  GridEditor.prototype.fillEmptyLines;
+  }
+  
   return taskRow;
 };
 
@@ -150,7 +167,7 @@ GridEditor.prototype.refreshTaskRow = function (task) {
   row.find(".taskRowIndex").html(task.getRow() + 1);
   row.find(".indentCell").css("padding-left", task.level * 10 +18 );
   row.find("[name=name]").val(task.name);
-  row.find("[name=code]").val(task.code);
+  //row.find("[name=code]").val(task.code);
   row.find("[status]").attr("status", task.status);
 
   row.find("[name=duration]").val(task.duration);
@@ -462,8 +479,8 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 
   taskEditor.find("#name").val(task.name);
   taskEditor.find("#description").val(task.description);
-  taskEditor.find("#code").val(task.code);
-  taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
+  //taskEditor.find("#code").val(task.code);
+  //taskEditor.find("#progress").val(task.progress ? parseFloat(task.progress) : 0);
   taskEditor.find("#status").attr("status", task.status);
 
   if (task.startIsMilestone)
@@ -597,7 +614,7 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
       self.master.beginTransaction();
       task.name = taskEditor.find("#name").val();
       task.description = taskEditor.find("#description").val();
-      task.code = taskEditor.find("#code").val();
+      //task.code = taskEditor.find("#code").val();
       task.progress = parseFloat(taskEditor.find("#progress").val());
       task.duration = parseInt(taskEditor.find("#duration").val());
       task.startIsMilestone = taskEditor.find("#startIsMilestone").is(":checked");
@@ -677,15 +694,18 @@ GridEditor.prototype.openFullEditor = function (task, taskRow) {
 	});
 
   //already assigned resources
-  var assRess = []
-  for (var i = 0; i < task.assigs.length; i++) {
-    var assig = task.assigs[i];
-    for ( var i in task.master.resources) {
-		var res = task.master.resources[i];
-		if (assig.resourceId == res.id)
-			assRess.push({ id: res.id, text: res.name });
-    }
+  if (task.level > 1) {
+	  var assRess = []
+	  for (var i = 0; i < task.assigs.length; i++) {
+	    var assig = task.assigs[i];
+	    for ( var y in task.master.resources) {
+			var res = task.master.resources[y];
+			if (assig.resourceId == res.id)
+				assRess.push({ id: res.id, text: res.name });
+	    }
+	  }
+	  $('.userTaskSelection').selectivity('data', assRess);
+  } else {
+	  $('#taskAssignation').hide();
   }
-  $('.userTaskSelection').selectivity('data', assRess);
-  
 };
