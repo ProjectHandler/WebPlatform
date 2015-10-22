@@ -2,10 +2,8 @@ package fr.projecthandler.web;
 
 import java.security.Principal;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,35 +12,24 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.enums.Priority;
-import fr.projecthandler.enums.ProjectStatus;
-import fr.projecthandler.model.Project;
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.TaskMessage;
-import fr.projecthandler.model.TaskPriority;
-import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.SubTaskService;
 import fr.projecthandler.service.TaskMessageService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
 
 @Controller
 public class TaskController {
