@@ -92,7 +92,7 @@
 								<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/<sec:authentication property="principal.id" />);"></div>
 							</div>
 							<div class="display-table-cell vertical-align small-padding-left small-padding-right util1-lighten3-text">
-								<sec:authorize access="isAuthenticated()">
+								<sec:authorize access="isAuthenticated() && isAuthenticated()">
 									<sec:authentication property="principal.firstName" />
 								</sec:authorize>
 							</div>
