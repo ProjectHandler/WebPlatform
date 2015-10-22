@@ -230,28 +230,30 @@
 			ge.reset();
 		}
 		
+
 		function loadI18n() {
 			GanttMaster.messages = {
-				"CANNOT_WRITE" : "CANNOT_WRITE",
-				"CHANGE_OUT_OF_SCOPE" : "NO_RIGHTS_FOR_UPDATE_PARENTS_OUT_OF_EDITOR_SCOPE",
-				"START_IS_MILESTONE" : "START_IS_MILESTONE",
-				"END_IS_MILESTONE" : "END_IS_MILESTONE",
-				"TASK_HAS_CONSTRAINTS" : "TASK_HAS_CONSTRAINTS",
-				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK" : "GANTT_ERROR_DEPENDS_ON_OPEN_TASK",
-				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" : "GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK",
-				"TASK_HAS_EXTERNAL_DEPS" : "TASK_HAS_EXTERNAL_DEPS",
-				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED" : "GANTT_ERROR_LOADING_DATA_TASK_REMOVED",
-				"ERROR_SETTING_DATES" : "ERROR_SETTING_DATES",
-				"CIRCULAR_REFERENCE" : "CIRCULAR_REFERENCE",
-				"CANNOT_DEPENDS_ON_ANCESTORS" : "CANNOT_DEPENDS_ON_ANCESTORS",
-				"CANNOT_DEPENDS_ON_DESCENDANTS" : "CANNOT_DEPENDS_ON_DESCENDANTS",
-				"INVALID_DATE_FORMAT" : "INVALID_DATE_FORMAT",
-				"TASK_MOVE_INCONSISTENT_LEVEL" : "TASK_MOVE_INCONSISTENT_LEVEL",
-		
-				"GANTT_QUARTER_SHORT" : "trim.",
-				"GANTT_SEMESTER_SHORT" : "sem."
+				"CANNOT_WRITE" : "<spring:message code='CANNOT_WRITE'/>",
+				"CHANGE_OUT_OF_SCOPE" : "<spring:message code='CHANGE_OUT_OF_SCOPE'/>",
+				"START_IS_MILESTONE" : "<spring:message code='START_IS_MILESTONE'/>",
+				"END_IS_MILESTONE" : "<spring:message code='END_IS_MILESTONE'/>",
+				"TASK_HAS_CONSTRAINTS" : "<spring:message code='TASK_HAS_CONSTRAINTS'/>",
+				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK" : "<spring:message code='GANTT_ERROR_DEPENDS_ON_OPEN_TASK'/>",
+				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" : "<spring:message code='GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK'/>",
+				"TASK_HAS_EXTERNAL_DEPS" : "<spring:message code='TASK_HAS_EXTERNAL_DEPS'/>",
+				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED" : "<spring:message code='GANTT_ERROR_LOADING_DATA_TASK_REMOVED'/>",
+				"ERROR_SETTING_DATES" : "<spring:message code='ERROR_SETTING_DATES'/>",
+				"CIRCULAR_REFERENCE" : "<spring:message code='CIRCULAR_REFERENCE'/>",
+				"CANNOT_DEPENDS_ON_ANCESTORS" : "<spring:message code='CANNOT_DEPENDS_ON_ANCESTORS'/>",
+				"CANNOT_DEPENDS_ON_DESCENDANTS" : "<spring:message code='CANNOT_DEPENDS_ON_DESCENDANTS'/>",
+				"INVALID_DATE_FORMAT" : "<spring:message code='INVALID_DATE_FORMAT'/>",
+				"TASK_MOVE_INCONSISTENT_LEVEL" : "<spring:message code='TASK_MOVE_INCONSISTENT_LEVEL'/>",
+				
+				"GANTT_QUARTER_SHORT" : "<spring:message code='GANTT_QUARTER_SHORT'/>",
+				"GANTT_SEMESTER_SHORT" : "<spring:message code='GANTT_SEMESTER_SHORT'/>"
 			};
 		}
+	
 		
 		//-------------------------------------------  Get project file as JSON (used for migrate project from gantt to Teamwork) ------------------------------------------------------
 		function getFile() {

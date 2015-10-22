@@ -11,9 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.gson.Gson;
@@ -24,8 +22,6 @@ import fr.projecthandler.exception.ApiNotFoundException;
 import fr.projecthandler.model.Event;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.TokenService;
-import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
 
 @RestController
 @Transactional

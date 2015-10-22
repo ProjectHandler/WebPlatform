@@ -1,10 +1,8 @@
 package fr.projecthandler.api.dto;
 
 import java.util.Date;
-import java.util.List;
 
 import fr.projecthandler.model.Event;
-import fr.projecthandler.model.User;
 
 public class ApiEventDTO {
 
