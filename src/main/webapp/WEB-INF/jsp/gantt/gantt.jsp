@@ -48,6 +48,7 @@
 	
 	<spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
 	<script type="text/javascript" src="${selectivity}"></script>
+
 	<script type="text/javascript">
 		var messageSelectSearch = "<spring:message code='projecthandler.select.search'/>";
 		var ge; //this is the hugly but very friendly global var for the gantt editor
@@ -135,10 +136,6 @@
 						callback(data);
 					}
 		
-				},
-				error : function(xhr, ajaxOptions, thrownError) {
-					//popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + xhr.status + " " + thrownError, true);
-					console.log("status: " + xhr.status + " " + thrownError);
 				}
 			});
 		}

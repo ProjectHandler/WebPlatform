@@ -19,7 +19,7 @@
 	<http auto-config='false' use-expressions="true"
 		authentication-manager-ref="userDatabase"
 		security-context-repository-ref="userSecurityContextRepo"
-		entry-point-ref="ajaxAwareLoginUrlAuthenticationEntryPoint">
+		entry-point-ref="CustomAuthenticationEntryPoint">
 		<remember-me key="projecthandlerKey" services-ref="rememberMeServices" />
 		<custom-filter position="CONCURRENT_SESSION_FILTER" ref="concurrencyFilter" />
 		<session-management session-authentication-strategy-ref="sas" />
@@ -39,21 +39,22 @@
 		<intercept-url pattern="/signup"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/changePassword"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		
-		<intercept-url pattern="/admin*" 						access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/**" 						access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/checkEmailExists" 				access="hasRole('ROLE_ADMIN')" />
 		
-		<intercept-url pattern="/gantt*"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-
+		<intercept-url pattern="/gantt/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/gantt/save**"					access="hasAnyAuthority('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		
 		<intercept-url pattern="/project/save"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/project/edit*"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
+		<intercept-url pattern="/project/edit/**"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
 		<intercept-url pattern="/project/delete"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
 		<intercept-url pattern="/project/projectsList"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/project/viewProject*"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/project/viewProject/**"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/project/fetchGroupUsers"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 
-		<intercept-url pattern="/task*"							access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/subTask*"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/ticket*"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/task/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/subTask/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/ticket/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 
 		<intercept-url pattern="/calendar"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/createEvent"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
@@ -62,14 +63,16 @@
 		<intercept-url pattern="/updateSubtask"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		
 		<intercept-url pattern="/saveUser"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/downloadAvatar*"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/downloadAvatar/**"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/saveAvatar"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/profile*"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/profile/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 	</http>
 
 	<beans:bean id="CustomAuthenticationEntryPoint"
-		class="fr.projecthandler.api.authentication.CustomAuthenticationEntryPoint" />
-
+		class="fr.projecthandler.api.authentication.CustomAuthenticationEntryPoint">
+		<beans:constructor-arg value="/login" />
+	</beans:bean>
+	
 	<beans:bean id="authenticationTokenProcessingFilter"
 		class="fr.projecthandler.api.authentication.AuthenticationTokenProcessingFilter">
 	</beans:bean>
@@ -84,10 +87,7 @@
 	<beans:bean id="passwordEncoder"
 		class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
 		
-	<beans:bean id="ajaxAwareLoginUrlAuthenticationEntryPoint"
-		class="fr.projecthandler.session.AjaxAwareLoginUrlAuthenticationEntryPoint">
-		<beans:constructor-arg value="/login" />
-	</beans:bean>
+
 
 	<beans:bean id="rememberMeFilter"
 		class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">

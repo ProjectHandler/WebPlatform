@@ -45,3 +45,6 @@
 
 <spring:url value="/resources/js/selectivity-full.min.js" var="selectivity"/>
 <script type="text/javascript" src="${selectivity}"></script>
+
+<spring:url value="/resources/js/utilities/common.js.function.js" var="commonJsFunction"/>
+<script type="text/javascript" src="${commonJsFunction}"></script>

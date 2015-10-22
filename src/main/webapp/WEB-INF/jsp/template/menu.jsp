@@ -22,11 +22,11 @@
 			
            	<ul class="margin-bottom">
 				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/"/>"><spring:message code="projecthandler.home"/></a></li> 
-				<sec:authorize access="hasRole('ROLE_ADMIN')">
-				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/users_management"/>">				<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
-				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/groups_management"/>">			<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
-				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>">		<spring:message code="projecthandler.admin.sendMailService"/></a></li>
-				</sec:authorize>
+				<sec:authorize access="isAuthenticated()"><sec:authorize access="hasRole('ROLE_ADMIN')">
+					<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/users_management"/>">				<spring:message code="projecthandler.admin.userManagementTitle"/></a></li>
+					<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/groups_management"/>">			<spring:message code="projecthandler.admin.groupManagementTitle"/></a></li>
+					<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/admin/signupSendMailService"/>">		<spring:message code="projecthandler.admin.sendMailService"/></a></li>
+				</sec:authorize></sec:authorize>
 				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/calendar"/>">							<spring:message code="projecthandler.menu.calendar"/></a></li>
 				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/changePassword"/>">						<spring:message code="projecthandler.menu.changePassword"/></a></li>
 				<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
