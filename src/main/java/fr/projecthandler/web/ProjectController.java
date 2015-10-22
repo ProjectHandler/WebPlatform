@@ -125,8 +125,6 @@ public class ProjectController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
 
-			project.setDateBegin(new Date());
-			project.setDateEnd(new Date());
 			myModel.put("project", project);
 			project.addUser(u);
 			myModel.put("user", u);

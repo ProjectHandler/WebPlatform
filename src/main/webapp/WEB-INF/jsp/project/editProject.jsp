@@ -17,7 +17,7 @@
 			    multiple: true,
 			    placeholder: 'Type to search a user'
 			});
-			
+
 			$('.groupSelection').selectivity({
 			    multiple: true,
 			    placeholder: 'Type to search a group'
@@ -29,9 +29,18 @@
 				validateName();
 			});
 			
-			var dateBegin = new Date();
-			$('#alt-dateBegin').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
-			$('#alt-dateEnd').prop('value', dateBegin.getFullYear() + "-" + (dateBegin.getMonth() + 1) + "-" + dateBegin.getDate());
+			var currDate = new Date();
+			currDate.setHours(0,0,0,0);
+			var dateBegin = '${project.dateBegin}';
+			var dateEnd = '${project.dateEnd}';
+			if (dateBegin == "") {
+				$('#alt-dateBegin').prop('value', currDate.getFullYear() + "-" + (currDate.getMonth() + 1) + "-" + currDate.getDate());
+				$('#dateBegin').prop('value', currDate.getDate() + "/" + (currDate.getMonth() + 1) + "/" + currDate.getFullYear());
+			}
+			if (dateEnd == "") {
+				$('#alt-dateEnd').prop('value', currDate.getFullYear() + "-" + (currDate.getMonth() + 1) + "-" + currDate.getDate());
+				$('#dateEnd').prop('value', currDate.getDate() + "/" + (currDate.getMonth() + 1) + "/" + currDate.getFullYear());
+			}
 			
 			$(function() {
 			    $("#dateBegin").datepicker({
