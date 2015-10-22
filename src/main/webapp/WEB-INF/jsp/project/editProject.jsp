@@ -152,7 +152,6 @@
 			    });
 				$('.groupSelection').selectivity('remove', item.added);
 			}
-			
 		}
 		
 		function confirmDelete() {
@@ -192,7 +191,6 @@
 								<div class="text-h2 text-h1 float-right"><span class="icon-folder-plus"></span></div>
 							</div>
 							<div>
-							
 								<form:form method="POST" modelAttribute="project" id="addProject" action="${pageContext.request.contextPath}/project/save" onsubmit="return validateForm();">
 									<form:input type="hidden" path="id" name="projectId" id="projectId" value="${project.id}"/>
 									

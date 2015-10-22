@@ -16,7 +16,7 @@
 		$(document).ready(function(){
 			$("#yesterdayTable").tablesorter();
 			$("#todayTable").tablesorter();
-			$("#tomorrowTable").tableSorter();
+			$("#tomorrowTable").tablesorter();
 		});
 		</script>
 	</head>

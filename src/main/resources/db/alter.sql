@@ -27,3 +27,6 @@ ALTER TABLE `task_messages` CHANGE `update_date` `update_date` DATETIME NOT NULL
 
 -- Add columns date for subTask (02/10/2015)
 ALTER TABLE `subtask` ADD `starting_date` DATETIME NULL DEFAULT NULL , ADD `ending_date` DATETIME NULL DEFAULT NULL ;
+
+-- Add draft message (guilla_e) (22/10/2015)
+ALTER TABLE `users` ADD `draft_message` varchar(500) CHARACTER SET utf8 DEFAULT NULL;

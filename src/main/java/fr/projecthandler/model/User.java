@@ -72,6 +72,9 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "avatar_file_name")
 	private String avatarFileName;
+	
+	@Column(name = "draft_message")
+	private String draftMessage;
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
@@ -224,6 +227,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
+	}
+	
+	public void setDrafMessage(String msg) {
+		this.draftMessage = msg;
+	}
+	
+	public String getDraftMessage() {
+		return this.draftMessage;
 	}
 
 	@Override

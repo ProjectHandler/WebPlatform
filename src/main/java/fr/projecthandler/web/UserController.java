@@ -43,6 +43,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
@@ -588,5 +589,38 @@ public class UserController {
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 
 		return new ModelAndView("user/usersProfileView", myModel);
+	}
+	
+	@RequestMapping(value = "user/draft/get", method = RequestMethod.GET)
+	public @ResponseBody String getUserDraftMessage(Principal principal,
+													@RequestParam("userId") Long userId) {
+		if (principal != null) {
+			User user = null;
+			try {
+				user = userService.findUserById(userId);
+				return user.getDraftMessage();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return "KO";
+	}
+
+	@RequestMapping(value = "user/draft/save", method = RequestMethod.POST)
+	public @ResponseBody String saveUserDraftMessage(Principal principal,
+													 @RequestParam("userId") Long userId,
+													 @RequestParam("draftMessage") String draftMessage) {
+		if (principal != null) {
+			User user = null;
+			try {
+				user = userService.findUserById(userId);
+				user.setDrafMessage(draftMessage);
+				userService.updateUser(user);
+				return "OK";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return "KO";
 	}
 }

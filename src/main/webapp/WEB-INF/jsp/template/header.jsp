@@ -6,6 +6,60 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<script type="text/javascript">
+	$(document).ready(function() {
+		var draftEditor = CKEDITOR.replace('text-draft-ckeditor', {
+			height: '5em',
+			width: 500
+		});
+
+		$.ajax({
+			type: "GET",
+			url: CONTEXT_PATH + "/user/draft/get",
+			data: {
+				userId: '${user.id}'
+			}, 
+    		success: function(data) {
+				if (data == "KO")
+    				alert("error: " + data);
+				else
+					draftEditor.setData(data);
+    		},
+    		error: function(data) {
+    			alert("error: " + data);
+    		}
+	    });
+		
+		draftEditor.on('key', function(obj) {
+            if (obj.data.keyCode === 8 || obj.data.keyCode === 46) {
+                return true;
+            }
+            if (draftEditor.getData().length >= 500) {
+            	// TODO show error when the user reaches 500 character +
+            	draftEditor.setData(draftEditor.getData().substring(0, draftEditor.getData().length - 1));
+                return false;
+            }
+		});
+
+		draftEditor.on('blur', function(e) {
+			$.ajax({
+				type: "POST",
+				url: CONTEXT_PATH + "/user/draft/save",
+				data: {
+					userId: '${user.id}',
+					draftMessage: draftEditor.getData()
+				}, 
+	    		success: function(data) {
+    				if (data == "KO")
+	    				alert("error: " + data);
+	    		},
+	    		error: function(data) {
+	    			alert("error: " + data);
+	    		}
+		    });
+		});
+	});
+</script>
 
 <div class="">
 	<div class="small-padding-top theme1-primary-bg"></div>
@@ -51,7 +105,9 @@
 						</sec:authorize>
 	
 					</li>
-					
+					<li>
+						<textarea id="text-draft-ckeditor"></textarea>
+					</li>
 					<li class="position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
