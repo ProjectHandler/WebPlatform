@@ -19,6 +19,8 @@ public interface ProjectService {
 
 	public List<Project> getProjectsByUserId(Long userId);
 
+	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId);
+
 	public void deleteProjectById(Long projectId);
 
 	public Project loadGantt(Long projectId);

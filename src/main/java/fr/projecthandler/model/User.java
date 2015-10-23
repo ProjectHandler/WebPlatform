@@ -21,9 +21,12 @@ import com.google.gson.annotations.Expose;
 
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 
 @Entity
 @Table(name = "users")
+@ApiModel
 // @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User extends BaseEntity implements java.io.Serializable {
 
@@ -33,6 +36,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@JoinColumn(name = "civility_id")
 	private Civility civility;
 
+	@ApiModelProperty()
 	@Column(name = "first_name", length = 30)
 	@Expose
 	private String firstName;

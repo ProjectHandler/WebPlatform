@@ -34,6 +34,8 @@
 		</mvc:argument-resolvers>
 	</mvc:annotation-driven>
 
+	<bean class="fr.projecthandler.api.documentation.SwaggerConfiguration"/>
+
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatters">
 			<set>

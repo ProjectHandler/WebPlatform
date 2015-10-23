@@ -48,6 +48,13 @@ public class ProjectDaoImpl extends AbstractDao implements ProjectDao {
 	}
 
 	@Override
+	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId) {
+		return (List<Project>) em.createQuery("FROM Project p JOIN p.users u LEFT JOIN FETCH p.tasks WHERE u.id = :userId")
+				.setParameter("userId", userId)
+				.getResultList();
+	}
+
+	@Override
 	@Transactional
 	public void deleteProjectById(Long id) {
 		em.createQuery("DELETE FROM Project p WHERE p.id =:id").setParameter("id", id).executeUpdate();

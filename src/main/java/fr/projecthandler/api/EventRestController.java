@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,13 +21,22 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.api.dto.ApiEventDTO;
+import fr.projecthandler.dto.MobileUserDTO;
 import fr.projecthandler.exception.ApiNotFoundException;
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.User;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.TokenService;
+import fr.projecthandler.service.UserService;
+import fr.projecthandler.session.CustomUserDetails;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @Transactional
+@Api(value="Event", description="Operations about events")
 @RequestMapping("/api/event")
 public class EventRestController {
 
@@ -34,14 +46,19 @@ public class EventRestController {
 	@Autowired
 	TokenService tokenService;
 
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	//TODO return
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Gets event by id", response=ApiEventDTO.class)
+	@ApiResponses(value = {
+		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of event", response = ApiEventDTO.class),
+		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Event with given id does not exist")
+		    }
+		)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) throws ApiNotFoundException {
 		Event event = eventService.findEventById(id);
 
 		if (event == null) {
 			throw new ApiNotFoundException(id);
-			// return new ResponseEntity<String>("{\"status\":400,
-			// \"event\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
 		ApiEventDTO eventDTO = new ApiEventDTO(event);
@@ -57,12 +74,18 @@ public class EventRestController {
 	}
 
 	@RequestMapping(value = "/getEventsByUser/{id}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getEventsByUser(@PathVariable Long id) {
+	@ApiOperation(value = "Gets event by user id", response=ApiEventDTO.class)
+	@ApiResponses(value = {
+		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of events", response = ApiEventDTO.class),
+		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "User with given id does not exist")
+		    }
+		)
+	public @ResponseBody ResponseEntity<String> getEventsByUser(@PathVariable Long id) throws ApiNotFoundException {
 		Set<Event> eventList = eventService.getEventsByUser(id);
 
 		// TODO Not found if user id not found. If eventList null, empty.
 		if (eventList == null) {
-			return new ResponseEntity<String>("{\"status\":400, \"events\":\"Not found\"}", HttpStatus.NOT_FOUND);
+			throw new ApiNotFoundException(id);
 		}
 
 		List<ApiEventDTO> eventListDTO = new ArrayList<ApiEventDTO>();

@@ -54,6 +54,10 @@ public class ProjectServiceImpl implements ProjectService {
 		return projectDao.getProjectsByUserId(userId);
 	}
 
+	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId) {
+		return projectDao.getProjectsByUserIdAndFetchTasks(userId);
+	}
+
 	@Override
 	public void deleteProjectById(Long projectId) {
 		if (projectId != null) {

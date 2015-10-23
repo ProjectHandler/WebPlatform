@@ -61,26 +61,5 @@ public class ApiGlobalExceptionHandler {
 			}
 
 			return new ResponseEntity<String>(json, status);
-	} 
-	
-//    @ExceptionHandler(AccessDeniedException.class)
-//	public @ResponseBody ResponseEntity<String> handleAccessDeniedException(HttpServletRequest request,
-//			Exception exception) {
-//	    String json = "";
-//	    HttpStatus status = HttpStatus.UNAUTHORIZED;
-//	    String message = exception.getMessage() == "" ? "Unauthorized: Authentication token was either missing or invalid." : exception.getMessage();
-//	    
-//		ExceptionJSONInfo response = new ExceptionJSONInfo();
-//		response.setUrl(request.getRequestURL().toString());
-//		response.setMessage(message);
-//		response.setStatus(status.value());
-//		Gson gson = new GsonBuilder().disableHtmlEscaping().create();
-//		try {
-//			json = gson.toJson(response);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//
-//		return new ResponseEntity<String>(json, status);
-//    } 
+	}
 }

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,13 +56,15 @@ public class GanttController {
 		return new ModelAndView("gantt/gantt", myModel);
 	}
 
-	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
+	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody String loadGantt(HttpServletRequest request, Principal principal) {
-		String json = null;
+		String json = "KO";
+
 		try {
 			String projectId = Utilities.getRequestParameter(request, "projectId");
-			if (projectId != null)
+			if (projectId != null) {
 				json = ganttService.load(Long.parseLong(projectId));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

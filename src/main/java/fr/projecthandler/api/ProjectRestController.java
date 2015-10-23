@@ -3,6 +3,8 @@ package fr.projecthandler.api;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +20,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.api.dto.ApiEventDTO;
 import fr.projecthandler.dto.MobileProjectDTO;
 import fr.projecthandler.dto.ProjectProgressDTO;
+import fr.projecthandler.exception.ApiNotFoundException;
 import fr.projecthandler.model.Project;
+import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @Transactional
+@Api(value="Project", description="Operations about projects")
 @RequestMapping("/api/project")
 public class ProjectRestController {
 
@@ -48,6 +60,12 @@ public class ProjectRestController {
 	private UserDetailsService customUserDetailsService;
 
 	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+	@ApiOperation(value = "Find project by project id", response=MobileProjectDTO.class)
+	@ApiResponses(value = {
+		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of project", response = MobileProjectDTO.class),
+		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Project with given id does not exist")
+		    }
+		)
 	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
 		Project project = projectService.findProjectById(id);
 
@@ -55,30 +73,33 @@ public class ProjectRestController {
 			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 		}
 
+		project.setTasks(taskService.getTasksByProjectId(project.getId()));		//TODO propre
+		MobileProjectDTO projectDTO = new MobileProjectDTO(project);
 		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 		try {
-			String json = gson.toJson(project);
+			String json = gson.toJson(projectDTO);
 
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<String>("KO", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
 
-	@RequestMapping(value = "/allByUser", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> getProjects(@CurrentUserDetails CustomUserDetails userDetails) {
-
-		List<Project> projectList = projectService.getProjectsByUserId(userDetails.getId());
-
-		if (projectList == null) {
-			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
-		}
+	@RequestMapping(value = {"/allByUser", "/allByCurrentUser"}, method = RequestMethod.GET)
+	@ApiOperation(value = "Gets project by authenticated user", response=MobileProjectDTO.class)
+	@ApiResponses(value = {
+		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of projects", response = MobileProjectDTO.class),
+		    }
+		)
+	public @ResponseBody ResponseEntity<String> getAllProjectsByCurrentUser(
+			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails) throws ApiNotFoundException {
+		List<Project> projectList = projectService.getProjectsByUserIdAndFetchTasks(userDetails.getId());
 
 		List<MobileProjectDTO> projectListDTO = new ArrayList<MobileProjectDTO>();
 		for (Project project : projectList) {
 			MobileProjectDTO projectDTO = new MobileProjectDTO(project);
-			project.setTasks(taskService.getTasksByProjectId(project.getId()));
+
 			ProjectProgressDTO projectProgressDTO = new ProjectProgressDTO(project);
 			projectDTO.setDateProgress(projectProgressDTO.getDateProgress());
 			projectDTO.setDaysLeft(projectProgressDTO.getDaysLeft());
