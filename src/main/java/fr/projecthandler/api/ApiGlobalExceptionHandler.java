@@ -20,6 +20,7 @@ import fr.projecthandler.exception.ExceptionJSONInfo;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ApiGlobalExceptionHandler {
+	
 	private static final Logger logger = LoggerFactory.getLogger(ApiGlobalExceptionHandler.class);
 
 	@ExceptionHandler(ApiNotFoundException.class)

@@ -177,7 +177,7 @@ public class TicketController {
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView deleteTicket(@CurrentUserDetails CustomUserDetails userDetails,
 			@RequestParam Long ticketId) {
-		User u = userService.findUserById(userDetails.getId());
+		//User u = userService.findUserById(userDetails.getId()); <-- variable unused ?!
 		Ticket ticket = ticketService.findTicketById(ticketId);
 		
 		if (userDetails == null

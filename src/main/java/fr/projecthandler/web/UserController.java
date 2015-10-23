@@ -43,7 +43,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
@@ -232,7 +231,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
+				//String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
@@ -265,7 +264,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
+				//String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
@@ -326,7 +325,7 @@ public class UserController {
 			}
 		}
 	}
-	
+
 	@RequestMapping(value = "/unplannedSubtask", method = RequestMethod.POST)
 	public void unplannedSubtask(Principal principal, HttpServletRequest request) throws IOException, ParseException {
 		if (principal != null) {
@@ -590,10 +589,9 @@ public class UserController {
 
 		return new ModelAndView("user/usersProfileView", myModel);
 	}
-	
+
 	@RequestMapping(value = "user/draft/get", method = RequestMethod.GET)
-	public @ResponseBody String getUserDraftMessage(Principal principal,
-													@RequestParam("userId") Long userId) {
+	public @ResponseBody String getUserDraftMessage(Principal principal, @RequestParam("userId") Long userId) {
 		if (principal != null) {
 			User user = null;
 			try {
@@ -607,9 +605,8 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "user/draft/save", method = RequestMethod.POST)
-	public @ResponseBody String saveUserDraftMessage(Principal principal,
-													 @RequestParam("userId") Long userId,
-													 @RequestParam("draftMessage") String draftMessage) {
+	public @ResponseBody String saveUserDraftMessage(Principal principal, @RequestParam("userId") Long userId,
+			@RequestParam("draftMessage") String draftMessage) {
 		if (principal != null) {
 			User user = null;
 			try {

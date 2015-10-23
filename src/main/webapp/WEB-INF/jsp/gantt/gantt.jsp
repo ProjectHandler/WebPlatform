@@ -125,6 +125,8 @@
 			$.ajax({
 				type : "POST",
 				url : url,
+				contentType: "application/json",
+				dataType: "json",
 				success : function(data) {
 					prof.stop();
 		

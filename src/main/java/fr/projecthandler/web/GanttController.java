@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.service.GanttService;
 import fr.projecthandler.service.ProjectService;
@@ -59,18 +56,16 @@ public class GanttController {
 	}
 
 	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
-	public @ResponseBody Object loadGantt(HttpServletRequest request, Principal principal) {
-		JsonElement jsonElement = null;
+	public @ResponseBody String loadGantt(HttpServletRequest request, Principal principal) {
+		String json = null;
 		try {
 			String projectId = Utilities.getRequestParameter(request, "projectId");
-			if (projectId != null) {
-				String json = ganttService.load(Long.parseLong(projectId));
-				jsonElement = new JsonParser().parse(json);
-			}
+			if (projectId != null)
+				json = ganttService.load(Long.parseLong(projectId));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return jsonElement;
+		return json;
 	}
 
 	@RequestMapping(value = "/gantt/save", method = RequestMethod.POST)
