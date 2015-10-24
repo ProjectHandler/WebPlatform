@@ -44,6 +44,11 @@ public class HomeController {
 	// return new ModelAndView("home", null);
 	// }
 
+	@RequestMapping(value = "test", method = RequestMethod.GET)
+	public void test() throws Exception { 
+		throw new Exception("test");
+	}
+	
 	@RequestMapping(value = "accessDenied", method = RequestMethod.GET)
 	public ModelAndView accessDenied() {
 		return new ModelAndView("accessDenied");

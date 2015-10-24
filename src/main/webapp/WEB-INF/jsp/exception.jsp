@@ -8,7 +8,12 @@
 	<head>
 		<jsp:include page="template/head.jsp" />
 		<title><spring:message code="projecthandler.general.error"/></title>
-
+		<script type="text/javascript">
+			$(document).ready(function() {
+				// need to add a button for hide or show the stacktrace
+				$("#stackTraceContainer").hide();
+			});
+		</script>
 	</head>
 
 	<body>
@@ -23,11 +28,12 @@
 			<span><spring:message code="projecthandler.exception.message"/>:</span>
 			${exception.message}
 			<br>
-			<span><spring:message code="projecthandler.exception.stackTrace"/>:</span>
-			<c:forEach items="${exception.stackTrace}" var="stackTrace">
-				${stackTrace}
-				<br>
-			</c:forEach>
+			<div id="stackTraceContainer">
+				<span><spring:message code="projecthandler.exception.stackTrace"/>:</span>
+				<c:forEach items="${exception.stackTrace}" var="stackTrace">
+					${stackTrace}
+				</c:forEach>
+			</div>
 		</div>
 		<jsp:include page="template/footer.jsp" />
 	</body>
