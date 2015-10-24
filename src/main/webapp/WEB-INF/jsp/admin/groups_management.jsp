@@ -24,8 +24,7 @@
 				    			alert(data);
 				    		else 
 				    			location.reload();
-				    	}, 
-				    	error: function(data) {alert("error: " + data);} 
+				    	}
 				    });
 				});
 				
@@ -37,8 +36,8 @@
 			    		if (data == "KO") 
 			    			alert("error"); 
 			    		else 
-			    			location.reload();}, 
-			    	error: function(data) {alert("error: " + data);} 
+			    			location.reload();
+			    	}
 			    });
 			}
 			

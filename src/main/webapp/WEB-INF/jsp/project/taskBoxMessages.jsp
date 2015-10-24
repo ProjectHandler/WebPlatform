@@ -41,10 +41,7 @@
 			    				$("#commentContainer").load(url + " #commentContainer");
 			    				switchDivForNewComment();
 							}
-			    		},
-		    			error: function(data) {
-		    				alert("error: " + data);
-		    			}
+			    		}
 		    	});
 			}
 			else
@@ -126,10 +123,7 @@
 						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
 	    				$("#messageBox-" + comment.id).load(url + " #messageBox-" + comment.id);
 					}
-	    		},
-    			error: function(data) {
-    				alert("error: " + data);
-    			}
+	    		}
 		});
 		}
 
@@ -148,10 +142,7 @@
 						else {
 							$("#messageBox-" + id).remove();
 						}
-		    		},
-	    			error: function(data) {
-	    				alert("error: " + data);
-	    			}
+		    		}
 			});
 		}
 	</script>

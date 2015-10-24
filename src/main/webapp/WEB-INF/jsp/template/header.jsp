@@ -24,9 +24,6 @@
     				alert("error: " + data);
 				else
 					draftEditor.setData(data);
-    		},
-    		error: function(data) {
-    			alert("error: " + data);
     		}
 	    });
 		
@@ -52,9 +49,6 @@
 	    		success: function(data) {
     				if (data == "KO")
 	    				alert("error: " + data);
-	    		},
-	    		error: function(data) {
-	    			alert("error: " + data);
 	    		}
 		    });
 		});

@@ -181,9 +181,6 @@
 					} else {
 						savePopup("<spring:message code='projecthandler.gantt.saveFailed'/>");
 					}
-				},
-				error : function(error) {
-					popupAlert("<spring:message code='projecthandler.general.error' />", "status: " + error.statusCode, true);
 				}
 			});
 		}

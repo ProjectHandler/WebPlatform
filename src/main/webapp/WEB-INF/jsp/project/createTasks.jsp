@@ -171,9 +171,6 @@
 			    					checkGroupUsers(val);
 			    				});
 		    				}
-		    		},
-		    		error: function(data) {
-		    			alert("error: " + data);
 		    		}
 		    });
 			$('#groupSelection').selectivity('remove', item.added);

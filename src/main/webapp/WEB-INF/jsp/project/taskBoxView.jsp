@@ -52,8 +52,7 @@
 			else if (state === true) {
 				$(this).tristate('state', false);
 				$(this).tristate('value', "empty");
-			}
-			else {
+			} else {
 				$(this).tristate('state', null);
 				$(this).tristate('value', "taken");
 			}
@@ -74,8 +73,7 @@
 			else if (state === true) {
 				$(this).tristate('state', false);
 				$(this).tristate('value', "empty");
-			}
-			else {
+			} else {
 				$(this).tristate('state', null);
 				$(this).tristate('value', "taken");
 			}
@@ -101,8 +99,7 @@
    					if (data.indexOf("KO:") != -1) {
    	    				var msg = data.replace("KO:", "");
    	    				alert(msg);
-   	    			}
-					else {
+   	    			} else {
 						var subTask = jQuery.parseJSON(data);
 						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
 	    				$("#subTaskList-BoxContainer").load(url + " #subTaskList-Box",
@@ -119,9 +116,6 @@
 	    				});
 	    				
 					}
-	    		},
-		    	error: function(data) {
-	    			alert("error: " + data);
 	    		}
 	    	});
 		}
@@ -141,9 +135,6 @@
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
 	    			}
-	    		},
-	    		error: function(data) {
-	    			alert("error: " + data);
 	    		}
 	    });
 	}
@@ -169,14 +160,12 @@
 					if (data.indexOf("KO:") != -1) {
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
-	    			}
-					else {
+	    			} else {
 						if (percentage == 100) {
 							$("#task-tag-list").find("." + currTaskStatus).hide();
 							$("#task-tag-list").find(".STATUS_DONE").show();
 							currTaskStatus = "STATUS_DONE";
-						}
-						else {
+						} else {
 							$("#task-tag-list").find("." + currTaskStatus).hide();
 							$("#task-tag-list").find(".STATUS_ACTIVE").show();
 							currTaskStatus = "STATUS_ACTIVE";
@@ -184,9 +173,6 @@
 						$("#task-progress-div-${task.id}").css("width", parseInt(percentage.toFixed(0), 10) + "%");
 						$("#task-progress-text-${task.id}").html(parseInt(percentage.toFixed(0), 10) + "%");
 					}
-				},
-				error: function(data) {
-					alert("error: " + data);
 				}
 		});
 	}
@@ -203,8 +189,7 @@
     				if (data.indexOf("KO:") != -1) {
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
-	    			}
-					else {
+	    			} else {
 						var parsedData = jQuery.parseJSON(data);
 						var url = CONTEXT_PATH + "/project/viewProject/${task.project.id}/tasks/${task.id}";
 	    				$("#subTaskContainer-" + parsedData.id).load(url + " #subTaskContent-" + parsedData.id,
@@ -212,9 +197,6 @@
 	    															refreshSubTask(parsedData.id);
 	    				});
 					}
-    			},
-    			error: function(data) {
-    				alert("error: " + data);
     			}
     	});
     }
@@ -233,9 +215,6 @@
 		    				var msg = data.replace("KO:", "");
 		    				alert(msg);
 		    			}
-					},
-					error: function(data) {
-						alert("error: " + data);
 					}
 			});
 		}
@@ -255,15 +234,11 @@
 					if (data.indexOf("KO:") != -1) {
 	    				var msg = data.replace("KO:", "");
 	    				alert(msg);
-	    			}
-					else {
+	    			} else {
 						$("#subTaskContent-" + id).remove();
 						if (!$("#subTaskList-BoxContainer").find(".tristate"))
 							updateTaskProgress();
 					}
-				},
-				error: function(data) {
-					alert("error: " + data);
 				}
 			});
 		}
@@ -356,8 +331,7 @@
 			//$("#doneEditingButton-" + id).removeClass("display-none");
 			//$("#cancelEditingButton-" + id).removeClass("display-none");
 			$("#boxEditingMode-" + id).removeClass("display-none");
-		}
-		else {
+		} else {
 			$(itemName).attr("disabled", "disabled");
 			//$("#doneEditingButton-" + id).addClass("display-none");
 			//$("#cancelEditingButton-" + id).addClass("display-none");
