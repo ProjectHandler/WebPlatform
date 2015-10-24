@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 28, 2015 at 02:36 PM
+-- Generation Time: Oct 24, 2015 at 03:48 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `address` (
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
 -- --------------------------------------------------------
 
@@ -98,19 +98,6 @@ CREATE TABLE IF NOT EXISTS `event` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `files_upload`
---
-
-CREATE TABLE IF NOT EXISTS `files_upload` (
-  `upload_id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(128) DEFAULT NULL,
-  `file_data` longblob,
-  PRIMARY KEY (`upload_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `groups`
 --
 
@@ -119,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `groups` (
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 -- --------------------------------------------------------
 
@@ -137,7 +124,26 @@ CREATE TABLE IF NOT EXISTS `project` (
   `date_end` date DEFAULT NULL,
   `status` varchar(30) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `subtask`
+--
+
+CREATE TABLE IF NOT EXISTS `subtask` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `description` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  `task_id` bigint(20) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `validated` tinyint(1) NOT NULL DEFAULT '0',
+  `taken` tinyint(1) NOT NULL DEFAULT '0',
+  `starting_date` datetime DEFAULT NULL,
+  `ending_date` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 -- --------------------------------------------------------
 
@@ -160,7 +166,23 @@ CREATE TABLE IF NOT EXISTS `task` (
   `task_priority_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `task_priority_id` (`task_priority_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=80 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=167 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `task_messages`
+--
+
+CREATE TABLE IF NOT EXISTS `task_messages` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `user_id` bigint(20) NOT NULL,
+  `update_date` datetime NOT NULL,
+  `task_id` bigint(20) NOT NULL,
+  `content` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -173,7 +195,7 @@ CREATE TABLE IF NOT EXISTS `task_priority` (
   `value` int(11) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `task_priority`
@@ -182,7 +204,9 @@ CREATE TABLE IF NOT EXISTS `task_priority` (
 INSERT INTO `task_priority` (`id`, `value`, `name`) VALUES
 (1, 20, 'MEDIUM'),
 (2, 30, 'HIGH'),
-(5, 10, 'LOW');
+(4, 10, 'LOW');
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `tickets`
@@ -204,7 +228,9 @@ CREATE TABLE IF NOT EXISTS `tickets` (
   KEY `project_id` (`project_id`),
   KEY `ticket_priority_id` (`ticket_priority_id`),
   KEY `ticket_tracker_id` (`ticket_tracker_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `ticket_messages`
@@ -220,7 +246,7 @@ CREATE TABLE IF NOT EXISTS `ticket_messages` (
   PRIMARY KEY (`id`),
   KEY `ticket_id` (`ticket_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -233,16 +259,7 @@ CREATE TABLE IF NOT EXISTS `ticket_priority` (
   `value` int(11) NOT NULL,
   `name` varchar(50) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
-
---
--- Dumping data for table `ticket_priority`
---
-
-INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
-(4, 10, 'low'),
-(5, 20, 'medium'),
-(6, 30, 'high');
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -269,7 +286,9 @@ CREATE TABLE IF NOT EXISTS `tokens` (
   `user_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+-- --------------------------------------------------------
 
 --
 -- Table structure for table `users`
@@ -290,13 +309,18 @@ CREATE TABLE IF NOT EXISTS `users` (
   `work_day` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT 'tttttff',
   `daily_hour` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '09:00 AM - 05:00 PM',
   `avatar_file_name` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `draft_message` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `address` (`address`),
   KEY `civility_ibfk` (`civility_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=25 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=118 ;
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`) VALUES
-(1, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, NULL);
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`, `draft_message`) VALUES
+(1, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -350,8 +374,6 @@ CREATE TABLE IF NOT EXISTS `users_tasks` (
   PRIMARY KEY (`users_id`,`tasks_id`),
   KEY `users_tasks_ibfk_2` (`tasks_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
 
 -- --------------------------------------------------------
 
@@ -431,7 +453,7 @@ ALTER TABLE `users_groups`
 --
 ALTER TABLE `users_projects`
   ADD CONSTRAINT `users_projects_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `users_projects_ibfk_2` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`);
 
 --
 -- Constraints for table `users_tasks`
@@ -445,7 +467,7 @@ ALTER TABLE `users_tasks`
 --
 ALTER TABLE `users_tickets`
   ADD CONSTRAINT `users_tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `users_tickets_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `users_tickets_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

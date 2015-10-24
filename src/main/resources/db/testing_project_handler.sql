@@ -2,18 +2,6 @@
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
-
---
--- Dumping data for table `civility`
---
-
-INSERT INTO `civility` (`id`, `name`) VALUES
-(1, 'projecthandler.civility.mister'),
-(2, 'projecthandler.civility.mrs'),
-(3, 'projecthandler.civility.miss');
-
--- --------------------------------------------------------
-
 --
 -- Dumping data for table `groups`
 --
@@ -94,17 +82,6 @@ INSERT INTO `task` (`id`, `name`, `progress`, `description`, `level`, `duration`
 (131, 'Milestone', 0, '', 1, 4, '2015-09-07', '2015-09-11', 'STATUS_ACTIVE', 9, 2, NULL),
 (132, 'task 1', 0, '', 2, 3, '2015-09-07', '2015-09-10', 'STATUS_ACTIVE', 9, 3, NULL),
 (133, 'task2', 0, '', 2, 1, '2015-09-10', '2015-09-11', 'STATUS_SUSPENDED', 9, 4, NULL);
-
--- --------------------------------------------------------
-
---
--- Dumping data for table `task_priority`
---
-
-INSERT INTO `task_priority` (`id`, `value`, `name`) VALUES
-(1, 20, 'MEDIUM'),
-(2, 30, 'HIGH'),
-(4, 10, 'LOW');
 
 -- --------------------------------------------------------
 

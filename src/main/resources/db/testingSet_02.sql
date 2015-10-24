@@ -111,9 +111,3 @@ INSERT INTO `ticket_messages` (`id`, `ticket_id`, `user_id`, `created_at`, `upda
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---
--- Dumping data for table `ticket_priority`
---
-
-INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES (NULL, '10', 'low'), (NULL, '20', 'medium'), (NULL, '30', 'high');
