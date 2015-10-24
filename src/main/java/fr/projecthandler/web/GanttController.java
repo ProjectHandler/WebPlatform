@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.http.MediaType;
@@ -27,6 +29,8 @@ import fr.projecthandler.util.Utilities;
 @Controller
 public class GanttController {
 
+	private static final Log log = LogFactory.getLog(GanttController.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -66,7 +70,7 @@ public class GanttController {
 				json = ganttService.load(Long.parseLong(projectId));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error for loading gantt", e);
 		}
 		return json;
 	}
@@ -77,7 +81,7 @@ public class GanttController {
 			ganttService.save(request.getParameter("prj"));
 			return "success";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error for saving gantt", e);
 			return "error";
 		}
 	}

@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.security.core.Authentication;
@@ -50,6 +52,9 @@ import fr.projecthandler.util.DateHelper;
 
 @Controller
 public class ProjectController {
+	
+	private static final Log log = LogFactory.getLog(ProjectController.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -289,7 +294,7 @@ public class ProjectController {
 
 			return json;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error while fetching group (group id: " + groupId + ")", e);
 			return "KO";
 		}
 	}
@@ -314,7 +319,7 @@ public class ProjectController {
 
 			return json;
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error while fetching group id: " + groupId + " for project id " + projectId, e);
 			return "KO";
 		}
 	}
@@ -373,7 +378,7 @@ public class ProjectController {
 					taskService.saveTask(task);
 				}
 				catch (Exception e) {
-					e.printStackTrace();
+					log.error("error saving task: ", e);
 					return new ModelAndView("redirect:/");
 				}
 			}

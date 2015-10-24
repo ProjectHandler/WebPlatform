@@ -7,18 +7,20 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.persistence.Query;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
-
-import javax.persistence.Query;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 public class Utilities {
 
+	private static final Log log = LogFactory.getLog(Utilities.class);
+			
 	public static <T> T getSingleResultOrNull(Query query) {
 		query.setMaxResults(1);
 		List<T> list = query.getResultList();
@@ -55,7 +57,7 @@ public class Utilities {
 				ImageIO.write(outImage, "png", fileOutput);
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("error during resizing of image", e);
 		}
 
 		return fileOutput;
@@ -76,6 +78,7 @@ public class Utilities {
 					try {
 						in.close();
 					} catch (IOException e) {
+						log.error("error in writeFileAsResponseStream", e);
 					}
 				}
 			}

@@ -12,6 +12,8 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -40,6 +42,8 @@ import fr.projecthandler.util.TokenGenerator;
 @Controller
 public class AdminController {
 
+	private static final Log log = LogFactory.getLog(AdminController.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -188,7 +192,7 @@ public class AdminController {
 			userService.updateUser(user);
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("unexpected error in change role", e);
 			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
@@ -215,7 +219,7 @@ public class AdminController {
 			userService.updateUser(user);
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("unexpected error in change status", e);
 			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
@@ -253,7 +257,7 @@ public class AdminController {
 			userService.deleteUserByIds(Arrays.asList(Long.parseLong(userId)));
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error for deleting user id: " + userId, e);
 			return "KO:" + bundle.getString("projecthandler.admin.error.unexpectedError");
 		}
 	}
@@ -280,7 +284,7 @@ public class AdminController {
 			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error during resend of email for user id: " + userId, e);
 			return "KO";
 		}
 	}
@@ -325,7 +329,7 @@ public class AdminController {
 			userService.deleteGroupById(Long.parseLong(groupId));
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error for deleting group id: " + groupId, e);
 			return "KO";
 		}
 	}
@@ -344,7 +348,7 @@ public class AdminController {
 			userService.changeGroup(Long.parseLong(userId), Long.parseLong(groupId), action);
 			return "OK";
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error for changing group for user id: " + userId + " and group id: " + groupId, e);
 			return "KO";
 		}
 	}

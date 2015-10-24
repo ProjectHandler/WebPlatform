@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -37,6 +39,8 @@ import fr.projecthandler.session.CustomUserDetails;
 @RequestMapping("/ticket")
 public class TicketController {
 
+	private static final Log log = LogFactory.getLog(TicketController.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -190,7 +194,7 @@ public class TicketController {
 		try {
 			ticketService.deleteTicketById(ticket.getId());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error deleting ticket (ticket id: " + ticketId + ")", e);
 		}
 
 		return new ModelAndView("redirect:/ticket/list/project/" + projectId);

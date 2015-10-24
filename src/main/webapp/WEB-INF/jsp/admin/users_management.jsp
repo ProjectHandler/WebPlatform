@@ -49,8 +49,8 @@
 			    			var msg = data.replace("KO:", "");
 			    			alert(msg);
 			    		} else 
-			    			location.reload();}, 
-			    	error: function(data) {alert("error: " + data);} 
+			    			location.reload();
+			    	}
 			    });
 			}
 
@@ -62,8 +62,8 @@
 			    			var msg = data.replace("KO:", "");
 			    			alert(msg);
 			    		} else 
-			    			location.reload();}, 
-			    	error: function(data) {alert("error: " + data);} 
+			    			location.reload();
+			    	}
 			    });
 			}
 			
@@ -74,8 +74,8 @@
 			    			var msg = data.replace("KO:", "");
 			    			alert(msg);
 			    		} else 
-			    			location.reload();}, 
-			    	error: function(data) {alert("error: " + data);} 
+			    			location.reload();
+			    	}
 			    });
 			}
 			
@@ -85,8 +85,8 @@
 			    		if (data == "KO") 
 			    			alert("error"); 
 			    		else 
-			    			location.reload();}, 
-			    	error: function(data) {alert("error: " + data);} 
+			    			location.reload();
+			    	}
 			    });
 			}
 
@@ -112,8 +112,7 @@
 			    	success: function(data) {
 			    		if (data == "KO")
 			    			alert("error");
-			    	},
-			    	error: function(data) {alert("error: " + data);}
+			    	}
 			    });
 			}
 			
@@ -146,8 +145,6 @@
 									$("#emailError").html(data);
 
 								}
-							}, error: function (xhr, ajaxOptions, thrownError) {
-								alert(xhr.responseText);
 							}
 						});
 				});

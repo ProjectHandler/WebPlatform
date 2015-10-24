@@ -9,6 +9,8 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,9 @@ import fr.projecthandler.service.UserService;
 
 @Controller
 public class TaskController {
+
+	private static final Log log = LogFactory.getLog(TaskController.class);
+
 	@Autowired
 	UserService userService;
 
@@ -44,7 +49,7 @@ public class TaskController {
 
 	@Autowired
 	TaskMessageService taskMessageService;
-	
+
 	@Autowired
 	ProjectService projectService;
 
@@ -61,7 +66,7 @@ public class TaskController {
 			}
 		});
 	}
-	
+
 	@RequestMapping(value = "task/changePriority", method = RequestMethod.GET)
 	public @ResponseBody String changePriority(Principal principal, @RequestParam("taskId") Long taskId, @RequestParam("priorityId") Long priority) {
 		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
@@ -76,7 +81,7 @@ public class TaskController {
 			try {
 				taskService.updateTask(t);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error for changing task proprity (task id: " + taskId + ", priority id: " + priority + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskPriorityNotChanged");
 			}
 		}
@@ -101,7 +106,7 @@ public class TaskController {
 			try {
 				taskService.updateTask(t);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error updating progress (task id: " + taskId + ", progress: " + progress + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.taskProgressNotChanged");
 			}
 		}
@@ -123,7 +128,7 @@ public class TaskController {
 			try {
 				subTaskService.saveSubtask(subTask);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error saving subtask (task id: " + taskId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
@@ -158,7 +163,7 @@ public class TaskController {
 			try {
 				subTaskService.updateSubTask(subTask);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error updating full subtask (subtask id: " + subTaskId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
@@ -191,7 +196,7 @@ public class TaskController {
 			try {
 				subTaskService.updateSubTask(subTask);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error updating state subtask (subtask id: " + subTaskId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
@@ -214,7 +219,7 @@ public class TaskController {
 			try {
 				subTaskService.updateSubTask(subTask);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error updating description subtask (subtask id: " + subTaskId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotUpdated");
 			}
 		}
@@ -237,7 +242,7 @@ public class TaskController {
 			try {
 				subTaskService.deleteSubTaskById(subTaskId);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error deleting subtask (subtask id: " + subTaskId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotDeleted");
 			}
 		}
@@ -261,7 +266,7 @@ public class TaskController {
 			try {
 				taskMessageService.saveTaskMessage(taskMessage);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error saving task comment (task id: " + taskId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotSaved");
 			}
 		}
@@ -285,7 +290,7 @@ public class TaskController {
 			try {
 				taskMessageService.deleteTaskMessageById(commentId);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error deleting task comment (comment id: " + commentId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotDeleted");
 			}
 		}
@@ -311,7 +316,7 @@ public class TaskController {
 			try {
 				taskMessageService.updateTaskMessage(taskMessage);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error updating task comment (comment id: " + commentId + ", user id: " + userId + ")", e);
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotUpdated");
 			}
 		}

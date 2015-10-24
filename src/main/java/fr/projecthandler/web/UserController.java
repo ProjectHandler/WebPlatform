@@ -24,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.configuration.Configuration;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -69,6 +71,8 @@ import fr.projecthandler.util.Utilities;
 @Controller
 public class UserController {
 
+	private static final Log log = LogFactory.getLog(UserController.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -253,7 +257,7 @@ public class UserController {
 					event.setUsers(users);
 					eventService.saveEvent(event);
 				} catch (ParseException e) {
-					e.printStackTrace();
+					log.error("error creating event", e);
 				}
 			}
 		}
@@ -286,7 +290,7 @@ public class UserController {
 					event.setUsers(users);
 					eventService.updateEvent(event);
 				} catch (ParseException e) {
-					e.printStackTrace();
+					log.error("error updating event", e);
 				}
 			}
 		}
@@ -320,7 +324,7 @@ public class UserController {
 					subTask.setEndingDate(endingDate);
 					subTaskService.updateSubTask(subTask);
 				} catch (ParseException e) {
-					e.printStackTrace();
+					log.error("error updating subtask", e);
 				}
 			}
 		}
@@ -349,7 +353,7 @@ public class UserController {
 			try {
 				listSubTask = subTaskService.getSubTasksUnplannedByUser(u.getId());
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error in calendarDetailsSubtaskUnplanned", e);
 			}
 
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
@@ -364,7 +368,7 @@ public class UserController {
 			try {
 				respsonse.getWriter().write(jsonAppointment);
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("error in calendarDetailsSubtaskUnplanned for writing jsonAppointment", e);
 			}
 		}
 	}
@@ -384,7 +388,7 @@ public class UserController {
 				listEvent = eventService.getEventsByUser(u.getId());
 				listSubTask = subTaskService.getSubTasksPlannedByUser(u.getId());
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error getting calendar details", e);
 			}
 			// Convert appointment to FullCalendar (A class created to facilitate the JSON)
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
@@ -403,7 +407,7 @@ public class UserController {
 			try {
 				respsonse.getWriter().write(jsonAppointment);
 			} catch (IOException e) {
-				e.printStackTrace();
+				log.error("error in calendarDetailsSubtaskUnplanned for writing jsonAppointment", e);
 			}
 		}
 	}
@@ -501,6 +505,13 @@ public class UserController {
 		String token = request.getParameter("token");
 
 		if (token != null && token.length() > 0 && principal != null) {
+			//logout for user authenticated
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null && principal != null) {
+				new SecurityContextLogoutHandler().logout(request, response, auth);
+				auth = null;
+			}
+
 			User user = tokenService.findUserByToken(token);
 			if (user == null)
 				return new ModelAndView("accessDenied", null);
@@ -521,7 +532,7 @@ public class UserController {
 
 			// login auto after mail validate
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
-			Authentication auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+			auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		}
 		return new ModelAndView("signup", myModel);
@@ -593,10 +604,9 @@ public class UserController {
 	@RequestMapping(value = "user/draft/get", method = RequestMethod.GET)
 	public @ResponseBody String getUserDraftMessage(Principal principal, @RequestParam("userId") Long userId) {
 		if (principal != null) {
-			User user = null;
 			try {
-				user = userService.findUserById(userId);
-				return user.getDraftMessage();
+				User user = userService.findUserById(userId);
+				return "toto";//user.getDraftMessage();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
