@@ -72,7 +72,7 @@ import fr.projecthandler.util.Utilities;
 public class UserController {
 
 	private static final Log log = LogFactory.getLog(UserController.class);
-	
+
 	@Autowired
 	UserService userService;
 
@@ -235,7 +235,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				//String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
+				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
@@ -268,7 +268,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				//String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
+				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
 				User u = userService.findUserById(userDetails.getId());
 				List<User> users = new ArrayList<User>();
 				users.add(u);
@@ -505,7 +505,7 @@ public class UserController {
 		String token = request.getParameter("token");
 
 		if (token != null && token.length() > 0 && principal != null) {
-			//logout for user authenticated
+			// logout for user authenticated
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null && principal != null) {
 				new SecurityContextLogoutHandler().logout(request, response, auth);
@@ -602,30 +602,31 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "user/draft/get", method = RequestMethod.GET)
-	public @ResponseBody String getUserDraftMessage(Principal principal, @RequestParam("userId") Long userId) {
+	public @ResponseBody String getUserDraftMessage(Principal principal) {
 		if (principal != null) {
 			try {
-				User user = userService.findUserById(userId);
-				return "toto";//user.getDraftMessage();
+				CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+				User user = userService.findUserById(userDetails.getId());
+				return user.getDraftMessage();
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error getting draft", e);
 			}
 		}
 		return "KO";
 	}
 
 	@RequestMapping(value = "user/draft/save", method = RequestMethod.POST)
-	public @ResponseBody String saveUserDraftMessage(Principal principal, @RequestParam("userId") Long userId,
-			@RequestParam("draftMessage") String draftMessage) {
+	public @ResponseBody String saveUserDraftMessage(Principal principal, @RequestParam("draftMessage") String draftMessage) {
 		if (principal != null) {
 			User user = null;
 			try {
-				user = userService.findUserById(userId);
+				CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+				user = userService.findUserById(userDetails.getId());
 				user.setDrafMessage(draftMessage);
 				userService.updateUser(user);
 				return "OK";
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error saving draft", e);
 			}
 		}
 		return "KO";

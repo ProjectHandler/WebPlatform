@@ -16,9 +16,6 @@
 		$.ajax({
 			type: "GET",
 			url: CONTEXT_PATH + "/user/draft/get",
-			data: {
-				userId: '${user.id}'
-			}, 
     		success: function(data) {
 				if (data == "KO")
     				alert("error: " + data);
@@ -43,7 +40,6 @@
 				type: "POST",
 				url: CONTEXT_PATH + "/user/draft/save",
 				data: {
-					userId: '${user.id}',
 					draftMessage: draftEditor.getData()
 				}, 
 	    		success: function(data) {
