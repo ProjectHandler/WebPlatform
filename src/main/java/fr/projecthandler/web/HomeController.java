@@ -48,6 +48,11 @@ public class HomeController {
 	public ModelAndView accessDenied() {
 		return new ModelAndView("accessDenied");
 	}
+	
+	@RequestMapping(value = "404", method = RequestMethod.GET)
+	public ModelAndView pageNotFound() {
+		return new ModelAndView("pageNotFound");
+	} 
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcome(Principal principal) {
