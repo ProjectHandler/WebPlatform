@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
@@ -18,6 +20,8 @@ import fr.projecthandler.exception.ExceptionJSONInfo;
 
 public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
+	private static final Log log = LogFactory.getLog(CustomAuthenticationEntryPoint.class);
+	
 	public CustomAuthenticationEntryPoint(String loginUrl) {
 		super(loginUrl);
 	}
@@ -26,7 +30,7 @@ public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryP
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		
-		if (isMobileRequest(request)) {
+		if (isApiRequest(request)) {
 			String message = "Unauthorized: Authentication token was either missing or invalid.";
 			int status = HttpServletResponse.SC_UNAUTHORIZED;
 			String json = "";
@@ -43,7 +47,7 @@ public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryP
 			try {
 				json = gson.toJson(exceptionInfo);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error in CustomAuthenticationEntryPoint for converting to json", e);
 			}
 		
 			writer.println(json);
@@ -55,9 +59,9 @@ public class CustomAuthenticationEntryPoint extends LoginUrlAuthenticationEntryP
 			}
 		}
 	}
-
-	public static boolean isMobileRequest(HttpServletRequest request) {
-		return (request.getRequestURI().indexOf("/mobile/") != -1);
+	
+	public static boolean isApiRequest(HttpServletRequest request) {
+		return (request.getRequestURI().indexOf("/api/") != -1);
 	}
 	
 	public static boolean isAjax(HttpServletRequest request) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +23,8 @@ import fr.projecthandler.model.User;
 @Transactional(readOnly = true)
 public class CustomUserDetailsService implements UserDetailsService {
 
+	private static final Log log = LogFactory.getLog(CustomUserDetailsService.class);
+	
 	@Autowired
 	UserDao userDao;
 
@@ -30,7 +34,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		try {
 			user = userDao.findByEmail(email);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error user name not found exception", e);
 			throw new UsernameNotFoundException("The email " + email + " was not found!", e);
 		}
 		if (user == null) {

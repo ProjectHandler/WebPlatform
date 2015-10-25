@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,13 @@ import fr.projecthandler.dto.GanttTaskDTO;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.User;
+import fr.projecthandler.web.AdminController;
 
 @Service
 public class GanttServiceImpl implements GanttService {
 
+	private static final Log log = LogFactory.getLog(GanttServiceImpl.class);
+	
 	@Autowired
 	UserService userService;
 
@@ -41,10 +46,8 @@ public class GanttServiceImpl implements GanttService {
 			/* ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter(); return ow.writeValueAsString(loadProject(projectId)); */
 			Gson gson = new Gson();
 			return gson.toJson(loadProject(projectId));
-
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("error in loading gantt with convertion to json", e);
 		}
 		return null;
 	}

@@ -72,13 +72,13 @@ public class Utilities {
 				in = new FileInputStream(file);
 				IOUtils.copy(in, response.getOutputStream());
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error in writeFileAsResponseStream during copy", e);
 			} finally {
 				if (in != null) {
 					try {
 						in.close();
 					} catch (IOException e) {
-						log.error("error in writeFileAsResponseStream", e);
+						log.error("error in writeFileAsResponseStream during close", e);
 					}
 				}
 			}

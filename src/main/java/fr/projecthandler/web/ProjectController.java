@@ -274,7 +274,7 @@ public class ProjectController {
 			try {
 				projectService.deleteProjectById(project.getId());
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error deleting project", e);
 			}
 		} else
 			return new ModelAndView("accessDenied");
