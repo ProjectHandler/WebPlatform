@@ -24,7 +24,6 @@ import fr.projecthandler.dto.GanttTaskDTO;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.User;
-import fr.projecthandler.web.AdminController;
 
 @Service
 public class GanttServiceImpl implements GanttService {

@@ -59,6 +59,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public List<User> getAllUsersWithGroups() {
+		return userDao.getAllUsersWithGroups();
+	}
+	
+	@Override
 	public List<User> getAllActiveUsers() {
 		return userDao.getAllActiveUsers();
 	}

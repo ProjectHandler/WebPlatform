@@ -1,11 +1,23 @@
 package fr.projecthandler.api;
 
+import fr.projecthandler.api.dto.ApiEventDTO;
+import fr.projecthandler.exception.ApiNotFoundException;
+import fr.projecthandler.model.Event;
+import fr.projecthandler.service.EventService;
+import fr.projecthandler.service.TokenService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -20,25 +32,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fr.projecthandler.api.dto.ApiEventDTO;
-import fr.projecthandler.dto.MobileUserDTO;
-import fr.projecthandler.exception.ApiNotFoundException;
-import fr.projecthandler.model.Event;
-import fr.projecthandler.model.User;
-import fr.projecthandler.service.EventService;
-import fr.projecthandler.service.TokenService;
-import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
 @RestController
 @Transactional
 @Api(value="Event", description="Operations about events")
 @RequestMapping("/api/event")
 public class EventRestController {
+
+	private static final Logger log = LoggerFactory.getLogger(EventRestController.class);
 
 	@Autowired
 	EventService eventService;
@@ -68,7 +68,7 @@ public class EventRestController {
 
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in eventRestController", e);
 			return new ResponseEntity<String>("KO", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -101,8 +101,7 @@ public class EventRestController {
 
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
-
+			log.error("error in getEventsByUser", e);
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 	}

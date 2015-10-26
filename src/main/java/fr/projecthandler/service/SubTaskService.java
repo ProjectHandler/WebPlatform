@@ -17,7 +17,7 @@ public interface SubTaskService {
 
 	public SubTask findSubTaskById(Long subTaskId);
 
-	public Set<SubTask> getSubTasksByTaskId(Long taskId);
+	public Set<SubTask> getSubTasksByTaskIdAndFetchUserAndTask(Long taskId);
 
 	public Set<SubTask> getSubTasksByUser(Long userId);
 

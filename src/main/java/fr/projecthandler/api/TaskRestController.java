@@ -1,28 +1,6 @@
 package fr.projecthandler.api;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.dto.MobileProjectDTO;
 import fr.projecthandler.dto.MobileSubTaskDTO;
 import fr.projecthandler.dto.MobileTaskDTO;
 import fr.projecthandler.model.SubTask;
@@ -34,10 +12,29 @@ import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import springfox.documentation.annotations.ApiIgnore;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @RestController
 @Transactional
@@ -67,7 +64,7 @@ public class TaskRestController {
 	public @ResponseBody ResponseEntity<String> getTasksByProjectId(
 			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails,
 			@PathVariable Long projectId) {
-		Set<Task> taskList = taskService.getTasksByProjectIdWithDepends(projectId);
+		Set<Task> taskList = taskService.getTasksByProjectIdWithDependsAndSubtask(projectId);
 
 		if (taskList == null) {
 			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
@@ -77,12 +74,12 @@ public class TaskRestController {
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
 
-			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
+			/*Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId();
 			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 			for (SubTask subTask : listSubTask) {
 				listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 			}
-			taskDTO.setSubTask(listSubTaskDTO);
+			taskDTO.setSubTask(listSubTaskDTO);*/
 			taskListDTO.add(taskDTO);
 		}
 
@@ -107,7 +104,7 @@ public class TaskRestController {
 	public @ResponseBody ResponseEntity<String> getProjectsByUser(
 			@PathVariable Long projectId,
 			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails) {
-		Set<Task> taskList = taskService.getTasksByProjectIdAndUserIdWithDepends(projectId, userDetails.getId());
+		Set<Task> taskList = taskService.getTasksByProjectIdAndUserIdWithDependsAndSubtask(projectId, userDetails.getId());
 
 		if (taskList == null) {
 			return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
@@ -116,12 +113,12 @@ public class TaskRestController {
 		List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 		for (Task t : taskList) {
 			MobileTaskDTO taskDTO = new MobileTaskDTO(t);
-			Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
+			/*Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
 			Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 			for (SubTask subTask : listSubTask) {
 				listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 			}
-			taskDTO.setSubTask(listSubTaskDTO);
+			taskDTO.setSubTask(listSubTaskDTO);*/
 			taskListDTO.add(taskDTO);
 		}
 
@@ -154,12 +151,12 @@ public class TaskRestController {
 			List<MobileTaskDTO> taskListDTO = new ArrayList<MobileTaskDTO>();
 			for (Task t : taskList) {
 				MobileTaskDTO taskDTO = new MobileTaskDTO(t);
-				Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
+				/*Set<SubTask> listSubTask = subTaskService.getSubTasksByTaskId(t.getId());
 				Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
 				for (SubTask subTask : listSubTask) {
 					listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
 				}
-				taskDTO.setSubTask(listSubTaskDTO);
+				taskDTO.setSubTask(listSubTaskDTO);*/
 				taskListDTO.add(taskDTO);
 			}
 

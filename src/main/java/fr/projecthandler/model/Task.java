@@ -11,9 +11,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -56,7 +59,6 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@JoinColumn(name = "task_priority_id")
 	private TaskPriority priority;
 
-	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") })
 	private List<User> users;
@@ -64,15 +66,20 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	@Column(name = "row")
 	private Long row;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id")
 	private Project project;
 
-	// @JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "depend_tasks", joinColumns = { @JoinColumn(name = "task_id1", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "task_id2", referencedColumnName = "id") })
 	private Set<Task> dependtasks;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "parentTask")
+	private Set<SubTask> subtasks;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "task")
+	private Set<TaskMessage> taskMessages;
+	
 	public Task() {
 	}
 
@@ -191,5 +198,29 @@ public class Task extends BaseEntity implements java.io.Serializable {
 
 	public void setDepend(Set<Task> depend) {
 		this.dependtasks = depend;
+	}
+
+	public Set<Task> getDependtasks() {
+		return dependtasks;
+	}
+
+	public void setDependtasks(Set<Task> dependtasks) {
+		this.dependtasks = dependtasks;
+	}
+
+	public Set<SubTask> getSubtasks() {
+		return subtasks;
+	}
+
+	public void setSubtasks(Set<SubTask> subtasks) {
+		this.subtasks = subtasks;
+	}
+
+	public Set<TaskMessage> getTaskMessages() {
+		return taskMessages;
+	}
+
+	public void setTaskMessages(Set<TaskMessage> taskMessages) {
+		this.taskMessages = taskMessages;
 	}
 }

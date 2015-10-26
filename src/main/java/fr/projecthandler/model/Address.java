@@ -28,7 +28,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	@Column(name = "country", length = 30)
 	private String country;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 

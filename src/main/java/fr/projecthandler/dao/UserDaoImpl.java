@@ -49,6 +49,11 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 	}
 
 	@Override
+	public List<User> getAllUsersWithGroups() {
+		return (List<User>) em.createQuery("SELECT DISTINCT u FROM User u LEFT JOIN FETCH u.groups").getResultList();
+	}
+	
+	@Override
 	public List<User> getAllActiveUsers() {
 		return (List<User>) em.createQuery("SELECT u FROM User u WHERE u.accountStatus = 1").getResultList();
 	}

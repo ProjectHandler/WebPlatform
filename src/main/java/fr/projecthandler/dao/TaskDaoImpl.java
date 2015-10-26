@@ -32,8 +32,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 	@Override
 	@Transactional
 	public void deleteTasksByIds(List<Long> tasksIds) {
-		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)")
-				.setParameter("tasksIds", tasksIds).executeUpdate();
+		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)").setParameter("tasksIds", tasksIds).executeUpdate();
 		em.createQuery("DELETE FROM Task t WHERE t.id IN (:tasksIds)").setParameter("tasksIds", tasksIds).executeUpdate();
 	}
 
@@ -54,6 +53,16 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 	public Set<Task> getTasksByTaskIdWithDepends(Long taskId) {
 		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(em.createQuery("SELECT t FROM Task t, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :taskId ORDER BY t.row ASC")
+				.setParameter("taskId", taskId).getResultList());
+		return result;
+	}
+
+	@Override
+	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long taskId) {
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
+		result.addAll(em
+				.createQuery(
+						"SELECT t FROM Task t LEFT JOIN FETCH t.subtasks st, Task t2 WHERE t MEMBER OF t2.dependtasks AND t2.id = :taskId ORDER BY t.row ASC")
 				.setParameter("taskId", taskId).getResultList());
 		return result;
 	}
@@ -102,6 +111,7 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		return result;
 	}
 
+	@Override
 	public Set<Task> getTasksByProjectIdWithDepends(Long projectId) {
 		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(em.createQuery("SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks WHERE t.project.id = :projectId ORDER BY t.row ASC")
@@ -109,12 +119,25 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 		return result;
 	}
 
+	@Override
 	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId) {
 		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
 		result.addAll(em
 				.createQuery(
-						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks LEFT JOIN FETCH t.users u WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC")
-				.setParameter("projectId", projectId).setParameter("userId", userId).getResultList());
+						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks dpt LEFT JOIN FETCH t.users u "
+								+ "WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC").setParameter("projectId", projectId)
+				.setParameter("userId", userId).getResultList());
+		return result;
+	}
+
+	@Override
+	public Set<Task> getTasksByProjectIdAndUserIdWithDependsAndSubtask(Long projectId, Long userId) {
+		LinkedHashSet<Task> result = new LinkedHashSet<Task>();
+		result.addAll(em
+				.createQuery(
+						"SELECT t FROM Task t LEFT JOIN FETCH t.dependtasks dpt LEFT JOIN FETCH t.users u LEFT JOIN FETCH t.subtasks st"
+								+ "WHERE t.project.id = :projectId AND u.id = :userId ORDER BY t.row ASC").setParameter("projectId", projectId)
+				.setParameter("userId", userId).getResultList());
 		return result;
 	}
 
@@ -128,9 +151,8 @@ public class TaskDaoImpl extends AbstractDao implements TaskDao {
 
 	@Override
 	public Long findMaxTaskRowByProjectId(Long projectId) {
-		Long maxRow = Utilities.getSingleResultOrNull(em
-									.createQuery("SELECT MAX(t.row) FROM Task t WHERE t.project.id = :projectId ")
-									.setParameter("projectId", projectId));
+		Long maxRow = Utilities.getSingleResultOrNull(em.createQuery("SELECT MAX(t.row) FROM Task t WHERE t.project.id = :projectId ").setParameter(
+				"projectId", projectId));
 		if (maxRow == null)
 			return new Long(0);
 		else

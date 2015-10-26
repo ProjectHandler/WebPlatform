@@ -22,7 +22,7 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 	private String content;
 
 	@Expose
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User owner;
 
@@ -31,7 +31,7 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 	private Date updateDate;
 
 	@Expose
-	@OneToOne(fetch = FetchType.EAGER)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "task_id")
 	private Task task;
 

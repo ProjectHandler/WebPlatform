@@ -21,7 +21,7 @@ import fr.projecthandler.exception.ExceptionJSONInfo;
 @ControllerAdvice(annotations = RestController.class)
 public class ApiGlobalExceptionHandler {
 	
-	private static final Logger logger = LoggerFactory.getLogger(ApiGlobalExceptionHandler.class);
+	private static final Logger log = LoggerFactory.getLogger(ApiGlobalExceptionHandler.class);
 
 	@ExceptionHandler(ApiNotFoundException.class)
 	public @ResponseBody ResponseEntity<String> handleEmployeeNotFoundException(HttpServletRequest request,
@@ -37,7 +37,7 @@ public class ApiGlobalExceptionHandler {
 		try {
 			json = gson.toJson(response);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in handleEmployeeNotFoundException", e);
 		}
 
 		return new ResponseEntity<String>(json, status);
@@ -57,7 +57,7 @@ public class ApiGlobalExceptionHandler {
 			try {
 				json = gson.toJson(response);
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error("error in missingParamterHandler", e);
 			}
 
 			return new ResponseEntity<String>(json, status);

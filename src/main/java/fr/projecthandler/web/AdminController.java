@@ -163,10 +163,10 @@ public class AdminController {
 
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
-		myModel.put("users", userService.getAllUsers());
+		myModel.put("users", userService.getAllUsersWithGroups());
 		myModel.put("user_role", UserRole.values());
 		myModel.put("account_status", AccountStatus.values());
-		myModel.put("groups", userService.getAllGroups());
+		
 		return new ModelAndView("admin/users_management", myModel);
 	}
 

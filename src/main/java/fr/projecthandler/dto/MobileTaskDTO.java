@@ -1,8 +1,10 @@
 package fr.projecthandler.dto;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 
 public class MobileTaskDTO {
@@ -34,6 +36,11 @@ public class MobileTaskDTO {
         this.endingDate = task.getEndingDate();
         this.status = task.getStatus();
         this.row = task.getRow();
+		Set<MobileSubTaskDTO> listSubTaskDTO = new HashSet<>();
+		for (SubTask subTask : task.getSubtasks()) {
+			listSubTaskDTO.add(new MobileSubTaskDTO(subTask));
+		}
+		this.subTask = listSubTaskDTO;
     }
 
 	public Long getId() {

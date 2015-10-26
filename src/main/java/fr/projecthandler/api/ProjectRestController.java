@@ -1,10 +1,27 @@
 package fr.projecthandler.api;
 
+import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.dto.MobileProjectDTO;
+import fr.projecthandler.dto.ProjectProgressDTO;
+import fr.projecthandler.exception.ApiNotFoundException;
+import fr.projecthandler.model.Project;
+import fr.projecthandler.service.ProjectService;
+import fr.projecthandler.service.TaskService;
+import fr.projecthandler.service.TokenService;
+import fr.projecthandler.service.UserService;
+import fr.projecthandler.session.CustomUserDetails;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,33 +33,18 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import springfox.documentation.annotations.ApiIgnore;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.api.dto.ApiEventDTO;
-import fr.projecthandler.dto.MobileProjectDTO;
-import fr.projecthandler.dto.ProjectProgressDTO;
-import fr.projecthandler.exception.ApiNotFoundException;
-import fr.projecthandler.model.Project;
-import fr.projecthandler.model.User;
-import fr.projecthandler.service.ProjectService;
-import fr.projecthandler.service.TaskService;
-import fr.projecthandler.service.TokenService;
-import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @Transactional
 @Api(value="Project", description="Operations about projects")
 @RequestMapping("/api/project")
 public class ProjectRestController {
+
+	private static final Logger log = LoggerFactory.getLogger(ApiGlobalExceptionHandler.class);
 
 	@Autowired
 	UserService userService;
@@ -81,7 +83,7 @@ public class ProjectRestController {
 
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in ProjectRestController", e);
 			return new ResponseEntity<String>("KO", HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
@@ -113,7 +115,7 @@ public class ProjectRestController {
 			System.out.println("json: " + json);
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in getAllProjectsByCurrentUser", e);
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 	}

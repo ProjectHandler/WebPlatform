@@ -1,25 +1,6 @@
 package fr.projecthandler.api;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.dto.MobileSubTaskDTO;
 import fr.projecthandler.dto.MobileTicketDTO;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
@@ -31,7 +12,28 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import springfox.documentation.annotations.ApiIgnore;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 @RestController
 @Transactional
@@ -39,6 +41,9 @@ import springfox.documentation.annotations.ApiIgnore;
 @RequestMapping("/api/ticket")
 public class TicketRestController {
 
+	private static final Logger log = LoggerFactory.getLogger(TicketRestController.class);
+
+	
 	@Autowired
 	UserService userService;
 
@@ -80,7 +85,7 @@ public class TicketRestController {
 
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in getTicketsByCurrentUser", e);
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 	}

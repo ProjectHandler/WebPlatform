@@ -6,10 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "subtask")
@@ -18,25 +17,20 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 4418101713699939939L;
 
 	@Column(name = "description")
-	@Expose
 	private String description;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "task_id")
-	@Expose
 	private Task parentTask;
-
-	@OneToOne(fetch = FetchType.EAGER)
+	
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	@Expose
 	private User lastUserActivity;
 
 	@Column(name = "validated")
-	@Expose
 	private boolean validated;
 
 	@Column(name = "taken")
-	@Expose
 	private boolean taken;
 
 	@Column(name = "starting_date")

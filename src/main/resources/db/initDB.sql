@@ -406,10 +406,25 @@ ALTER TABLE `depend_tasks`
   ADD CONSTRAINT `depend_tasks_ibfk_2` FOREIGN KEY (`task_id2`) REFERENCES `task` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
+-- Constraints for table `subtask`
+--
+ALTER TABLE `subtask`
+  ADD CONSTRAINT `subtask_ibfk_1` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`),
+  ADD CONSTRAINT `subtask_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
+
+--
 -- Constraints for table `task`
 --
 ALTER TABLE `task`
-  ADD CONSTRAINT `task_priority_ibkf` FOREIGN KEY (`task_priority_id`) REFERENCES `task_priority` (`id`);
+  ADD CONSTRAINT `task_priority_ibkf` FOREIGN KEY (`task_priority_id`) REFERENCES `task_priority` (`id`),
+  ADD CONSTRAINT `task_project_ibkf` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`);
+
+--
+-- Constraints for table `task_messages`
+--
+ALTER TABLE `task_messages`
+  ADD CONSTRAINT `task_messages_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `task_messages_ibfk_2` FOREIGN KEY (`task_id`) REFERENCES `task` (`id`);
 
 --
 -- Constraints for table `tickets`
@@ -426,6 +441,12 @@ ALTER TABLE `tickets`
 ALTER TABLE `ticket_messages`
   ADD CONSTRAINT `fk_ticketmessage_ticket` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_ticketmessage_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `tokens`
+--
+ALTER TABLE `tokens`
+  ADD CONSTRAINT `tokens_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 
 --
 -- Constraints for table `users`

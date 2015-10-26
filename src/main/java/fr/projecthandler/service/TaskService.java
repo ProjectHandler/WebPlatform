@@ -21,6 +21,8 @@ public interface TaskService {
 
 	public Set<Task> getTasksByTaskIdWithDepends(Long taskId);
 
+	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long taskId);
+	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 
 	public List<User> getUsersByTaskId(Long taskId);
@@ -47,6 +49,8 @@ public interface TaskService {
 
 	public Set<Task> getTasksByProjectIdAndUserIdWithDepends(Long projectId, Long userId);
 
+	public Set<Task> getTasksByProjectIdAndUserIdWithDependsAndSubtask(Long projectId, Long userId);
+	
 	public Set<Task> getTasksByUser(Long userId);
 	
 	public Long findMaxTaskRowByProjectId(Long projectId);

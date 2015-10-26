@@ -19,6 +19,8 @@ public interface UserDao {
 
 	public List<User> getAllUsers();
 
+	public List<User> getAllUsersWithGroups();
+	
 	public List<User> getAllActiveUsers();
 
 	public List<User> getUsersByRole(UserRole userRole);

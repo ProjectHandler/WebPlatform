@@ -22,11 +22,11 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
 
 	private static final long serialVersionUID = 254665316357554236L;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ticket_id", nullable = false)
 	private Ticket ticket;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 

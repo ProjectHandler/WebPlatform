@@ -234,7 +234,7 @@ public class ProjectController {
 		myModel.put("task", t);
 		myModel.put("priorities", priorities);
 		myModel.put("user", userService.findUserById(userDetails.getId()));
-		myModel.put("subTasks", subTaskService.getSubTasksByTaskId(t.getId()));
+		myModel.put("subTasks", subTaskService.getSubTasksByTaskIdAndFetchUserAndTask(t.getId()));
 		myModel.put("taskMessages", taskMessageService.getTaskMessagesByTaskId(t.getId()));
 
 		return new ModelAndView("project/taskBoxView", myModel);

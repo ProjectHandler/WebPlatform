@@ -1,8 +1,26 @@
 package fr.projecthandler.api;
 
+import fr.projecthandler.dto.MobileUserDTO;
+import fr.projecthandler.dto.UserDTO;
+import fr.projecthandler.enums.AccountStatus;
+import fr.projecthandler.enums.UserRole;
+import fr.projecthandler.model.Token;
+import fr.projecthandler.model.User;
+import fr.projecthandler.service.TokenService;
+import fr.projecthandler.service.UserService;
+import fr.projecthandler.session.CustomUserDetails;
+import fr.projecthandler.util.TokenGenerator;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -28,28 +46,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import fr.projecthandler.annotation.CurrentUserDetails;
-import fr.projecthandler.dto.MobileUserDTO;
-import fr.projecthandler.dto.UserDTO;
-import fr.projecthandler.enums.AccountStatus;
-import fr.projecthandler.enums.UserRole;
-import fr.projecthandler.model.Token;
-import fr.projecthandler.model.User;
-import fr.projecthandler.service.TokenService;
-import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
-import fr.projecthandler.util.TokenGenerator;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiResponse;
-
 @RestController
 @Transactional
 @Api(value = "User", description = "Operations about users")
 @RequestMapping("/api/user")
 public class UserRestController {
+
+	private static final Logger log = LoggerFactory.getLogger(UserRestController.class);
 
 	@Autowired
 	UserService userService;
@@ -126,7 +129,7 @@ public class UserRestController {
 			String json = gson.toJson(new UserDTO(user));
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error("error in UserRestController", e);
 			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
 		}
 	}

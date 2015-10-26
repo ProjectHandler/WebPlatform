@@ -3,6 +3,7 @@ package fr.projecthandler.model;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 //import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
@@ -44,11 +46,11 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	private TicketStatus ticketStatus;
 
 	// Author
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private User user;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id", nullable = false)
 	@Valid
 	private Project project;
@@ -61,6 +63,9 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	@JoinColumn(name = "ticket_priority_id")
 	private TicketPriority ticketPriority;
 
+	@ManyToMany(fetch = FetchType.LAZY,  mappedBy = "ticket")
+	private Set<TicketMessage> ticketMessages;
+	
 	// @JsonIgnore
 	// List of recipients
 	@ManyToMany(fetch = FetchType.LAZY)
