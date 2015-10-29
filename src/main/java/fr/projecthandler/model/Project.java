@@ -15,9 +15,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 //import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import fr.projecthandler.dto.GanttTaskDTO;
 
 @Entity

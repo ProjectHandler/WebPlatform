@@ -19,6 +19,12 @@ public class ProjectProgressDTO {
 		computeTaskProgress(p.getTasks());
 	}
 	
+	public ProjectProgressDTO(Project p, Set<Task> tasks) {
+		projectId = p.getId();
+		computeDateProgress(p.getDateBegin(), p.getDateEnd());
+		computeTaskProgress(tasks);
+	}
+	
 	private void computeDateProgress(Date begin, Date end) {
 		Date curr = new Date();
 		long dayInMs = 86400000;

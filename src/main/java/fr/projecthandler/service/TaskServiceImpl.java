@@ -45,8 +45,8 @@ public class TaskServiceImpl implements TaskService {
 		return taskDao.getTasksByTaskIdWithDepends(taskId);
 	}
 
-	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long taskId) {
-		return taskDao.getTasksByProjectIdWithDependsAndSubtask(taskId);
+	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long projectId) {
+		return taskDao.getTasksByProjectIdWithDependsAndSubtask(projectId);
 	}
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId) {
 		return taskDao.getTasksByUserAndFetchUsers(userId);

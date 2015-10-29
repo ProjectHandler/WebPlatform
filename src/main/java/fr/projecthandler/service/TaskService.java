@@ -21,7 +21,7 @@ public interface TaskService {
 
 	public Set<Task> getTasksByTaskIdWithDepends(Long taskId);
 
-	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long taskId);
+	public Set<Task> getTasksByProjectIdWithDependsAndSubtask(Long projectId);
 	
 	public Set<Task> getTasksByUserAndFetchUsers(Long userId);
 
