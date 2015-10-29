@@ -60,7 +60,7 @@ public class GanttController {
 		return new ModelAndView("gantt/gantt", myModel);
 	}
 
-	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/gantt/load", method = RequestMethod.POST)
 	public @ResponseBody String loadGantt(HttpServletRequest request, Principal principal) {
 		String json = "KO";
 

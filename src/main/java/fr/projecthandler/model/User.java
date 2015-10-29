@@ -278,8 +278,8 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "User is : [civility=" + civility + ", firstName=" + firstName + ", lastName=" + lastName + ", password=" /* + password */
-				+ ", address=" + address + ", email=" + email + "]";
+		return "User is : [civility=" + civility + ", firstName=" + firstName + ", lastName=" + lastName +
+				 ", email=" + email + "]";
 	}
 
 }
