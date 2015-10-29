@@ -264,6 +264,17 @@ CREATE TABLE IF NOT EXISTS `ticket_priority` (
 -- --------------------------------------------------------
 
 --
+-- Dumping data for table `ticket_priority`
+--
+
+INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
+(4, 10, 'low'),
+(5, 20, 'medium'),
+(6, 30, 'high');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `ticket_tracker`
 --
 
@@ -309,7 +320,6 @@ CREATE TABLE IF NOT EXISTS `users` (
   `work_day` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT 'tttttff',
   `daily_hour` varchar(32) CHARACTER SET utf8 NOT NULL DEFAULT '09:00 AM - 05:00 PM',
   `avatar_file_name` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
-  `draft_message` varchar(500) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `address` (`address`),
   KEY `civility_ibfk` (`civility_id`)
@@ -319,8 +329,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`, `draft_message`) VALUES
-(1, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL, NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
+(1, 'Admin', 'Admin', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'admin@admin.com', NULL, '0123456789', '', 0, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL);
 
 -- --------------------------------------------------------
 

@@ -27,33 +27,21 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Dumping data for table `depend_tasks`
+-- Dumping data for table `users`
 --
 
-INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
-(135, 134),
-(136, 134),
-(137, 135),
-(137, 136),
-(138, 137),
-(139, 138),
-(141, 139),
-(141, 140),
-(177, 141),
-(144, 143),
-(146, 144),
-(145, 146),
-(148, 147),
-(151, 150),
-(153, 152),
-(154, 153),
-(158, 156),
-(157, 158),
-(160, 159),
-(161, 160),
-(162, 161),
-(166, 165),
-(167, 165);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
+(2, 'Guillard', 'Arthur', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'arthur.guillard@example.com', NULL, '0123456789', '0123456789', 1, 0, 1, 'tttttff', '09:00 AM - 05:00 PM', '2_4a2a6d25-9637-4d93-a81c-134382c0e502.png'),
+(3, 'Cyril', 'Fillatre', '$2a$10$/i5TEbxZmgODzVJOmodsH.VWCH.isLvHM7/hEsl.DPQrDUY89zUAy', 'cyril.fillatre@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'ttttttf', '09:00 AM - 05:00 PM', '3_ef03093e-deed-4243-97ed-f7d150e80281.jpg'),
+(4, 'Lukas', 'Fauser', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'lukas.fauser@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '4_27f215c6-9c92-40ee-9065-3f9fb831ff52.png'),
+(5, 'Guillaume', 'Roncari', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'guillaume.roncari@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '5_5bd1238d-3b04-4886-9129-64873e2e7a8e.png'),
+(6, 'Paul', 'Peyrefitte', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'paul.peyrefitte@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '6_e5cb6525-d2f8-4a10-bc21-c84107c3f5a5.png'),
+(7, 'Cortex', 'CORTEX', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'cortex@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '7_5f1aa936-fee2-4a14-ab8c-a8ea99134b74.jpg'),
+(8, 'Minus', 'MINUS', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'minus@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '8_8fb621b5-872c-4ab9-b9ab-1bc37ef18415.jpg'),
+(51, 'test', 'test', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'test@test.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(52, NULL, NULL, NULL, 'test2@example.com', NULL, NULL, NULL, 1, 0, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(53, NULL, NULL, NULL, 'test3@example.com', NULL, NULL, NULL, 1, 2, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL);
+
 
 -- --------------------------------------------------------
 
@@ -89,54 +77,6 @@ INSERT INTO `project` (`id`, `name`, `progress`, `description`, `duration`, `dat
 (27, 'Application Windows Phone', 0, 'Application Windows Phone native de Project Handler', 105, '2015-09-18', '2016-01-01', 'STATUS_ACTIVE'),
 (34, '<b>LOLINTERNET</b>', 0, 'test <a href="http://www.google.fr"> ceci est un lien</a>', 1, '2015-10-22', '2015-10-23', 'STATUS_ACTIVE');
 
--- --------------------------------------------------------
-
---
--- Dumping data for table `subtask`
---
-
-INSERT INTO `subtask` (`id`, `description`, `task_id`, `user_id`, `validated`, `taken`, `starting_date`, `ending_date`) VALUES
-(1, 'toto', 136, 1, 0, 0, NULL, NULL),
-(2, 'plop', 136, 1, 0, 0, NULL, NULL),
-(3, 'titi\n', 136, 2, 0, 0, NULL, NULL),
-(4, 'sous tache 1', 132, 1, 0, 0, NULL, NULL),
-(5, 'sous tache', 118, 1, 1, 0, NULL, NULL),
-(7, 'Développement back', 159, 2, 1, 0, NULL, NULL),
-(8, 'Développement front', 159, 5, 1, 0, NULL, NULL),
-(9, 'Développement front', 160, 5, 1, 0, NULL, NULL),
-(10, 'Développement back', 160, 2, 1, 0, NULL, NULL),
-(11, 'Développement front', 161, 5, 1, 0, NULL, NULL),
-(12, 'Développement back', 161, 2, 1, 0, NULL, NULL),
-(13, 'Développement front', 162, 5, 0, 1, NULL, NULL),
-(14, 'Développement back', 162, 2, 1, 0, NULL, NULL),
-(15, 'Développement front', 163, 5, 1, 0, NULL, NULL),
-(16, 'Développement back', 163, 2, 1, 0, NULL, NULL),
-(17, 'Regarder comment intégrer spring websocket', 165, 2, 0, 0, NULL, NULL),
-(18, 'azerty', 146, 4, 0, 1, NULL, NULL),
-(19, 'coucouc', 161, 1, 1, 0, NULL, NULL),
-(24, 'metre de la moutarde', 174, 1, 1, 0, NULL, NULL),
-(25, 'faire cuire', 174, 1, 1, 0, NULL, NULL),
-(26, 'configuration de l''ip', 178, 1, 0, 0, NULL, NULL),
-(27, 'Design du system de reply', 154, 1, 0, 0, NULL, NULL),
-(28, 'communication serveur pour enregistrer les tickets', 154, 1, 0, 0, NULL, NULL),
-(29, 'subtask 1', 114, 1, 1, 0, NULL, NULL),
-(31, 'task', 175, 1, 1, 0, NULL, NULL),
-(32, 'task 2', 175, 1, 1, 0, NULL, NULL),
-(33, 'task 3', 175, 1, 1, 0, NULL, NULL),
-(34, 'sous tache', 121, 1, 1, 0, NULL, NULL),
-(37, 'header structure', 191, 1, 0, 1, '2015-10-13 09:00:00', '2015-10-13 11:00:00'),
-(38, 'header shrinking animation', 191, 1, 0, 1, NULL, NULL),
-(39, 'subtask 1', 192, 1, 0, 0, NULL, NULL),
-(40, 'subtask 2', 192, 1, 0, 0, NULL, NULL),
-(41, 'menu structure', 191, 1, 0, 0, NULL, NULL),
-(42, 'btn hover effects', 191, 1, 0, 0, NULL, NULL),
-(43, 'test 1', 195, 1, 0, 0, NULL, NULL),
-(44, 'test 2', 195, 1, 0, 0, NULL, NULL),
-(45, 'test 3', 195, 1, 0, 0, NULL, NULL),
-(46, 'Header HTTP Content-Type: application/json ', 198, 6, 0, 0, NULL, NULL),
-(48, 'Créer un RestPrecondition\ncf http://www.baeldung.com/2011/10/25/building-a-restful-web-service-with-spring-3-1-and-java-based-configuration-part-2/', 198, 6, 0, 0, NULL, NULL),
-(49, 'Return des DTO et pas des strings', 198, 6, 0, 0, NULL, NULL),
-(50, 'Renommer les MobileDTO en ApiDTO', 198, 6, 0, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -221,6 +161,54 @@ INSERT INTO `task` (`id`, `name`, `progress`, `description`, `level`, `duration`
 -- --------------------------------------------------------
 
 --
+-- Dumping data for table `subtask`
+--
+
+INSERT INTO `subtask` (`id`, `description`, `task_id`, `user_id`, `validated`, `taken`, `starting_date`, `ending_date`) VALUES
+(1, 'toto', 136, 1, 0, 0, NULL, NULL),
+(2, 'plop', 136, 1, 0, 0, NULL, NULL),
+(3, 'titi\n', 136, 2, 0, 0, NULL, NULL),
+(5, 'sous tache', 118, 1, 1, 0, NULL, NULL),
+(7, 'Développement back', 159, 2, 1, 0, NULL, NULL),
+(8, 'Développement front', 159, 5, 1, 0, NULL, NULL),
+(9, 'Développement front', 160, 5, 1, 0, NULL, NULL),
+(10, 'Développement back', 160, 2, 1, 0, NULL, NULL),
+(11, 'Développement front', 161, 5, 1, 0, NULL, NULL),
+(12, 'Développement back', 161, 2, 1, 0, NULL, NULL),
+(13, 'Développement front', 162, 5, 0, 1, NULL, NULL),
+(14, 'Développement back', 162, 2, 1, 0, NULL, NULL),
+(15, 'Développement front', 163, 5, 1, 0, NULL, NULL),
+(16, 'Développement back', 163, 2, 1, 0, NULL, NULL),
+(17, 'Regarder comment intégrer spring websocket', 165, 2, 0, 0, NULL, NULL),
+(18, 'azerty', 146, 4, 0, 1, NULL, NULL),
+(19, 'coucouc', 161, 1, 1, 0, NULL, NULL),
+(24, 'metre de la moutarde', 174, 1, 1, 0, NULL, NULL),
+(25, 'faire cuire', 174, 1, 1, 0, NULL, NULL),
+(26, 'configuration de l''ip', 178, 1, 0, 0, NULL, NULL),
+(27, 'Design du system de reply', 154, 1, 0, 0, NULL, NULL),
+(28, 'communication serveur pour enregistrer les tickets', 154, 1, 0, 0, NULL, NULL),
+(29, 'subtask 1', 114, 1, 1, 0, NULL, NULL),
+(31, 'task', 175, 1, 1, 0, NULL, NULL),
+(32, 'task 2', 175, 1, 1, 0, NULL, NULL),
+(33, 'task 3', 175, 1, 1, 0, NULL, NULL),
+(34, 'sous tache', 121, 1, 1, 0, NULL, NULL),
+(37, 'header structure', 191, 1, 0, 1, '2015-10-13 09:00:00', '2015-10-13 11:00:00'),
+(38, 'header shrinking animation', 191, 1, 0, 1, NULL, NULL),
+(39, 'subtask 1', 192, 1, 0, 0, NULL, NULL),
+(40, 'subtask 2', 192, 1, 0, 0, NULL, NULL),
+(41, 'menu structure', 191, 1, 0, 0, NULL, NULL),
+(42, 'btn hover effects', 191, 1, 0, 0, NULL, NULL),
+(43, 'test 1', 195, 1, 0, 0, NULL, NULL),
+(44, 'test 2', 195, 1, 0, 0, NULL, NULL),
+(45, 'test 3', 195, 1, 0, 0, NULL, NULL),
+(46, 'Header HTTP Content-Type: application/json ', 198, 6, 0, 0, NULL, NULL),
+(48, 'Créer un RestPrecondition\ncf http://www.baeldung.com/2011/10/25/building-a-restful-web-service-with-spring-3-1-and-java-based-configuration-part-2/', 198, 6, 0, 0, NULL, NULL),
+(49, 'Return des DTO et pas des strings', 198, 6, 0, 0, NULL, NULL),
+(50, 'Renommer les MobileDTO en ApiDTO', 198, 6, 0, 0, NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Dumping data for table `task_messages`
 --
 
@@ -259,16 +247,6 @@ INSERT INTO `ticket_messages` (`id`, `ticket_id`, `user_id`, `created_at`, `upda
 (30, 15, 3, '2015-10-17 18:06:01', '2015-10-17 18:06:01', 'Les 2 libs ne sont pas compatible :/, il faut choisir entre jackson et gson.'),
 (31, 15, 6, '2015-10-17 18:08:09', '2015-10-17 18:08:09', 'Gson est largement utilisé dans le projet. Il est préférable de tout passer en Gson.');
 
--- --------------------------------------------------------
-
---
--- Dumping data for table `ticket_priority`
---
-
-INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
-(4, 10, 'low'),
-(5, 20, 'medium'),
-(6, 30, 'high');
 
 -- --------------------------------------------------------
 
@@ -277,29 +255,9 @@ INSERT INTO `ticket_priority` (`id`, `value`, `name`) VALUES
 --
 
 INSERT INTO `tokens` (`id`, `token`, `time_stamp`, `user_id`) VALUES
-(3, '186ddfb9-a465-4417-9ce8-baf1d8c01b8e', 1416049588886, 10),
 (4, '402445ca-2650-46ee-be9d-a906dab09c63', 1435935436351, 51),
-(6, 'acc1f79d-a3a3-4b0d-af4f-f19a4f11fc32', 1442557052928, 1),
 (7, 'f1b6672d-e9e5-409f-8954-dc2e992a2d1a', 1444950094012, 52),
 (8, '2ddd41c9-a073-479f-82a8-d98dcdffbeb8', 1444998561660, 53);
-
--- --------------------------------------------------------
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
-(2, 'Guillard', 'Arthur', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'arthur.guillard@example.com', NULL, '0123456789', '0123456789', 1, 0, 1, 'tttttff', '09:00 AM - 05:00 PM', '2_4a2a6d25-9637-4d93-a81c-134382c0e502.png'),
-(3, 'Cyril', 'Fillatre', '$2a$10$/i5TEbxZmgODzVJOmodsH.VWCH.isLvHM7/hEsl.DPQrDUY89zUAy', 'cyril.fillatre@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'ttttttf', '09:00 AM - 05:00 PM', '3_ef03093e-deed-4243-97ed-f7d150e80281.jpg'),
-(4, 'Lukas', 'Fauser', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'lukas.fauser@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '4_27f215c6-9c92-40ee-9065-3f9fb831ff52.png'),
-(5, 'Guillaume', 'Roncari', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'guillaume.roncari@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '5_5bd1238d-3b04-4886-9129-64873e2e7a8e.png'),
-(6, 'Paul', 'Peyrefitte', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'paul.peyrefitte@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '6_e5cb6525-d2f8-4a10-bc21-c84107c3f5a5.png'),
-(7, 'Cortex', 'CORTEX', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'cortex@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '7_5f1aa936-fee2-4a14-ab8c-a8ea99134b74.jpg'),
-(8, 'Minus', 'MINUS', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'minus@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '8_8fb621b5-872c-4ab9-b9ab-1bc37ef18415.jpg'),
-(51, 'test', 'test', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'test@test.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(52, NULL, NULL, NULL, 'test2@example.com', NULL, NULL, NULL, 1, 0, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(53, NULL, NULL, NULL, 'test3@example.com', NULL, NULL, NULL, 1, 2, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL);
 
 -- --------------------------------------------------------
 
@@ -427,6 +385,37 @@ INSERT INTO `users_tickets` (`user_id`, `ticket_id`) VALUES
 (5, 14),
 (5, 16),
 (5, 17);
+
+-- --------------------------------------------------------
+
+--
+-- Dumping data for table `depend_tasks`
+--
+
+INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
+(135, 134),
+(136, 134),
+(137, 135),
+(137, 136),
+(138, 137),
+(139, 138),
+(141, 139),
+(141, 140),
+(177, 141),
+(144, 143),
+(146, 144),
+(145, 146),
+(148, 147),
+(151, 150),
+(153, 152),
+(154, 153),
+(158, 156),
+(157, 158),
+(160, 159),
+(161, 160),
+(162, 161),
+(166, 165),
+(167, 165);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
