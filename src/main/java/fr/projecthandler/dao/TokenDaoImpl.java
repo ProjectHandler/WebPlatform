@@ -34,4 +34,5 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 		return (User) Utilities.getSingleResultOrNull(em.createQuery("SELECT t.user FROM Token t WHERE t.token = :token")
 				.setParameter("token", token));
 	}
+
 }

@@ -34,6 +34,7 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.saveTicket(newTicket);
 	}
 
+	@Override
 	public Ticket findTicketById(Long id) {
 		return ticketDao.findTicketById(id);
 	}
@@ -43,6 +44,7 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.deleteTicketsByIds(ticketsIdsList);
 	}
 
+	@Override
 	public void deleteTicketById(Long id) {
 		ticketDao.deleteTicketById(id);
 	}
@@ -52,6 +54,7 @@ public class TicketServiceImpl implements TicketService {
 		ticketDao.updateTicket(a);
 	}
 
+	@Override
 	public List<Ticket> getTicketsByProjectId(Long projectId) {
 		return ticketDao.getTicketsByProjectId(projectId);
 	}
@@ -61,63 +64,98 @@ public class TicketServiceImpl implements TicketService {
 		return ticketDao.getTicketsByUser(id);
 	}
 
+	@Override
 	public Long saveTicketMessage(TicketMessage ticketMessage) {
 		return ticketMessageDao.saveTicketMessage(ticketMessage);
 	}
 
+	@Override
 	public void updateTicketMessage(TicketMessage ticketMessage) {
 		ticketMessageDao.updateTicketMessage(ticketMessage);
 	}
 
+	@Override
 	public TicketMessage findTicketMessageById(Long ticketMessageId) {
 		return ticketMessageDao.findTicketMessageById(ticketMessageId);
 	}
 
+	@Override
 	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId) {
 		return ticketMessageDao.getTicketMessagesByTicketId(ticketId);
 	}
 
+	@Override
 	public List<TicketMessage> getAllTicketMessages() {
 		return ticketMessageDao.getAllTicketMessages();
 	}
 
+	@Override
 	public void deleteTicketMessageById(Long ticketMessageId) {
 		ticketMessageDao.deleteTicketMessageById(ticketMessageId);
 	}
 
+	@Override
 	public void deleteTicketMessagesByIds(List<Long> ticketMessages) {
 		ticketMessageDao.deleteTicketMessagesByIds(ticketMessages);
 	}
 
+	@Override
 	public TicketTracker findTicketTrackerById(Long id) {
 		return ticketTrackerDao.findTicketTrackerById(id);
 	}
 
+	@Override
 	public List<TicketTracker> getAllTicketTrackers() {
 		return ticketTrackerDao.getAllTicketTrackers();
 	}
 
+	@Override
 	public Long saveTicketPriority(TicketPriority ticketPriority) {
 		return ticketPriorityDao.saveTicketPriority(ticketPriority);
 	}
 
+	@Override
 	public void updateTicketPriority(TicketPriority ticketPriority) {
 		ticketPriorityDao.updateTicketPriority(ticketPriority);
 	}
 
+	@Override
 	public void deleteTicketPriorityById(Long ticketPriorityId) {
 		ticketPriorityDao.deleteTicketPriorityById(ticketPriorityId);
 	}
 
+	@Override
 	public void deleteTicketPrioritiesByIds(List<Long> ticketPriorities) {
 		ticketPriorityDao.deleteTicketPrioritiesByIds(ticketPriorities);
 	}
 
+	@Override
 	public TicketPriority findTicketPriorityById(Long ticketPriorityId) {
 		return ticketPriorityDao.findTicketPriorityById(ticketPriorityId);
 	}
 
+	@Override
 	public List<TicketPriority> getAllTicketPriorities() {
 		return ticketPriorityDao.getAllTicketPriorities();
+	}
+	
+	@Override
+	public Ticket findTicketByIdAndFetchUser(Long ticketId) {
+		return ticketDao.findTicketByIdAndFetchUsers(ticketId);
+	}
+	
+	@Override
+	public Ticket findTicketByIdAndFetchAuthor(Long ticketId){
+		return ticketDao.findTicketByIdAndFetchAuthor(ticketId);
+	}
+	
+	@Override
+	public List<TicketMessage> getTicketMessagesByTicketIdAndFetchUser(Long ticketId) {
+		return ticketMessageDao.getTicketMessagesByTicketIdAndFetchUser(ticketId);
+	}
+	
+	@Override
+	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId) {
+		return ticketDao.getTicketsByProjectIdAndUser(projectId, userId);
 	}
 }

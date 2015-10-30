@@ -105,8 +105,8 @@ public class TicketController {
 	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
 	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		Ticket ticket = ticketService.findTicketById(ticketId);
-
+		Ticket ticket = ticketService.findTicketByIdAndFetchAuthor(ticketId);
+		
 		if (userDetails == null) {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied");
@@ -119,7 +119,7 @@ public class TicketController {
 
 		User u = userService.findUserById(userDetails.getId());
 		TicketMessage ticketMessage = new TicketMessage();
-		List<TicketMessage> ticketMessages = ticketService.getTicketMessagesByTicketId(ticketId);
+		List<TicketMessage> ticketMessages = ticketService.getTicketMessagesByTicketIdAndFetchUser(ticketId);
 
 		myModel.put("user", u);
 		myModel.put("ticket", ticket);

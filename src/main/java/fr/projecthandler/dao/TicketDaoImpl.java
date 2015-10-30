@@ -45,7 +45,8 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 	// TODO tester la fonction
 	@Override
 	public Ticket findTicketByIdAndFetchUsers(Long id) {
-		return (Ticket) Utilities.getSingleResultOrNull(em.createQuery("FROM Ticket t JOIN FETCH t.users WHERE t.id =:id").setParameter("id", id));
+		return (Ticket) Utilities.getSingleResultOrNull(em.createQuery(
+				"SELECT t FROM Ticket t LEFT JOIN FETCH t.users us LEFT JOIN FETCH t.user u " + "WHERE t.id =:id").setParameter("id", id));
 	}
 
 	@Override
@@ -54,7 +55,20 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 				.getResultList();
 	}
 
+	@Override
 	public List<Ticket> getTicketsByProjectId(Long projectId) {
 		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId").setParameter("projectId", projectId).getResultList();
+	}
+
+	@Override
+	public Ticket findTicketByIdAndFetchAuthor(Long ticketId) {
+		return (Ticket) Utilities.getSingleResultOrNull(em.createQuery("SELECT t FROM Ticket t LEFT JOIN FETCH t.user u WHERE t.id =:id")
+				.setParameter("id", ticketId));
+	}
+
+	@Override
+	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId) {
+		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId AND t.user.id = :userId")
+				.setParameter("projectId", projectId).setParameter("userId", userId).getResultList();
 	}
 }

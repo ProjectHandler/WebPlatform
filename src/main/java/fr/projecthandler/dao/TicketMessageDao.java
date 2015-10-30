@@ -19,4 +19,6 @@ public interface TicketMessageDao {
 	public List<TicketMessage> getTicketMessagesByTicketId(Long ticketId);
 
 	public List<TicketMessage> getAllTicketMessages();
+	
+	public List<TicketMessage> getTicketMessagesByTicketIdAndFetchUser(Long ticketId);
 }

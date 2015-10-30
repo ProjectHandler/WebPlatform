@@ -56,4 +56,9 @@ public class TicketMessageDaoImpl extends AbstractDao implements TicketMessageDa
 		return (List<TicketMessage>) em.createQuery("SELECT tm FROM TicketMessage tm").getResultList();
 	}
 
+	@Override
+	public List<TicketMessage> getTicketMessagesByTicketIdAndFetchUser(Long ticketId) {
+		return (List<TicketMessage>) em.createQuery("FROM TicketMessage tm LEFT JOIN FETCH tm.user u WHERE tm.ticket.id = :ticketId")
+				.setParameter("ticketId", ticketId).getResultList();
+	}
 }

@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -56,7 +57,7 @@ public class TicketRestController {
 	@Autowired
 	private UserDetailsService customUserDetailsService;
 
-	@RequestMapping(value = {"/allByUser", "/allByCurrentUser"}, method = RequestMethod.GET)
+	@RequestMapping(value = {"/allByCurrentUser"}, method = RequestMethod.GET)
 	@ApiOperation(value = "Gets all tickets by the authenticated user", response = MobileTicketDTO.class)
 	@ApiResponses(value = {
 		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful operation"),
@@ -71,6 +72,56 @@ public class TicketRestController {
 			if (ticketList == null) {
 				return new ResponseEntity<String>("{\"status\":400, \"project\":\"Not found\"}", HttpStatus.NOT_FOUND);
 			}
+			List<MobileTicketDTO> ticketListDTO = new ArrayList<MobileTicketDTO>();
+
+			for (Ticket ticket : ticketList) {
+				MobileTicketDTO mobileTicketDTO = new MobileTicketDTO(ticket);
+				List<TicketMessage> listTicketMessage = ticketService.getTicketMessagesByTicketId(ticket.getId());
+				mobileTicketDTO.setMessage(listTicketMessage);
+				ticketListDTO.add(mobileTicketDTO);
+			}
+
+			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+			String json = gson.toJson(ticketListDTO);
+
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("error in getTicketsByCurrentUser", e);
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = {"/allByProject/{projectId}"}, method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> getTicketsByProject(
+			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		try {
+			List<Ticket> ticketList = ticketService.getTicketsByProjectId(projectId);
+		
+			List<MobileTicketDTO> ticketListDTO = new ArrayList<MobileTicketDTO>();
+
+			for (Ticket ticket : ticketList) {
+				MobileTicketDTO mobileTicketDTO = new MobileTicketDTO(ticket);
+				List<TicketMessage> listTicketMessage = ticketService.getTicketMessagesByTicketId(ticket.getId());
+				mobileTicketDTO.setMessage(listTicketMessage);
+				ticketListDTO.add(mobileTicketDTO);
+			}
+
+			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+			String json = gson.toJson(ticketListDTO);
+
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("error in getTicketsByCurrentUser", e);
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = {"/allByProjectAndUser/{projectId}"}, method = RequestMethod.GET)
+	public @ResponseBody ResponseEntity<String> getTicketsByProjectAndUser(
+			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId) {
+		try {
+			List<Ticket> ticketList = ticketService.getTicketsByProjectIdAndUser(projectId, userDetails.getId());
+		
 			List<MobileTicketDTO> ticketListDTO = new ArrayList<MobileTicketDTO>();
 
 			for (Ticket ticket : ticketList) {
