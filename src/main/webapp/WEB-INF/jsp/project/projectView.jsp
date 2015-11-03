@@ -92,12 +92,12 @@
 													<c:choose>
 													<c:when test="${projectSelectable.id == project.id}">
 														<option id="${projectSelectable.id}" selected="selected" value="${projectSelectable.id}">
-															${projectSelectable.name}
+															${projectSelectable.value}
 														</option>
 													</c:when>
 													<c:otherwise>
 														<option id="${projectSelectable.id}" value="${projectSelectable.id}">
-															${projectSelectable.name}
+															${projectSelectable.value}
 														</option>
 													</c:otherwise>
 													</c:choose>
@@ -213,7 +213,7 @@
 																<div class="small theme1-primary-text">${ticket.title}</div>
 															</div>
 														</div>
-														<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages" class="cover-btn-shape default-btn-style5"></a> 
+														<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages/project/${project.id}" class="cover-btn-shape default-btn-style5"></a> 
 													</div>
 												</c:if>
 											</c:forEach>

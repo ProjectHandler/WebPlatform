@@ -47,11 +47,15 @@ public class ProjectDaoImpl extends AbstractDao implements ProjectDao {
 		return (List<Project>) em.createQuery("SELECT projects FROM User u WHERE u.id = :userId").setParameter("userId", userId).getResultList();
 	}
 
+	public List<Project> getProjectsByUserIdAndFetchUsers(Long userId) {
+		return (List<Project>) em.createQuery("SELECT p FROM Project p JOIN p.users u LEFT JOIN FETCH p.users us WHERE u.id = :userId")
+				.setParameter("userId", userId).getResultList();
+	}
+
 	@Override
 	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId) {
 		return (List<Project>) em.createQuery("SELECT DISTINCT P FROM Project p JOIN p.users u JOIN p.tasks t WHERE u.id = :userId")
-				.setParameter("userId", userId)
-				.getResultList();
+				.setParameter("userId", userId).getResultList();
 	}
 
 	@Override

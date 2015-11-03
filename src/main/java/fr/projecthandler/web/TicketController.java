@@ -102,8 +102,8 @@ public class TicketController {
 		return new ModelAndView("redirect:" + "/ticket/" + ticket.getId() + "/messages");
 	}
 
-	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
-	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId) {
+	@RequestMapping(value = "/{ticketId}/messages/project/{projectId}", method = RequestMethod.GET)
+	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId, @PathVariable Long projectId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		Ticket ticket = ticketService.findTicketByIdAndFetchAuthor(ticketId);
 		
@@ -123,6 +123,7 @@ public class TicketController {
 
 		myModel.put("user", u);
 		myModel.put("ticket", ticket);
+		myModel.put("projectId", projectId);
 		myModel.put("ticketMessage", ticketMessage);
 		myModel.put("ticketMessages", ticketMessages);
 

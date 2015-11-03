@@ -19,6 +19,8 @@ public interface ProjectDao {
 
 	public List<Project> getProjectsByUserId(Long userId);
 
+	public List<Project> getProjectsByUserIdAndFetchUsers(Long userId);
+	
 	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId);
 
 	public void deleteProjectById(Long projectId);

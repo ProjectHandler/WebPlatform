@@ -53,7 +53,13 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<Project> getProjectsByUserId(Long userId) {
 		return projectDao.getProjectsByUserId(userId);
 	}
+	
+	@Override
+	public List<Project> getProjectsByUserIdAndFetchUsers(Long userId) {
+		return projectDao.getProjectsByUserIdAndFetchUsers(userId);
+	}
 
+	@Override
 	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId) {
 		return projectDao.getProjectsByUserIdAndFetchTasks(userId);
 	}

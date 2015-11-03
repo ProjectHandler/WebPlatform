@@ -18,6 +18,8 @@ public interface ProjectService {
 	public List<Project> getAllProjects();
 
 	public List<Project> getProjectsByUserId(Long userId);
+	
+	public List<Project> getProjectsByUserIdAndFetchUsers(Long userId);
 
 	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId);
 

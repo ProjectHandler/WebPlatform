@@ -1,6 +1,7 @@
 package fr.projecthandler.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import fr.projecthandler.model.Project;
 
@@ -17,7 +18,8 @@ public class MobileProjectDTO {
 	private Integer dateProgress;
 	private Integer daysLeft;
 	private Integer tasksProgress;
-
+	private List<MobileUserDTO> users;
+	
 	public MobileProjectDTO() {
 	}
 
@@ -118,6 +120,14 @@ public class MobileProjectDTO {
 
 	public void setTasksProgress(Integer tasksProgress) {
 		this.tasksProgress = tasksProgress;
+	}
+
+	public List<MobileUserDTO> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<MobileUserDTO> users) {
+		this.users = users;
 	}
 
 }

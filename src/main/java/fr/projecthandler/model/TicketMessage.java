@@ -14,6 +14,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import fr.projecthandler.dto.MobileTicketMessageDTO;
 import fr.projecthandler.util.TimestampEntity;
 
 @Entity
@@ -43,6 +44,12 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
 	private String text;
 
 	public TicketMessage() {
+	}
+	
+	public TicketMessage(MobileTicketMessageDTO ticketMessageDTO) {
+		this.createdAt = new Date();
+		this.updatedAt = new Date();
+		this.text = ticketMessageDTO.getText();
 	}
 
 	public Ticket getTicket() {

@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.dto.DataDTO;
 import fr.projecthandler.dto.ProjectProgressDTO;
 import fr.projecthandler.enums.Priority;
 import fr.projecthandler.enums.ProjectStatus;
@@ -186,14 +187,21 @@ public class ProjectController {
 		ProjectProgressDTO projectProgress = new ProjectProgressDTO(project);
 		myModel.put("project", project);
 		User user = userService.findUserById(userDetails.getId());
+		
+		List<Project> projects = null;
 		if (user.getUserRole().equals(UserRole.ROLE_ADMIN))
-			myModel.put("projects", projectService.getAllProjects());
+			projects = projectService.getAllProjects();
 		else
-			myModel.put("projects", projectService.getProjectsByUserId(userDetails.getId()));
+			projects = projectService.getProjectsByUserId(userDetails.getId());
+		List<DataDTO> dataDTOProjects = new ArrayList<DataDTO>();
+		for (Project p : projects) {
+			dataDTOProjects.add(new DataDTO(p.getId(), p.getName()));
+		}
+		
+		myModel.put("projects", dataDTOProjects);
 		myModel.put("user", user);
 		myModel.put("tickets", ticketService.getTicketsByProjectId(project.getId()));
 		myModel.put("projectProgress", projectProgress);
-
 		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
 
 		return new ModelAndView("project/projectView", myModel);

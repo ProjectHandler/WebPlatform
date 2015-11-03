@@ -33,6 +33,6 @@ public class MyMappingExceptionResolver extends SimpleMappingExceptionResolver {
 		myModel.put("exception", exception);
 
 		log.error("catch of exception in MyMappingExceptionResolver", exception);
-		return new ModelAndView("/exception", myModel);
+		return new ModelAndView("redirect:/exception", myModel);
 	}
 }
