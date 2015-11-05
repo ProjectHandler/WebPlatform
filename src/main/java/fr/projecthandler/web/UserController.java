@@ -236,7 +236,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
+				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
 				String[] usersArray = usersConcern.split(",");
 				List<User> users = new ArrayList<User>();
 		        for(String u:usersArray) {
@@ -294,7 +294,7 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
-				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
+				String usersConcern = Utilities.getRequestParameter(request, "usersConcern");
 				String[] usersArray = usersConcern.split(",");
 				List<User> users = new ArrayList<User>();
 		        for(String u:usersArray) {
