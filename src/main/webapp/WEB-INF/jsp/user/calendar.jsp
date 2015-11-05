@@ -88,6 +88,7 @@
 			<div id="eventModal" style="display:none;">
 			<form id="appointmentForm" class="form-horizontal" method="POST">
 			<input type="hidden" id="eventId" name="eventId" value="" />
+			<input type="hidden" id="usersConcern" name="usersConcern" value="" />
 			    <div class="modal-header">
 			        <label for=title><spring:message code="projecthandler.calendar.title" /></label>
 			        <input type="text" name="title" id="title">
@@ -95,12 +96,39 @@
 			    <div class="modal-body">
 			    	<label for="daterange"><spring:message code="projecthandler.calendar.duration" /></label>
 				    <input type="text" id="daterange" name="daterange"/><br>
-				    <label for="description"><spring:message code="projecthandler.calendar.descritption" /></label>
+				    <label id="descriptionLabel" for="description"><spring:message code="projecthandler.calendar.descritption" /></label>
 			        <input type="text" id="description" name="description"/><br>
 			        
-					<div class="small-margin-bottom">
+					<div id="selectivityUserAndGroup" class="small-margin-bottom">
 					<div class="display-table-cell vertical-align fixedwidth-128">
-						<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
+						<div class="small-margin-bottom">
+							<div class="display-table-cell vertical-align fixedwidth-128">
+								<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
+							</div>
+							<div class="display-table-cell vertical-align">
+								<select class="userSelection" id="userSelection" name="userSelection">
+									<c:forEach var='userInList' items='${users}'>
+										<option value="${userInList.id}">
+											${userInList.firstName} ${userInList.lastName}
+										</option>
+									</c:forEach>
+								</select>
+							</div>
+						</div>	
+						<div class="margin-bottom">
+							<div class="display-table-cell vertical-align fixedwidth-128">
+								<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
+							</div>
+							<div class="display-table-cell vertical-align">
+								<select class="groupSelection"  multiple="multiple" id="groupSelection">
+								<c:forEach var='group' items='${groups}'>
+									<option value="${group.id}">
+										${group.name}
+									</option>
+								</c:forEach>
+								</select>
+							</div>
+						</div>					
 					</div>
 				</div>	
 			    </div>
@@ -118,6 +146,24 @@
 		
 		$(document).ready(function() {
 			
+			// TODO : type to search a group / user => language files
+			$('.userSelection').selectivity({
+			    multiple: true,
+			    placeholder: 'Type to search a user'
+			});
+			
+			$('.groupSelection').selectivity({
+			    multiple: true,
+			    placeholder: 'Type to search a group'
+			});
+			
+			$('.groupSelection').on("change", groupChanged);
+
+			
+
+			
+			/* initialize the external events (panier)
+			-----------------------------------------------------------------*/
 			var url = CONTEXT_PATH+"/calendarDetailsSubtaskUnplanned";
 			$.ajax({
 				  dataType: "json",
@@ -129,9 +175,7 @@
 				      });
 				  }
 				});
-			
-			/* initialize the external events (panier)
-			-----------------------------------------------------------------*/
+
 			$('#external-subtask .fc-event').each(function() {
 				// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
 				// it doesn't need to have a start or end
@@ -191,7 +235,7 @@
                 editable: true,
        			droppable: true,
        			dragRevertDuration: 0,
-                select: function(start, end, allDay) {buildModal(true, start, end, "", "", "new");},
+                select: function(event, start, end, allDay) {buildModal(true, start, end, "", "", "new", null);},
     			drop: function(date) { // this function is called when something is dropped
     				// retrieve the dropped element's stored Event Object
     				var originalEventObject = $(this).data('eventObject');
@@ -263,12 +307,12 @@
                		element.click(function() {
 	               		$("#eventId").val(event.id);
 	               		if (event.editable)
-	               			buildModal(false, moment(event.start), moment(event.end), event.title, event.description, event.id);
+	               			buildModal(false, moment(event.start), moment(event.end), event.title, event.description, event.id, event);
                    	});
                     element.find('.fc-title').append("<br>" + ((event.description != undefined) ? event.description : ""));
                   },
-                  eventResize: function(event) {updateEventWithoutModal(event);},
-                  eventDrop: function(event) {updateEventWithoutModal(event);}
+                  eventResize: 	function(event) {updateEventWithoutModal(event);},
+                  eventDrop: 	function(event) {updateEventWithoutModal(event);}
                         
             }); // END calendar
             
@@ -319,7 +363,44 @@
             	updateSubtask();
 		}
 		
-		function buildModal(isNewEvent, start, end, title, description, id) {
+		function buildModal(isNewEvent, start, end, title, description, id, event) {
+			$('#selectivityUserAndGroup').hide();
+			$('#descriptionLabel').hide();
+			$('#description').hide();
+			
+			
+			if (!event || event.type == "event") {
+				$('#selectivityUserAndGroup').show();
+				$('#descriptionLabel').show();
+				$('#description').show();
+			}
+            	
+			
+			$('.userSelection').selectivity('clear');
+			if (id != "new") {
+				var url = CONTEXT_PATH+"/loadUserFromEvent";
+				$.ajax({
+					  dataType: "json",
+					  type: "POST",
+					  url: url,
+					  data: "eventId=" + id,
+					  async: false,
+					  success: function (user) {
+						  var found = false;
+						  $.each(user, function (key, value) {
+							  if ('${user.id}' == value.id)
+								  found = true;
+							  $('.userSelection').selectivity("add", {id: value.id, text: value.firstName + " " +  value.lastName});
+					      });
+						  if (!found)
+							  $('.userSelection').selectivity("add", {id: '${user.id}', text: '${user.firstName}' + " " +  '${user.lastName}'});
+					  }
+				});
+			} else {
+				$('.userSelection').selectivity('clear');
+				$('.userSelection').selectivity("add", {id: '${user.id}', text: '${user.firstName}' + " " +  '${user.lastName}'});
+			}
+			
             $('input[name="daterange"]').daterangepicker({
 		        timePicker: true,
 		        pickTime: true,
@@ -332,15 +413,18 @@
             $("#daterange").data('daterangepicker').setEndDate(end);
             $("#title").val(title);
             $("#description").val(description);
+            
             if (isNewEvent) {
             	var titleModal = '<spring:message code="projecthandler.calendar.newEvent" />';
             	var saveButton = '<spring:message code="projecthandler.calendar.create" />';
             	$("#deleteEventButton").hide();
+            	$("#submitEventButton").unbind();
          		$("#submitEventButton").click(function() {creatNewEvent();});
             } else {
             	var titleModal = '<spring:message code="projecthandler.calendar.event" />';
             	var saveButton = '<spring:message code="projecthandler.signup.create" />';
             	$("#deleteEventButton").show();
+            	$("#submitEventButton").unbind();
             	$("#submitEventButton").click(function() {updateEvent();});
             }
             
@@ -361,6 +445,12 @@
 		}
 		
 		function creatNewEvent() {
+			var userData = "";
+			$.each($("#userSelection").selectivity("data"), function f(i, val) {
+				userData += val.id + ",";
+			});
+			$("#usersConcern").val(userData);
+			
 			var url = CONTEXT_PATH+"/createEvent";
 			var values = $('#appointmentForm').serialize();
 			$.ajax({
@@ -371,6 +461,12 @@
 		}
 		
 		function updateEvent() {
+			var userData = "";
+			$.each($("#userSelection").selectivity("data"), function f(i, val) {
+				userData += val.id + ",";
+			});
+			$("#usersConcern").val(userData);
+
 			var url = CONTEXT_PATH+"/updateEvent";
 			var values = $('#appointmentForm').serialize();
 			$.ajax({
@@ -402,6 +498,56 @@
 		      hours = hours - 12;
 		    return hours + ":" + minutes; 
 		  }
+		
+		/************************* selectivity user and group************************/
+		function checkGroupUsers(user) {
+			var found = false;
+			var idToAdd = null;
+			var txtToAdd = null;
+			var data = $('.userSelection').selectivity('data');
+			
+			if (data != null && data !== undefined)
+				$.each(data, function f(i, val) {
+					if (user.id == val.id)
+						found = true;
+				});
+			
+			if (!found) {
+				idToAdd = user.id;
+				txtToAdd = user.firstName + ' ' + user.lastName;
+				$('.userSelection').selectivity('add', {id: idToAdd, text: txtToAdd});
+			}
+		}
+
+		function groupChanged(item) {
+			var url = CONTEXT_PATH + "/project/fetchGroupUsers";
+			var groupId;
+			var usersInGroup;
+
+			if (item.added) {
+				groupId = item.added.id;
+				$.ajax({
+						type: "GET",
+						url: url,
+						data: {groupId: groupId}, 
+			    		success: function(data) {
+			    				if (data == "KO")
+				    				alert("error: " + data);
+			    				else {
+				    				usersInGroup = jQuery.parseJSON(data);
+				    				$.each(usersInGroup, function f2(i, val) {
+				    					checkGroupUsers(val);
+				    				});
+			    				}
+			    		},
+			    		error: function(data) {
+			    			alert("error: " + data);
+			    		}
+			    });
+				$('.groupSelection').selectivity('remove', item.added);
+			}
+			
+		}
 		</script>
 		
 	</body>

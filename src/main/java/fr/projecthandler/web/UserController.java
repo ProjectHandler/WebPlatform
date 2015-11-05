@@ -48,6 +48,7 @@ import com.google.gson.Gson;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.dto.CalendarDTO;
+import fr.projecthandler.dto.UserDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Event;
@@ -236,10 +237,11 @@ public class UserController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
-				User u = userService.findUserById(userDetails.getId());
+				String[] usersArray = usersConcern.split(",");
 				List<User> users = new ArrayList<User>();
-				users.add(u);
-				/* TODO add users */
+		        for(String u:usersArray) {
+		        	users.add(userService.findUserById(Long.parseLong(u)));
+		        }
 
 				String title = Utilities.getRequestParameter(request, "title");
 				String description = Utilities.getRequestParameter(request, "description");
@@ -262,6 +264,30 @@ public class UserController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/loadUserFromEvent", method = RequestMethod.POST)
+	public void loadUserFromEvent(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
+		if (principal != null) {
+			Set<User> listUser = new HashSet<User>();
+			try {
+				listUser = eventService.getUserByEvent(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			List<UserDTO> listUsersForSelectivityOnCalendar = new ArrayList<>();
+			for (User user : listUser)
+				listUsersForSelectivityOnCalendar.add(new UserDTO(user));
+			String jsonUserByEnvent = new Gson().toJson(listUsersForSelectivityOnCalendar);
+			// Printout the JSON
+			respsonse.setContentType("application/json");
+			respsonse.setCharacterEncoding("UTF-8");
+			try {
+				respsonse.getWriter().write(jsonUserByEnvent);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
 	public void updateEvent(Principal principal, HttpServletRequest request) throws IOException {
@@ -269,10 +295,11 @@ public class UserController {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() == UserRole.ROLE_ADMIN) {
 				// String usersConcern = Utilities.getRequestParameter(request, "usersConcern"); <-- variable unused ?!
-				User u = userService.findUserById(userDetails.getId());
+				String[] usersArray = usersConcern.split(",");
 				List<User> users = new ArrayList<User>();
-				users.add(u);
-				/* TODO add users */
+		        for(String u:usersArray) {
+		        	users.add(userService.findUserById(Long.parseLong(u)));
+		        }
 
 				Event event = eventService.findEventById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
 				String title = Utilities.getRequestParameter(request, "title");
@@ -419,6 +446,8 @@ public class UserController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			User u = userService.findUserById(userDetails.getId());
+			myModel.put("users", userService.getAllActiveUsers());
+			myModel.put("groups", userService.getAllNonEmptyGroups());
 			myModel.put("user", u);
 		}
 

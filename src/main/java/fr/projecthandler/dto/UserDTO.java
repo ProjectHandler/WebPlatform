@@ -4,6 +4,7 @@ import fr.projecthandler.model.User;
 
 public class UserDTO {
 
+	private Long id;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -11,6 +12,7 @@ public class UserDTO {
 	private String mobilePhone;
 	
 	public UserDTO(User user) {
+		this.id = user.getId();
 		this.firstName = user.getFirstName();
 		this.lastName = user.getLastName();
 		this.email = user.getEmail();
@@ -18,6 +20,14 @@ public class UserDTO {
 		this.mobilePhone = user.getMobilePhone();
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+	
 	public String getFirstName() {
 		return firstName;
 	}

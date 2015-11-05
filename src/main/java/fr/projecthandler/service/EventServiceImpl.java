@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import fr.projecthandler.dao.EventDao;
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.User;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -45,5 +46,9 @@ public class EventServiceImpl implements EventService {
 
 	public Set<Event> getTomorrowEventsByUser(Long userId) {
 		return eventDao.getTomorrowEventsByUser(userId);
+	}
+
+	public Set<User> getUserByEvent(Long eventId) {
+		return eventDao.getUserByEvent(eventId);
 	}
 }

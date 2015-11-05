@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.User;
 
 public interface EventDao {
 
@@ -22,4 +23,6 @@ public interface EventDao {
 	public Set<Event> getTodayEventsByUser(Long userId);
 
 	public Set<Event> getTomorrowEventsByUser(Long userId);
+
+	public Set<User> getUserByEvent(Long eventId);
 }

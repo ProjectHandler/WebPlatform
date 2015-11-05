@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import fr.projecthandler.model.Event;
+import fr.projecthandler.model.User;
 import fr.projecthandler.util.DateHelper;
 import fr.projecthandler.util.Utilities;
 
@@ -83,6 +84,14 @@ public class EventDaoImpl extends AbstractDao implements EventDao {
 		sb.append(DateHelper.getTomorrowDate("yyyy-MM-dd"));
 		sb.append(" 23:59:59'");
 		result.addAll(em.createQuery(sb.toString()).setParameter("userId", userId).getResultList());
+		return result;
+	}
+
+	@Override
+	public Set<User> getUserByEvent(Long eventId) {
+		Set<User> result = new HashSet<User>();
+		result.addAll(em.createQuery("SELECT e.users FROM Event e WHERE e.id = :eventId").setParameter("eventId", eventId)
+				.getResultList());
 		return result;
 	}
 }
