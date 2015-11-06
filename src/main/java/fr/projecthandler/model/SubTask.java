@@ -100,8 +100,6 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((lastUserActivity == null) ? 0 : lastUserActivity.hashCode());
-		result = prime * result + ((parentTask == null) ? 0 : parentTask.hashCode());
 		result = prime * result + (taken ? 1231 : 1237);
 		result = prime * result + (validated ? 1231 : 1237);
 		return result;
