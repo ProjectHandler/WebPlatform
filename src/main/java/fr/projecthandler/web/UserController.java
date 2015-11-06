@@ -338,7 +338,7 @@ public class UserController {
 	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-			SubTask subTask = subTaskService.findSubTaskById(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
+			SubTask subTask = subTaskService.findSubTaskByIdAndFetchUser(Long.parseLong(Utilities.getRequestParameter(request, "eventId")));
 			if (subTask.isTaken() == true && userDetails.getId().equals(subTask.getLastUserActivity().getId())) {
 				String title = Utilities.getRequestParameter(request, "title");
 				String daterange = Utilities.getRequestParameter(request, "daterange");
@@ -361,7 +361,7 @@ public class UserController {
 	public void unplannedSubtask(Principal principal, HttpServletRequest request) throws IOException, ParseException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-			SubTask subTask = subTaskService.findSubTaskById(Long.parseLong(Utilities.getRequestParameter(request, "subtaskId")));
+			SubTask subTask = subTaskService.findSubTaskByIdAndFetchUser(Long.parseLong(Utilities.getRequestParameter(request, "subtaskId")));
 			if (subTask.isTaken() == true && userDetails.getId().equals(subTask.getLastUserActivity().getId())) {
 				subTask.setStartingDate(null);
 				subTask.setEndingDate(null);
@@ -417,6 +417,7 @@ public class UserController {
 			} catch (Exception e) {
 				log.error("error getting calendar details", e);
 			}
+			
 			// Convert appointment to FullCalendar (A class created to facilitate the JSON)
 			List<CalendarDTO> listForCalendar = new ArrayList<>();
 			for (Task task : listTask)
