@@ -24,6 +24,32 @@
     		}
 	    });
 		
+		draftEditor.addCommand("save", {
+		    exec: function() {
+		    	$.ajax({
+					type: "POST",
+					url: CONTEXT_PATH + "/user/draft/save",
+					data: {
+						draftMessage: draftEditor.getData()
+					}, 
+		    		success: function(data) {
+		    			// TODO mettre des petits messages de fail ou success
+	    				if (data == "KO")
+		    				alert("error: " + data);
+	    				else
+	    					alert("Enregistrement réussi");
+		    		}
+			    });
+		    }
+		});
+
+		draftEditor.ui.addButton('Sauvegarder', {
+		    label: '<spring:message code="projecthandler.project.edit.save"/>',
+		    command: 'save',
+		    toolbar: 'insert',
+		    icon: '${pageContext.request.contextPath}/resources/ckeditor/content-save.png'
+		});
+		
 		draftEditor.on('key', function(obj) {
             if (obj.data.keyCode === 8 || obj.data.keyCode === 46) {
                 return true;
@@ -33,20 +59,6 @@
             	draftEditor.setData(draftEditor.getData().substring(0, draftEditor.getData().length - 1));
                 return false;
             }
-		});
-
-		draftEditor.on('blur', function(e) {
-			$.ajax({
-				type: "POST",
-				url: CONTEXT_PATH + "/user/draft/save",
-				data: {
-					draftMessage: draftEditor.getData()
-				}, 
-	    		success: function(data) {
-    				if (data == "KO")
-	    				alert("error: " + data);
-	    		}
-		    });
 		});
 	});
 </script>
