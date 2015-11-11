@@ -23,6 +23,10 @@ public interface TicketService {
 
 	public List<Ticket> getTicketsByProjectId(Long projectId);
 
+	public List<Ticket> getTicketsByProjectIdAndOrderByDesc(Long projectId, int maxResults);
+
+	public List<Ticket> getTicketsByProjectIdWithAuthor(Long projectId);
+
 	public Long saveTicketMessage(TicketMessage ticketMessage);
 
 	public void updateTicketMessage(TicketMessage ticketMessage);

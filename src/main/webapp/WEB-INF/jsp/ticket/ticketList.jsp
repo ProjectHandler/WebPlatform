@@ -57,7 +57,7 @@
 				<c:forEach items="${ticketList}" var="ticket">
 					<tr>
 						<td><a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">${e:forHtml(ticket.title)}</a></td>
-						<td>${e:forHtml(ticket.user.firstName)}  ${e:forHtml(ticket.user.lastName)}</td>
+						<td>${e:forHtml(ticket.user.firstName)} ${e:forHtml(ticket.user.lastName)}</td>
 						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="MM-dd-yyyy HH:mm" /></td>
 						<td><spring:message javaScriptEscape="true" code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
 						<td colspan="2">

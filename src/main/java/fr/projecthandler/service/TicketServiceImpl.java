@@ -60,6 +60,15 @@ public class TicketServiceImpl implements TicketService {
 	}
 
 	@Override
+	public List<Ticket> getTicketsByProjectIdAndOrderByDesc(Long projectId, int maxResults) {
+		return ticketDao.getTicketsByProjectIdAndOrderByDesc(projectId, maxResults);
+	}
+
+	public List<Ticket> getTicketsByProjectIdWithAuthor(Long projectId) {
+		return ticketDao.getTicketsByProjectIdWithAuthor(projectId);
+	}
+
+	@Override
 	public List<Ticket> getTicketsByUser(Long id) {
 		return ticketDao.getTicketsByUser(id);
 	}

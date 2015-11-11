@@ -57,7 +57,22 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 
 	@Override
 	public List<Ticket> getTicketsByProjectId(Long projectId) {
-		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId").setParameter("projectId", projectId).getResultList();
+		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId")
+				.setParameter("projectId", projectId).getResultList();
+	}
+
+	@Override
+	public List<Ticket> getTicketsByProjectIdAndOrderByDesc(Long projectId, int maxResults) {
+		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId ORDER BY t.createdAt DESC")
+				.setParameter("projectId", projectId)
+				.setMaxResults(maxResults)
+				.getResultList();
+	}
+
+	@Override
+	public List<Ticket> getTicketsByProjectIdWithAuthor(Long projectId) {
+		return (List<Ticket>) em.createQuery("FROM Ticket t LEFT JOIN FETCH t.user WHERE t.project.id = :projectId")
+				.setParameter("projectId", projectId).getResultList();
 	}
 
 	@Override

@@ -214,7 +214,7 @@
 																<div class="small theme1-primary-text">${e:forHtml(ticket.title)}</div>
 															</div>
 														</div>
-														<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages/project/${project.id}" class="cover-btn-shape default-btn-style5"></a> 
+														<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages" class="cover-btn-shape default-btn-style5"></a>
 													</div>
 												</c:if>
 											</c:forEach>

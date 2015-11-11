@@ -102,8 +102,8 @@ public class TicketController {
 		return new ModelAndView("redirect:" + "/ticket/" + ticket.getId() + "/messages");
 	}
 
-	@RequestMapping(value = "/{ticketId}/messages/project/{projectId}", method = RequestMethod.GET)
-	public ModelAndView ticketMessageList(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId, @PathVariable Long projectId) {
+	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
+	public ModelAndView ticketMessageList(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		Ticket ticket = ticketService.findTicketByIdAndFetchAuthor(ticketId);
 
@@ -123,7 +123,6 @@ public class TicketController {
 
 		myModel.put("user", u);
 		myModel.put("ticket", ticket);
-		myModel.put("projectId", projectId);
 		myModel.put("ticketMessage", ticketMessage);
 		myModel.put("ticketMessages", ticketMessages);
 
@@ -167,7 +166,7 @@ public class TicketController {
 			User u = userService.findUserById(userDetails.getId());
 
 			model.put("user", u);
-			List<Ticket> ticketList = ticketService.getTicketsByProjectId(projectId);
+			List<Ticket> ticketList = ticketService.getTicketsByProjectIdWithAuthor(projectId);
 			model.put("ticketList", ticketList);
 			model.put("projectId", projectId);
 		} else {
