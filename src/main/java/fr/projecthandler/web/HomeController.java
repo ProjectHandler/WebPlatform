@@ -44,6 +44,7 @@ public class HomeController {
 	// return new ModelAndView("home", null);
 	// }
 
+	// TODO delete ?
 	@RequestMapping(value = "test", method = RequestMethod.GET)
 	public void test() throws Exception { 
 		throw new Exception("test");
@@ -57,7 +58,7 @@ public class HomeController {
 	@RequestMapping(value = "404", method = RequestMethod.GET)
 	public ModelAndView pageNotFound() {
 		return new ModelAndView("pageNotFound");
-	} 
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcome(Principal principal) {

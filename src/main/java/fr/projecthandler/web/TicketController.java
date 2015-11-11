@@ -103,10 +103,10 @@ public class TicketController {
 	}
 
 	@RequestMapping(value = "/{ticketId}/messages/project/{projectId}", method = RequestMethod.GET)
-	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId, @PathVariable Long projectId) {
+	public ModelAndView ticketMessageList(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId, @PathVariable Long projectId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		Ticket ticket = ticketService.findTicketByIdAndFetchAuthor(ticketId);
-		
+
 		if (userDetails == null) {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied");
@@ -131,7 +131,7 @@ public class TicketController {
 	}
 
 	@RequestMapping(value = "/{ticketId}/message/save", method = RequestMethod.POST)
-	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails,
+	public ModelAndView saveTicketMessage(@CurrentUserDetails CustomUserDetails userDetails,
 			@Valid @ModelAttribute("ticketMessage") TicketMessage ticketMessage, BindingResult result, @PathVariable Long ticketId) {
 		Ticket ticket = ticketService.findTicketById(ticketId);
 
@@ -178,13 +178,12 @@ public class TicketController {
 		return new ModelAndView("ticket/ticketList", model);
 	}
 
-	//TODO check what happens if invalid ticket id
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
 	public ModelAndView deleteTicket(@CurrentUserDetails CustomUserDetails userDetails,
 			@RequestParam Long ticketId) {
-		//User u = userService.findUserById(userDetails.getId()); <-- variable unused ?!
 		Ticket ticket = ticketService.findTicketById(ticketId);
 		
+		// TODO ticket null -> not found
 		if (userDetails == null
 				|| ticket == null
 				|| (userDetails.getUserRole() != UserRole.ROLE_ADMIN && userDetails.getId() != ticket.getUser().getId())) {
