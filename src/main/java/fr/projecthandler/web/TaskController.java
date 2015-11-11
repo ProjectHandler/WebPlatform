@@ -237,7 +237,7 @@ public class TaskController {
 		} else {
 			if (subTask == null)
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.subTaskNotExists");
-			if (subTask.isTaken() && subTask.getLastUserActivity().getId() != userId)
+			if (subTask.isTaken() && !subTask.getLastUserActivity().getId().equals(userId))
 				return "KO: " + bundle.getString("projecthandler.taskBoxView.error.deleteSubTaskTakenByOther");
 			try {
 				subTaskService.deleteSubTaskById(subTaskId);
@@ -285,7 +285,7 @@ public class TaskController {
 			TaskMessage taskMessage = taskMessageService.findTaskMessageById(commentId);
 			if (taskMessage == null)
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotFound");
-			if (taskMessage.getOwner().getId() != userId)
+			if (!taskMessage.getOwner().getId().equals(userId))
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
 			try {
 				taskMessageService.deleteTaskMessageById(commentId);
@@ -309,7 +309,7 @@ public class TaskController {
 		} else {
 			if (taskMessage == null)
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotFound");
-			if (taskMessage.getOwner().getId() != userId)
+			if (!taskMessage.getOwner().getId().equals(userId))
 				return "KO: " + bundle.getString("projecthandler.taskBoxMessages.error.commentNotOwner");
 			taskMessage.setContent(content);
 			taskMessage.setUpdateDate(new Date());

@@ -224,16 +224,20 @@ public class ProjectController {
 	public ModelAndView viewProjectTaskBox(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @PathVariable Long taskId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
+		System.out.println("test");
 		if (userDetails == null) {
+			System.out.println("userDetails redirect");
 			return new ModelAndView("redirect:/");
 		}
 
 		Project p = projectService.findProjectById(projectId);
 		Task t = taskService.findTaskById(taskId);
 
-		if (p == null || t == null)
+		if (p == null || t == null) {
+			System.out.println("p t redirect");
 			return new ModelAndView("redirect:/");
-
+		}
+		
 		p.setUsers(projectService.getUsersByProjectId(projectId));
 		t.setProject(p);
 		t.setUsers(taskService.getUsersByTaskId(taskId));
@@ -278,7 +282,7 @@ public class ProjectController {
 		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 		User u = userService.findUserById(userDetails.getId());
 
-		if (principal != null && u.getUserRole().equals(UserRole.ROLE_ADMIN)) {
+		if (u.getUserRole().equals(UserRole.ROLE_ADMIN)) {
 			try {
 				projectService.deleteProjectById(project.getId());
 			} catch (Exception e) {

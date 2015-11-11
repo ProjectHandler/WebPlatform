@@ -142,6 +142,7 @@ public class UserServiceImpl implements UserService {
 			config = new PropertiesConfiguration("spring/path.properties");
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
+			return null;
 		}
 
 		String path = config.getString("folder.path");

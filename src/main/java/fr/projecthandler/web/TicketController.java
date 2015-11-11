@@ -185,7 +185,7 @@ public class TicketController {
 		// TODO ticket null -> not found
 		if (userDetails == null
 				|| ticket == null
-				|| (userDetails.getUserRole() != UserRole.ROLE_ADMIN && userDetails.getId() != ticket.getUser().getId())) {
+				|| (userDetails.getUserRole() != UserRole.ROLE_ADMIN && !userDetails.getId().equals(ticket.getUser().getId()))) {
 			return new ModelAndView("accessDenied");
 		}
 

@@ -2,6 +2,7 @@ package fr.projecthandler.api;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -46,7 +47,12 @@ public class ApiGlobalExceptionHandler {
 	@ExceptionHandler(MissingServletRequestParameterException.class)
 	public @ResponseBody ResponseEntity<String> missingParamterHandler(HttpServletRequest request, Exception exception) {
 		    String json = "";
-		    String message = exception.getMessage() == "" ? "A required parameter is missing." : exception.getMessage();
+		    String message;
+		    if (StringUtils.isEmpty(exception.getMessage())) 
+		    	message = "A required parameter is missing.";
+		    else 
+		    	message = exception.getMessage();
+		    
 		    HttpStatus status = HttpStatus.BAD_REQUEST;
 		    
 			ExceptionJSONInfo response = new ExceptionJSONInfo();

@@ -580,7 +580,7 @@ public class UserController {
 		// Checks if the projectId corresponds to one of the user's project
 		// TODO use spring permissions
 		for (int i = 0; i < projectList.size(); ++i) {
-			if (projectList.get(i).getId() == projectId) {
+			if (projectList.get(i).getId().equals(projectId)) {
 				project = projectList.get(i);
 			}
 		}

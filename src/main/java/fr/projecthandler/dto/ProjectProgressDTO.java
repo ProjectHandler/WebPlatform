@@ -43,7 +43,7 @@ public class ProjectProgressDTO {
 			double count = 0;
 			double done = 0;
 			for (Task t : tasks) {
-				if (t.getLevel() == TaskLevel.TASK.getId()) {
+				if (t.getLevel().equals(TaskLevel.TASK.getId())) {
 					count++;
 					if (t.getStatus().equals("STATUS_DONE"))
 						done++;
