@@ -200,7 +200,7 @@ public class ProjectController {
 		
 		myModel.put("projects", dataDTOProjects);
 		myModel.put("user", user);
-		myModel.put("tickets", ticketService.getTicketsByProjectIdAndOrderByDesc(project.getId(), 2));
+		myModel.put("tickets", ticketService.getTicketsByProjectIdAndOrderByDesc(project.getId(), 5));
 		myModel.put("projectProgress", projectProgress);
 		myModel.put("tasks", taskService.getTasksByProjectId(project.getId()));
 
