@@ -6,6 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="./template/head.jsp" />
@@ -43,22 +44,22 @@
 	            	<c:forEach var="item" items="${tneYesterday}">
 	            		<tr>
 	            			<td>
-	            				${item.type}
+	            				${e:forHtml(item.type)}
 	            			</td>
 	            			<td>
-	            				${item.name}
+	            				${e:forHtml(item.name)}
 	            			</td>
 	            			<td>
-	            				${item.description}
+	            				${e:forHtml(item.description)}
 	            			</td>
 	            			<td>
-	            				${item.startingDate}
+	            				${e:forHtml(item.startingDate)}
 	            			</td>
 	            			<td>
-	            				${item.endingDate}
+	            				${e:forHtml(item.endingDate)}
 	            			</td>
 	            			<td>
-	            				${item.status}
+	            				${e:forHtml(item.status)}
 	            			</td>
 	            			<c:choose>
 	            			<c:when test="${item.type == 'Task'}">
@@ -95,29 +96,29 @@
 	            	<c:forEach var="item" items="${tneToday}">
 	            		<tr>
 	            			<td>
-	            				${item.type}
+	            				${e:forHtml(item.type)}
 	            			</td>
 	            			<td>
-	            				${item.name}
+	            				${e:forHtml(item.name)}
 	            			</td>
 	            			<td>
-	            				${item.description}
+	            				${e:forHtml(item.description)}
 	            			</td>
 	            			<td>
-	            				${item.startingDate}
+	            				${e:forHtml(item.startingDate)}
 	            			</td>
 	            			<td>
-	            				${item.endingDate}
+	            				${e:forHtml(item.endingDate)}
 	            			</td>
 	            			<td>
-	            				${item.status}
+	            				${e:forHtml(item.status)}
 	            			</td>
 	            			<c:choose>
 	            			<c:when test="${item.type == 'Task'}">
 		            			<td>
 									<div id="progress${item.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 										<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${item.progress}%; background: rgb(0, 128, 255);" >
-											<span style="color:black">${item.progress}%</span>
+											<span style="color:black">${e:forHtml(item.progress)}%</span>
 										</div>
 									</div>
 								</td>
@@ -147,29 +148,29 @@
 	            	<c:forEach var="item" items="${tneTomorrow}">
 	            		<tr>
 	            			<td>
-	            				${item.type}
+	            				${e:forHtml(item.type)}
 	            			</td>
 	            			<td>
-	            				${item.name}
+	            				${e:forHtml(item.name)}
 	            			</td>
 	            			<td>
-	            				${item.description}
+	            				${e:forHtml(item.description)}
 	            			</td>
 	            			<td>
-	            				${item.startingDate}
+	            				${e:forHtml(item.startingDate)}
 	            			</td>
 	            			<td>
-	            				${item.endingDate}
+	            				${e:forHtml(item.endingDate)}
 	            			</td>
 	            			<td>
-	            				${item.status}
+	            				${e:forHtml(item.status)}
 	            			</td>
 	            			<c:choose>
 	            			<c:when test="${item.type == 'Task'}">
 		            			<td>
 									<div id="progress${item.id}" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 										<div class="ui-progressbar-value ui-widget-header ui-corner-left" style="width: ${item.progress}%; background: rgb(0, 128, 255);" >
-											<span style="color:black">${item.progress}%</span>
+											<span style="color:black">${e:forHtml(item.progress)}%</span>
 										</div>
 									</div>
 								</td>

@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -68,20 +69,20 @@
 	<jsp:include page="../template/menu.jsp" />
 	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${projectId}">Retour vers la liste des tickets du projet</a></span>
 	<h1>Ticket</h1>
-	<h2>Titre: ${ticket.title}</h2>
+	<h2>Titre: ${e:forHtml(ticket.title)}</h2>
 	<div class="ticket-message-fisrt">
-		${ticket.text}
+		${e:forHtml(ticket.text)}
 		<span class="ticket-message-info">
-			Auteur: ${ticket.user.firstName} ${ticket.user.lastName} Date:
+			Auteur: ${e:forHtml(ticket.user.firstName)} ${e:forHtml(ticket.user.lastName)} Date:
 			<fmt:formatDate value="${ticket.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" />
 		</span>
 	</div>
 	<div class="ticket-messages">
 		<c:forEach items="${ticketMessages}" var="message">
 			<div class="ticket-message">
-				${message.text}
+				${e:forHtml(message.text)}
 				<span class="ticket-message-info">
-					Auteur: ${message.user.firstName}  ${message.user.lastName}
+					Auteur: ${e:forHtml(message.user.firstName)}  ${e:forHtml(message.user.lastName)}
 					Date: <fmt:formatDate value="${message.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" />
 				</span>
 			</div>

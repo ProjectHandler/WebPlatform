@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -67,8 +68,8 @@
 												</div>
 											</div>
 											<div class=" display-table-cell vertical-align ful-width small-padding-left">
-						                    	<h3 class="text-capitalize text-p">${project.name}</h3>
-												<div class="small theme3-primary-text">${project.status}</div>
+						                    	<h3 class="text-capitalize text-p">${e:forHtml(project.name)}</h3>
+												<div class="small theme3-primary-text">${e:forHtml(project.status)}</div>
 											</div>
 					                    </div>
 					                

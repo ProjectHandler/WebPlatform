@@ -5,6 +5,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 
 <html lang="fr">
@@ -109,7 +110,7 @@
 								<select class="userSelection" id="userSelection" name="userSelection">
 									<c:forEach var='userInList' items='${users}'>
 										<option value="${userInList.id}">
-											${userInList.firstName} ${userInList.lastName}
+											${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
 										</option>
 									</c:forEach>
 								</select>

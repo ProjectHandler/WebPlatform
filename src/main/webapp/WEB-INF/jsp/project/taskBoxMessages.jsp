@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 <div id="taskBoxMessages">
 	<script>
@@ -190,13 +191,13 @@
 				
 					<div class="display-table-cell vertical-align padding-right">
 						<div class="display-table-cell vertical-align">
-							<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${message.owner.firstName} ${message.owner.lastName}">	
+							<div class="fixedwidth-64 fixedheight-64 circle img-as-background" style="background-image:url(${e:forCssString(pageContext.request.contextPath)}/resources/img/no-img.png);" title="${e:forHtml(message.owner.firstName)} ${e:forHtml(message.owner.lastName)}">
 								<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${message.owner.id});" title="${message.owner.firstName} ${message.owner.lastName}"></div>
 							</div>
 						</div>
 					</div>
 					<div class="display-table-cell vertical-align full-width">
-						<textarea id="message-${message.id}" disabled="disabled" maxlength="200" class="textfield surrounded theme3-primary-bdr radius" style="width:100%;max-width:100%;">${message.content}</textarea>
+						<textarea id="message-${message.id}" disabled="disabled" maxlength="200" class="textfield surrounded theme3-primary-bdr radius" style="width:100%;max-width:100%;">${e:forHtml(message.content)}</textarea>
 					</div>
 				</div>
 			
@@ -227,7 +228,7 @@
 					</div>
 					
 					<div class="float-left small theme3-primary-text" style="margin-left:90px;padding-top:2px;">
-						${message.updateDate}
+						${e:forHtml(message.updateDate)}
 					</div>
 				</div>
 			

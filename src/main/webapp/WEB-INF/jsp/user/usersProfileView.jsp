@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -51,7 +52,7 @@
 								<select class="userSelection display-inline-block" id="userSelection">
 									<c:forEach var='userSelectable' items='${usersList}'>
 										<option id="${userSelectable.id}" value="${userSelectable.id}">
-											${userSelectable.firstName} ${userSelectable.lastName}
+											${e:forHtml(userSelectable.firstName)} ${e:forHtml(userSelectable.lastName)}
 										</option>
 									</c:forEach>
 								</select>
@@ -96,8 +97,8 @@
 												</div>
 											
 												<div class="position-absolute position-bottom position-right small-container default-transpbg radius inverted-text" style="margin:0 0 30px 0;">
-													<p class="small">${userInList.firstName}</p>
-													<p class="small">${userInList.lastName}</p>
+													<p class="small">${e:forHtml(userInList.firstName)}</p>
+													<p class="small">${e:forHtml(userInList.lastName)}</p>
 												</div>
 									
 												<a id="modal-btn-${userInList.id}" href="#" class="cover-btn-shape rounded default-btn-style5 animating-event" data-action="open-event" data-animation="pop-event" data-target="main-modal-box" onClick="openProfileViewBox(${userInList.id})"></a>

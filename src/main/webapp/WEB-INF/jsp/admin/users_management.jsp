@@ -4,6 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 <html>
 	<head>
@@ -260,8 +261,8 @@
 												</div>
 												<div class="display-table-cell full-width vertical-align small-container padding-left padding-right">
 													<div class="">
-														<div class="text-capitalize text-h4">${user.firstName} ${user.lastName}</div>
-														<div class="util1-lighten2-text"><small>${user.email}</small></div>
+														<div class="text-capitalize text-h4">${e:forHtml(user.firstName)} ${e:forHtml(user.lastName)}</div>
+														<div class="util1-lighten2-text"><small>${e:forHtml(user.email)}</small></div>
 													</div>
 												</div>
 	
@@ -294,8 +295,8 @@
 															</div>
 														</div>
 														<div class="display-table-cell padding-left vertical-align text-left">
-															<div class="text-h2 text-capitalize">${user.firstName} ${user.lastName}</div>
-															<div class="text-h4 util1-lighten1-text">${user.email}</div>
+															<div class="text-h2 text-capitalize">${e:forHtml(user.firstName)} ${e:forHtml(user.lastName)}</div>
+															<div class="text-h4 util1-lighten1-text">${e:forHtml(user.email)}</div>
 														</div>
 													</div>
 													<div class="display-table full-width theme3-lighten1-bg container">
@@ -340,14 +341,14 @@
 																	<c:if test="${userGroup.id == group.id}">
 																		<c:set var="found" value="true"/>
 																		<option selected value="${user.id}/${group.id}">
-																			${group.name}
+																			${e:forHtml(group.name)}
 																		</option>
 																	</c:if>
 																</c:forEach>
 															</c:if>
 															<c:if test="${user.groups == null || found eq false}">
 																<option value="${user.id}/${group.id}">
-																	${group.name}
+																	${e:forHtml(group.name)}
 																</option>
 															</c:if>	
 															</c:forEach>

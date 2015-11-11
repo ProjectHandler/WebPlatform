@@ -2,7 +2,8 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-    
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -332,7 +333,7 @@
 	    <div class="buttons">
 	    <select id="selectProject" onchange="loadGanttFromServer()" class="ganttSelectProject" >
 			<c:forEach var="project" items="${projects}">
-				 <option value="${project.id}">${project.name}</option>
+				 <option value="${project.id}">${e:forHtml(project.name)}</option>
 			</c:forEach>
 		</select>
 
@@ -487,7 +488,7 @@
 	  		<h2><spring:message code='projecthandler.gantt.team'/></h2>
 				<select class="userProjectSelection" multiple="multiple" placeholder style="width: 100%">
 					<c:forEach var="user" items="${users}">
-						<option value="${user.id}" >${user.firstName} ${user.lastName}</option>
+						<option value="${user.id}" >${e:forHtml(user.firstName)} ${e:forHtml(user.lastName)}</option>
 					</c:forEach>
 				</select>
 			<div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>				       					

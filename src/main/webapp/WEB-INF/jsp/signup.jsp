@@ -5,6 +5,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 <html lang="fr">
 	<head>
@@ -314,9 +315,9 @@
 								<div>		
 									
 										<input type="hidden" name="userId" 			id="userId" 		value="${user.id}"/>
-										<input type="hidden" name="userStatus" 		id="userStatus" 	value="${user.accountStatus}"/>
-										<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${user.workDay}"/>
-										<input type="hidden" name="userDailyHour" 	id="userDailyHour"	value="${user.dailyHour}"/>
+										<input type="hidden" name="userStatus" 		id="userStatus" 	value="${e:forHtml(user.accountStatus)}"/>
+										<input type="hidden" name="userWorkDay" 	id="userWorkDay"	value="${e:forHtml(user.workDay)}"/>
+										<input type="hidden" name="userDailyHour" 	id="userDailyHour"	value="${e:forHtml(user.dailyHour)}"/>
 										<ul class="form">
 											<li class="small-margin-bottom">
 												<div class="display-table-cell fixedwidth-128 vertical-align">
@@ -340,7 +341,7 @@
 													<label><spring:message code="projecthandler.user.lastName"/><spring:message code="projecthandler.field.required"/></label>
 												</div>
 												<div class="display-table-cell vertical-align">
-													<input type="text" name="lastName" id="lastName"  class="textfield fixedwidth-192 surrounded theme3-primary-bdr" value="${user.lastName}" maxlength="30"/>
+													<input type="text" name="lastName" id="lastName"  class="textfield fixedwidth-192 surrounded theme3-primary-bdr" value="${e:forHtml(user.lastName)}" maxlength="30"/>
 													<span class="error" id="lastNameError"></span>
 												</div>
 											</li>
@@ -349,7 +350,7 @@
 												<label><spring:message code="projecthandler.user.firstName"/><spring:message code="projecthandler.field.required"/></label>
 												</div>
 												<div class="display-table-cell vertical-align">
-													<input type="text" name="firstName" id="firstName" class="textfield fixedwidth-192 surrounded theme3-primary-bdr" value="${user.firstName}" maxlength="30"/>
+													<input type="text" name="firstName" id="firstName" class="textfield fixedwidth-192 surrounded theme3-primary-bdr" value="${e:forHtml(user.firstName)}" maxlength="30"/>
 													<span class="error" id="firstNameError"></span>
 												</div>
 											</li>
@@ -359,8 +360,8 @@
 												</div>
 												<div class="display-table-cell vertical-align">
 													<c:if test="${user.email != null}">
-														<input type="text" name="emailDummy" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" value="${user.email}" disabled="disabled" style="color: grey;"/>
-														<input type="hidden" name="email" id="email" value="${user.email}"/>
+														<input type="text" name="emailDummy" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" value="${e:forHtml(user.email)}" disabled="disabled" style="color: grey;"/>
+														<input type="hidden" name="email" id="email" value="${e:forHtml(user.email)}"/>
 													</c:if>
 													<c:if test="${user.email == null}">
 														<input type="text" name="email" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="email" maxlength="512"/>
@@ -373,7 +374,7 @@
 													<label><spring:message code="projecthandler.signup.phone"/><spring:message code="projecthandler.field.required"/></label>
 												</div>
 												<div class="display-table-cell vertical-align">
-													<input type="text" name="phone" id="phone"  class="textfield surrounded fixedwidth-192 theme3-primary-bdr" value="${user.phone}" maxlength="10"/>
+													<input type="text" name="phone" id="phone"  class="textfield surrounded fixedwidth-192 theme3-primary-bdr" value="${e:forHtml(user.phone)}" maxlength="10"/>
 													<span class="error" id="phoneError"></span>
 												</div>
 											</li>
@@ -382,7 +383,7 @@
 													<label>Mobile</label>
 												</div>
 												<div class="display-table-cell vertical-align">	
-													<input type="text" name="mobilePhone" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="mobilePhone" value="${user.mobilePhone}" maxlength="10"/>
+													<input type="text" name="mobilePhone" class="textfield surrounded fixedwidth-192 theme3-primary-bdr" id="mobilePhone" value="${e:forHtml(user.mobilePhone)}" maxlength="10"/>
 													<span class="error" id="mobilePhoneError"></span>
 												</div>
 											</li>

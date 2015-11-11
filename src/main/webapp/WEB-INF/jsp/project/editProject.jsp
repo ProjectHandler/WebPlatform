@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -261,12 +262,12 @@
 														<c:choose>
 														<c:when test="${found eq true}">
 															<form:option selected="selected" value="${userInList.id}">
-																${userInList.firstName} ${userInList.lastName}
+																${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
 															</form:option>
 														</c:when>
 														<c:otherwise>
 															<form:option value="${userInList.id}">
-																${userInList.firstName} ${userInList.lastName}
+																${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
 															</form:option>
 														</c:otherwise>
 														</c:choose>
@@ -283,7 +284,7 @@
 												<select class="groupSelection"  multiple="multiple" id="groupSelection">
 												<c:forEach var='group' items='${groups}'>
 													<option value="${group.id}">
-														${group.name}
+														${e:forHtml(group.name)}
 													</option>
 												</c:forEach>
 												</select>

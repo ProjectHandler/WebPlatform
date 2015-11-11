@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -55,8 +56,8 @@
 			<tbody>
 				<c:forEach items="${ticketList}" var="ticket">
 					<tr>
-						<td><a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">${ticket.title}</a></td>
-						<td>${ticket.user.firstName}  ${ticket.user.lastName}</td>
+						<td><a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages">${e:forHtml(ticket.title)}</a></td>
+						<td>${e:forHtml(ticket.user.firstName)}  ${e:forHtml(ticket.user.lastName)}</td>
 						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="MM-dd-yyyy HH:mm" /></td>
 						<td><spring:message javaScriptEscape="true" code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
 						<td colspan="2">

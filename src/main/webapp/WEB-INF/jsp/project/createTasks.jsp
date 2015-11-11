@@ -4,14 +4,15 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<jsp:include page="../template/head.jsp" />
 	<title><spring:message code="projecthandler.createTasks.title"/></title>
 	<script>
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
-	var taskType = '${taskType}';
-	var milestoneType = '${milestoneType}';
+	var taskType = '${e:forJavaScript(taskType)}';
+	var milestoneType = '${e:forJavaScript(milestoneType)}';
 	var currentTaskType = taskType;
 
 	$(document).ready(function() {
@@ -88,7 +89,7 @@
 		var dateBegin = new Date($("#alt-dateBegin").val());
 		var dateEnd = new Date($("#alt-dateEnd").val());
 		var res = dateEnd.getTime() - dateBegin.getTime();
-		var dateBeginProject = new Date('${project.dateBegin}');
+		var dateBeginProject = new Date('${e:forJavaScript(project.dateBegin)}');
 		$("#dateBeginError").html("");
 		$("#dateEndError").html("");
 		if((dateBegin == null || (res < 0))) {
@@ -111,7 +112,7 @@
 		var dateBegin = new Date($("#alt-dateBegin").val());
 		var dateEnd = new Date($("#alt-dateEnd").val());
 		var res = dateEnd.getTime() - dateBegin.getTime();
-		var dateEndProject = new Date('${project.dateEnd}');
+		var dateEndProject = new Date('${e:forJavaScript(project.dateEnd)}');
 
 		$("#dateBeginError").html("");
 		$("#dateEndError").html("");
@@ -246,12 +247,12 @@
 					<c:choose>
 					<c:when test="${task.priority.name != null}">
 						<form:option selected="selected" value="${task.id}/${priority.id}">
-							${priority.name}
+							${e:forHtml(priority.name)}
 						</form:option>
 					</c:when>
 					<c:otherwise>
 						<form:option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-							${priority.name}
+							${e:forHtml(priority.name)}
 						</form:option>
 					</c:otherwise>
 					</c:choose>
@@ -315,12 +316,12 @@
 						<c:choose>
 						<c:when test="${found eq true}">
 							<form:option selected="selected" value="${userInList.id}">
-								${userInList.firstName} ${userInList.lastName}
+								${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
 							</form:option>
 						</c:when>
 						<c:otherwise>
 							<form:option value="${userInList.id}">
-								${userInList.firstName} ${userInList.lastName}
+								${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
 							</form:option>
 						</c:otherwise>
 						</c:choose>
@@ -336,7 +337,7 @@
 				<select class="groupSelection"  multiple="multiple" id="groupSelection">
 				<c:forEach var='group' items='${groups}'>
 					<option value="${group.id}">
-						${group.name}
+						${e:forHtml(group.name)}
 					</option>
 				</c:forEach>
 				</select>

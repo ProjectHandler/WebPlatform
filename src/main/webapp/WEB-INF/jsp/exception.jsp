@@ -3,6 +3,7 @@
 <%@ page session="false"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 <html>
 	<head>
@@ -23,15 +24,15 @@
 			<h1><spring:message code="projecthandler.exception.title"/></h1>
 			<br>
 			<span><spring:message code="projecthandler.exception.requestURI"/>:</span>
-			${requestURI}
+			${e:forHtml(requestURI)}
 			<br>
 			<span><spring:message code="projecthandler.exception.message"/>:</span>
-			${exception.message}
+			${e:forHtml(exception.message)}
 			<br>
 			<div id="stackTraceContainer">
 				<span><spring:message code="projecthandler.exception.stackTrace"/>:</span>
 				<c:forEach items="${exception.stackTrace}" var="stackTrace">
-					${stackTrace}
+					${e:forHtml(stackTrace)}
 				</c:forEach>
 			</div>
 		</div>

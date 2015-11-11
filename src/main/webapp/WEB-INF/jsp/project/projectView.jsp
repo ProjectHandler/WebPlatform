@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -92,12 +93,12 @@
 													<c:choose>
 													<c:when test="${projectSelectable.id == project.id}">
 														<option id="${projectSelectable.id}" selected="selected" value="${projectSelectable.id}">
-															${projectSelectable.value}
+															${e:forHtml(projectSelectable.value)}
 														</option>
 													</c:when>
 													<c:otherwise>
 														<option id="${projectSelectable.id}" value="${projectSelectable.id}">
-															${projectSelectable.value}
+															${e:forHtml(projectSelectable.value)}
 														</option>
 													</c:otherwise>
 													</c:choose>
@@ -128,9 +129,9 @@
 											</div>
 										</div>
 										<div class=" display-table-cell vertical-align small-padding-left full-width">
-					                    	<h3 class="text-capitalize">${project.name}</h3>
-											<div class="theme3-primary-text">${project.status}</div>
-											<div class="small">${projectProgress.daysLeft} <spring:message code="projecthandler.projectView.daysLeft"/></div>
+					                    	<h3 class="text-capitalize">${e:forHtml(project.name)}</h3>
+											<div class="theme3-primary-text">${e:forHtml(project.status)}</div>
+											<div class="small">${e:forHtml(projectProgress.daysLeft)} <spring:message code="projecthandler.projectView.daysLeft"/></div>
 										</div>
 										<div class="display-table-cell vertical-align text-right padding-left">
 											<div class="fixedwidth-192">
@@ -141,7 +142,7 @@
 							                    	<div>
 							                    		Débute le 
 														<fmt:formatDate value="${project.dateBegin}" var="dateBeginString" pattern="dd-MM-yyyy" />
-														<span class="theme1-primary-text">${dateBeginString}</span>
+														<span class="theme1-primary-text">${e:forHtml(dateBeginString)}</span>
 													</div>					
 													<div>
 														Finit le
@@ -159,21 +160,21 @@
 											<div id="progressDate${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgress.dateProgress}%;" ></div>
 											</div>
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgress.dateProgress}%</div></div>	
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${e:forHtml(projectProgress.dateProgress)}%</div></div>
 										</div>
 										<div>
 											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="fixedwidth-64 text-left">Avancée</div></div>	
 											<div id="progressTask${project.id}" class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 												<div class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${projectProgress.tasksProgress}%;" ></div>
 											</div>
-											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${projectProgress.tasksProgress}%</div></div>	
+											<div class="display-table-cell vertical-align theme3-darken1-text small"><div class="text-right" style="width:45px;">${e:forHtml(projectProgress.tasksProgress)}%</div></div>
 										</div>
 									</div>
 									
 									<div class="small-margin-bottom">
 										<div class="container theme3-lighten1-bg radius">
 											<div id="descriptionBox" class="text-justify">
-												${project.description}
+												${e:forHtml(project.description)}
 											</div>
 										</div>
 										<div class="small-margin-top display-table full-width">
@@ -185,7 +186,7 @@
 																<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">	
 					 												<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
 																</div>
-																<a title="${userInList.firstName} ${userInList.lastName}" href="#" class="cover-btn-shape default-btn-style5 circle animating-event" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box" onClick="openProfileViewBox(${userInList.id})"></a> 
+																<a title="${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}" href="#" class="cover-btn-shape default-btn-style5 circle animating-event" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box" onClick="openProfileViewBox(${userInList.id})"></a>
 															</div>
 														</c:forEach>
 													</div>
@@ -209,8 +210,8 @@
 														<div class="">
 															<div>Ticket ouvert n° ${ticket.id}</div>
 															<div class="small-padding-left leftlined theme3-primary-bdr">
-																<div class="small theme3-primary-text">${ticket.createdAt}</div>
-																<div class="small theme1-primary-text">${ticket.title}</div>
+																<div class="small theme3-primary-text">${e:forHtml(ticket.createdAt)}</div>
+																<div class="small theme1-primary-text">${e:forHtml(ticket.title)}</div>
 															</div>
 														</div>
 														<a href="${pageContext.request.contextPath}/ticket/${ticket.id}/messages/project/${project.id}" class="cover-btn-shape default-btn-style5"></a> 

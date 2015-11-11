@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 	<jsp:include page="../template/head.jsp" />
@@ -14,7 +15,7 @@
 	var CONTEXT_PATH = "<%=request.getContextPath() %>";
 	var newSubTaskDescriptionShown = false;
 	var savedSubTaskDescription = null;
-	var currTaskStatus = '${task.status}';
+	var currTaskStatus = '${e:forJavaScript(task.status)}';
 	$(document).ready(function() {
 		$( document ).tooltip();
 
@@ -354,7 +355,7 @@
 			</script>
 		</div>
 		
-		<h1 class="text-h1 theme3-darken1-text display-table-cell vertical-align padding-right full-width">${task.name}</h1>
+		<h1 class="text-h1 theme3-darken1-text display-table-cell vertical-align padding-right full-width">${e:forHtml(task.name)}</h1>
 
 		<div class="display-table-cell vertical-align small-padding-right">
 			<spring:message code="projecthandler.taskBoxView.priority"/>
@@ -369,19 +370,19 @@
 							<c:choose>
 								<c:when test="${task.priority.name eq priority.name}">
 									<option selected="selected" id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-										${priority.name}
+										${e:forHtml(priority.name)}
 									</option>
 								</c:when>
 								<c:otherwise>
 									<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-										${priority.name}
+										${e:forHtml(priority.name)}
 									</option>
 								</c:otherwise>
 							</c:choose>
 						</c:when>
 						<c:otherwise>
 							<option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-								${priority.name}
+								${e:forHtml(priority.name)}
 							</option>
 						</c:otherwise>
 						</c:choose>
@@ -414,12 +415,12 @@
 				<div class="display-table-cell vertical-align full-width hard-surrounded theme3-lighten1-bdr rounded theme3-lighten1-bg" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
 					<div id="task-progress-div-${task.id}" class="surrounded rounded theme3-darken1-bdr theme3-darken1-bg" style="width: ${task.progress}%;" ></div>
 				</div>
-				<div class="display-table-cell vertical-align theme3-darken1-text small"><div id="task-progress-text-${task.id}"" class="text-right" style="width:45px;">${task.progress}%</div></div>	
+				<div class="display-table-cell vertical-align theme3-darken1-text small"><div id="task-progress-text-${task.id}" class="text-right" style="width:45px;">${e:forHtml(task.progress)}%</div></div>
 			</div>
 		</div>	
 		
 		<div class="container radius theme3-lighten1-bg">
-			${task.description}
+			${e:forHtml(task.description)}
 		</div>
 
 		<div class="small-margin-top display-table full-width">
@@ -428,7 +429,7 @@
 					<div id="usersAccessBox" class="clearfix">
 						<c:forEach var='userInList' items='${task.users}'>
 							<div class="float-left small-margin-right position-relative">
-								<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${userInList.firstName} ${userInList.lastName}">	
+								<div class="circle img-as-background" style="width:32px;height:32px;background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}">
 									<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${userInList.id});"></div>
 								</div>
 							</div>
@@ -498,7 +499,7 @@
 						</div>
 						
 						<div class="display-table-cell vertical-align padding-right">
-							<textarea class="textfield surrounded radius theme3-primary-bdr" id="subTaskDescription-${subTask.id}" disabled="disabled" maxlength="200">${subTask.description}</textarea>
+							<textarea class="textfield surrounded radius theme3-primary-bdr" id="subTaskDescription-${subTask.id}" disabled="disabled" maxlength="200">${e:forHtml(subTask.description)}</textarea>
 						</div>
 						
 						<div class="display-table-cell vertical-align position-relative">

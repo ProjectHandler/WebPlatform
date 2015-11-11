@@ -3,6 +3,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
 <script type="text/javascript">
 	$(document).ready(function(){
@@ -31,7 +32,7 @@
 					<c:forEach var='taskSelectable' items='${tasks}'>
 						<c:if test="${taskSelectable.level == 2}">
 							<option id="${taskSelectable.id}" value="${project.id}/${taskSelectable.id}">
-								${taskSelectable.name}
+								${e:forHtml(taskSelectable.name)}
 							</option>
 						</c:if>
 					</c:forEach>
@@ -125,7 +126,7 @@
 	
 	<c:forEach var='task' items='${tasks}'>
 		var task = "${task.id}";
-		var task = new Task("${task.id}", "${task.name}", new Date("${task.startingDate}").toLocaleDateString(), new Date("${task.endingDate}").toLocaleDateString(), "${task.status}", "${task.progress}", "${task.description}", "${task.duration}", "${task.level}");
+		var task = new Task("${task.id}", "${e:forJavaScript(e:forHtml(task.name))}", new Date("${task.startingDate}").toLocaleDateString(), new Date("${task.endingDate}").toLocaleDateString(), "${task.status}", "${task.progress}", "${e:forJavaScript(e:forHtml(task.description))}", "${task.duration}", "${task.level}");
 		tasklist[tasklist.length] = task;
 	</c:forEach>
 	
