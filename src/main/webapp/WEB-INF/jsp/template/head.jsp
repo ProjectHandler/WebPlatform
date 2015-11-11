@@ -49,4 +49,7 @@
 <spring:url value="/resources/js/utilities/common.js.function.js" var="commonJsFunction"/>
 <script type="text/javascript" src="${commonJsFunction}"></script>
 
+<spring:url value="/resources/js/js.cookie-2.0.4.min.js" var="jsCookie"/>
+<script type="text/javascript" src="${jsCookie}"></script>
+
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>

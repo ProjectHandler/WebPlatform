@@ -1,6 +1,5 @@
 <%@page session="false" %>
 
-
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
@@ -23,7 +22,7 @@
 					draftEditor.setData(data);
     		}
 	    });
-		
+
 		draftEditor.addCommand("save", {
 		    exec: function() {
 		    	$.ajax({
@@ -49,7 +48,7 @@
 		    toolbar: 'insert',
 		    icon: '${pageContext.request.contextPath}/resources/ckeditor/content-save.png'
 		});
-		
+
 		draftEditor.on('key', function(obj) {
             if (obj.data.keyCode === 8 || obj.data.keyCode === 46) {
                 return true;
@@ -59,6 +58,16 @@
             	draftEditor.setData(draftEditor.getData().substring(0, draftEditor.getData().length - 1));
                 return false;
             }
+		});
+
+		$("#text-draft-toggle").click(function(){
+			$("#text-draft-section").toggle(400, function() {
+				if ($("#text-draft-section").is(":hidden")) {
+					Cookies.set("draft-toggle", "hide");
+				} else {
+					Cookies.set("draft-toggle", "show");
+				}
+			});
 		});
 	});
 </script>
@@ -107,8 +116,12 @@
 						</sec:authorize>
 	
 					</li>
+					<c:set var="draftEditorClass" value="${cookie['draft-toggle'].value == 'hide' ? 'display-none' : ''}"/>
 					<li>
-						<textarea id="text-draft-ckeditor"></textarea>
+						<button id="text-draft-toggle">Toggle draft</button>
+						<div id="text-draft-section" class="${draftEditorClass}">
+							<textarea id="text-draft-ckeditor"></textarea>
+						</div>
 					</li>
 					<li class="position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
