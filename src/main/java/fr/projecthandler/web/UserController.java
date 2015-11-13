@@ -234,6 +234,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/calendar/createEvent", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void createEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -268,6 +269,7 @@ public class UserController {
 	}
 	
 	@RequestMapping(value = "/calendar/loadUserFromEvent", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void loadUserFromEvent(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
 		if (principal != null) {
 			Set<User> listUser = new HashSet<User>();
@@ -292,6 +294,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/calendar/updateEvent", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void updateEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -326,6 +329,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/calendar/deleteEvent", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void deleteEvent(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -336,8 +340,9 @@ public class UserController {
 		}
 	}
 
-	@ResponseStatus(HttpStatus.OK)
+	
 	@RequestMapping(value = "/calendar/updateSubtask", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -375,6 +380,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/calendar/calendarDetailsSubtaskUnplanned", method = RequestMethod.GET)
+	@ResponseStatus(HttpStatus.OK)
 	public void calendarDetailsSubtaskUnplanned(Principal principal, HttpServletRequest request, HttpServletResponse respsonse) throws IOException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
