@@ -20,7 +20,6 @@ public class BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
-	@Access(AccessType.PROPERTY)
 	protected Long id;
 
 	public void setId(Long id) {
