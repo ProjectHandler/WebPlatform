@@ -14,11 +14,13 @@ import com.google.gson.annotations.Expose;
  * objects needing this property.
  */
 @MappedSuperclass
+@Access(AccessType.FIELD)
 public class BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Expose
+	@Access(AccessType.PROPERTY)
 	protected Long id;
 
 	public void setId(Long id) {
