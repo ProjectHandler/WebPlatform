@@ -45,6 +45,13 @@ public class SubTaskDaoImpl extends AbstractDao implements SubTaskDao {
 	}
 
 	@Override
+	public SubTask findSubTaskByIdAndFetchUser(Long subTaskId) {
+		return (SubTask) Utilities.getSingleResultOrNull(em.createQuery(
+				"SELECT st FROM SubTask st LEFT JOIN FETCH st.lastUserActivity WHERE st.id = :subTaskId")
+				.setParameter("subTaskId", subTaskId));
+	}
+	
+	@Override
 	public Set<SubTask> getSubTasksByTaskIdAndFetchUserAndTask(Long taskId) {
 		LinkedHashSet<SubTask> result = new LinkedHashSet<SubTask>();
 		result.addAll(em.createQuery("SELECT st FROM SubTask st LEFT JOIN FETCH st.lastUserActivity u LEFT JOIN FETCH st.parentTask t "
