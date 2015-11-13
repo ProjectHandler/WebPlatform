@@ -31,8 +31,7 @@
 		<spring:url value="/resources/css/daterangepicker/daterangepicker-bs3.css" var="daterangepickerBs3"/>
 		<link href="${daterangepickerBs3}" rel='stylesheet'/>
 		
-		<spring:url value="/resources/css/bootstrap.min.css" var="bootstrap"/>
-		<link href="${bootstrap}" rel='stylesheet'/>
+		
 
 		<style>
 
@@ -70,7 +69,7 @@
 	}
 
 	#calendar {
-		max-width: 40%;
+		max-width: 80%;
 		margin: 0 auto;
 	}
 
@@ -234,6 +233,7 @@
                 editable: true,
        			droppable: true,
        			dragRevertDuration: 0,
+       			aspectRatio: 1.8,
                 select: function(event, start, end, allDay) {buildModal(true, start, end, "", "", "new", null);},
     			drop: function(date) { // this function is called when something is dropped
     				// retrieve the dropped element's stored Event Object
