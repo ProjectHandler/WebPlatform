@@ -79,7 +79,7 @@
 	<body>
 		<jsp:include page="../template/header.jsp" />
 		
-		<div class="bootstrap">
+		<div id="calendarBasket" class="bootstrap">
 			<div id='external-subtask'>
 				<h4><spring:message code="projecthandler.calendar.basket" /></h4>
 			</div>
@@ -165,7 +165,7 @@
 			
 			/* initialize the external events (panier)
 			-----------------------------------------------------------------*/
-			var url = CONTEXT_PATH+"/calendarDetailsSubtaskUnplanned";
+			var url = CONTEXT_PATH+"/calendar/calendarDetailsSubtaskUnplanned";
 			$.ajax({
 				  dataType: "json",
 				  url: url,
@@ -263,7 +263,7 @@
  * TODO
  */
 
-                    location.reload();
+    				$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
     			},
                 eventDragStop: function(event, jsEvent, ui, view) {
                     if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
@@ -284,11 +284,11 @@
  * TODO
  */
 
-                        location.reload();
+                        $("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
                     }
                 },
                 eventSources: [{
-	                url: CONTEXT_PATH+'/calendarDetails',
+	                url: CONTEXT_PATH+'/calendar/calendarDetails',
 	                type: 'GET',
 	                data: {
 	                    start: 'start',
@@ -335,7 +335,7 @@
         });
 		
 		function unplannedSubtask(subtaskId) {
-			var url = CONTEXT_PATH + "/unplannedSubtask";
+			var url = CONTEXT_PATH + "/calendar/unplannedSubtask";
 			$.ajax({
 				type: "POST",
 				url: url,
@@ -379,7 +379,7 @@
 			
 			$('.userSelection').selectivity('clear');
 			if (id != "new") {
-				var url = CONTEXT_PATH+"/loadUserFromEvent";
+				var url = CONTEXT_PATH+"/calendar/loadUserFromEvent";
 				$.ajax({
 					  dataType: "json",
 					  type: "POST",
@@ -436,7 +436,7 @@
 		}
 		
 		function updateSubtask(){
-			var url = CONTEXT_PATH+"/updateSubtask";
+			var url = CONTEXT_PATH+"/calendar/updateSubtask";
 			var values = $('#appointmentForm').serialize();
 			$.ajax({
 				type: "POST",
@@ -452,7 +452,7 @@
 			});
 			$("#usersConcern").val(userData);
 			
-			var url = CONTEXT_PATH+"/createEvent";
+			var url = CONTEXT_PATH+"/calendar/createEvent";
 			var values = $('#appointmentForm').serialize();
 			$.ajax({
 				type: "POST",
@@ -468,7 +468,7 @@
 			});
 			$("#usersConcern").val(userData);
 
-			var url = CONTEXT_PATH+"/updateEvent";
+			var url = CONTEXT_PATH+"/calendar/updateEvent";
 			var values = $('#appointmentForm').serialize();
 			$.ajax({
 				type: "POST",
@@ -478,7 +478,7 @@
 		}
 		
 		function deleteEvent() {
-			var url = CONTEXT_PATH + "/deleteEvent";
+			var url = CONTEXT_PATH + "/calendar/deleteEvent";
 			$.ajax({
 				type: "POST",
 				url: url,
