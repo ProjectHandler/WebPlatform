@@ -3,7 +3,7 @@ $(function() {
 	jQuery.ajaxSetup({
 		error: function(xhr, textStatus, error) {
 			if (xhr.status == 401 || xhr.status == 405) {
-				window.location = CONTEXT_PATH + "/login";
+				window.location = CONTEXT_PATH;
 			} else if (xhr.status == 403) {
 				window.location = CONTEXT_PATH + "/accessDenied";
 			} else {

@@ -1,8 +1,5 @@
 package fr.projecthandler.web;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,12 +24,18 @@ public class MyMappingExceptionResolver extends SimpleMappingExceptionResolver {
 
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
-		//response.sendRedirect(request.getContextPath() + "/accessDenied");
-		Map<String, Object> myModel = new HashMap<String, Object>();
-		myModel.put("requestURI", request.getRequestURI());
-		myModel.put("exception", exception);
-
 		log.error("catch of exception in MyMappingExceptionResolver", exception);
-		return new ModelAndView("redirect:/exception", myModel);
+
+		// Call super method to get the ModelAndView
+		ModelAndView mav = super.doResolveException(request, response, handler, exception);
+
+		// Make the full URL available to the view - note ModelAndView uses
+		// addObject()
+		// but Model uses addAttribute(). They work the same.
+		mav.addObject("url", request.getRequestURL());
+		mav.addObject("requestURI", request.getRequestURI());
+		mav.addObject("exception", exception);
+		
+		return mav;
 	}
 }

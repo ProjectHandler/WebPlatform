@@ -60,16 +60,7 @@ public class HomeController {
 	public ModelAndView pageNotFound() {
 		return new ModelAndView("pageNotFound");
 	}
-
-	@RequestMapping(value = "exception", method = RequestMethod.GET)
-	public ModelAndView exception(HttpServletRequest request) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
-		myModel.put("requestURI",  request.getParameter("requestURI"));
-	
-		return new ModelAndView("exception", myModel);
-	}
-	
-	
+		
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView welcome(Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
