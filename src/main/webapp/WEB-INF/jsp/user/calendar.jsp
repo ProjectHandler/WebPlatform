@@ -262,8 +262,8 @@
  /*
  * TODO
  */
-
-    				$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
+ 					location.reload();
+    				//$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
     			},
                 eventDragStop: function(event, jsEvent, ui, view) {
                     if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
@@ -283,8 +283,8 @@
 /*
  * TODO
  */
-
-                        $("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
+                        location.reload();
+                        //$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
                     }
                 },
                 eventSources: [{

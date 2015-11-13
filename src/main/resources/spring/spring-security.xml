@@ -57,10 +57,6 @@
 		<intercept-url pattern="/ticket/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 
 		<intercept-url pattern="/calendar/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/createEvent"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/calendarDetails"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/deleteEvent"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/updateSubtask"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		
 		<intercept-url pattern="/saveUser"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/downloadAvatar/**"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>

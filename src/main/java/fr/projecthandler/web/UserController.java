@@ -27,6 +27,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -334,6 +336,7 @@ public class UserController {
 		}
 	}
 
+	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/calendar/updateSubtask", method = RequestMethod.POST)
 	public void updateSubtask(Principal principal, HttpServletRequest request) throws IOException {
 		if (principal != null) {
@@ -358,6 +361,7 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/calendar/unplannedSubtask", method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
 	public void unplannedSubtask(Principal principal, HttpServletRequest request) throws IOException, ParseException {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
