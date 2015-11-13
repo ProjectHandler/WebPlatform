@@ -17,4 +17,6 @@ public interface TaskMessageDao {
 	public TaskMessage findTaskMessageById(Long taskMessageId);
 
 	public Set<TaskMessage> getTaskMessagesByTaskId(Long taskId);
+	
+	public Set<TaskMessage> getTaskMessagesByTaskIdAndFetchUser(Long taskId);
 }

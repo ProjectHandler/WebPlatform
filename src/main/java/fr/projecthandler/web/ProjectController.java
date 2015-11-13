@@ -224,7 +224,6 @@ public class ProjectController {
 	public ModelAndView viewProjectTaskBox(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId, @PathVariable Long taskId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
-		System.out.println("test");
 		if (userDetails == null) {
 			System.out.println("userDetails redirect");
 			return new ModelAndView("redirect:/");
@@ -247,7 +246,7 @@ public class ProjectController {
 		myModel.put("priorities", priorities);
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 		myModel.put("subTasks", subTaskService.getSubTasksByTaskIdAndFetchUserAndTask(t.getId()));
-		myModel.put("taskMessages", taskMessageService.getTaskMessagesByTaskId(t.getId()));
+		myModel.put("taskMessages", taskMessageService.getTaskMessagesByTaskIdAndFetchUser(t.getId()));
 
 		return new ModelAndView("project/taskBoxView", myModel);
 	}

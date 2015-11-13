@@ -47,7 +47,15 @@ public class TaskMessageDaoImpl extends AbstractDao implements TaskMessageDao {
 	@Override
 	public Set<TaskMessage> getTaskMessagesByTaskId(Long taskId) {
 		LinkedHashSet<TaskMessage> result = new LinkedHashSet<TaskMessage>();
-		result.addAll(em.createQuery("SELECT tms FROM TaskMessage tms WHERE tms.task.id = :taskId ORDER BY tms.updateDate DESC")
+		result.addAll(em.createQuery("SELECT tms FROM TaskMessage tms JOIN tms.task t WHERE t.id = :taskId ORDER BY tms.updateDate DESC")
+				.setParameter("taskId", taskId).getResultList());
+		return result;
+	}
+	
+	@Override
+	public Set<TaskMessage> getTaskMessagesByTaskIdAndFetchUser(Long taskId) {
+		LinkedHashSet<TaskMessage> result = new LinkedHashSet<TaskMessage>();
+		result.addAll(em.createQuery("SELECT tms FROM TaskMessage tms JOIN tms.task t LEFT JOIN FETCH tms.owner u WHERE t.id = :taskId ORDER BY tms.updateDate DESC")
 				.setParameter("taskId", taskId).getResultList());
 		return result;
 	}

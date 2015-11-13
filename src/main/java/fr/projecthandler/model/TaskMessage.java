@@ -82,8 +82,6 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-		result = prime * result + ((task == null) ? 0 : task.hashCode());
 		result = prime * result + ((updateDate == null) ? 0 : updateDate.hashCode());
 		return result;
 	}

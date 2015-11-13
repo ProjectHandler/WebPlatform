@@ -44,4 +44,9 @@ public class TaskMessageServiceImpl implements TaskMessageService {
 	public Set<TaskMessage> getTaskMessagesByTaskId(Long taskId) {
 		return taskMessageDao.getTaskMessagesByTaskId(taskId);
 	}
+	
+	@Override
+	public Set<TaskMessage> getTaskMessagesByTaskIdAndFetchUser(Long taskId) {
+		return taskMessageDao.getTaskMessagesByTaskIdAndFetchUser(taskId);
+	}
 }
