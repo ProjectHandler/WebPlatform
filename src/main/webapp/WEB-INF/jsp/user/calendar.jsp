@@ -79,12 +79,10 @@
 	<body>
 		<jsp:include page="../template/header.jsp" />
 		
-		<div id="calendarBasket" class="bootstrap">
 			<div id='external-subtask'>
 				<h4><spring:message code="projecthandler.calendar.basket" /></h4>
 			</div>
 			<div id='calendar'></div>
-		</div>
 			
 			<div id="eventModal" style="display:none;">
 			<form id="appointmentForm" class="form-horizontal" method="POST">
@@ -264,7 +262,6 @@
  */
  					$('#calendar').fullCalendar('removeEvents');
  					$('#calendar').fullCalendar('refetchEvents');
- 					$('#calendar').fullCalendar('rerenderEvents');
     			},
                 eventDragStop: function(event, jsEvent, ui, view) {
                     if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
