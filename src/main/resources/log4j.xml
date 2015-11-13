@@ -12,28 +12,28 @@
 	
 	<!-- Application Loggers -->
 	<logger name="fr.eip.projecthandler">
-		<level value="info" />
+		<level value="WARN" />
 	</logger>
 	
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
-		<level value="ERROR" />
+		<level value="WARN" />
 	</logger>
 	
 	<logger name="org.springframework.beans">
-		<level value="ERROR" />
+		<level value="WARN" />
 	</logger>
 	
 	<logger name="org.springframework.context">
-		<level value="ERROR" />
+		<level value="WARN" />
 	</logger>
 
 	<logger name="org.springframework.web">
-		<level value="ERROR" />
+		<level value="WARN" />
 	</logger>
 	
 	<logger name="org.hibernate.hql">
-		<level value="ERROR" />
+		<level value="WARN" />
 	</logger>
 	
 	<!-- Root Logger -->
