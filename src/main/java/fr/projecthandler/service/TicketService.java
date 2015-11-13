@@ -60,7 +60,9 @@ public interface TicketService {
 	public Ticket findTicketByIdAndFetchUser(Long ticketIdd);
 	
 	public Ticket findTicketByIdAndFetchAuthor(Long ticketId);
-	
+
+	public Ticket findTicketByIdAndFetchAuthorAndProject(Long ticketId);
+
 	public List<TicketMessage>  getTicketMessagesByTicketIdAndFetchUser(Long ticketId);
 
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId);

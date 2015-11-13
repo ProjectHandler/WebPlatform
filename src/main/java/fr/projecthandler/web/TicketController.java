@@ -105,7 +105,7 @@ public class TicketController {
 	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
 	public ModelAndView ticketMessageList(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		Ticket ticket = ticketService.findTicketByIdAndFetchAuthor(ticketId);
+		Ticket ticket = ticketService.findTicketByIdAndFetchAuthorAndProject(ticketId);
 
 		if (userDetails == null) {
 			// TODO redirect to login

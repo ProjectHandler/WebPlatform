@@ -14,7 +14,6 @@ import com.google.gson.annotations.Expose;
  * objects needing this property.
  */
 @MappedSuperclass
-@Access(AccessType.FIELD)
 public class BaseEntity {
 
 	@Id

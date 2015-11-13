@@ -25,9 +25,11 @@ public interface TicketDao {
 	public List<Ticket> getTicketsByProjectIdWithAuthor(Long projectId);
 
 	public Ticket findTicketByIdAndFetchUsers(Long ticketId);
-	
+
 	public Ticket findTicketByIdAndFetchAuthor(Long ticketId);
-	
+
+	public Ticket findTicketByIdAndFetchAuthorAndProject(Long ticketId);
+
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId);
 
 }
