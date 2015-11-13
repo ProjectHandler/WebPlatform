@@ -244,36 +244,37 @@
     				var copiedEventObject = $.extend({}, originalEventObject);
     				// assign it the date that was reported
     				var tempDate = new Date(date);
+    				
     				copiedEventObject.start = date;
     				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours()));// + 2 hour from start
-    				copiedEventObject.allDay = false; 
-    				
+    				copiedEventObject.allDay = false;
+    				copiedEventObject.title = $(this).text();
     				copiedEventObject.id = $(this).data("subtask-id");
     				copiedEventObject.type = $(this).data("type");
-    				
+
     				// last `true` argument determines the event "sticks" 
     				//(specifying stick as true will cause the event to be permanently fixed to the calendar)
-    				$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+    				//$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
    					$(this).remove();
-   					
    					updateEventWithoutModal(copiedEventObject);
                     //fix temp, 
                     //bug clone subtask on calendar
  /*
  * TODO
  */
- 					location.reload();
-    				//$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
+ 					$('#calendar').fullCalendar('removeEvents');
+ 					$('#calendar').fullCalendar('refetchEvents');
+ 					$('#calendar').fullCalendar('rerenderEvents');
     			},
                 eventDragStop: function(event, jsEvent, ui, view) {
                     if(event.type == 'subtask' && isEventOverDiv(jsEvent.clientX, jsEvent.clientY)) {
                     	// remove subtask from calendar
-                        $('#calendar').fullCalendar('removeEvents', event._id);
+                       	$('#calendar').fullCalendar('removeEvents', event._id);
                         var el = $("<div data-subtask-id='" + event._id + "' data-type='subtask' class='fc-event'>").appendTo('#external-subtask').text(event.title);
                         el.draggable({
                           zIndex: 999,
                           revert: true, 
-                          revertDuration: 0 
+                          revertDuration: 0
                         });
                         el.data('event', {title: event.title, id :event.id, stick: true});
                         unplannedSubtask(event.id);
@@ -283,8 +284,6 @@
 /*
  * TODO
  */
-                        location.reload();
-                        //$("#calendarBasket").load(CONTEXT_PATH + "/calendar #calendarBasket");
                     }
                 },
                 eventSources: [{
