@@ -7,68 +7,69 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
-		var draftEditor = CKEDITOR.replace('text-draft-ckeditor', {
-			height: '5em',
-			width: 500
-		});
-
-		$.ajax({
-			type: "GET",
-			url: CONTEXT_PATH + "/user/draft/get",
-    		success: function(data) {
-				if (data == "KO")
-    				alert("error: " + data);
-				else
-					draftEditor.setData(data);
-    		}
-	    });
-
-		draftEditor.addCommand("save", {
-		    exec: function() {
-		    	$.ajax({
-					type: "POST",
-					url: CONTEXT_PATH + "/user/draft/save",
-					data: {
-						draftMessage: draftEditor.getData()
-					}, 
-		    		success: function(data) {
-		    			// TODO mettre des petits messages de fail ou success
-	    				if (data == "KO")
-		    				alert("error: " + data);
-	    				else
-	    					alert("Enregistrement réussi");
-		    		}
-			    });
-		    }
-		});
-
-		draftEditor.ui.addButton('Sauvegarder', {
-		    label: '<spring:message code="projecthandler.project.edit.save"/>',
-		    command: 'save',
-		    toolbar: 'insert',
-		    icon: '${pageContext.request.contextPath}/resources/ckeditor/content-save.png'
-		});
-
-		draftEditor.on('key', function(obj) {
-            if (obj.data.keyCode === 8 || obj.data.keyCode === 46) {
-                return true;
-            }
-            if (draftEditor.getData().length >= 500) {
-            	// TODO show error when the user reaches 500 character +
-            	draftEditor.setData(draftEditor.getData().substring(0, draftEditor.getData().length - 1));
-                return false;
-            }
-		});
-
-		$("#text-draft-toggle").click(function(){
-			$("#text-draft-section").toggle(400, function() {
-				if ($("#text-draft-section").is(":hidden")) {
-					Cookies.set("draft-toggle", "hide");
-				} else {
-					Cookies.set("draft-toggle", "show");
-				}
+		if (document.getElementById('text-draft-section')) {
+			var draftEditor = CKEDITOR.replace('text-draft-ckeditor', {
+				height: '5em',
+				width: 500
 			});
-		});
+			$.ajax({
+				type: "GET",
+				url: CONTEXT_PATH + "/user/draft/get",
+	    		success: function(data) {
+					if (data == "KO")
+	    				alert("error: " + data);
+					else
+						draftEditor.setData(data);
+	    		}
+		    });
+	
+			draftEditor.addCommand("save", {
+			    exec: function() {
+			    	$.ajax({
+						type: "POST",
+						url: CONTEXT_PATH + "/user/draft/save",
+						data: {
+							draftMessage: draftEditor.getData()
+						}, 
+			    		success: function(data) {
+			    			// TODO mettre des petits messages de fail ou success
+		    				if (data == "KO")
+			    				alert("error: " + data);
+		    				else
+		    					alert("Enregistrement réussi");
+			    		}
+				    });
+			    }
+			});
+	
+			draftEditor.ui.addButton('Sauvegarder', {
+			    label: '<spring:message code="projecthandler.project.edit.save"/>',
+			    command: 'save',
+			    toolbar: 'insert',
+			    icon: '${pageContext.request.contextPath}/resources/ckeditor/content-save.png'
+			});
+	
+			draftEditor.on('key', function(obj) {
+	            if (obj.data.keyCode === 8 || obj.data.keyCode === 46) {
+	                return true;
+	            }
+	            if (draftEditor.getData().length >= 500) {
+	            	// TODO show error when the user reaches 500 character +
+	            	draftEditor.setData(draftEditor.getData().substring(0, draftEditor.getData().length - 1));
+	                return false;
+	            }
+			});
+	
+			$("#text-draft-toggle").click(function(){
+				$("#text-draft-section").toggle(400, function() {
+					if ($("#text-draft-section").is(":hidden")) {
+						Cookies.set("draft-toggle", "hide");
+					} else {
+						Cookies.set("draft-toggle", "show");
+					}
+				});
+			});
+		}
 	});
 </script>
 
