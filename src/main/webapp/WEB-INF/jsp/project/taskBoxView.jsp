@@ -267,20 +267,6 @@
     	updateTaskProgress();
 	}
 
-	// Add subTask to subTaskList-Box once successfully added in db.
-	// Called when focus is lost from addSubTask textarea. (add a validation button better?)
-/* 	function createSubTask(id) {
-		$('#tristate-' + id).tristate({
-	        checked: "validated",
-	        unchecked: "empty",
-	        indeterminate: "taken",
-	        change: function(state, value) {
-	        	var tmp = $(this).attr("id").split("-");
-	        	changeSubTaskState(tmp[1]);
-	        }
-	    });
-	} */
-
 	// Called when a user clicks edit button on a subTask.
 	function startEditingSubTask(id) {
 		var itemName = "#subTaskDescription-" + id;
@@ -305,8 +291,6 @@
 	function doneEditingSubTask(id) {
 		var itemName = "#subTaskDescription-" + id;
 		$(itemName).attr("disabled", "disabled");
-		//$("#doneEditingButton-" + id).addClass("display-none");
-		//$("#cancelEditingButton-" + id).addClass("display-none");
 		$("#boxEditingMode-" + id).addClass("display-none");
 		if ($(itemName).val() != savedSubTaskDescription && $(itemName).val() != "") {
 			changeSubTaskDescription(id);
@@ -329,13 +313,9 @@
 		var disabled = $(itemName).attr("disabled");
 		if (disabled == "disabled") {
 			$(itemName).removeAttr("disabled");
-			//$("#doneEditingButton-" + id).removeClass("display-none");
-			//$("#cancelEditingButton-" + id).removeClass("display-none");
 			$("#boxEditingMode-" + id).removeClass("display-none");
 		} else {
 			$(itemName).attr("disabled", "disabled");
-			//$("#doneEditingButton-" + id).addClass("display-none");
-			//$("#cancelEditingButton-" + id).addClass("display-none");
 			$("#boxEditingMode-" + id).addClass("display-none");
 		}
 	}
@@ -503,11 +483,13 @@
 						</div>
 						
 						<div class="display-table-cell vertical-align position-relative">
+							<c:if test="${subTask.validated == true || subTask.taken == true}">
 							<div class="display-inline-block vertical-align margin-right" style="width:30px;height:30px;">
 								<div class="full-width full-height circle img-as-background" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}">	
 									<div class="full-width full-height circle img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${subTask.lastUserActivity.id});" title="${subTask.lastUserActivity.firstName} ${subTask.lastUserActivity.lastName}"></div>
 								</div>
 							</div>
+							</c:if>
 							<button id="editSubTaskButton-${subTask.id}" class="text-h3 reduced-btn-shape theme3-lighten1-text util2-primary-btn-style6 small-margin-right" onClick="startEditingSubTask(${subTask.id});" title="<spring:message code="projecthandler.taskBoxView.editSubTask"/>">
 								<span class="icon-pencil2"></span>
 							</button>
