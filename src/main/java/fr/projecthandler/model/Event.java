@@ -11,6 +11,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -19,10 +21,10 @@ public class Event extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -7529770451548409449L;
 
-	@Column(name = "title")
+	@Column(name = "title", length = 30)
 	private String title;
 
-	@Column(name = "description")
+	@Column(name = "description", length = 500)
 	private String description;
 
 	@Column(name = "starting_date")
@@ -44,7 +46,7 @@ public class Event extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = Utilities.truncate(title, 30);
 	}
 
 	public String getDescription() {
@@ -52,7 +54,7 @@ public class Event extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = Utilities.truncate(description, 500);
 	}
 
 	public Date getStartingDate() {
@@ -76,7 +78,7 @@ public class Event extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = Utilities.truncate(status, 30);
 	}
 
 	public List<User> getUsers() {

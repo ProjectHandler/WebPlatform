@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 @Entity
 @Table(name = "address")
 public class Address extends BaseEntity implements java.io.Serializable {
@@ -40,7 +42,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setStreetNumber(String streetNumber) {
-		this.streetNumber = streetNumber;
+		this.streetNumber = Utilities.truncate(streetNumber, 10);
 	}
 
 	public String getStreetName() {
@@ -48,7 +50,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setStreetName(String streetName) {
-		this.streetName = streetName;
+		this.streetName = Utilities.truncate(streetName, 30);
 	}
 
 	public String getCity() {
@@ -56,7 +58,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setCity(String city) {
-		this.city = city;
+		this.city = Utilities.truncate(city, 30);
 	}
 
 	public String getZipCode() {
@@ -64,7 +66,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setZipCode(String zipCode) {
-		this.zipCode = zipCode;
+		this.zipCode = Utilities.truncate(zipCode, 5);
 	}
 
 	public String getCountry() {
@@ -72,7 +74,7 @@ public class Address extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setCountry(String country) {
-		this.country = country;
+		this.country = Utilities.truncate(country, 30);
 	}
 
 	public User getUser() {

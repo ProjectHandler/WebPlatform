@@ -10,13 +10,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 @Entity
 @Table(name = "subtask")
 public class SubTask extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = 4418101713699939939L;
 
-	@Column(name = "description")
+	@Column(name = "description", length = 200)
 	private String description;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -44,7 +46,7 @@ public class SubTask extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = Utilities.truncate(description, 200);
 	}
 
 	public Task getParentTask() {

@@ -16,6 +16,7 @@ import javax.validation.constraints.Size;
 
 import fr.projecthandler.dto.MobileTicketMessageDTO;
 import fr.projecthandler.util.TimestampEntity;
+import fr.projecthandler.util.Utilities;
 
 @Entity
 @Table(name = "ticket_messages")
@@ -49,7 +50,7 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
 	public TicketMessage(MobileTicketMessageDTO ticketMessageDTO) {
 		this.createdAt = new Date();
 		this.updatedAt = new Date();
-		this.text = ticketMessageDTO.getText();
+		this.text = Utilities.truncate(ticketMessageDTO.getText(), 500);
 	}
 
 	public Ticket getTicket() {
@@ -75,7 +76,7 @@ public class TicketMessage extends BaseEntity implements java.io.Serializable, T
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		this.text = Utilities.truncate(text, 500);
 	}
 
 	public User getUser() {

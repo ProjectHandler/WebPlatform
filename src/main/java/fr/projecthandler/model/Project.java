@@ -15,8 +15,10 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 import fr.projecthandler.dto.GanttTaskDTO;
+import fr.projecthandler.util.Utilities;
 
 @Entity
 @Table(name = "project")
@@ -62,13 +64,13 @@ public class Project extends BaseEntity implements java.io.Serializable {
 
 	public Project(GanttTaskDTO taskDTO) {
 		this.id = Long.parseLong(taskDTO.getId(), 10);
-		this.name = taskDTO.getName();
+		this.name = Utilities.truncate(taskDTO.getName(), 30);
 		this.progress = taskDTO.getProgress();
-		this.description = taskDTO.getDescription();
+		this.description = Utilities.truncate(taskDTO.getDescription(), 500);
 		this.duration = taskDTO.getDuration();
 		this.dateBegin = new Date(taskDTO.getStart());
 		this.dateEnd = new Date(taskDTO.getEnd());
-		this.status = taskDTO.getStatus();
+		this.status = Utilities.truncate(taskDTO.getStatus(), 30);
 	}
 
 	public String getName() {
@@ -76,7 +78,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = Utilities.truncate(name, 30);
 	}
 
 	public Long getProgress() {
@@ -92,7 +94,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = Utilities.truncate(description, 500);
 	}
 
 	public Long getDuration() {
@@ -124,7 +126,7 @@ public class Project extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = Utilities.truncate(status, 30);
 	}
 
 	public Set<Task> getTasks() {

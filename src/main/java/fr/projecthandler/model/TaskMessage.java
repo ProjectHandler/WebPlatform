@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import com.google.gson.annotations.Expose;
 
+import fr.projecthandler.util.Utilities;
+
 @Entity
 @Table(name = "task_messages")
 public class TaskMessage extends BaseEntity implements java.io.Serializable {
@@ -18,7 +20,7 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 	private static final long serialVersionUID = 8440604918049912703L;
 
 	@Expose
-	@Column(name = "content")
+	@Column(name = "content", length = 200)
 	private String content;
 
 	@Expose
@@ -39,7 +41,7 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 	}
 
 	public TaskMessage(String content, User owner, Date updateDate, Task task) {
-		this.content = content;
+		this.content = Utilities.truncate(content, 200);
 		this.owner = owner;
 		this.updateDate = updateDate;
 		this.task = task;
@@ -50,7 +52,7 @@ public class TaskMessage extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setContent(String content) {
-		this.content = content;
+		this.content = Utilities.truncate(content, 200);
 	}
 
 	public User getOwner() {

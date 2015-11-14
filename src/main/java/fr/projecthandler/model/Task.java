@@ -19,9 +19,11 @@ import javax.persistence.Table;
 
 
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 
 import fr.projecthandler.dto.GanttTaskDTO;
+import fr.projecthandler.util.Utilities;
 
 @Entity
 @Table(name = "task")
@@ -86,14 +88,14 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	public Task(GanttTaskDTO taskDTO) {
 		// if (taskDTO.getId() != null)
 		// this.id = Long.parseLong(taskDTO.getId(), 10);
-		this.name = taskDTO.getName();
+		this.name = Utilities.truncate(taskDTO.getName(), 30);
 		this.progress = taskDTO.getProgress();
-		this.description = taskDTO.getDescription();
+		this.description = Utilities.truncate(taskDTO.getDescription(), 500);
 		this.level = taskDTO.getLevel();
 		this.duration = taskDTO.getDuration();
 		this.startingDate = new Date(taskDTO.getStart());
 		this.endingDate = new Date(taskDTO.getEnd());
-		this.status = taskDTO.getStatus();
+		this.status = Utilities.truncate(taskDTO.getStatus(), 30);
 	}
 
 	public TaskPriority getPriority() {
@@ -117,7 +119,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = Utilities.truncate(name, 30);
 	}
 
 	public Long getProgress() {
@@ -133,7 +135,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = Utilities.truncate(description, 500);
 	}
 
 	public Long getLevel() {
@@ -173,7 +175,7 @@ public class Task extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setStatus(String status) {
-		this.status = status;
+		this.status = Utilities.truncate(status, 30);
 	}
 
 	public Long getRow() {

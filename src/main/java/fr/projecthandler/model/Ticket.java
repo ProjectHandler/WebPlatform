@@ -24,8 +24,10 @@ import javax.validation.constraints.Size;
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
+
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
+import fr.projecthandler.util.Utilities;
 
 @Entity
 @Table(name = "tickets")
@@ -99,7 +101,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	}
 
 	public void setTitle(String title) {
-		this.title = title;
+		this.title = Utilities.truncate(title, 100);
 	}
 
 	public String getText() {
@@ -107,7 +109,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	}
 
 	public void setText(String text) {
-		this.text = text;
+		this.text = Utilities.truncate(text, 500);
 	}
 
 	public TicketStatus getTicketStatus() {

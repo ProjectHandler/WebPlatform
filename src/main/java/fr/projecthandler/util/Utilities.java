@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.imgscalr.Scalr;
 import org.imgscalr.Scalr.Method;
 import org.imgscalr.Scalr.Mode;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 public class Utilities {
@@ -83,5 +84,11 @@ public class Utilities {
 				}
 			}
 		}
+	}
+	
+	public static String truncate(String str, int length) {
+		if (!StringUtils.isEmpty(str))
+			str = str.substring(0, length);
+		return str;
 	}
 }

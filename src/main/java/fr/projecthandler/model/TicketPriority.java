@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 @Entity
 @Table(name = "ticket_priority")
 public class TicketPriority extends BaseEntity implements java.io.Serializable {
@@ -32,7 +34,7 @@ public class TicketPriority extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setName(final String name) {
-		this.name = name;
+		this.name = Utilities.truncate(name, 50);
 	}
 
 }

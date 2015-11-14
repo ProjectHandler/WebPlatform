@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 @Entity
 @Table(name = "civility")
 public class Civility extends BaseEntity implements java.io.Serializable {
@@ -21,7 +23,7 @@ public class Civility extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setName(final String name) {
-		this.name = name;
+		this.name = Utilities.truncate(name, 50);
 	}
 
 }

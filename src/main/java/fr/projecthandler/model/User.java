@@ -14,6 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+
 //import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 //import com.fasterxml.jackson.annotation.JsonIgnore;
 //import com.fasterxml.jackson.annotation.ObjectIdGenerators;
@@ -21,6 +22,7 @@ import com.google.gson.annotations.Expose;
 
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
+import fr.projecthandler.util.Utilities;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -77,7 +79,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@Column(name = "avatar_file_name")
 	private String avatarFileName;
 	
-	@Column(name = "draft_message")
+	@Column(name = "draft_message", length = 500)
 	private String draftMessage;
 
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -108,7 +110,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+		this.firstName = Utilities.truncate(firstName, 30);
 	}
 
 	public String getLastName() {
@@ -116,7 +118,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setLastName(String lastName) {
-		this.lastName = lastName;
+		this.lastName = Utilities.truncate(lastName, 30);
 	}
 
 	public String getPassword() {
@@ -188,7 +190,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setPhone(String phone) {
-		this.phone = phone;
+		this.phone = Utilities.truncate(phone, 10);
 	}
 
 	public String getMobilePhone() {
@@ -196,7 +198,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setMobilePhone(String mobilePhone) {
-		this.mobilePhone = mobilePhone;
+		this.mobilePhone = Utilities.truncate(mobilePhone, 10);
 	}
 
 	public List<Group> getGroups() {
@@ -232,7 +234,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 	
 	public void setDrafMessage(String msg) {
-		this.draftMessage = msg;
+		this.draftMessage = Utilities.truncate(msg, 500);
 	}
 	
 	public String getDraftMessage() {

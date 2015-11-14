@@ -10,6 +10,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.Utilities;
+
 //import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 //import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
@@ -32,7 +34,7 @@ public class Group extends BaseEntity implements java.io.Serializable {
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = Utilities.truncate(name, 50);
 	}
 
 	public List<User> getUsers() {
