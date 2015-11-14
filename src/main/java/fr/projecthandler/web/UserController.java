@@ -30,12 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -77,6 +77,9 @@ public class UserController {
 	private static final Log log = LogFactory.getLog(UserController.class);
 
 	@Autowired
+	SessionRegistry sessionRegistry;
+	
+	@Autowired
 	UserService userService;
 
 	@Autowired
@@ -111,41 +114,36 @@ public class UserController {
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		logoutUser(principal, request, response);
+		logoutUser(principal, request, null);
 
 		return new ModelAndView("login", myModel);
-	}
-
-	public void logoutUser(Principal principal, HttpServletRequest request, HttpServletResponse response) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null && principal != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-			new PersistentTokenBasedRememberMeServices(null, null, null).logout(request, response, auth);
-		}
 	}
 
 	@RequestMapping(value = "loginFailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed() {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		myModel.put("Message", "Identifiant ou mot de passe incorrect.");
 		return new ModelAndView("login", myModel);
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
-	public ModelAndView logout() {
+	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-
+		logoutUser(principal, request, response);
 		return new ModelAndView("login", myModel);
 	}
 
 	@RequestMapping(value = "invalidateSession", method = RequestMethod.GET)
-	public String invalidateSession(HttpServletResponse response, HttpServletRequest request) {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if (auth != null) {
-			new SecurityContextLogoutHandler().logout(request, response, auth);
-			new PersistentTokenBasedRememberMeServices(null, null, null).logout(request, response, auth);
-		}
+	public String invalidateSession(HttpServletResponse response, HttpServletRequest request, Principal principal) {
+		logoutUser(principal, request, null);
 		return "redirect:/login";
+	}
+	
+	public void logoutUser(Principal principal, HttpServletRequest request, HttpServletResponse response) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth != null && principal != null) {
+			new SecurityContextLogoutHandler().logout(request, response, auth);
+			SecurityContextHolder.getContext().setAuthentication(null);
+		}
 	}
 
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
@@ -285,6 +283,7 @@ public class UserController {
 			// Printout the JSON
 			respsonse.setContentType("application/json");
 			respsonse.setCharacterEncoding("UTF-8");
+			respsonse.setStatus(200);
 			try {
 				respsonse.getWriter().write(jsonUserByEnvent);
 			} catch (IOException e) {
@@ -548,8 +547,7 @@ public class UserController {
 			// logout for user authenticated
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null && principal != null) {
-				new SecurityContextLogoutHandler().logout(request, response, auth);
-				auth = null;
+				return new ModelAndView("redirect:/logout");
 			}
 
 			User user = tokenService.findUserByToken(token);
