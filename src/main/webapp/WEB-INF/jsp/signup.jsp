@@ -393,7 +393,7 @@
 												</div>
 												<div class="display-table-cell vertical-align">	
 													<div class="fixedwidth-192 fixedheight-192 position-relative img-as-background theme3-primary-boxshadow-raising-out" style="background-image:url(${pageContext.request.contextPath}/resources/img/no-img.png);">
-														<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/<sec:authentication property="principal.id" />);"></div>
+														<div class="full-width full-height img-as-background" style="background-image:url(<%=request.getContextPath() %>/downloadAvatar/${user.id});"></div>
 														<a class="default-btn-shape position-absolute position-bottom position-right default-btn-style1 animating-event" style="margin-bottom:50px;" href="#" data-action="toggle-event" data-animation="pop-event" data-target="avatar-modal-box"><span class="icon-wrench small-margin-right"></span>Editer</a>
 													</div>
 												</div>
