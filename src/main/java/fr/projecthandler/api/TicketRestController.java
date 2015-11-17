@@ -20,6 +20,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -173,10 +174,7 @@ public class TicketRestController {
 		try {
 			// In development !
 			System.out.println("test 1");
-		    /*private Set<User> users;
-		    private Set<TicketPriority> ticketPriorities;
-		    private Set<TicketTracker> ticketTrackers;*/
-			
+
 			Map<String, Object> myModel = new HashMap<String, Object>();
 			List<Project> projects = projectService.getProjectsByUserIdAndFetchUsers(userDetails.getId());
 			
@@ -196,8 +194,31 @@ public class TicketRestController {
 			
 			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 			String json = gson.toJson(myModel);
+			//String json = gson.toJson(ticketService.getAllTicketPriorities());
 
 			System.out.println("json: " + json);
+			return new ResponseEntity<String>(json, HttpStatus.OK);
+		} catch (Exception e) {
+			log.error("error in saveNewTicketMessage", e);
+			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	@RequestMapping(value = { "/saveNewTicket" }, method = RequestMethod.POST)
+	public @ResponseBody ResponseEntity<String> saveNewTicket(@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails, @RequestBody String jsonObject) {
+		try {
+			System.out.println("strTicket: " + jsonObject);
+			Gson gson = new Gson();
+			MobileTicketDTO ticketDTO = gson.fromJson(jsonObject, MobileTicketDTO.class);
+			ticketDTO.setCreatedAt(new Date());
+			ticketDTO.setUpdatedAt(new Date());
+			Ticket ticket = new Ticket(ticketDTO);
+			ticket.setUser(userService.findUserById(userDetails.getId()));
+			
+			ticketService.saveTicket(ticket);
+			
+			gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
+			String json = gson.toJson(new MobileTicketDTO(ticket));
 			return new ResponseEntity<String>(json, HttpStatus.OK);
 		} catch (Exception e) {
 			log.error("error in saveNewTicketMessage", e);

@@ -87,7 +87,7 @@ public class Utilities {
 	}
 	
 	public static String truncate(String str, int length) {
-		if (!StringUtils.isEmpty(str))
+		if (!StringUtils.isEmpty(str) && str.length() > length)
 			str = str.substring(0, length);
 		return str;
 	}

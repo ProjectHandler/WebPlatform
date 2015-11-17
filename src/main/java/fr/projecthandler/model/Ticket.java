@@ -25,6 +25,8 @@ import javax.validation.constraints.Size;
 
 
 
+
+import fr.projecthandler.dto.MobileTicketDTO;
 import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.util.TimestampEntity;
 import fr.projecthandler.util.Utilities;
@@ -86,6 +88,18 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 		this.setTicketStatus(TicketStatus.OPEN);
 	}
 
+	public Ticket(MobileTicketDTO ticketDTO) {
+		this.title = ticketDTO.getTitle();
+		this.text = ticketDTO.getText();
+		this.project = new Project();
+		this.project.setId(ticketDTO.getProjectId());
+		this.ticketPriority.setId(ticketDTO.getTicketPriority().getId());
+		this.createdAt = ticketDTO.getCreatedAt();
+		this.updatedAt = ticketDTO.getUpdatedAt();
+		this.setTicketStatus(TicketStatus.OPEN);
+	}
+	
+	
 	@PrePersist
 	protected void createAtTimestamp() {
 		updatedAt = createdAt = new Date();
