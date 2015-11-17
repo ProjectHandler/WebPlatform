@@ -417,6 +417,16 @@ INSERT INTO `depend_tasks` (`task_id1`, `task_id2`) VALUES
 (166, 165),
 (167, 165);
 
+-- --------------------------------------------------------
+
+--
+-- Dumping data for table `ticket_tracker`
+--
+
+INSERT INTO `ticket_tracker` (`id`, `name`) VALUES
+(1, 'Feature'),
+(2, 'Bug');
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
