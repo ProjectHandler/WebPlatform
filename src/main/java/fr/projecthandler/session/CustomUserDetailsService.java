@@ -29,6 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	UserDao userDao;
 
 	@Override
+	@Transactional(noRollbackFor = UsernameNotFoundException.class)
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		User user = null;
 		try {

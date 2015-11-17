@@ -25,7 +25,7 @@ public class ApiGlobalExceptionHandler {
 	private static final Logger log = LoggerFactory.getLogger(ApiGlobalExceptionHandler.class);
 
 	@ExceptionHandler(ApiNotFoundException.class)
-	public @ResponseBody ResponseEntity<String> handleEmployeeNotFoundException(HttpServletRequest request,
+	public @ResponseBody ResponseEntity<String> handleNotFoundException(HttpServletRequest request,
 			Exception exception) {
 	    String json = "";
 	    HttpStatus status = HttpStatus.NOT_FOUND;
@@ -38,7 +38,7 @@ public class ApiGlobalExceptionHandler {
 		try {
 			json = gson.toJson(response);
 		} catch (Exception e) {
-			log.error("error in handleEmployeeNotFoundException", e);
+			log.error("error in handleNotFoundException", e);
 		}
 
 		return new ResponseEntity<String>(json, status);

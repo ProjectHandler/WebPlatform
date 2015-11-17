@@ -11,8 +11,18 @@
 		<title><spring:message code="projecthandler.general.error"/></title>
 		<script type="text/javascript">
 			$(document).ready(function() {
-				// need to add a button for hide or show the stacktrace
-				$("#stackTraceContainer").hide();
+				$("#stackTraceHide").click(function (){
+					$("#stackTraceContainer").hide(100, function() {
+							$("#stackTraceHide").hide();
+							$("#stackTraceShow").show();
+					});
+				});
+				$("#stackTraceShow").click(function (){
+					$("#stackTraceContainer").show(100, function() {
+						$("#stackTraceShow").hide();
+						$("#stackTraceHide").show();
+					});
+				});
 			});
 		</script>
 	</head>
@@ -29,8 +39,10 @@
 			<span><spring:message code="projecthandler.exception.message"/>:</span>
 			${e:forHtml(exception.message)}
 			<br>
-			<div id="stackTraceContainer">
-				<span><spring:message code="projecthandler.exception.stackTrace"/>:</span>
+			<span><spring:message code="projecthandler.exception.stackTrace"/>:</span>
+			<button id="stackTraceShow"><spring:message code="projecthandler.exception.stackTrace.show"/></button>
+			<button id="stackTraceHide" class="display-none"><spring:message code="projecthandler.exception.stackTrace.hide"/></button>
+			<div id="stackTraceContainer" class="display-none">
 				<c:forEach items="${exception.stackTrace}" var="stackTrace">
 					${e:forHtml(stackTrace)}
 				</c:forEach>

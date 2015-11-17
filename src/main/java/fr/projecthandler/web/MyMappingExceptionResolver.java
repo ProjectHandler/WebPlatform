@@ -25,7 +25,6 @@ public class MyMappingExceptionResolver extends SimpleMappingExceptionResolver {
 	@Override
 	protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response, Object handler, Exception exception) {
 		log.error("catch of exception in MyMappingExceptionResolver", exception);
-
 		// Call super method to get the ModelAndView
 		ModelAndView mav = super.doResolveException(request, response, handler, exception);
 

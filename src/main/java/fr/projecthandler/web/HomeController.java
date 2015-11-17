@@ -45,7 +45,6 @@ public class HomeController {
 	// return new ModelAndView("home", null);
 	// }
 
-	// TODO delete ?
 	@RequestMapping(value = "test", method = RequestMethod.GET)
 	public void test() throws Exception { 
 		throw new Exception("test");
