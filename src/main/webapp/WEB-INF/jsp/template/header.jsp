@@ -94,7 +94,9 @@
 	<div class="small-padding-top theme1-primary-bg"></div>
 	<div class="display-table full-width inverted-bg underlined theme3-lighten1-bdr">
 		<div class="display-table-cell container">
-			<img src="${pageContext.request.contextPath}/resources/img/logo&name.png" class="default-img-p">
+			<a href="<c:url value="/"/>">
+				<img src="${pageContext.request.contextPath}/resources/img/logo&name.png" class="default-img-p">
+			</a>
 		</div>
 		<sec:authorize access="isAuthenticated()">
 			<div class="display-table-cell container full-width clearfix">
