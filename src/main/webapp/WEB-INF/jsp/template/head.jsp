@@ -53,4 +53,4 @@
 <spring:url value="/resources/js/js.cookie-2.0.4.min.js" var="jsCookie"/>
 <script type="text/javascript" src="${jsCookie}"></script>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resources/libs/ckeditor/ckeditor.js"></script>

@@ -56,7 +56,7 @@
 			    label: '<spring:message code="projecthandler.project.edit.save"/>',
 			    command: 'save',
 			    toolbar: 'insert',
-			    icon: '${pageContext.request.contextPath}/resources/ckeditor/content-save.png'
+			    icon: '${pageContext.request.contextPath}/resources/libs/ckeditor/content-save.png'
 			});
 	
 			draftEditor.on('key', function(obj) {
