@@ -7,6 +7,8 @@
 
 <script type="text/javascript">
 	$(document).ready(function() {
+		var savedDraftData = null;
+
 		if (document.getElementById('text-draft-section')) {
 			var draftEditor = CKEDITOR.replace('text-draft-ckeditor', {
 				height: '5em',
@@ -18,25 +20,33 @@
 	    		success: function(data) {
 					if (data == "KO")
 	    				alert("error: " + data);
-					else
-						draftEditor.setData(data);
+					else {
+						draftEditor.setData(data, {
+							callback: function() {
+								savedDraftData = draftEditor.getData();
+							}
+						});
+					}
 	    		}
 		    });
-	
+
 			draftEditor.addCommand("save", {
 			    exec: function() {
+			    	var draftData = draftEditor.getData();
 			    	$.ajax({
 						type: "POST",
 						url: CONTEXT_PATH + "/user/draft/save",
 						data: {
-							draftMessage: draftEditor.getData()
+							draftMessage: draftData
 						}, 
 			    		success: function(data) {
 			    			// TODO mettre des petits messages de fail ou success
 		    				if (data == "KO")
 			    				alert("error: " + data);
-		    				else
-		    					alert("Enregistrement réussi");
+							else {
+								savedDraftData = draftData;
+								alert("Enregistrement réussi");
+							}
 			    		}
 				    });
 			    }
@@ -68,6 +78,13 @@
 						Cookies.set("draft-toggle", "show");
 					}
 				});
+			});
+	
+			$(window).bind('beforeunload', function(event) {
+				if (savedDraftData !== null && draftEditor.getData() != savedDraftData) {
+					// Custom message not displayed on Firefox
+					return "Vous n'avez pas sauvegardé vos notes.";
+				}
 			});
 		}
 	});
