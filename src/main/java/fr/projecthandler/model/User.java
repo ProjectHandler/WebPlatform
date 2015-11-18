@@ -14,14 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-
-//import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.google.gson.annotations.Expose;
 
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
+import fr.projecthandler.util.HtmlSanitizer;
 import fr.projecthandler.util.Utilities;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,7 +26,6 @@ import io.swagger.annotations.ApiModelProperty;
 @Entity
 @Table(name = "users")
 @ApiModel
-// @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class User extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5538144362291281238L;
@@ -234,7 +230,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 	}
 	
 	public void setDrafMessage(String msg) {
-		this.draftMessage = Utilities.truncate(msg, 500);
+		this.draftMessage = Utilities.truncate(HtmlSanitizer.sanitizeDrafMessage(msg), 500);
 	}
 	
 	public String getDraftMessage() {

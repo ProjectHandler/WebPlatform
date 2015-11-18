@@ -71,7 +71,7 @@
 	<h1>Ticket</h1>
 	<h2>Titre: ${e:forHtml(ticket.title)}</h2>
 	<div class="ticket-message-fisrt">
-		${e:forHtml(ticket.text)}
+		${ticket.text}
 		<span class="ticket-message-info">
 			Auteur: ${e:forHtml(ticket.user.firstName)} ${e:forHtml(ticket.user.lastName)} Date:
 			<fmt:formatDate value="${ticket.createdAt}" type="both" pattern="dd-MM-yyyy HH:mm" />
@@ -91,7 +91,7 @@
 		<c:if test="${ticket.ticketStatus == 'OPEN'}">
 		 	<form:form class="message-form" method="POST" action="${pageContext.request.contextPath}/ticket/${ticket.id}/message/save" modelAttribute="ticketMessage">
 				<form:label path="text">Nouveau message</form:label>
-				<form:textarea class="ticket-new-message" path="text"></form:textarea>
+				<form:textarea class="ticket-new-message" maxlength="${ticket.textMaxSize}" path="text"></form:textarea>
 				<input class="new-message-submit" value="Submit" type="submit">
 			</form:form>
 		</c:if>

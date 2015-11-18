@@ -21,13 +21,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-
-
-
-
 import fr.projecthandler.dto.MobileTicketDTO;
 import fr.projecthandler.enums.TicketStatus;
+import fr.projecthandler.util.HtmlSanitizer;
 import fr.projecthandler.util.TimestampEntity;
 import fr.projecthandler.util.Utilities;
 
@@ -37,12 +33,20 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	private static final long serialVersionUID = 254665316357554236L;
 
-	@Size(min = 1, max = 100)
-	@Column(name = "title", length = 100)
+	public static final int TEXT_MIN_SIZE = 1;
+
+	public static final int TEXT_MAX_SIZE = 500;
+
+	public static final int TITLE_MIN_SIZE = 4;
+
+	public static final int TITLE_MAX_SIZE = 100;
+
+	@Size(min = TITLE_MIN_SIZE, max = TITLE_MAX_SIZE)
+	@Column(name = "title", length = TITLE_MAX_SIZE)
 	private String title;
 
-	@Size(min = 1, max = 500)
-	@Column(name = "text", length = 500)
+	@Size(min = TEXT_MIN_SIZE, max = TEXT_MAX_SIZE)
+	@Column(name = "text", length = TEXT_MAX_SIZE)
 	private String text;
 
 	@NotNull
@@ -115,7 +119,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	}
 
 	public void setTitle(String title) {
-		this.title = Utilities.truncate(title, 100);
+		this.title = Utilities.truncate(title, TITLE_MAX_SIZE);
 	}
 
 	public String getText() {
@@ -123,7 +127,7 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 	}
 
 	public void setText(String text) {
-		this.text = Utilities.truncate(text, 500);
+		this.text = Utilities.truncate(HtmlSanitizer.sanitizeTicketText(text), TEXT_MAX_SIZE);
 	}
 
 	public TicketStatus getTicketStatus() {
@@ -160,6 +164,22 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 
 	public Project getProject() {
 		return project;
+	}
+
+	public int getTextMinSize() {
+		return TEXT_MIN_SIZE;
+	}
+
+	public int getTextMaxSize() {
+		return TEXT_MAX_SIZE;
+	}
+
+	public int getTitleMinSize() {
+		return TITLE_MIN_SIZE;
+	}
+
+	public int getTitleMaxSize() {
+		return TITLE_MAX_SIZE;
 	}
 
 	public void setProject(Project project) {

@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -30,7 +31,7 @@
 			<tbody>
 				<tr>
 					<td><form:label path="title">Titre</form:label></td>
-					<td><form:input path="title"></form:input></td>
+					<td><input pattern=".{${ticket.titleMinSize},}" required title="${ticket.titleMinSize} character(s) minimum" name="title" value="${e:forHtml(ticket.title)}"></input></td>
 				</tr>
 <%-- 				<tr>
 					<td><form:label path="project">Projet</form:label></td>
