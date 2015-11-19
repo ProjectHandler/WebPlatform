@@ -13,13 +13,16 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.enums.TicketStatus;
@@ -55,9 +58,7 @@ public class TicketController {
 
 	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.GET)
 	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId,
-			@RequestParam(required = false) String title) {
-		Map<String, Object> model = new HashMap<String, Object>();
-
+			@RequestParam(required = false) String title, ModelMap model, Ticket ticket, BindingResult result) {
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
@@ -67,8 +68,24 @@ public class TicketController {
 			return new ModelAndView("redirect:/");
 		}
 		// TODO vérifier droit du user
-		Ticket ticket = new Ticket();
-		ticket.setTitle(title);
+		ticket = null;
+		
+		//TODO remove
+		if (model.containsAttribute("ticket")) {
+			ticket = (Ticket)model.get("ticket");
+		} else {
+			ticket = new Ticket();
+		}
+		if (title != null){
+			ticket.setTitle(title);
+		}
+		if (model.containsAttribute("errors")) {
+			List<ObjectError> errors = (List<ObjectError>) model.get("errors");
+				for (ObjectError error: errors) {
+				result.addError(error);
+			}
+		}
+		
 		User u = userService.findUserById(userDetails.getId());
 		List<Project> projectList = projectService.getAllProjects();
 		List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
@@ -84,16 +101,19 @@ public class TicketController {
 		return new ModelAndView("ticket/addTicket", model);
 	}
 
-	@RequestMapping(value = "/save", method = RequestMethod.POST)
+	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.POST)
 	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @ModelAttribute("ticket") @Valid Ticket ticket,
-			BindingResult result) {
+			BindingResult result, RedirectAttributes redirectAttributes, @PathVariable Long projectId) {
+		// TODO check project id spring style
 		if (userDetails == null) {
 			// TODO redirect to login
 			return new ModelAndView("accessDenied");
 		}
 		if (result.hasErrors()) {
-			// TODO redirect
-			return new ModelAndView("redirect:/");
+			// TODO pas besoin de redirect return le add ticket
+			redirectAttributes.addFlashAttribute("ticket", ticket);
+			redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
+			return new ModelAndView("redirect:/ticket/new/" + ticket.getProject().getId());
 		}
 		// TODO check des permissions, check si les ID sont valides
 		User user = userService.findUserById(userDetails.getId());
