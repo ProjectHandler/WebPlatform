@@ -572,6 +572,8 @@ public class UserController {
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
 			auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
+		} else {
+			return new ModelAndView("accessDenied", null);
 		}
 		return new ModelAndView("signup", myModel);
 	}
