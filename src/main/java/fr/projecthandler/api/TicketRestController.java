@@ -173,8 +173,6 @@ public class TicketRestController {
 	public @ResponseBody ResponseEntity<String> getDataForNewTicket(@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails) {
 		try {
 			// In development !
-			System.out.println("test 1");
-
 			Map<String, Object> myModel = new HashMap<String, Object>();
 			List<Project> projects = projectService.getProjectsByUserIdAndFetchUsers(userDetails.getId());
 			
@@ -190,7 +188,7 @@ public class TicketRestController {
 			
 			myModel.put("projects", projectsDTO);
 			myModel.put("ticketPriorities", ticketService.getAllTicketPriorities());
-			//myModel.put("ticketTrackers", ticketService.getAllTicketTrackers());
+			myModel.put("ticketTrackers", ticketService.getAllTicketTrackers());
 			
 			Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
 			String json = gson.toJson(myModel);

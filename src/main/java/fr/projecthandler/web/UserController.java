@@ -543,7 +543,7 @@ public class UserController {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
 
-		if (token != null && token.length() > 0 && principal != null) {
+		if (token != null && token.length() > 0) {
 			// logout for user authenticated
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (auth != null && principal != null) {
