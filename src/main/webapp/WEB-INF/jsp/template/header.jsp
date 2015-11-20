@@ -89,7 +89,29 @@
 		}
 	});
 </script>
-
+<style>
+#text-draft{
+	margin-right: 18px;
+}
+#text-draft-toggle {
+	display: inline-block;
+	padding: 6px 12px;
+	margin-bottom: 0px;
+	font-size: 14px;
+	font-weight: 400;
+	line-height: 1.42857;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	-moz-user-select: none;
+	background-image: none;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	background-color: #FFF;
+	border-color: #CCC;
+}
+</style>
 <div class="">
 	<div class="small-padding-top theme1-primary-bg"></div>
 	<div class="display-table full-width inverted-bg underlined theme3-lighten1-bdr">
@@ -137,8 +159,8 @@
 	
 					</li>
 					<c:set var="draftEditorClass" value="${cookie['draft-toggle'].value == 'hide' ? 'display-none' : ''}"/>
-					<li>
-						<button id="text-draft-toggle">Toggle draft</button>
+					<li id = "text-draft">
+						<span id="text-draft-toggle" class="default-btn-shape">Toggle draft</span>
 						<div id="text-draft-section" class="${draftEditorClass}">
 							<textarea id="text-draft-ckeditor"></textarea>
 						</div>
