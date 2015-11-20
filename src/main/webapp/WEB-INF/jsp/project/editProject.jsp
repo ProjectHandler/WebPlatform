@@ -9,22 +9,17 @@
 	<head>
 		<jsp:include page="../template/head.jsp" />
 		<title>Edit project</title>
+		<spring:url value="/resources/js/custom-selectivity.js" var="selectivityJs"/>
+		<script type="text/javascript" src="${selectivityJs}"></script>
 		<script type="text/javascript">
 		var CONTEXT_PATH = "<%=request.getContextPath() %>";
 		
 		$(document).ready(function() {
 			// TODO : type to search a group / user => language files
-			$('.userSelection').selectivity({
-			    multiple: true,
-			    placeholder: 'Type to search a user'
+			$.fn.selectivityUserGroup({
+				userElement: '#userSelection',
+				groupElement: '#groupSelection'
 			});
-
-			$('.groupSelection').selectivity({
-			    multiple: true,
-			    placeholder: 'Type to search a group'
-			});
-			
-			$('.groupSelection').on("change", groupChanged);
 			
 			$("#name").focusout(function() {
 				validateName();
@@ -115,52 +110,7 @@
 			}
 			return true;
 		}
-		
-		function checkGroupUsers(user) {
-			var found = false;
-			var idToAdd = null;
-			var txtToAdd = null;
-			var data = $('.userSelection').selectivity('data');
-			
-			if (data != null && data !== undefined)
-				$.each(data, function f(i, val) {
-					if (user.id == val.id)
-						found = true;
-				});
-			
-			if (!found) {
-				idToAdd = user.id;
-				txtToAdd = user.firstName + ' ' + user.lastName;
-				$('.userSelection').selectivity('add', {id: idToAdd, text: txtToAdd});
-			}
-		}
-		
-		function groupChanged(item) {
-			var url = CONTEXT_PATH + "/project/fetchGroupUsers";
-			var groupId;
-			var usersInGroup;
-
-			if (item.added) {
-				groupId = item.added.id;
-				$.ajax({
-						type: "GET",
-						url: url,
-						data: {groupId: groupId}, 
-			    		success: function(data) {
-			    				if (data == "KO")
-				    				alert("error: " + data);
-			    				else {
-				    				usersInGroup = jQuery.parseJSON(data);
-				    				$.each(usersInGroup, function f2(i, val) {
-				    					checkGroupUsers(val);
-				    				});
-			    				}
-			    		}
-			    });
-				$('.groupSelection').selectivity('remove', item.added);
-			}
-		}
-		
+						
 		function confirmDelete() {
 			return confirm('<spring:message code="projecthandler.project.edit.deleteConfirm"/>');
 		}
