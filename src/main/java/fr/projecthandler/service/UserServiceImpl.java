@@ -152,4 +152,9 @@ public class UserServiceImpl implements UserService {
 
 		return new File(directory, user.getAvatarFileName());
 	}
+
+	@Override
+	public List<User> getAllActiveUsersInProject(Long projectId) {
+		return userDao.getAllActiveUsersInProject(projectId);
+	}
 }

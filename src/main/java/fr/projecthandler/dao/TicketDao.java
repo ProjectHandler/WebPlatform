@@ -3,6 +3,7 @@ package fr.projecthandler.dao;
 import java.util.List;
 
 import fr.projecthandler.model.Ticket;
+import fr.projecthandler.model.TicketMessage;
 
 public interface TicketDao {
 
@@ -32,4 +33,5 @@ public interface TicketDao {
 
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId);
 
+	public Ticket findTicketByIdAndFetchAuthorAndProjectAndUsers(Long ticketId);
 }

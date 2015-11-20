@@ -116,4 +116,8 @@ public class CustomUserDetails implements UserDetails {
 		this.userRole = userRole;
 	}
 
+	public boolean hasRole(UserRole role) {
+		return this.userRole == role;
+	}
+
 }

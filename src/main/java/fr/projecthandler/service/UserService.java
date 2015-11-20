@@ -25,6 +25,8 @@ public interface UserService {
 	
 	public List<User> getAllActiveUsers();
 
+	public List<User> getAllActiveUsersInProject(Long projectId);
+
 	public List<User> getUsersByRole(UserRole userRole);
 
 	public List<Group> getAllGroups();

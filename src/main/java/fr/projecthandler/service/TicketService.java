@@ -65,5 +65,7 @@ public interface TicketService {
 
 	public List<TicketMessage>  getTicketMessagesByTicketIdAndFetchUser(Long ticketId);
 
+	public Ticket findTicketByIdAndFetchAuthorAndProjectAndUsers(Long ticketId);
+
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId);
 }

@@ -39,14 +39,15 @@
 	<bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
 		<property name="formatters">
 			<set>
+<!--
 				<ref bean="projectFormatter" />
 				<ref bean="ticketTrackerFormatter" />
 				<ref bean="ticketPriorityFormatter" />
 				<ref bean="userListFormatter" />
+-->
 			</set>
 		</property>
 	</bean>
-
  	<mvc:interceptors>
 		<bean id="webContentInterceptor" class="org.springframework.web.servlet.mvc.WebContentInterceptor">
 	        <property name="cacheSeconds" value="0"/>

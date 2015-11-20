@@ -213,6 +213,22 @@ public class Ticket extends BaseEntity implements java.io.Serializable, Timestam
 		this.users = users;
 	}
 
+	public void addUser(User user) {
+		this.users.add(user);
+	}
+
+	public void addUsers(List<User> users) {
+		this.users.addAll(users);
+	}
+
+	public boolean removeUser(User user) {
+		return this.users.remove(user);
+	}
+
+	public void removeAllUsers() {
+		this.users.clear();
+	}
+
 	public Set<TicketMessage> getTicketMessages() {
 		return ticketMessages;
 	}

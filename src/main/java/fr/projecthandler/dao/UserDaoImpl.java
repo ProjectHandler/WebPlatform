@@ -7,6 +7,7 @@ import javax.persistence.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.User;
 import fr.projecthandler.util.Utilities;
@@ -63,11 +64,19 @@ public class UserDaoImpl extends AbstractDao implements UserDao {
 		return (List<User>) em.createQuery("SELECT u FROM User u WHERE u.userRole = :userRole").setParameter("userRole", userRole).getResultList();
 	}
 
+	// TODO Ca devrait pas etre left join fetch ?
 	@Override
 	public User findUserByIdAndFetchProjects(Long userId) {
-		Query query = em.createQuery("Select u from User u JOIN FETCH u.projects where u.id = :userId").setParameter("userId", userId);
+		Query query = em.createQuery("Select u from User u JOIN FETCH u.projects WHERE u.id = :userId").setParameter("userId", userId);
 
 		return Utilities.getSingleResultOrNullWithoutSettingMaxResults(query);
 	}
 
+	//TODO renomme la fonction, c'est pas vraiment les "active"
+	public List<User> getAllActiveUsersInProject(Long projectId) {
+		return (List<User>) em.createQuery("SELECT u FROM User u JOIN FETCH u.projects ps WHERE ps.id = :projectId AND u.accountStatus != :statusInactive")
+				.setParameter("projectId", projectId)
+				.setParameter("statusInactive", AccountStatus.INACTIVE)
+				.getResultList();
+	}
 }

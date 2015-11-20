@@ -167,7 +167,12 @@ public class TicketServiceImpl implements TicketService {
 	public List<TicketMessage> getTicketMessagesByTicketIdAndFetchUser(Long ticketId) {
 		return ticketMessageDao.getTicketMessagesByTicketIdAndFetchUser(ticketId);
 	}
-	
+
+	@Override
+	public Ticket findTicketByIdAndFetchAuthorAndProjectAndUsers(Long ticketId) {
+		return ticketDao.findTicketByIdAndFetchAuthorAndProjectAndUsers(ticketId);
+	}
+
 	@Override
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId) {
 		return ticketDao.getTicketsByProjectIdAndUser(projectId, userId);

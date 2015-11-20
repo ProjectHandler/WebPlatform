@@ -93,4 +93,10 @@ public class TicketDaoImpl extends AbstractDao implements TicketDao {
 		return (List<Ticket>) em.createQuery("FROM Ticket t WHERE t.project.id = :projectId AND t.user.id = :userId")
 				.setParameter("projectId", projectId).setParameter("userId", userId).getResultList();
 	}
+
+	public Ticket findTicketByIdAndFetchAuthorAndProjectAndUsers(Long ticketId) {
+		return (Ticket) Utilities
+				.getSingleResultOrNull(em.createQuery("SELECT t FROM Ticket t LEFT JOIN FETCH t.user LEFT JOIN FETCH t.users LEFT JOIN FETCH t.project WHERE t.id =:id")
+						.setParameter("id", ticketId));
+	}
 }

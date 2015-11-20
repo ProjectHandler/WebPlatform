@@ -5,17 +5,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomCollectionEditor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.ServletRequestDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -55,6 +60,23 @@ public class TicketController {
 
 	@Autowired
 	ProjectService projectService;
+
+	// TODO faire quelque chose pour les inlavid id ?
+	// TODO utiliser le setAsText ?
+	// TODO Trouver une méthode pour pas faire l'enregistrement sur List.class
+	@InitBinder
+	protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder) throws Exception {
+		binder.registerCustomEditor(List.class, new CustomCollectionEditor(List.class) {
+			@Override
+			protected Object convertElement(Object element) {
+				if (StringUtils.isNumeric((String) element)) {
+					String userId = (String) element;
+					return userService.findUserById(Long.valueOf(userId));
+				}
+				return null;
+			}
+		});
+	}
 
 	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.GET)
 	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId,
@@ -97,6 +119,7 @@ public class TicketController {
 		model.put("projectList", projectList);
 		model.put("ticketTrackerList", ticketTrackerList);
 		model.put("ticketPriorityList", ticketPriorityList);
+		model.put("usersInProject", userService.getAllActiveUsersInProject(ticket.getProject().getId()));
 
 		return new ModelAndView("ticket/addTicket", model);
 	}
@@ -106,11 +129,10 @@ public class TicketController {
 			BindingResult result, RedirectAttributes redirectAttributes, @PathVariable Long projectId) {
 		// TODO check project id spring style
 		if (userDetails == null) {
-			// TODO redirect to login
 			return new ModelAndView("accessDenied");
 		}
 		if (result.hasErrors()) {
-			// TODO pas besoin de redirect return le add ticket
+			// TODO pas de redirect, return le add ticket ?
 			redirectAttributes.addFlashAttribute("ticket", ticket);
 			redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
 			return new ModelAndView("redirect:/ticket/new/" + ticket.getProject().getId());
@@ -125,15 +147,13 @@ public class TicketController {
 	@RequestMapping(value = "/{ticketId}/messages", method = RequestMethod.GET)
 	public ModelAndView ticketMessageList(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
-		Ticket ticket = ticketService.findTicketByIdAndFetchAuthorAndProject(ticketId);
+		Ticket ticket = ticketService.findTicketByIdAndFetchAuthorAndProjectAndUsers(ticketId);
 
 		if (userDetails == null) {
-			// TODO redirect to login
 			return new ModelAndView("accessDenied");
 		}
 		if (ticket == null) {
-			// TODO mettre un Not Found, c'est pas un accessDenied
-			return new ModelAndView("accessDenied");
+			return new ModelAndView("pageNotFound");
 		}
 		// TODO check si le user est dans le projet
 
