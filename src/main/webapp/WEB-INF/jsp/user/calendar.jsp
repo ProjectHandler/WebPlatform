@@ -30,13 +30,8 @@
 
 		<spring:url value="/resources/css/daterangepicker/daterangepicker-bs3.css" var="daterangepickerBs3"/>
 		<link href="${daterangepickerBs3}" rel='stylesheet'/>
-		
-		
 
-		<style>
-
-		
-	
+<style>
 	#external-subtask {
 		float: left;
 		width: 150px;
@@ -72,8 +67,8 @@
 		max-width: 80%;
 		margin: 0 auto;
 	}
-
 </style>
+
 	</head>
 	<body>
 		<jsp:include page="../template/header.jsp" />
@@ -132,7 +127,7 @@
 			    </div>
 			    <div class="modal-footer">
 			        <button class="btn btn-default" data-dismiss="modal" aria-hidden="true"><spring:message code="projecthandler.gantt.undo" /></button>
-			        <button class="btn btn-danger" id="deleteEventButton" onclick="deleteEvent()"><spring:message code="projecthandler.admin.action.delete" /></button>
+			        <button class="btn btn-danger" id="deleteEventButton"></button>
 			        <button class="btn btn-primary" id="submitEventButton"></button>
 			    </div>
 		    </form>
@@ -149,16 +144,11 @@
 			    multiple: true,
 			    placeholder: 'Type to search a user'
 			});
-			
 			$('.groupSelection').selectivity({
 			    multiple: true,
 			    placeholder: 'Type to search a group'
 			});
-			
 			$('.groupSelection').on("change", groupChanged);
-
-			
-
 			
 			/* initialize the external events (panier)
 			-----------------------------------------------------------------*/
@@ -234,7 +224,13 @@
        			droppable: true,
        			dragRevertDuration: 0,
        			aspectRatio: 1.8,
-                select: function(event, start, end, allDay) {buildModal(true, start, end, "", "", "new", null);},
+                select: function( start, end, jsEvent, view ) {
+                	/*
+                	** TODO know if all day selected
+                	*/
+                	//var allDay = !start.hasTime() && !end.hasTime();
+                	buildModal(true, start, end, "", "", "new", null);
+                },
     			drop: function(date) { // this function is called when something is dropped
     				// retrieve the dropped element's stored Event Object
     				var originalEventObject = $(this).data('eventObject');
@@ -244,7 +240,7 @@
     				var tempDate = new Date(date);
     				
     				copiedEventObject.start = date;
-    				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours()));// + 2 hour from start
+    				copiedEventObject.end = new Date(tempDate.setHours(tempDate.getHours() + 1));// + 2 hour from start
     				copiedEventObject.allDay = false;
     				copiedEventObject.title = $(this).text();
     				copiedEventObject.id = $(this).data("subtask-id");
@@ -253,13 +249,11 @@
     				// last `true` argument determines the event "sticks" 
     				//(specifying stick as true will cause the event to be permanently fixed to the calendar)
     				//$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-   					$(this).remove();
+   					//$(this).remove(); //bug clone
+   					
    					updateEventWithoutModal(copiedEventObject);
-                    //fix temp, 
-                    //bug clone subtask on calendar
- /*
- * TODO
- */
+
+					//fix bug clone subtask on calendar
  					$('#calendar').fullCalendar('removeEvents');
  					$('#calendar').fullCalendar('refetchEvents');
     			},
@@ -274,13 +268,8 @@
                           revertDuration: 0
                         });
                         el.data('event', {title: event.title, id :event.id, stick: true});
-                        unplannedSubtask(event.id);
-                        
-                        //fix temp, 
-                        //bug clone subtask on calendar
-/*
- * TODO
- */
+                        $("#eventId").val(event.id);
+                        unplannedSubtask();
                     }
                 },
                 eventSources: [{
@@ -330,12 +319,12 @@
 
         });
 		
-		function unplannedSubtask(subtaskId) {
+		function unplannedSubtask() {
 			var url = CONTEXT_PATH + "/calendar/unplannedSubtask";
 			$.ajax({
 				type: "POST",
 				url: url,
-				data: {subtaskId: subtaskId}
+				data: {subtaskId: $("#eventId").val()}
 	   		});
 		}
 
@@ -411,23 +400,38 @@
             $("#title").val(title);
             $("#description").val(description);
             
+        	$("#submitEventButton").unbind();
+        	$("#deleteEventButton").unbind();
+            
             if (isNewEvent) {
             	var titleModal = '<spring:message code="projecthandler.calendar.newEvent" />';
             	var saveButton = '<spring:message code="projecthandler.calendar.create" />';
             	$("#deleteEventButton").hide();
-            	$("#submitEventButton").unbind();
          		$("#submitEventButton").click(function() {creatNewEvent();});
             } else {
+            	$("#eventId").val(event.id);
             	var titleModal = '<spring:message code="projecthandler.calendar.event" />';
             	var saveButton = '<spring:message code="projecthandler.signup.create" />';
+            	
             	$("#deleteEventButton").show();
-            	$("#submitEventButton").unbind();
-            	$("#submitEventButton").click(function() {updateEvent();});
+            	
+            	if (event.type == "event") {
+            		var deleteButton = '<spring:message code="projecthandler.admin.action.delete" />';
+            		$("#submitEventButton").click(function() {updateEvent();});
+            		$("#deleteEventButton").click(function() {deleteEvent();});
+            	}
+                else if (event.type == "subtask") {
+                	var deleteButton = 'Déplanifier';
+                	$("#submitEventButton").click(function() {updateSubtask();});
+                	$("#deleteEventButton").click(function() {unplannedSubtask();});
+                }
+                	
             }
             
             $('.daterangepicker').hide();
           
             $("#submitEventButton").html(saveButton);
+            $("#deleteEventButton").html(deleteButton);
             $("#eventModal").dialog({ modal: true, title: titleModal, width:500});
 		}
 		
