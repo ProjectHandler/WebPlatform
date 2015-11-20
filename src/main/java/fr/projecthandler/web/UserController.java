@@ -62,6 +62,7 @@ import fr.projecthandler.model.User;
 import fr.projecthandler.service.CivilityService;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.InputAutocompleteService;
+import fr.projecthandler.service.MailService;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.SubTaskService;
 import fr.projecthandler.service.TaskService;
@@ -96,7 +97,7 @@ public class UserController {
 
 	@Autowired
 	EventService eventService;
-
+	
 	@Autowired
 	CivilityService civilityService;
 
@@ -105,6 +106,10 @@ public class UserController {
 
 	@Autowired
 	InputAutocompleteService inputAutocompleteService;
+	
+	@Autowired
+	MailService mailService;
+	
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
@@ -113,23 +118,19 @@ public class UserController {
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
 		logoutUser(principal, request, null);
-
-		return new ModelAndView("login", myModel);
+		return new ModelAndView("login");
 	}
 
 	@RequestMapping(value = "loginFailed", method = RequestMethod.GET)
 	public ModelAndView loginFailed() {
-		Map<String, Object> myModel = new HashMap<String, Object>();
-		return new ModelAndView("login", myModel);
+		return new ModelAndView("login");
 	}
 
 	@RequestMapping(value = "logout", method = RequestMethod.GET)
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response, Principal principal) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
 		logoutUser(principal, request, response);
-		return new ModelAndView("login", myModel);
+		return new ModelAndView("login");
 	}
 
 	@RequestMapping(value = "invalidateSession", method = RequestMethod.GET)
@@ -671,4 +672,72 @@ public class UserController {
 		}
 		return "KO";
 	}
+	
+	@RequestMapping(value = "forgotPassword", method = RequestMethod.GET)
+	public ModelAndView forgotPassword(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		return new ModelAndView("forgotPassword");
+	}
+	
+	@RequestMapping(value = "sendResetPassword", method = RequestMethod.POST)
+	public ModelAndView resetPassword(HttpServletRequest request, HttpServletResponse response, Principal principal, @RequestParam("email") String email) {
+		User user = userService.getUserByEmail(email);
+		
+		if (user != null) {
+			Token token = new Token();
+			token.setToken(TokenGenerator.generateToken());
+			token.setTimeStamp(TokenGenerator.generateTimeStamp());
+			token.setUser(user);
+			tokenService.saveToken(token);
+			
+			StringBuilder url = new StringBuilder();
+			String serverName = request.getServerName();
+			url.append(request.getScheme()).append("://").append(serverName);
+			
+			int serverPort = request.getServerPort();
+			if ((serverPort != 80) && (serverPort != 443))
+				url.append(":").append(serverPort);
+			
+			url.append(request.getContextPath()).append("/resetPassword?token=" + token.getToken());
+			
+			
+			mailService.sendEmailRestPassword(user, url.toString());
+		}
+		return new ModelAndView("login");
+	}
+	
+	@RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+	public ModelAndView resetPassword(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		String token = request.getParameter("token");
+
+		if (token != null && token.length() > 0) {
+			// logout for user authenticated
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if (auth != null && principal != null)
+				return new ModelAndView("redirect:/logout");
+			
+			User user = tokenService.findUserByToken(token);
+			if (user == null)
+				return new ModelAndView("accessDenied", null);
+			
+			myModel.put("user", user);
+			myModel.put("isPasswordChanged", false);
+			
+			// Access denied if Token out of date OR user already validated.
+			Token t = tokenService.findTokenByUserId(user.getId());
+			if (TokenGenerator.checkTimestamp(t.getTimeStamp(), maximumTokenValidity)) {
+				tokenService.deleteTokenByUserId(user.getId());
+				return new ModelAndView("accessDenied", null);
+			}
+			
+			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
+			auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+			SecurityContextHolder.getContext().setAuthentication(auth);
+		} else {
+			return new ModelAndView("accessDenied", null);
+		}
+		
+		return new ModelAndView("user/changePassword", myModel);
+	}
+	
 }

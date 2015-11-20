@@ -51,7 +51,7 @@
 										</div>
 									</label>
 									<button name="submit" type="submit" class="default-btn-shape theme1-primary-btn-style1 display-block text-center margin-top margin-bottom  full-width"><spring:message code="projecthandler.login.login"/></button>
-									<div class="text-center"><a class="display-inline-block default-btn-shape default-btn-style5" href="#"><spring:message code="projecthandler.login.forgotPassword"/>?</a></div>
+									<div class="text-center"><a class="display-inline-block default-btn-shape default-btn-style5" href="${pageContext.request.contextPath}/forgotPassword"><spring:message code="projecthandler.login.forgotPassword"/>?</a></div>
 								</form>
 
 							</div>
