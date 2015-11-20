@@ -139,7 +139,7 @@
 		
 		$(document).ready(function() {
 			
-			// TODO : type to search a group / user => language files
+			// TODO : springmessage: type to search a group / user => language files
 			$('.userSelection').selectivity({
 			    multiple: true,
 			    placeholder: 'Type to search a user'
@@ -249,7 +249,7 @@
     				// last `true` argument determines the event "sticks" 
     				//(specifying stick as true will cause the event to be permanently fixed to the calendar)
     				//$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
-   					//$(this).remove(); //bug clone
+   					$(this).remove(); //bug clone
    					
    					updateEventWithoutModal(copiedEventObject);
 
