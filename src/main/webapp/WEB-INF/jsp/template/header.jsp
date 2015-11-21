@@ -189,11 +189,11 @@
 						</a>
 					</li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-					<li class="position-relative vertical-top display-table-cell padding-right">
-						<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
-							<span class="icon-database small-margin-right"></span>Administration
-						</a>
-					</li>
+						<li class="position-relative vertical-top display-table-cell padding-right">
+							<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
+								<span class="icon-database small-margin-right"></span>Administration
+							</a>
+						</li>
 					</sec:authorize>
 					<li class="position-relative display-table-cell">
 						<div class="display-table position-relative theme3-primary-boxshadow-raising-out">
