@@ -34,30 +34,30 @@
 		<intercept-url pattern="/login" 						access="permitAll" />
 		<intercept-url pattern="/verifyUser" 					access="permitAll" />
 		<intercept-url pattern="/resetPassword"					access="permitAll" />
-		<intercept-url pattern="/welcome" 						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/ajax/search*"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/welcome" 						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')" />
+		<intercept-url pattern="/ajax/search*"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
 
 		<intercept-url pattern="/signup"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/changePassword"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		
-		<intercept-url pattern="/admin/**" 						access="hasRole('ROLE_ADMIN')" />
-		<intercept-url pattern="/checkEmailExists" 				access="hasRole('ROLE_ADMIN')" />
+		<intercept-url pattern="/admin/**" 						access="hasRole('ROLE_ADMIN') and hasAuthority('ACTIVE')" />
+		<intercept-url pattern="/checkEmailExists" 				access="hasRole('ROLE_ADMIN') and hasAuthority('ACTIVE')" />
 		
-		<intercept-url pattern="/gantt/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/gantt/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
 
 		
-		<intercept-url pattern="/project/save"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/project/edit/**"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/project/delete"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')" />
-		<intercept-url pattern="/project/projectsList"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/project/viewProject/**"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/project/fetchGroupUsers"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/project/save"					access="hasAnyRole('ROLE_ADMIN') and hasAuthority('ACTIVE')" />
+		<intercept-url pattern="/project/edit/**"				access="hasAnyRole('ROLE_ADMIN') and hasAuthority('ACTIVE')" />
+		<intercept-url pattern="/project/delete"				access="hasAnyRole('ROLE_ADMIN') and hasAuthority('ACTIVE')" />
+		<intercept-url pattern="/project/projectsList"			access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
+		<intercept-url pattern="/project/viewProject/**"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
+		<intercept-url pattern="/project/fetchGroupUsers"		access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
 
-		<intercept-url pattern="/task/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/subTask/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
-		<intercept-url pattern="/ticket/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/task/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
+		<intercept-url pattern="/subTask/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
+		<intercept-url pattern="/ticket/**"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
 
-		<intercept-url pattern="/calendar/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
+		<intercept-url pattern="/calendar/**"					access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER') and hasAuthority('ACTIVE')"/>
 		
 		<intercept-url pattern="/saveUser"						access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
 		<intercept-url pattern="/downloadAvatar/**"				access="hasAnyRole('ROLE_ADMIN', 'ROLE_SIMPLE_USER')"/>
