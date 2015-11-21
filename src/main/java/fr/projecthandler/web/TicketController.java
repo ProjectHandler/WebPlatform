@@ -90,7 +90,7 @@ public class TicketController {
 			return new ModelAndView("redirect:/");
 		}
 		// TODO vérifier droit du user
-		ticket = null;
+		//ticket = null;
 		
 		//TODO remove
 		if (model.containsAttribute("ticket")) {

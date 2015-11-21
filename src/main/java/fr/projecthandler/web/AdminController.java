@@ -66,12 +66,12 @@ public class AdminController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("accessDenied");
 
 			User u = userService.findUserById(userDetails.getId());
 			myModel.put("user", u);
 		} else
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("accessDenied");
 
 		return new ModelAndView("admin/users_management", myModel);
 	}
@@ -157,9 +157,9 @@ public class AdminController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("accessDenied");
 		} else
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("accessDenied");
 
 		Map<String, Object> myModel = new HashMap<String, Object>();
 
@@ -295,9 +295,9 @@ public class AdminController {
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
 			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("accessDenied");
 		} else
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("accessDenied");
 
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		List<Group> groups = userService.getAllGroups();

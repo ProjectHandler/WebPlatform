@@ -113,7 +113,7 @@ public class ProjectController {
 			myModel.put("projectProgressList", projectProgressList);
 		} else {
 			// TODO redirect to login
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("accessDenied");
 		}
 
 		return new ModelAndView("project/projectsList", myModel);

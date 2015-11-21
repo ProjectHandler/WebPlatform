@@ -27,6 +27,8 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -110,6 +112,8 @@ public class UserController {
 	@Autowired
 	MailService mailService;
 	
+	@Autowired
+	private MessageSource messageSource;
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
@@ -543,7 +547,8 @@ public class UserController {
 	public ModelAndView verifyUserEmail(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
-
+		myModel.put("message", messageSource.getMessage("projecthandler.expiredToken.signup", null, LocaleContextHolder.getLocale()));
+				
 		if (token != null && token.length() > 0) {
 			// logout for user authenticated
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -553,7 +558,7 @@ public class UserController {
 
 			User user = tokenService.findUserByToken(token);
 			if (user == null)
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("expiredToken", myModel);
 
 			myModel.put("civilityList", civilityService.getAllCivilities());
 			myModel.put("user", user);
@@ -564,7 +569,7 @@ public class UserController {
 				// TODO : inform about the fact that the token expired in a
 				// proper page then delete token.
 				tokenService.deleteTokenByUserId(user.getId());
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("expiredToken", myModel);
 			}
 			user.setAccountStatus(AccountStatus.MAIL_VALIDATED);
 			userService.updateUser(user);
@@ -574,7 +579,7 @@ public class UserController {
 			auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		} else {
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("expiredToken", myModel);
 		}
 		return new ModelAndView("signup", myModel);
 	}
@@ -682,7 +687,7 @@ public class UserController {
 	public ModelAndView resetPassword(HttpServletRequest request, HttpServletResponse response, Principal principal, @RequestParam("email") String email) {
 		User user = userService.getUserByEmail(email);
 		
-		if (user != null) {
+		if (user != null && user.getAccountStatus() == AccountStatus.ACTIVE) {
 			Token token = new Token();
 			token.setToken(TokenGenerator.generateToken());
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
@@ -709,7 +714,8 @@ public class UserController {
 	public ModelAndView resetPassword(HttpServletRequest request, HttpServletResponse response, Principal principal) {
 		Map<String, Object> myModel = new HashMap<String, Object>();
 		String token = request.getParameter("token");
-
+		myModel.put("message", messageSource.getMessage("projecthandler.expiredToken.forgotPassword", null, LocaleContextHolder.getLocale()));
+		
 		if (token != null && token.length() > 0) {
 			// logout for user authenticated
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -718,7 +724,7 @@ public class UserController {
 			
 			User user = tokenService.findUserByToken(token);
 			if (user == null)
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("expiredToken", myModel);
 			
 			myModel.put("user", user);
 			myModel.put("isPasswordChanged", false);
@@ -727,14 +733,14 @@ public class UserController {
 			Token t = tokenService.findTokenByUserId(user.getId());
 			if (TokenGenerator.checkTimestamp(t.getTimeStamp(), maximumTokenValidity)) {
 				tokenService.deleteTokenByUserId(user.getId());
-				return new ModelAndView("accessDenied", null);
+				return new ModelAndView("expiredToken", myModel);
 			}
 			
 			UserDetails userDetails = customUserDetailsService.loadUserByUsername(user.getEmail());
 			auth = new PreAuthenticatedAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(auth);
 		} else {
-			return new ModelAndView("accessDenied", null);
+			return new ModelAndView("expiredToken", myModel);
 		}
 		
 		return new ModelAndView("user/changePassword", myModel);

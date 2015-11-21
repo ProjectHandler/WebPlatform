@@ -3,7 +3,6 @@ package fr.projecthandler.dao;
 import java.util.List;
 
 import fr.projecthandler.model.Ticket;
-import fr.projecthandler.model.TicketMessage;
 
 public interface TicketDao {
 

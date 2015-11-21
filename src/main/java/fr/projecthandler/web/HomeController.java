@@ -94,7 +94,7 @@ public class HomeController {
 			myModel.put("tneToday", tneToday);
 			myModel.put("tneTomorrow", tneTomorrow);
 		} else {
-			return new ModelAndView("login", null);
+			return new ModelAndView("login");
 		}
 		return new ModelAndView("home", myModel);
 	}

@@ -254,8 +254,10 @@
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/signup"/>"><span class="icon-profile margin-right"></span>Mes informations personnelles</a>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/changePassword"/>"><span class="icon-key margin-right"></span>Mon mot de passe</a>
-						<hr class="inverted-bg">	
+						<sec:authorize access="hasRole('ACTIVE')">
+							<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/changePassword"/>"><span class="icon-key margin-right"></span>Mon mot de passe</a>
+							<hr class="inverted-bg">	
+						</sec:authorize>
 					</div>
 				</div>
 				<div class="display-table-cell full-width full-height">
