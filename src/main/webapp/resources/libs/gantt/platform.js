@@ -890,19 +890,19 @@ function createBlackPage(width,height,onCloseCallBack){
 
   var ret=bg.find("#bwinPopupd");
   ret.css({
-	  width:'50%', 
+	  width:'40%', 
 	  height:'auto',
-	  top:10, 
 	  "-moz-box-shadow":'1px 1px 6px #333333',
 	  overflow:'auto',
 	  "-webkit-box-shadow":'1px 1px 6px #333333', 
-	  border:'8px solid #0071BC', 
+	  border:'3px solid #E1E1E1',
 	  backgroundColor:"#fff", 
 	  margin:"auto",
+	  "padding":'15px',
 	  "border-radius":'20px'
   });
 
-  var bdiv= $("<div>").css({width:'50%',position:"relative",height:"0px", textAlign:"right", margin:"auto" });
+  var bdiv= $("<div>").css({width:'40%',position:"relative",height:"0px", textAlign:"right", margin:"auto" });
   var img=$("<img src='resources/img/gantt/closeBig.png' style='width:auto; cursor:pointer;position:absolute;right:-40px;top:5px;' title='close'>");
   bdiv.append(img);
   img.click( function(){

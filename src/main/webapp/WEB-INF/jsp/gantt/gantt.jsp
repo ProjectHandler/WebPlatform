@@ -230,27 +230,25 @@
 			ge.reset();
 		}
 		
-
 		function loadI18n() {
 			GanttMaster.messages = {
-				"CANNOT_WRITE" : "<spring:message code='CANNOT_WRITE'/>",
-				"CHANGE_OUT_OF_SCOPE" : "<spring:message code='CHANGE_OUT_OF_SCOPE'/>",
-				"START_IS_MILESTONE" : "<spring:message code='START_IS_MILESTONE'/>",
-				"END_IS_MILESTONE" : "<spring:message code='END_IS_MILESTONE'/>",
-				"TASK_HAS_CONSTRAINTS" : "<spring:message code='TASK_HAS_CONSTRAINTS'/>",
-				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK" : "<spring:message code='GANTT_ERROR_DEPENDS_ON_OPEN_TASK'/>",
-				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" : "<spring:message code='GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK'/>",
-				"TASK_HAS_EXTERNAL_DEPS" : "<spring:message code='TASK_HAS_EXTERNAL_DEPS'/>",
-				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED" : "<spring:message code='GANTT_ERROR_LOADING_DATA_TASK_REMOVED'/>",
-				"ERROR_SETTING_DATES" : "<spring:message code='ERROR_SETTING_DATES'/>",
-				"CIRCULAR_REFERENCE" : "<spring:message code='CIRCULAR_REFERENCE'/>",
-				"CANNOT_DEPENDS_ON_ANCESTORS" : "<spring:message code='CANNOT_DEPENDS_ON_ANCESTORS'/>",
-				"CANNOT_DEPENDS_ON_DESCENDANTS" : "<spring:message code='CANNOT_DEPENDS_ON_DESCENDANTS'/>",
-				"INVALID_DATE_FORMAT" : "<spring:message code='INVALID_DATE_FORMAT'/>",
-				"TASK_MOVE_INCONSISTENT_LEVEL" : "<spring:message code='TASK_MOVE_INCONSISTENT_LEVEL'/>",
-				
-				"GANTT_QUARTER_SHORT" : "<spring:message code='GANTT_QUARTER_SHORT'/>",
-				"GANTT_SEMESTER_SHORT" : "<spring:message code='GANTT_SEMESTER_SHORT'/>"
+				"CANNOT_WRITE" 							: "<spring:message code='projecthandler.gantt.message.cannotWrite'/>",
+				"CHANGE_OUT_OF_SCOPE" 					: "<spring:message code='projecthandler.gantt.message.changeOutOfSCope'/>",
+				"START_IS_MILESTONE" 					: "<spring:message code='projecthandler.gantt.message.StartIsMilestone'/>",
+				"END_IS_MILESTONE" 						: "<spring:message code='projecthandler.gantt.message.EndIsMilestone'/>",
+				"TASK_HAS_CONSTRAINTS" 					: "<spring:message code='projecthandler.gantt.message.TaskHasConstraints'/>",
+				"GANTT_ERROR_DEPENDS_ON_OPEN_TASK" 		: "<spring:message code='projecthandler.gantt.message.ErrorDependsOnOpenTask'/>",
+				"GANTT_ERROR_DESCENDANT_OF_CLOSED_TASK" : "<spring:message code='projecthandler.gantt.message.ErrorDescendantOfClosedTask'/>",
+				"TASK_HAS_EXTERNAL_DEPS" 				: "<spring:message code='projecthandler.gantt.message.TaskHasExternalDeps'/>",
+				"GANTT_ERROR_LOADING_DATA_TASK_REMOVED" : "<spring:message code='projecthandler.gantt.message.ErrorLoadingDataTaskRemoved'/>",
+				"ERROR_SETTING_DATES" 					: "<spring:message code='projecthandler.gantt.message.ErrorSettingDates'/>",
+				"CIRCULAR_REFERENCE" 					: "<spring:message code='projecthandler.gantt.message.CircularReference'/>",
+				"CANNOT_DEPENDS_ON_ANCESTORS" 			: "<spring:message code='projecthandler.gantt.message.cannotDependsOnAncestors'/>",
+				"CANNOT_DEPENDS_ON_DESCENDANTS" 		: "<spring:message code='projecthandler.gantt.message.cannotDependsOnDescendants'/>",
+				"INVALID_DATE_FORMAT" 					: "<spring:message code='projecthandler.gantt.message.InvalidDateFormat'/>",
+				"TASK_MOVE_INCONSISTENT_LEVEL" 			: "<spring:message code='projecthandler.gantt.message.TaskMoveInconsistentLevel'/>",
+				"GANTT_QUARTER_SHORT" 					: "<spring:message code='projecthandler.gantt.message.QuarterShort'/>",
+				"GANTT_SEMESTER_SHORT" 					: "<spring:message code='projecthandler.gantt.message.SemesterShort'/>"
 			};
 		}
 	
@@ -446,11 +444,11 @@
 	      <td>
 	        <table cellpadding="5">
 	          <tr>
-	            <td style="padding: 10px;"><label for="name"><spring:message code='projecthandler.gantt.name'/></label><br><input type="text" name="name" id="name" value=""  size="30" class="formElements"></td>
+	            <td style="padding: 10px;"><label for="name"><spring:message code='projecthandler.gantt.name'/>:</label><br><input type="text" name="name" id="name" value=""  size="30" class="formElements"></td>
 	          </tr>
 	          <tr></tr>
 	            <td style="padding: 10px;">
-	              <label for="description"><spring:message code='projecthandler.gantt.description'/></label><br>
+	              <label for="description"><spring:message code='projecthandler.gantt.description'/>:</label><br>
 	              <textarea rows="5" cols="30" id="description" name="description" class="formElements" max="500"></textarea>
 	            </td>
 	          </tr>
@@ -459,39 +457,41 @@
 	      <td valign="top">
 	        <table cellpadding="5">
 	          <tr>
-	          <td colspan="2" style="padding: 10px;"><label for="status"><spring:message code='projecthandler.gantt.status'/></label><br><div id="status" class="taskStatus" status=""></div></td>
+	          <td colspan="2" style="padding: 10px;"><label for="status"><spring:message code='projecthandler.gantt.status'/>:</label><br><div id="status" class="taskStatus" status=""></div></td>
 	          <tr>
 	          <td colspan="2" style="padding: 10px;" hidden ><label for="progress"><spring:message code='projecthandler.gantt.progress'/></label><br><input type="text" name="progress" id="progress" value="" size="3" class="formElements"></td>
 	          </tr>
 	          <tr>
-	          <td style="padding: 10px;"><label for="start"><spring:message code='projecthandler.gantt.start'/></label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
-	          <td rowspan="2" class="graph" style="padding-left:50px; vertical-align:middle;"><label for="duration"><spring:message code='projecthandler.gantt.dur'/></label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>
+	          <td style="padding: 10px;"><label for="start"><spring:message code='projecthandler.gantt.start'/>:</label><br><input type="text" name="start" id="start"  value="" class="date" size="10" class="formElements"><input type="checkbox" id="startIsMilestone"> </td>
+	          <td rowspan="2" class="graph" style="padding-left:50px; vertical-align:middle;"><label for="duration"><spring:message code='projecthandler.gantt.dur'/>:</label><br><input type="text" name="duration" id="duration" value=""  size="5" class="formElements"></td>
 	        </tr><tr>
-	          <td style="padding: 10px;"><label for="end"><spring:message code='projecthandler.gantt.end'/></label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
+	          <td style="padding: 10px;"><label for="end"><spring:message code='projecthandler.gantt.end'/>:</label><br><input type="text" name="end" id="end" value="" class="date"  size="10" class="formElements"><input type="checkbox" id="endIsMilestone"></td>
 	        </table>
 	      </td>
 	    </tr>
 	    </table>
 	
 	  <div id="taskAssignation">
-		  <h2 style="padding: 5px 10px;"><spring:message code='projecthandler.gantt.assignees'/></h2>
+		  <h2 style="padding: 5px 10px;"><spring:message code='projecthandler.gantt.assignees'/>:</h2>
 		  <select class="userTaskSelection" multiple="multiple" placeholder style="width: 100%; padding: 5px 10px;">
 		  </select>
 	  </div>
 	 
-	  <div style="padding: 20px 10px 10px; position: relative; vertical-align: bottom; text-align: right; bottom: 0px;"><button id="saveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>
+	  <div class="ganttPopupRight"><button id="saveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>
 	  </div>
 	  --></div>
 	
 	  <div class="__template__" type="RESOURCE_EDITOR"><!-- 
 	  	<div class="resourceEditor" style="padding: 5px;">
 	  		<h2><spring:message code='projecthandler.gantt.team'/></h2>
-				<select class="userProjectSelection" multiple="multiple" placeholder style="width: 100%">
-					<c:forEach var="user" items="${users}">
-						<option value="${user.id}" >${e:forHtml(user.firstName)} ${e:forHtml(user.lastName)}</option>
-					</c:forEach>
-				</select>
-			<div style="text-align: right; padding-top: 20px"><button id="resSaveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>				       					
+	  		<div class="separator"></div>
+			<select class="userProjectSelection" multiple="multiple" placeholder style="width: 100%">
+				<c:forEach var="user" items="${users}">
+					<option value="${user.id}" >${e:forHtml(user.firstName)} ${e:forHtml(user.lastName)}</option>
+				</c:forEach>
+			</select>
+			<div class="separator"></div>
+			<div class="ganttPopupRight"><button id="resSaveButton" class="button big"><spring:message code='projecthandler.gantt.save'/></button></div>				       					
 	  	</div>-->
 	 </div>
 	
@@ -499,10 +499,12 @@
 	 <div class="__template__" type="RESOURCE_SAVE"><!-- 
 	  	<div style="padding: 5px;">
 	  		<h2><spring:message code='projecthandler.gantt.saveTitle'/></h2>
+	  		<div class="separator"></div>
 	  		<div class="ganttPopupCenter">
 	  			<label id="msgPopup"></label>
 			</div>
-			<div class="ganttPopupCenter">
+			<div class="separator"></div>
+			<div class="ganttPopupRight">
 				<button id="okBtn" class="button big"><spring:message code='projecthandler.general.ok'/></button>
 			</div>				       					
 	  	</div>-->
@@ -511,10 +513,12 @@
 	  <div class="__template__" type="RESOURCE_POPUP_ALERT"><!-- 
 	  	<div style="padding: 5px;">
 	  		<h2></h2>
+	  		<div class="separator"></div>
 	  		<div class="ganttPopupCenter">
 	  			<label id="msgPopup"></label>
 			</div>
-			<div class="ganttPopupCenter">
+			<div class="separator"></div>
+			<div class="ganttPopupRight">
 				<button id="okBtn" class="button big"><spring:message code='projecthandler.general.ok'/></button>
 			</div>				       					
 	  	</div>-->

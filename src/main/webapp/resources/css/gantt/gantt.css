@@ -650,7 +650,10 @@ input[readonly]{
 /* override css */
 .ganttPopupCenter {
 	text-align: center;
-	padding-top: 20px;
+}
+
+.ganttPopupRight {
+	text-align: right;
 }
 
 .ganttSelectProject {
@@ -665,4 +668,11 @@ input[readonly]{
 
 .red {
 	background-color: #F00;
+}
+
+.separator {
+	height: 1px;
+	margin-top: 15px;
+	margin-bottom: 15px;
+	background-color: #E1E1E1;
 }

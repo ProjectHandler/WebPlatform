@@ -55,12 +55,6 @@ h1 {
   margin:0 0 10px 0
 }
 
-h2 {
-  font-size:22px;
-  color:#373737;
-  font-weight:normal;
-  margin:0 0 10px 0
-}
 
 h3 {
   text-decoration: none;
@@ -214,8 +208,7 @@ TH a {
    border-radius:5px;
    border:none;
    padding:7px 10px;
-   margin-bottom:10px;
-   margin-right:10px;
+
   text-align: center
 }
 
