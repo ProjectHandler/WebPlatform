@@ -15,12 +15,14 @@ public interface ProjectDao {
 
 	public Project findProjectById(Long projectId);
 
+	public Project findProjectByProjectIdAndUserId(Long userId, Long projectId);
+
 	public List<Project> getAllProjects();
 
 	public List<Project> getProjectsByUserId(Long userId);
 
 	public List<Project> getProjectsByUserIdAndFetchUsers(Long userId);
-	
+
 	public List<Project> getProjectsByUserIdAndFetchTasks(Long userId);
 
 	public void deleteProjectById(Long projectId);

@@ -92,7 +92,7 @@ public class TicketController {
 		// TODO vérifier droit du user
 		//ticket = null;
 		
-		//TODO remove
+		//TODO remove, pas de redirect du save et return le addTicket ?
 		if (model.containsAttribute("ticket")) {
 			ticket = (Ticket)model.get("ticket");
 		} else {
@@ -132,7 +132,7 @@ public class TicketController {
 			return new ModelAndView("accessDenied");
 		}
 		if (result.hasErrors()) {
-			// TODO pas de redirect, return le add ticket ?
+			// TODO pas de redirect, return le addTicket ?
 			redirectAttributes.addFlashAttribute("ticket", ticket);
 			redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
 			return new ModelAndView("redirect:/ticket/new/" + ticket.getProject().getId());

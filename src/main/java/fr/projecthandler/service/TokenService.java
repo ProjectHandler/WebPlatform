@@ -1,5 +1,7 @@
 package fr.projecthandler.service;
 
+import javax.servlet.http.HttpServletRequest;
+
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
 
@@ -11,4 +13,6 @@ public interface TokenService {
 	public void deleteTokenByUserId(Long id);
 
 	public User findUserByToken(String token);
+
+	public String buildTokenUrl(HttpServletRequest request, User user, Token token);
 }

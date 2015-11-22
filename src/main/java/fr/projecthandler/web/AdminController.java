@@ -99,22 +99,6 @@ public class AdminController {
 		return "OK";
 	}
 
-	private String buildTokenUrl(HttpServletRequest request, User user, Token token) {
-		if (!user.getAccountStatus().equals(AccountStatus.INACTIVE)) {
-			return "redirect:/accessDenied";
-		}
-		StringBuilder url = new StringBuilder();
-		String serverName = request.getServerName();
-		url.append(request.getScheme()).append("://").append(serverName);
-
-		int serverPort = request.getServerPort();
-		if ((serverPort != 80) && (serverPort != 443)) {
-			url.append(":").append(serverPort);
-		}
-		url.append(request.getContextPath()).append("/verifyUser?token=" + token.getToken());
-		return url.toString();
-	}
-
 	// here we send mail with token for each user by mail
 	// create user by mail and generate token then send email with token for
 	// each user
@@ -133,12 +117,9 @@ public class AdminController {
 		// for each mail
 		for (int i = 0; i < parsedMail.length; i++) {
 			// Handle user
+			// Default settings like the account status are in the User constructor
 			User user = new User();
 			user.setEmail(parsedMail[i]);
-			user.setAccountStatus(AccountStatus.INACTIVE);
-			user.setUserRole(UserRole.ROLE_SIMPLE_USER);
-			user.setDailyHour("09:00 AM - 05:00 PM");
-			user.setWorkDay("tttttff");
 			userService.saveUser(user);
 
 			// Handle Token
@@ -147,7 +128,7 @@ public class AdminController {
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
 			token.setUser(user);
 			tokenService.saveToken(token);
-			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
+			mailService.sendEmailUserCreation(user, tokenService.buildTokenUrl(request, user, token));
 		}
 		return "redirect:/admin/users_management";
 	}
@@ -282,7 +263,7 @@ public class AdminController {
 			token.setTimeStamp(TokenGenerator.generateTimeStamp());
 			token.setUser(user);
 			tokenService.saveToken(token);
-			mailService.sendEmailUserCreation(user, buildTokenUrl(request, user, token));
+			mailService.sendEmailUserCreation(user, tokenService.buildTokenUrl(request, user, token));
 			return "OK";
 		} catch (Exception e) {
 			log.error("error during resend of email for user id: " + userId, e);

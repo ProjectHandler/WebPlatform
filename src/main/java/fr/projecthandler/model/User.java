@@ -13,6 +13,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Size;
 
 import com.google.gson.annotations.Expose;
 
@@ -29,6 +31,8 @@ import io.swagger.annotations.ApiModelProperty;
 public class User extends BaseEntity implements java.io.Serializable {
 
 	private static final long serialVersionUID = -5538144362291281238L;
+
+	private static final int PASSWORD_MIN_SIZE = 8;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "civility_id")
@@ -90,7 +94,16 @@ public class User extends BaseEntity implements java.io.Serializable {
 	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") })
 	private List<Task> tasks;
 
+	@Transient
+	@Size(min = PASSWORD_MIN_SIZE)
+	private String rawPassword;
+
 	public User() {
+		//Default settings for a new user
+		this.setAccountStatus(AccountStatus.INACTIVE);
+		this.setUserRole(UserRole.ROLE_SIMPLE_USER);
+		this.setDailyHour("09:00 AM - 05:00 PM");
+		this.setWorkDay("tttttff");
 	}
 
 	public Civility getCivility() {
@@ -235,6 +248,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 	
 	public String getDraftMessage() {
 		return this.draftMessage;
+	}
+
+	public String getRawPassword() {
+		return rawPassword;
+	}
+
+	public void setRawPassword(String rawPassword) {
+		this.rawPassword = rawPassword;
 	}
 
 	@Override

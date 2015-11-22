@@ -1,10 +1,6 @@
-package fr.projecthandler.exception;
+package fr.projecthandler.api.exception;
 
-import java.io.Serializable;
-
-public class ExceptionJSONInfo implements Serializable {
-
-	private static final long serialVersionUID = 5776190087431557189L;
+public class ExceptionJsonInfo {
 
 	private int status;
 	private String url;

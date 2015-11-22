@@ -96,4 +96,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<User> getUsersByProjectId(Long projectId) {
 		return projectDao.getUsersByProjectId(projectId);
 	}
+
+	@Override
+	public boolean isUserInProject(Long userId, Long projectId) {
+		Project project = projectDao.findProjectByProjectIdAndUserId(userId, projectId);
+		return project != null;
+	}
 }

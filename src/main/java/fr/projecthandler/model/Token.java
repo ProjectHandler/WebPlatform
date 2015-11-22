@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import fr.projecthandler.util.TokenGenerator;
+
 @Entity
 @Table(name = "tokens")
 public class Token extends BaseEntity implements java.io.Serializable {
@@ -22,6 +24,11 @@ public class Token extends BaseEntity implements java.io.Serializable {
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;
+
+	public Token() {
+		this.token = TokenGenerator.generateToken();
+		this.timeStamp = TokenGenerator.generateTimeStamp();
+	}
 
 	public String getToken() {
 		return token;

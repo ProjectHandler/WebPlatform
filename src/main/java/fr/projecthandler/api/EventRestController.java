@@ -1,14 +1,18 @@
 package fr.projecthandler.api;
 
+import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.api.dto.ApiEventDTO;
-import fr.projecthandler.exception.ApiNotFoundException;
+import fr.projecthandler.api.exception.ApiNotFoundException;
+import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Event;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.TokenService;
+import fr.projecthandler.session.CustomUserDetails;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,21 +25,18 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @RestController
 @Transactional
 @Api(value="Event", description="Operations about events")
-@RequestMapping("/api/event")
+@RequestMapping(value = "/api/event", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
 public class EventRestController {
 
 	private static final Logger log = LoggerFactory.getLogger(EventRestController.class);
@@ -47,30 +48,23 @@ public class EventRestController {
 	TokenService tokenService;
 
 	//TODO return
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
 	@ApiOperation(value = "Gets event by id", response=ApiEventDTO.class)
 	@ApiResponses(value = {
 		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of event", response = ApiEventDTO.class),
 		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "Event with given id does not exist")
 		    }
 		)
-	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) throws ApiNotFoundException {
+	@ResponseStatus(HttpStatus.OK)
+	public ApiEventDTO get(@PathVariable Long id, @ApiIgnore @CurrentUserDetails CustomUserDetails userDetails) throws ApiNotFoundException {
 		Event event = eventService.findEventById(id);
 
 		if (event == null) {
 			throw new ApiNotFoundException(id);
 		}
-
 		ApiEventDTO eventDTO = new ApiEventDTO(event);
-		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
-		try {
-			String json = gson.toJson(eventDTO);
 
-			return new ResponseEntity<String>(json, HttpStatus.OK);
-		} catch (Exception e) {
-			log.error("error in eventRestController", e);
-			return new ResponseEntity<String>("KO", HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+		return eventDTO;
 	}
 
 	@RequestMapping(value = "/getEventsByUser/{id}", method = RequestMethod.GET)
@@ -80,7 +74,8 @@ public class EventRestController {
 		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "User with given id does not exist")
 		    }
 		)
-	public @ResponseBody ResponseEntity<String> getEventsByUser(@PathVariable Long id) throws ApiNotFoundException {
+	@ResponseStatus(HttpStatus.OK)
+	public List<ApiEventDTO> getEventsByUser(@PathVariable Long id) throws ApiNotFoundException {
 		Set<Event> eventList = eventService.getEventsByUser(id);
 
 		// TODO Not found if user id not found. If eventList null, empty.
@@ -95,21 +90,9 @@ public class EventRestController {
 			eventListDTO.add(eventDTO);
 		}
 
-		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
-		try {
-			String json = gson.toJson(eventListDTO);
-
-			return new ResponseEntity<String>(json, HttpStatus.OK);
-		} catch (Exception e) {
-			log.error("error in getEventsByUser", e);
-			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
-		}
+		return eventListDTO;
 	}
 
-	//TODO
-	// public Set<Event> getYesterdayEventsByUser(Long userId);
-	//
-	// public Set<Event> getTodayEventsByUser(Long userId);
-	//
-	// public Set<Event> getTomorrowEventsByUser(Long userId);
+	// TODO getEventsByUserAndDate
+	// TODO getEventsByCurrentUser
 }

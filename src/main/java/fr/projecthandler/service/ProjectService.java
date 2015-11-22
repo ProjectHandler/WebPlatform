@@ -15,6 +15,8 @@ public interface ProjectService {
 
 	public Project findProjectById(Long projectId);
 
+	public boolean isUserInProject(Long userId, Long projectId);
+
 	public List<Project> getAllProjects();
 
 	public List<Project> getProjectsByUserId(Long userId);

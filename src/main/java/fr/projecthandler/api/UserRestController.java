@@ -1,21 +1,28 @@
 package fr.projecthandler.api;
 
+import fr.projecthandler.annotation.CurrentUserDetails;
+import fr.projecthandler.api.exception.ApiAuthenticationException;
+import fr.projecthandler.api.exception.ApiBadRequestException;
+import fr.projecthandler.api.exception.ApiInternalErrorException;
+import fr.projecthandler.api.exception.ApiNotFoundException;
 import fr.projecthandler.dto.MobileUserDTO;
 import fr.projecthandler.dto.UserDTO;
 import fr.projecthandler.enums.AccountStatus;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.MailService;
 import fr.projecthandler.service.TokenService;
 import fr.projecthandler.service.UserService;
 import fr.projecthandler.session.CustomUserDetails;
-import fr.projecthandler.util.TokenGenerator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -26,20 +33,24 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,10 +60,13 @@ import com.google.gson.GsonBuilder;
 @RestController
 @Transactional
 @Api(value = "User", description = "Operations about users")
-@RequestMapping("/api/user")
+@RequestMapping(value = "/api/user", produces = MediaType.APPLICATION_JSON_VALUE + ";charset=UTF-8")
 public class UserRestController {
 
 	private static final Logger log = LoggerFactory.getLogger(UserRestController.class);
+
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
 	UserService userService;
@@ -61,30 +75,33 @@ public class UserRestController {
 	TokenService tokenService;
 
 	@Autowired
+	MailService mailService;
+
+	@Autowired
 	@Qualifier("userDatabase")
 	private AuthenticationManager authManager;
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
 
+	// TODO Return token object
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-	@ApiOperation(value = "Checks the email and password. If succesful, returns the token used to authenticate the user", response=MobileUserDTO.class, produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Checks the email and password. If succesful, returns the token used to authenticate the user", produces=MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses(value = {
 		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful operation"),
 		    @ApiResponse(code = HttpServletResponse.SC_UNAUTHORIZED, message = "Invalid email/password supplied")
 		    }
 		)
-	public @ResponseBody Object authenticate(
-			@ApiParam(value = "The email for login", required=true) @RequestParam("email") String email,
-			@ApiParam(value = "The password for login in clear text", required=true) @RequestParam("password") String password) {
+	public Object authenticate(@ApiParam(value = "The email for login", required = true) @RequestParam("email") String email,
+			@ApiParam(value = "The password for login in clear text", required = true) @RequestParam("password") String password)
+					throws ApiAuthenticationException, ApiInternalErrorException {
 		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
 		Authentication authentication = null;
 
 		try {
 			authentication = this.authManager.authenticate(authenticationToken);
 		} catch (AuthenticationException e) {
-			return new ResponseEntity<String>("{\"status\":401, \"message\":\"Bad credentials\"}",
-					HttpStatus.UNAUTHORIZED);
+			throw new ApiAuthenticationException("Bad credentials");
 		}
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -94,15 +111,12 @@ public class UserRestController {
 		// Generate a token if the user doesn't have one.
 		if (token == null) {
 			User u = userService.findUserById(userDetails.getId());
-			token = new Token();
-
+			
 			if (u == null) {
-				return new ResponseEntity<String>("{\"status\":505, \"message\":\"Internal Server Error\"}",
-						HttpStatus.INTERNAL_SERVER_ERROR);
+				throw new ApiInternalErrorException();
 			}
-			// TODO make sure token is unique ?
-			token.setToken(TokenGenerator.generateToken());
-			token.setTimeStamp(TokenGenerator.generateTimeStamp());
+			// TODO make sure token is unique
+			token = new Token();
 			token.setUser(u);
 			tokenService.saveToken(token);
 		}
@@ -116,38 +130,54 @@ public class UserRestController {
 		    @ApiResponse(code = HttpServletResponse.SC_NOT_FOUND, message = "User with given id does not exist")
 		    }
 		)
-	@RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
-	public @ResponseBody ResponseEntity<String> get(@PathVariable Long id) {
-		User user = userService.findUserById(id);
+	@RequestMapping(value = "/get/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<String> get(@PathVariable Long userId) throws ApiNotFoundException, ApiInternalErrorException {
+		User user = userService.findUserById(userId);
 
 		if (user == null) {
-			return new ResponseEntity<String>("{\"status\":400, \"message\":\"Not found\"}", HttpStatus.NOT_FOUND);
+			throw new ApiNotFoundException(userId);
 		}
-
 		Gson gson = new GsonBuilder().setExclusionStrategies(new ApiExclusionStrategy()).create();
-		try {
-			String json = gson.toJson(new UserDTO(user));
-			return new ResponseEntity<String>(json, HttpStatus.OK);
-		} catch (Exception e) {
-			log.error("error in UserRestController", e);
-			return new ResponseEntity<String>("KO", HttpStatus.BAD_REQUEST);
-		}
+		String json = gson.toJson(new UserDTO(user));
+		return new ResponseEntity<String>(json, HttpStatus.OK);
 	}
 
-	//TODO vérifier si la fonction marche, faire la gestion d'erreur
-	@RequestMapping(value = "/post", method = RequestMethod.POST)
+	// TODO check why validation isn't triggered
+	// TODO check if email is already taken
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
-	@ApiOperation(value = "Creates a new user and returns the user details")
+	@ApiOperation(value = "Creates a new user and returns the user details", notes = "If the password is empty, an email will be sent to the new user for him to complete his registration.")
 	@ApiResponses(value = {
-		    @ApiResponse(code = HttpServletResponse.SC_CREATED, message = "User created", response = User.class),
-		    @ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Incorrect user entity syntax")
+			@ApiResponse(code = HttpServletResponse.SC_CREATED, message = "User created", response = User.class),
+			@ApiResponse(code = HttpServletResponse.SC_BAD_REQUEST, message = "Incorrect user entity syntax")
 		    }
 		)
-	public @ResponseBody UserDTO save(
-			@ApiParam(required = true) @ModelAttribute @Valid User user,
-			BindingResult result) {
-		user.setAccountStatus(AccountStatus.ACTIVE);
-		user.setUserRole(UserRole.ROLE_SIMPLE_USER);
+	public UserDTO save(@ApiIgnore  HttpServletRequest request,
+			@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails,
+			@ApiParam(required = true) @RequestBody @Valid User user,
+			BindingResult result) throws ApiBadRequestException {
+		// TODO check with annotation or spring-security.xml
+		if (!userDetails.hasRole(UserRole.ROLE_ADMIN)) {
+			throw new AccessDeniedException("Admin role required");
+		}
+		if (result.hasErrors()) {
+			String message = "Invalid user format";
+			for (FieldError error: result.getFieldErrors()) {
+				message += " - " + error.getField() + " : " + error.getDefaultMessage();
+			}
+			throw new ApiBadRequestException(message);
+		}
+		if (StringUtils.isEmpty(user.getRawPassword())) {
+			// Send an email to the user so that he can confirm his email address and complete his profile
+			Token token = new Token();
+			token.setUser(user);
+			tokenService.saveToken(token);
+			mailService.sendEmailUserCreation(user, tokenService.buildTokenUrl(request, user, token));
+		}
+		else {
+			user.setPassword(passwordEncoder.encode(user.getRawPassword()));
+			user.setAccountStatus(AccountStatus.ACTIVE);
+		}
 		userService.saveUser(user);
 		return new UserDTO(user);
 	}
