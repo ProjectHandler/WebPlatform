@@ -344,23 +344,6 @@ public class TaskController {
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(taskMessage);
 	}
-	
-	@RequestMapping(value = "user/draft/save", method = RequestMethod.POST)
-	public @ResponseBody String saveUserDraftMessage(Principal principal, @RequestParam("draftMessage") String draftMessage) {
-		if (principal != null) {
-			User user = null;
-			try {
-				CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
-				user = userService.findUserById(userDetails.getId());
-				user.setDrafMessage(draftMessage);
-				userService.updateUser(user);
-				return "OK";
-			} catch (Exception e) {
-				log.error("error saving draft", e);
-			}
-		}
-		return "KO";
-	}
 
 	@RequestMapping(value = "/task/deleteDocument", method = RequestMethod.POST)
 	public @ResponseBody String deleteDocument(@RequestParam("documentId") Long documentId) throws ConfigurationException {
