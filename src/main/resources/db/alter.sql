@@ -39,4 +39,17 @@ ALTER TABLE `users_tickets` ADD CONSTRAINT `users_tickets_ibfk_1` FOREIGN KEY (`
 ALTER TABLE `users_tickets` DROP FOREIGN KEY `users_tickets_ibfk_2`; 
 ALTER TABLE `users_tickets` ADD CONSTRAINT `users_tickets_ibfk_2` FOREIGN KEY (`ticket_id`) REFERENCES `project_handler`.`tickets`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
+-- add task document table (20/11/2015)
+
+CREATE TABLE IF NOT EXISTS `task_document` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `project_id` bigint(20) NOT NULL,
+  `task_id` bigint(20) NOT NULL,
+  `name` varchar(200) CHARACTER SET utf8 NOT NULL,
+  `database_name` varchar(300) CHARACTER SET utf8 NOT NULL,
+  `upload_date` datetime NOT NULL,
+  `document_size` bigint(20) NOT NULL,
+  `document_extension` varchar(10) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 

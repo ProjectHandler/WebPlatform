@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,10 +41,12 @@ import fr.projecthandler.enums.TaskLevel;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskDocument;
 import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.SubTaskService;
+import fr.projecthandler.service.TaskDocumentService;
 import fr.projecthandler.service.TaskMessageService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.TicketService;
@@ -73,6 +76,9 @@ public class ProjectController {
 
 	@Autowired
 	TaskMessageService taskMessageService;
+	
+	@Autowired
+	TaskDocumentService taskDocumentService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -236,7 +242,7 @@ public class ProjectController {
 			System.out.println("p t redirect");
 			return new ModelAndView("redirect:/");
 		}
-		
+
 		p.setUsers(projectService.getUsersByProjectId(projectId));
 		t.setProject(p);
 		t.setUsers(taskService.getUsersByTaskId(taskId));
@@ -247,6 +253,8 @@ public class ProjectController {
 		myModel.put("user", userService.findUserById(userDetails.getId()));
 		myModel.put("subTasks", subTaskService.getSubTasksByTaskIdAndFetchUserAndTask(t.getId()));
 		myModel.put("taskMessages", taskMessageService.getTaskMessagesByTaskIdAndFetchUser(t.getId()));
+		myModel.put("taskDocuments", taskDocumentService.getTaskDocumentsByTaskId(taskId));
+		myModel.put("maxDocumentSize", 1048576);
 
 		return new ModelAndView("project/taskBoxView", myModel);
 	}

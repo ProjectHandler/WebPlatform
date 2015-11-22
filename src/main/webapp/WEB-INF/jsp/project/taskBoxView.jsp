@@ -526,5 +526,6 @@
 	
 	<jsp:include page="./taskBoxMessages.jsp" />
 	<jsp:include page="./taskBoxActivity.jsp" />
+	<jsp:include page="./taskDocumentView.jsp" />
 </body>
 </html>

@@ -86,6 +86,28 @@ public class Utilities {
 		}
 	}
 	
+	public static void writeFileAsResponseStreamWithFileName(File file, HttpServletResponse response, String otherFileName) {
+		if (file != null) {
+			response.setHeader("Content-Disposition", "attachment;filename=" + otherFileName);
+
+			FileInputStream in = null;
+			try {
+				in = new FileInputStream(file);
+				IOUtils.copy(in, response.getOutputStream());
+			} catch (Exception e) {
+				log.error("error in writeFileAsResponseStream during copy", e);
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						log.error("error in writeFileAsResponseStream during close", e);
+					}
+				}
+			}
+		}
+	}
+	
 	public static String truncate(String str, int length) {
 		if (!StringUtils.isEmpty(str) && str.length() > length)
 			str = str.substring(0, length);

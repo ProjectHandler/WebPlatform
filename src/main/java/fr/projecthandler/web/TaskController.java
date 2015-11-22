@@ -1,37 +1,55 @@
 package fr.projecthandler.web;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomCollectionEditor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
+import fr.projecthandler.model.TaskDocument;
 import fr.projecthandler.model.TaskMessage;
+import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.SubTaskService;
+import fr.projecthandler.service.TaskDocumentService;
 import fr.projecthandler.service.TaskMessageService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
+import fr.projecthandler.session.CustomUserDetails;
+import fr.projecthandler.util.Utilities;
 
 @Controller
 public class TaskController {
@@ -52,6 +70,9 @@ public class TaskController {
 
 	@Autowired
 	ProjectService projectService;
+	
+	@Autowired
+	TaskDocumentService taskDocumentService;
 
 	@Autowired
 	HttpSession httpSession;
@@ -322,5 +343,110 @@ public class TaskController {
 		}
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		return gson.toJson(taskMessage);
+	}
+	
+	@RequestMapping(value = "user/draft/save", method = RequestMethod.POST)
+	public @ResponseBody String saveUserDraftMessage(Principal principal, @RequestParam("draftMessage") String draftMessage) {
+		if (principal != null) {
+			User user = null;
+			try {
+				CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+				user = userService.findUserById(userDetails.getId());
+				user.setDrafMessage(draftMessage);
+				userService.updateUser(user);
+				return "OK";
+			} catch (Exception e) {
+				log.error("error saving draft", e);
+			}
+		}
+		return "KO";
+	}
+
+	@RequestMapping(value = "/task/deleteDocument", method = RequestMethod.POST)
+	public @ResponseBody String deleteDocument(@RequestParam("documentId") Long documentId) throws ConfigurationException {
+		Locale locale = Locale.FRANCE; // TMP (use actual local later...)
+		ResourceBundle bundle = ResourceBundle.getBundle("messages/messages", locale);
+		
+		Configuration config = new PropertiesConfiguration("spring/path.properties");
+		String path = config.getString("folder.path.uploadedFiles");
+		
+		TaskDocument document = taskDocumentService.findTaskDocumentById(documentId);
+		
+		if (document != null) {
+			File directory = new File(path, document.getProjectId() + "_" + document.getTaskId());
+			if (directory.exists()) {
+				File fileToDelete = new File(directory, document.getDatabaseName());
+				fileToDelete.delete();
+				
+				if (!fileToDelete.exists()) {
+					List<Long> idsList = new ArrayList<Long>();
+					idsList.add(documentId);
+					taskDocumentService.deleteTaskDocumentsByIds(idsList);
+
+					return "OK";
+				}
+				else
+					return "KO : " + bundle.getString("projecthandler.taskDocumentView.error.deleteDocumentFailed");
+			}
+			else
+				return "KO : " + bundle.getString("projecthandler.taskDocumentView.error.noSuchDirectory");
+		}
+		return "KO : " + bundle.getString("projecthandler.taskDocumentView.error.noSuchFile");
+	}
+
+	@RequestMapping(value = "task/{projectId}/{taskId}/downloadDocument/{documentId}", method = RequestMethod.GET)
+	public void downloadDocument(@PathVariable Long documentId, HttpServletResponse response) throws Exception {
+		Configuration config = new PropertiesConfiguration("spring/path.properties");
+		String path = config.getString("folder.path.uploadedFiles");
+
+		TaskDocument document = taskDocumentService.findTaskDocumentById(documentId);
+
+		File directory = new File(path, document.getProjectId() + "_" + document.getTaskId());
+
+		if (document != null && directory.exists()) {
+			File file = new File(directory, document.getDatabaseName());
+			if (file != null)
+				Utilities.writeFileAsResponseStreamWithFileName(file, response, document.getName());
+		}
+	}
+
+	@RequestMapping(value = "task/{projectId}/{taskId}/uploadDocument", method = RequestMethod.POST)
+	public String uploadDocument(Principal principal, @RequestParam MultipartFile documentToUpload, @PathVariable Long projectId, @PathVariable Long taskId) throws Exception {
+		CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+		Configuration config = new PropertiesConfiguration("spring/path.properties");
+		String path = config.getString("folder.path.uploadedFiles");
+		
+		File directory = new File(path, projectId + "_" + taskId);
+		if (!directory.exists())
+			directory.mkdirs();
+		
+		User user = userService.findUserById(userDetails.getId());
+		if (user != null) {
+			BufferedOutputStream out = null;
+			String documentDatabaseName = FilenameUtils.removeExtension(documentToUpload.getOriginalFilename()) + "_" + UUID.randomUUID().toString();
+			File document = null;
+			try {
+				// save document
+				document = new File(directory, documentDatabaseName);
+				out = new BufferedOutputStream(new FileOutputStream(document));
+				out.write(documentToUpload.getBytes());
+				if (out != null) {
+					out.close();
+				}
+				TaskDocument taskDocument = new TaskDocument();
+				taskDocument.setProjectId(projectId);
+				taskDocument.setTaskId(taskId);
+				taskDocument.setName(documentToUpload.getOriginalFilename());
+				taskDocument.setDatabaseName(documentDatabaseName);
+				taskDocument.setDocumentExtension(documentToUpload.getContentType());
+				taskDocument.setDocumentSize(documentToUpload.getSize());
+				taskDocument.setUploadDate(new Date());
+				taskDocumentService.saveTaskDocument(taskDocument);
+			} catch (Exception e) {
+				throw new Exception("Error uploading file...", e);
+			}
+		}
+
+		return "redirect:/project/viewProject/" + projectId + "/tasks/" + taskId;
 	}
 }
