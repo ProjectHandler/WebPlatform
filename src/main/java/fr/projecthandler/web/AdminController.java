@@ -30,6 +30,7 @@ import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.model.Token;
 import fr.projecthandler.model.User;
+import fr.projecthandler.service.ApplicationSettingsService;
 import fr.projecthandler.service.MailService;
 import fr.projecthandler.service.ProjectService;
 import fr.projecthandler.service.TaskService;
@@ -58,6 +59,9 @@ public class AdminController {
 
 	@Autowired
 	TaskService taskService;
+	
+	@Autowired
+	ApplicationSettingsService appSettingsService;
 
 	@RequestMapping(value = "admin/signupSendMailService", method = RequestMethod.GET)
 	public ModelAndView redirectToSignupSendMailService(HttpServletRequest request, HttpServletResponse response, Principal principal) {
@@ -333,5 +337,21 @@ public class AdminController {
 			log.error("error for changing group for user id: " + userId + " and group id: " + groupId, e);
 			return "KO";
 		}
+	}
+	
+	@RequestMapping(value = "admin/application_settings", method = RequestMethod.GET)
+	public ModelAndView applicationSettings(HttpServletRequest request, HttpServletResponse response, Principal principal) {
+		if (principal != null) {
+			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
+			if (userDetails.getUserRole() != UserRole.ROLE_ADMIN)
+				return new ModelAndView("accessDenied");
+		} else
+			return new ModelAndView("accessDenied");
+
+		Map<String, Object> myModel = new HashMap<String, Object>();
+		
+		
+		
+		return new ModelAndView("admin/application_settings", myModel);
 	}
 }

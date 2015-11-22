@@ -53,3 +53,15 @@ CREATE TABLE IF NOT EXISTS `task_document` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
 
+-- add application settings table (22/11/2015)
+CREATE TABLE IF NOT EXISTS `application_settings` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `setting_key` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `setting_value` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `description` varchar(200) CHARACTER SET utf8 NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+
+-- populating application settings table (22/11/2015)
+INSERT INTO `application_settings` (`id`, `setting_key`, `setting_value`, `description`) VALUES (10, 'avatar_max_size', '1048576', 'projecthandler.applicationSettings.description.avatarMaxSize');
+INSERT INTO `application_settings` (`id`, `setting_key`, `setting_value`, `description`) VALUES (11, 'document_max_size', '20000000', 'projecthandler.applicationSettings.description.documentMaxSize');

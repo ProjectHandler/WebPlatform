@@ -195,6 +195,8 @@
 						<hr class="inverted-bg">
 						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/groups_management"/>"><span class="icon-tree margin-right"></span>Administration des groupes</a>
 						<hr class="inverted-bg">
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/admin/application_settings"/>"><span class="icon-tree margin-right"></span><spring:message code="projecthandler.applicationSettings.title"/></a>
+						<hr class="inverted-bg">
 					</div>
 				</div>
 				<div class="display-table-cell full-width full-height">
