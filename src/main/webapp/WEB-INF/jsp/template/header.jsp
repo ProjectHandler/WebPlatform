@@ -89,8 +89,9 @@
 		}
 	});
 </script>
+<!-- temporary css -->
 <style>
-#text-draft{
+#text-draft {
 	margin-right: 18px;
 }
 #text-draft-toggle {
@@ -110,6 +111,9 @@
 	border-radius: 4px;
 	background-color: #FFF;
 	border-color: #CCC;
+}
+.super-redcss {
+	font-size: 16px;
 }
 </style>
 <div class="">
@@ -163,39 +167,39 @@
 							<textarea id="text-draft-ckeditor"></textarea>
 						</div>
 					</li>
-					<li class="position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
 						</a>
 					</li>
-					<li class="position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/project/projectsList"/>" title="projects">
 							<span class="icon-folder"></span>
 						</a>
 					</li>
-					<li class="position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/calendar"/>" title="calendar">
 							<span class="icon-calendar"></span>
 						</a>
 					</li>
-					<li class="position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/gantt"/>" title="gantt">
 							<span class="icon-table2"></span>
 						</a>
 					</li>
-					<li class="position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/profile/usersProfile"/>" title="users">
 							<span class="icon-user"></span>
 						</a>
 					</li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<li class="position-relative vertical-top display-table-cell padding-right">
+						<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 							<a class="default-btn-shape util6-primary-btn-style1" href="<c:url value="/admin/users_management"/>" title="administration">
 								<span class="icon-database small-margin-right"></span>Administration
 							</a>
 						</li>
 					</sec:authorize>
-					<li class="position-relative display-table-cell">
+					<li class="super-redcss position-relative display-table-cell">
 						<div class="display-table position-relative theme3-primary-boxshadow-raising-out">
 							<a class="cover-btn-shape animating-event default-btn-style5 zindex-5" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-profilebox" href="#" title="profile"></a>
 							<div class="display-table-cell"><div class="default-box-p"></div></div>

@@ -11,6 +11,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <spring:url value="/resources/css/redcss.css" var="redcss"/>
 <link href="${redcss}" rel="stylesheet"/>
+<spring:url value="/resources/css/super-red.min.css" var="superRedCss"/>
+<link href="${superRedCss}" rel="stylesheet"/>
 <spring:url value="/resources/img/icon.png" var="windowicon"/>
 <link href="${windowicon}" rel="icon" type="image/png"/>
 <spring:url value="/resources/css/selectivity-full.min.css" var="selectivity"/>
