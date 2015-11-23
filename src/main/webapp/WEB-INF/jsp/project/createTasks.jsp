@@ -223,9 +223,6 @@
 	
 		<hr class="theme3-lighten1-bg margin-bottom">
 		
-		<c:if test="${hasBeenSaved}">
-			<span class="icon-info">La tâche <em>${previousTaskName}</em> a bien été sauvegardé</span>
-		</c:if>
 		<form:form method="POST" modelAttribute="task" id="addTask" action="${pageContext.request.contextPath}/project/task/save" onsubmit="return validateForm();">
 	
 			<!-- PROJECT -->
@@ -373,15 +370,28 @@
 					
 				<div class="display-table-cell text-center" style="width:50%;">
 					<div class="display-inline-block margin-auto padding-left" style="padding-top:170px;">
-						<div>
-							<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
-								<span class="icon-checkmark small-margin-right">
-								</span><spring:message code="projecthandler.project.edit.save"/>
-							</button>
-						</div>
-						<div class="small-container theme3-darken2-text">
-							ou fermez cette fenêtre
-						</div>
+					
+						<c:choose>
+						    <c:when test="${hasBeenSaved}">
+								<div class="default-btn-shape util5-primary-btn-style1">
+									La tâche <u><em>${previousTaskName}</em></u> a bien été sauvegardée
+								</div>
+								<div class="small-container theme3-darken2-text">
+									Vous pouvez fermer cette fenêtre
+								</div>									
+						    </c:when>    
+						    <c:otherwise>
+								<div>
+									<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
+										<span class="icon-checkmark small-margin-right">
+										</span><spring:message code="projecthandler.project.edit.save"/>
+									</button>
+								</div>
+								<div class="small-container theme3-darken2-text">
+									ou fermez cette fenêtre
+								</div>
+						    </c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 			
