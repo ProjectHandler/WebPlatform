@@ -163,7 +163,7 @@
 							<textarea id="text-draft-ckeditor"></textarea>
 						</div>
 					</li>-->
-					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
+					<li class="super-redcss position-relative vertical-top not-display-table-cell padding-right display-none">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
 						</a>
