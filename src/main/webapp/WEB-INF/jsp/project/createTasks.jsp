@@ -227,7 +227,7 @@
 	
 			<!-- PROJECT -->
 			<form:input type="hidden" path="id" name="taskId" id="taskId" value="${task.id}"/>
-			<form:input id="task-projectId" path="project" type="hidden" value="${project.id}"/>
+			<form:input id="task-projectId" path="project.id" type="hidden" value="${project.id}"/>
 			<form:input id="task-taskLevel" path="level" type="hidden"/>
 			
 			<div class="display-table full-width small-padding-top">
