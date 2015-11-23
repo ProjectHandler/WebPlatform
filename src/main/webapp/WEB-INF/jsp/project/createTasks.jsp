@@ -350,7 +350,7 @@
 							</form:select>
 						</div>
 					</div>
-					<div class="margin-bottom">
+					<div>
 						<div class="display-table-cell vertical-align fixedwidth-128">
 							<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
 						</div>
@@ -370,28 +370,20 @@
 					
 				<div class="display-table-cell text-center" style="width:50%;">
 					<div class="display-inline-block margin-auto padding-left" style="padding-top:170px;">
-					
-						<c:choose>
-						    <c:when test="${hasBeenSaved}">
-								<div class="default-btn-shape util5-primary-btn-style1">
-									La tâche <u><em>${previousTaskName}</em></u> a bien été sauvegardée
-								</div>
-								<div class="small-container theme3-darken2-text">
-									Vous pouvez fermer cette fenêtre
-								</div>									
-						    </c:when>    
-						    <c:otherwise>
-								<div>
-									<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
-										<span class="icon-checkmark small-margin-right">
-										</span><spring:message code="projecthandler.project.edit.save"/>
-									</button>
-								</div>
-								<div class="small-container theme3-darken2-text">
-									ou fermez cette fenêtre
-								</div>
-						    </c:otherwise>
-						</c:choose>
+						<div>
+							<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
+								<span class="icon-checkmark small-margin-right">
+								</span><spring:message code="projecthandler.project.edit.save"/>
+							</button>
+						</div>
+						<div class="small-container theme3-darken2-text">
+							ou fermez cette fenêtre
+						</div>
+					    <c:if test="${hasBeenSaved}">
+							<div class="default-btn-shape util5-primary-bg inverted-text" style="margin-top:40px;">
+								La tâche <u><em>${previousTaskName}</em></u><br/> a bien été sauvegardée
+							</div>								
+					    </c:if>   
 					</div>
 				</div>
 			
