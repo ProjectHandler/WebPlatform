@@ -60,8 +60,8 @@ public class HomeController {
 	}
 		
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public ModelAndView welcome(Principal principal) {
-		Map<String, Object> myModel = new HashMap<String, Object>();
+	public String welcome(Principal principal) {
+		/*Map<String, Object> myModel = new HashMap<String, Object>();
 
 		if (principal != null) {
 			CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();
@@ -96,6 +96,7 @@ public class HomeController {
 		} else {
 			return new ModelAndView("login");
 		}
-		return new ModelAndView("home", myModel);
+		return new ModelAndView("home", myModel);*/
+		return "redirect:/project/projectsList";
 	}
 }

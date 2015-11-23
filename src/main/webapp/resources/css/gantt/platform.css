@@ -43,8 +43,8 @@ a {
 }
 
 a:hover, a.aHover {
-  color: #0C85AD;
-  text-decoration: underline;
+  /*color: #0C85AD;
+  text-decoration: underline;*/
 }
 
 h1 {
