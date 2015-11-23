@@ -205,150 +205,186 @@
 	</script>
 </head>
 <body>
-	<div id="task-creationModeDiv">
-		<div id="task-currentTaskType"></div>
-		<button id="task-switchTypeButton" class="default-btn-shape theme2-primary-btn-style1" onclick="switchTaskType();">
-		</button>
-	</div>
-	<form:form method="POST" modelAttribute="task" id="addTask" action="${pageContext.request.contextPath}/project/task/save" onsubmit="return validateForm();">
-
-		<!-- PROJECT -->
-		<form:input type="hidden" path="id" name="taskId" id="taskId" value="${task.id}"/>
-		<form:input id="task-projectId" path="project" type="hidden" value="${project.id}"/>
-		<form:input id="task-taskLevel" path="level" type="hidden"/>
-
-		<!-- TASK NAME -->
-		<div class="small-margin-bottom">
+	<div class="container">
+	
+		<div class="display-table full-width margin-bottom">
+			
+			<h1 id="task-currentTaskType" class="text-h1 theme3-darken1-text display-table-cell vertical-align padding-right full-width">
+			</h1>
+			
 			<div class="display-table-cell vertical-align">
-				<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.name" />
-				<spring:message code="projecthandler.field.required"/></label></div>
-			</div>
-			<div class="display-table-cell vertical-align fixedmaxwidth-256">
-				<form:input path="name" type="text" maxlength="30" id="name" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" value="${task.name}"></form:input>
-				<span class="error" id="nameError"></span>
-			</div>
-		</div>
-
-		<!-- TASK DESCRIPTION -->
-		<div class="small-margin-bottom">
-			<div class="display-table-cell vertical-align fixedwidth-128">
-				<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.description" /></label></div>
-			</div>
-			<div class="display-table-cell vertical-align fixedmaxwidth-256">
-				<form:textarea path="description" id="description" maxlength="500" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" content="${task.description}"></form:textarea>
-			</div>
-		</div>
-
-		<!-- TASK PRIORITY -->
-		<div class="priority display-inline-block">
-			<spring:message code="projecthandler.taskBoxView.priority"/>
-			<form:select id="prioritySelect" path="priority">
-				<c:forEach var="priority" items="${priorities}">
-					<c:choose>
-					<c:when test="${task.priority.name != null}">
-						<form:option selected="selected" value="${task.id}/${priority.id}">
-							${e:forHtml(priority.name)}
-						</form:option>
-					</c:when>
-					<c:otherwise>
-						<form:option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
-							${e:forHtml(priority.name)}
-						</form:option>
-					</c:otherwise>
-					</c:choose>
-				</c:forEach>
-			</form:select>
-		</div>
-
-		<!-- TASK STARTING DATE -->
-		<div class="small-margin-bottom">
-			<div class="display-table-cell vertical-align">
-				<div class=" fixedwidth-128">
-					<label>
-						<spring:message code="projecthandler.project.edit.beginDate"/>
-						<spring:message code="projecthandler.field.required"/>
-					</label>
-					<fmt:formatDate value="${task.startingDate}" var="dateBeginString" pattern="dd/MM/yyyy" />
+				<div style="width:200px;" class="text-right">
+					<button id="task-switchTypeButton" class="default-btn-shape theme1-primary-btn-style1" onclick="switchTaskType();">
+					</button>
 				</div>
 			</div>
-			<div class="display-table-cell vertical-align fixedmaxwidth-256">
-				<form:input id="alt-dateBegin" path="startingDate" type="hidden" value="${task.startingDate}"/>
-				<input  id="dateBegin" value="${dateBeginString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
-				<span class="error" id="dateBeginError"></span>
-			</div>
-		</div>
+			
+		</div>	
+	
+		<hr class="theme3-lighten1-bg margin-bottom">
 
-		<!-- TASK ENDING DATE -->
-		<div class="small-margin-bottom">
-			<div class="display-table-cell vertical-align">
-				<div class=" fixedwidth-128">
-					<label>
-						<spring:message code="projecthandler.project.edit.endDate" />
-						<spring:message code="projecthandler.field.required"/>
-					</label>
-				<fmt:formatDate value="${task.endingDate}" var="dateEndString" pattern="dd/MM/yyyy" />
-				</div>
-			</div>
-			<div class="display-table-cell vertical-align fixedmaxwidth-256">
-				<form:input id="alt-dateEnd" path="endingDate" type="hidden" value="${task.endingDate}"/>
-				<input  id="dateEnd" value="${dateEndString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
-				<span class="error" id="dateEndError"></span>
-			</div>
-		</div>
-
-		<!-- TASK USERS -->
-		<div id="task-userAndGroupSelect">
-		<div class="small-margin-bottom">
-			<div class="display-table-cell vertical-align fixedwidth-128">
-				<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
-			</div>
-			<div class="display-table-cell vertical-align">
-				<form:select path="users" class="userSelection" id="userSelection">
-					<c:forEach var='userInList' items='${users}'>
-						<c:set var="found" value= "false"/>
-						<c:if test="${task.users != null}">
-							<c:forEach var="userInProj" items="${project.users}">
-								<c:if test="${userInProj.id == userInList.id}">
-									<c:set var="found" value= "true"/>
-								</c:if>
+		<form:form method="POST" modelAttribute="task" id="addTask" action="${pageContext.request.contextPath}/project/task/save" onsubmit="return validateForm();">
+	
+			<!-- PROJECT -->
+			<form:input type="hidden" path="id" name="taskId" id="taskId" value="${task.id}"/>
+			<form:input id="task-projectId" path="project" type="hidden" value="${project.id}"/>
+			<form:input id="task-taskLevel" path="level" type="hidden"/>
+			
+			<div class="display-table full-width small-padding-top">
+			
+				<div class="display-table-cell" style="width:50%;">
+			
+					<!-- TASK PRIORITY -->
+					<div class="priority small-margin-bottom">
+						<div class="display-table-cell vertical-align">
+							<div class=" fixedwidth-128"><spring:message code="projecthandler.taskBoxView.priority"/></div>
+						</div>
+						<div class="display-table-cell vertical-align">
+							<form:select id="prioritySelect" path="priority">
+								<c:forEach var="priority" items="${priorities}">
+									<c:choose>
+									<c:when test="${task.priority.name != null}">
+										<form:option selected="selected" value="${task.id}/${priority.id}">
+											${e:forHtml(priority.name)}
+										</form:option>
+									</c:when>
+									<c:otherwise>
+										<form:option id="${task.id}/${priority.id}" value="${task.id}/${priority.id}">
+											${e:forHtml(priority.name)}
+										</form:option>
+									</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</form:select>
+						</div>
+					</div>
+			
+					<!-- TASK NAME -->
+					<div class="small-margin-bottom">
+						<div class="display-table-cell vertical-align">
+							<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.name" />
+							<spring:message code="projecthandler.field.required"/></label></div>
+						</div>
+						<div class="display-table-cell vertical-align fixedmaxwidth-256">
+							<form:input path="name" type="text" maxlength="30" id="name" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" value="${task.name}"></form:input>
+							<span class="error" id="nameError"></span>
+						</div>
+					</div>
+			
+					<!-- TASK DESCRIPTION -->
+					<div class="small-margin-bottom">
+						<div class="display-table-cell vertical-align fixedwidth-128">
+							<div class=" fixedwidth-128"><label><spring:message code="projecthandler.project.edit.description" /></label></div>
+						</div>
+						<div class="display-table-cell vertical-align fixedmaxwidth-256">
+							<form:textarea path="description" id="description" maxlength="500" rows="10" class="fixedmaxwidth-256 textfield surrounded theme3-primary-bdr" content="${task.description}"></form:textarea>
+						</div>
+					</div>
+			
+					<!-- TASK STARTING DATE -->
+					<div class="small-margin-bottom">
+						<div class="display-table-cell vertical-align">
+							<div class=" fixedwidth-128">
+								<label>
+									<spring:message code="projecthandler.project.edit.beginDate"/>
+									<spring:message code="projecthandler.field.required"/>
+								</label>
+								<fmt:formatDate value="${task.startingDate}" var="dateBeginString" pattern="dd/MM/yyyy" />
+							</div>
+						</div>
+						<div class="display-table-cell vertical-align fixedmaxwidth-256">
+							<form:input id="alt-dateBegin" path="startingDate" type="hidden" value="${task.startingDate}"/>
+							<input  id="dateBegin" value="${dateBeginString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
+							<span class="error" id="dateBeginError"></span>
+						</div>
+					</div>
+			
+					<!-- TASK ENDING DATE -->
+					<div class="small-margin-bottom">
+						<div class="display-table-cell vertical-align">
+							<div class=" fixedwidth-128">
+								<label>
+									<spring:message code="projecthandler.project.edit.endDate" />
+									<spring:message code="projecthandler.field.required"/>
+								</label>
+							<fmt:formatDate value="${task.endingDate}" var="dateEndString" pattern="dd/MM/yyyy" />
+							</div>
+						</div>
+						<div class="display-table-cell vertical-align fixedmaxwidth-256">
+							<form:input id="alt-dateEnd" path="endingDate" type="hidden" value="${task.endingDate}"/>
+							<input  id="dateEnd" value="${dateEndString}" class="textfield surrounded fixedmaxwidth-256 theme3-primary-bdr" >
+							<span class="error" id="dateEndError"></span>
+						</div>
+					</div>
+			
+					<!-- TASK USERS -->
+					<div id="task-userAndGroupSelect">
+					<div class="small-margin-bottom">
+						<div class="display-table-cell vertical-align fixedwidth-128">
+							<label><spring:message code="projecthandler.project.edit.userSelection"/></label>
+						</div>
+						<div class="display-table-cell vertical-align">
+							<form:select path="users" class="userSelection" id="userSelection">
+								<c:forEach var='userInList' items='${users}'>
+									<c:set var="found" value= "false"/>
+									<c:if test="${task.users != null}">
+										<c:forEach var="userInProj" items="${project.users}">
+											<c:if test="${userInProj.id == userInList.id}">
+												<c:set var="found" value= "true"/>
+											</c:if>
+										</c:forEach>
+									</c:if>
+									<c:choose>
+									<c:when test="${found eq true}">
+										<form:option selected="selected" value="${userInList.id}">
+											${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
+										</form:option>
+									</c:when>
+									<c:otherwise>
+										<form:option value="${userInList.id}">
+											${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
+										</form:option>
+									</c:otherwise>
+									</c:choose>
+								</c:forEach>
+							</form:select>
+						</div>
+					</div>
+					<div class="margin-bottom">
+						<div class="display-table-cell vertical-align fixedwidth-128">
+							<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
+						</div>
+						<div class="display-table-cell vertical-align">
+							<select class="groupSelection"  multiple="multiple" id="groupSelection">
+							<c:forEach var='group' items='${groups}'>
+								<option value="${group.id}">
+									${e:forHtml(group.name)}
+								</option>
 							</c:forEach>
-						</c:if>
-						<c:choose>
-						<c:when test="${found eq true}">
-							<form:option selected="selected" value="${userInList.id}">
-								${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
-							</form:option>
-						</c:when>
-						<c:otherwise>
-							<form:option value="${userInList.id}">
-								${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
-							</form:option>
-						</c:otherwise>
-						</c:choose>
-					</c:forEach>
-				</form:select>
+							</select>
+						</div>
+					</div>
+					</div>
+				
+				</div>
+					
+				<div class="display-table-cell text-center" style="width:50%;">
+					<div class="display-inline-block margin-auto padding-left" style="padding-top:170px;">
+						<div>
+							<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
+								<span class="icon-checkmark small-margin-right">
+								</span><spring:message code="projecthandler.project.edit.save"/>
+							</button>
+						</div>
+						<div class="small-container theme3-darken2-text">
+							ou fermez cette fenêtre
+						</div>
+					</div>
+				</div>
+			
 			</div>
-		</div>
-		<div class="margin-bottom">
-			<div class="display-table-cell vertical-align fixedwidth-128">
-				<label><spring:message code="projecthandler.project.edit.groupSelection" /></label>
-			</div>
-			<div class="display-table-cell vertical-align">
-				<select class="groupSelection"  multiple="multiple" id="groupSelection">
-				<c:forEach var='group' items='${groups}'>
-					<option value="${group.id}">
-						${e:forHtml(group.name)}
-					</option>
-				</c:forEach>
-				</select>
-			</div>
-		</div>
-		</div>
 		
-		<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit">
-			<span class="icon-checkmark small-margin-right">
-			</span><spring:message code="projecthandler.project.edit.save"/>
-		</button>
-	</form:form>
+		</form:form>
+	</div>
 </body>
 </html>
