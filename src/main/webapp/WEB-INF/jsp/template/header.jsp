@@ -156,13 +156,13 @@
 						</div>
 						
 					</li>
-					<c:set var="draftEditorClass" value="${cookie['draft-toggle'].value == 'hide' ? 'display-none' : ''}"/>
+					<!--<c:set var="draftEditorClass" value="${cookie['draft-toggle'].value == 'hide' ? 'display-none' : ''}"/>
 					<li id = "text-draft">
 						<span id="text-draft-toggle" class="default-btn-shape">Toggle draft</span>
 						<div id="text-draft-section" class="${draftEditorClass}">
 							<textarea id="text-draft-ckeditor"></textarea>
 						</div>
-					</li>
+					</li>-->
 					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
@@ -187,6 +187,16 @@
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/profile/usersProfile"/>" title="users">
 							<span class="icon-user"></span>
 						</a>
+					</li>
+					<li id="text-draft" class="super-redcss position-relative vertical-top display-table-cell padding-right">
+						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme2-primary-text text-h1 text-center radius animating-event" href="#" title="draft" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-draftbox">
+							<span class="icon-pencil2"></span>
+						</a>
+						<div id="mainmenu-draftbox" class="pop-event focus-sensitive position-absolute position-right small-container inverted-bg margin-top margin-right theme3-darken2-boxshadow-raising-out zindex-50">
+							<div id="text-draft-section">
+								<textarea id="text-draft-ckeditor"></textarea>
+							</div>
+						</div>
 					</li>
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
 						<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
