@@ -368,13 +368,15 @@
 				
 				</div>
 					
-				<div class="display-table-cell text-center" style="width:50%;">
-					<div class="display-inline-block margin-auto padding-left" style="padding-top:170px;">
-					    <c:if test="${hasBeenSaved}">
-							<div class="default-btn-shape util5-primary-bg inverted-text" style="margin-bottom:40px;">
+				<div class="display-table-cell text-center position-relative" style="width:50%;">
+				    <c:if test="${hasBeenSaved}">
+				    	<div class="position-absolute position-top position-left text-center full-width padding-left" style="margin-top:60px;">
+							<div class="default-btn-shape util5-primary-bg inverted-text margin-auto">
 								La tâche <u><em>${previousTaskName}</em></u><br/> a bien été sauvegardée
-							</div>								
-					    </c:if>  
+							</div>
+						</div>						
+				    </c:if> 
+					<div class="display-inline-block margin-auto padding-left" style="padding-top:170px;"> 
 						<div>
 							<button class="default-btn-shape theme2-primary-btn-style1" type="submit" id="submit" style="width:200px;">
 								<span class="icon-checkmark small-margin-right">
