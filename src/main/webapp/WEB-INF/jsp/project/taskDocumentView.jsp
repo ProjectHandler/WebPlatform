@@ -71,35 +71,57 @@
 		return num.toFixed(1) + unit;
 	}
 </script>
-<div class="container">
-	<form id="documentToUploadForm" class="full-width full-height" name="documentToUploadForm" method="post" enctype="multipart/form-data">
+
+<div class="container margin-left small-margin-right small-margin-top small-padding-bottom">
+
+	<div class="display-table-cell vertical-align small-padding-right text-h1 theme3-darken1-text">
+		<span class="icon-files-empty"></span>
+	</div>	
+
+	<div class="display-table-cell vertical-align padding-right">
+		<h2 class="text-h1 theme3-darken1-text fixedwidth-320">Documents</h2>
+	</div>
+
+</div>
+
+<div class="container margin-left">
+	<c:forEach items="${taskDocuments}" var="document">
+		<div id="documentBox-${document.id}" class="display-table margin-bottom">
+			<div class="display-table-cell vertical-align text-h1 theme3-primary-text padding-right">
+				<div class="container theme3-lighten1-bdr surrounded radius">
+					<span class="icon-file-empty"></span>
+				</div>
+			</div>
+			<div class="display-table-cell vertical-align">
+				<div>
+					<a class="default-btn-shape theme1-primary-btn-style1"href="${pageContext.request.contextPath}/task/${document.projectId}/${document.taskId}/downloadDocument/${document.id}" target="_blank">
+						Downlad ${document.name}
+					</a>
+					<button class="default-btn-shape theme3-primary-text util6-primary-btn-style6" onClick="deleteDocument(${document.id});" title="<spring:message code="projecthandler.general.delete" />">
+						<span class="icon-cross"></span> Supprimer
+					</button>
+				</div>
+				<div class="small small-margin-top">
+					<!--<spring:message code="projecthandler.taskDocumentView.uploadDate" /> : -->${document.uploadDate} /
+					<!--<spring:message code="projecthandler.taskDocumentView.documentFormat" /> : ${document.documentExtension} ,-->
+					<!--<spring:message code="projecthandler.taskDocumentView.documentSize" /> : --><div class="display-inline-block sizeString">${document.documentSize}</div>
+				</div>
+			</div>
+		</div>
+	</c:forEach>
+</div>
+
+<div class="container margin-left no-padding-top">
+	<form id="documentToUploadForm" name="documentToUploadForm" method="post" enctype="multipart/form-data">
 		<div id="documentUpload-box">
-			<div class="small-margin-bottom"><spring:message code="projecthandler.taskDocumentView.uploadDocument"/></div>
+			<!-- <div class="margin-bottom text-h3 theme3-darken3-text"><spring:message code="projecthandler.taskDocumentView.uploadDocument"/></div> -->
 			<input type="file" name="documentToUpload" id="documentToUpload" class="filestyle" data-buttonName="btn btn-primary btn-xs" data-buttonText="&nbsp;<spring:message code="projecthandler.signup.button.chooseFile"/>"/>
 			<span id="document_error" style="color: red; display:block;"></span>
-			<div class="divButton small-margin-top display-inline-block">
-				<button id="documentUploadButton" class="reduced-btn-shape radius theme1-primary-btn-style1" onClick="uploadDocument();return false;" disabled="disabled">
-					<spring:message code="projecthandler.admin.action.add" />
+			<div class="divButton small-margin-top small-margin-left">
+				<button id="documentUploadButton" class="reduced-btn-shape theme1-lighten2-btn-style6" onClick="uploadDocument();return false;" disabled="disabled">
+					<span class="icon-box-remove small-margin-right"></span>Uploader le fichier
 				</button>
 			</div>
 		</div>
 	</form>
-</div>
-<div class="container">
-	<spring:message code="projecthandler.taskDocumentView.documentList"/>
-	<c:forEach items="${taskDocuments}" var="document">
-		<div id="documentBox-${document.id}">
-			<div>
-			<a href="${pageContext.request.contextPath}/task/${document.projectId}/${document.taskId}/downloadDocument/${document.id}" target="_blank">${document.name}</a>
-			<button class="text-h3 reduced-btn-shape theme3-lighten1-text util6-primary-btn-style6" onClick="deleteDocument(${document.id});" title="<spring:message code="projecthandler.general.delete" />">
-				<span class="icon-cross"></span>
-			</button>
-			</div>
-			<div>
-				<spring:message code="projecthandler.taskDocumentView.uploadDate" /> : ${document.uploadDate} ,
-				<spring:message code="projecthandler.taskDocumentView.documentFormat" /> : ${document.documentExtension} ,
-				<spring:message code="projecthandler.taskDocumentView.documentSize" /> : <div class="display-inline-block sizeString">${document.documentSize}</div>
-			</div>
-		</div>
-	</c:forEach>
 </div>

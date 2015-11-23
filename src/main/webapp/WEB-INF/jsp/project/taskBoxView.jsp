@@ -526,6 +526,11 @@
 	
 	<jsp:include page="./taskBoxMessages.jsp" />
 	<jsp:include page="./taskBoxActivity.jsp" />
+
+	<div class="padding-left padding-right">
+		<hr class="theme3-lighten1-bg">
+	</div>	
+
 	<jsp:include page="./taskDocumentView.jsp" />
 </body>
 </html>
