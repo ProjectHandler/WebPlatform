@@ -106,9 +106,6 @@
 											</select>
 										</div>
 										<div class="display-table-cell vertical-align full-width text-right">
-											<a class="default-btn-shape theme1-primary-btn-style1 animating-event" href="#" onclick="openCreateTasksBox(${project.id})" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box">
-												<spring:message code="projecthandler.projectView.goToCreateTasks"/>
-											</a>
 											<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/project/projectsList"/>">
 												<span class="icon-folder-open small-margin-right"></span><spring:message code="projecthandler.projectView.goToProjectsList"/>
 											</a>
@@ -195,12 +192,6 @@
 										</div>
 									</div>
 									
-									<div>
-										<jsp:include page="projectTasksView.jsp" />
-									</div>
-									
-									<div class="padding-top padding-bottom margin-top"><hr class="theme3-primary-bg"></div>
-	
 									<div class="">
 									
 										<div id="ticketAccessBox" class="clearfix">
@@ -220,12 +211,16 @@
 											</c:forEach>
 										</div>
 										
-										<div>
+										<div class="margin-bottom">
 											<a class="default-btn-shape theme3-primary-text theme1-lighten2-btn-style6 small-margin-top" href="${pageContext.request.contextPath}/ticket/list/project/${project.id}">
 												<span class="icon-envelop small-margin-right"></span>Voir tous les tickets
 											</a>
 										</div>
 										
+									</div>									
+									
+									<div>
+										<jsp:include page="projectTasksView.jsp" />
 									</div>
 									
 								</div>

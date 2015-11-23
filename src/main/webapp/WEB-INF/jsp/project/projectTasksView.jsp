@@ -40,6 +40,13 @@
 			</div>		
 		</div>
 		<div class="display-table-cell vertical-align">
+			<div style="width:290px;">
+				<a class="default-btn-shape theme3-primary-text theme1-lighten2-btn-style6 animating-event" href="#" onclick="openCreateTasksBox(${project.id})" data-action="toggle-event" data-animation="pop-event" data-target="main-modal-box">
+					<span class="icon-plus small-margin-right"></span><spring:message code="projecthandler.projectView.goToCreateTasks"/>
+				</a>
+			</div>
+		</div>
+		<div class="display-table-cell vertical-align">
 			<div class="display-table position-relative" style="width:30px;height:30px;">
 				<a class="cover-btn-shape default-btn-style5 circle animating-event" data-action="open-event" data-animation="pop-event" data-target="tasklist-helpbox" href="#"></a>
 				<div class="display-table-cell vertical-align full-width full-height util2-lighten2-bg inverted-text text-center circle text-h4" title="help">?</div>
