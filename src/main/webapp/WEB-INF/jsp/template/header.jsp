@@ -188,7 +188,7 @@
 							<span class="icon-user"></span>
 						</a>
 					</li>
-					<li id="text-draft" class="super-redcss position-relative vertical-top display-table-cell padding-right">
+					<li id="text-draft" class="position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme2-primary-text text-h1 text-center radius animating-event" href="#" title="draft" data-action="toggle-event" data-animation="pop-event" data-target="mainmenu-draftbox">
 							<span class="icon-pencil2"></span>
 						</a>
