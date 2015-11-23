@@ -89,7 +89,6 @@
 		}
 	});
 </script>
-<!-- temporary css -->
 <style>
 #text-draft {
 	margin-right: 18px;
@@ -111,9 +110,6 @@
 	border-radius: 4px;
 	background-color: #FFF;
 	border-color: #CCC;
-}
-.super-redcss {
-	font-size: 16px;
 }
 </style>
 <div class="">

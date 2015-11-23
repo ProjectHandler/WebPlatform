@@ -17,6 +17,9 @@
 
 	<spring:url value="/resources" var="rsc"/>
 	
+	<spring:url value="/resources/css/super-red.min.css" var="superRedCss"/>
+	<link href="${superRedCss}" rel="stylesheet"/>
+	
 	<link rel=stylesheet href="${rsc}/css/gantt/platform.css" type="text/css"/>
 	<link rel=stylesheet href="${rsc}/libs/gantt/dateField/jquery.dateField.css" type="text/css">
 
@@ -317,6 +320,9 @@
 	    font: inherit !important;
 	    vertical-align: baseline !important;
 	}
+.super-redcss {
+	font-size: 16px;
+}
 </style>
 
 </head>
