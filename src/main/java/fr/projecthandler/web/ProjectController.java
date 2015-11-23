@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -381,7 +382,8 @@ public class ProjectController {
 	}
 	
 	@RequestMapping(value = "/project/task/save", method = RequestMethod.POST)
-	public ModelAndView saveTask(Principal principal, @ModelAttribute("task") Task task, BindingResult result) {
+	public ModelAndView saveTask(Principal principal, @ModelAttribute("task") Task task, BindingResult result,
+			final RedirectAttributes redirectAttributes) {
 		//CustomUserDetails userDetails = (CustomUserDetails) ((Authentication) principal).getPrincipal();		
 
 		if (principal != null) {
@@ -400,6 +402,8 @@ public class ProjectController {
 					log.error("error saving task: ", e);
 					return new ModelAndView("redirect:/");
 				}
+				redirectAttributes.addFlashAttribute("hasBeenSaved", true);
+				redirectAttributes.addFlashAttribute("previousTaskName", task.getName());
 			}
 			// Else edit Task
 		}

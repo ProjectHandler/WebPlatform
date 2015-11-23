@@ -222,7 +222,10 @@
 		</div>	
 	
 		<hr class="theme3-lighten1-bg margin-bottom">
-
+		
+		<c:if test="${hasBeenSaved}">
+			<span class="icon-info">La tâche <em>${previousTaskName}</em> a bien été sauvegardé</span>
+		</c:if>
 		<form:form method="POST" modelAttribute="task" id="addTask" action="${pageContext.request.contextPath}/project/task/save" onsubmit="return validateForm();">
 	
 			<!-- PROJECT -->
