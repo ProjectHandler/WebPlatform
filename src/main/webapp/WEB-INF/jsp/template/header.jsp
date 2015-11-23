@@ -227,7 +227,7 @@
 										</div>
 									</div>
 									<div class="display-table-cell vertical-top padding-left full-width">
-										<h1 class="no-margin-top no-margin-bottom text-h4"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></h1>
+										<h1 class="no-margin-top no-margin-bottom text-h4"><span class="default-text"><sec:authentication property="principal.firstName" /> <sec:authentication property="principal.lastName" /></span></h1>
 										<p class="no-margin-top margin-bottom small"><sec:authentication property="principal.username" /></p>
 										<a class="default-btn-shape theme1-primary-btn-style1" href="<c:url value="/signup"/>">
 											<span class="icon-user small-margin-right"></span>Mon profil
