@@ -48,7 +48,7 @@ import fr.projecthandler.session.CustomUserDetails;
 public class TicketController {
 
 	private static final Log log = LogFactory.getLog(TicketController.class);
-	
+
 	@Autowired
 	UserService userService;
 
@@ -80,34 +80,29 @@ public class TicketController {
 
 	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.GET)
 	public ModelAndView addTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long projectId,
-			@RequestParam(required = false) String title, ModelMap model, Ticket ticket, BindingResult result) {
+			@RequestParam(required = false) String title, ModelMap model) {
 		if (userDetails == null) {
 			return new ModelAndView("redirect:/");
 		}
 		Project project = projectService.findProjectById(projectId);
 		if (project == null) {
-			// TODO not found
-			return new ModelAndView("redirect:/");
+			return new ModelAndView("pageNotFound");
 		}
 		// TODO vérifier droit du user
-		//ticket = null;
-		
-		//TODO remove, pas de redirect du save et return le addTicket ?
+
+		// When the form is invalid, the save method redirects to the add method
+		// and we retrieve the ticket from the model
+		Ticket ticket;
 		if (model.containsAttribute("ticket")) {
-			ticket = (Ticket)model.get("ticket");
+			ticket = (Ticket) model.get("ticket");
 		} else {
 			ticket = new Ticket();
 		}
-		if (title != null){
+		// Set the title from the optional get parameter
+		if (title != null) {
 			ticket.setTitle(title);
 		}
-		if (model.containsAttribute("errors")) {
-			List<ObjectError> errors = (List<ObjectError>) model.get("errors");
-				for (ObjectError error: errors) {
-				result.addError(error);
-			}
-		}
-		
+
 		User u = userService.findUserById(userDetails.getId());
 		List<Project> projectList = projectService.getAllProjects();
 		List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
@@ -124,23 +119,64 @@ public class TicketController {
 		return new ModelAndView("ticket/addTicket", model);
 	}
 
-	@RequestMapping(value = "/new/{projectId}", method = RequestMethod.POST)
+	@RequestMapping(value = "/edit/{ticketId}", method = RequestMethod.GET)
+	public ModelAndView editTicket(@CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId, ModelMap model) {
+		Ticket ticket;
+
+		if (userDetails == null) {
+			return new ModelAndView("redirect:/");
+		}
+		if (model.containsAttribute("ticket")) {
+			ticket = (Ticket) model.get("ticket");
+		} else {
+			ticket = ticketService.findTicketByIdAndFetchAuthorAndProjectAndUsers(ticketId);
+		}
+		if (ticket == null) {
+			return new ModelAndView("pageNotFound");
+		}
+		User u = userService.findUserById(userDetails.getId());
+		List<Project> projectList = projectService.getAllProjects();
+		List<TicketTracker> ticketTrackerList = ticketService.getAllTicketTrackers();
+		List<TicketPriority> ticketPriorityList = ticketService.getAllTicketPriorities();
+
+		model.put("user", u);
+		model.put("ticket", ticket);
+		model.put("projectList", projectList);
+		model.put("ticketTrackerList", ticketTrackerList);
+		model.put("ticketPriorityList", ticketPriorityList);
+		model.put("ticketStatusList", ticketService.getAllTicketStatuses());
+		model.put("usersInProject", userService.getAllActiveUsersInProject(ticket.getProject().getId()));
+
+		return new ModelAndView("ticket/addTicket", model);
+	}
+
+	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	public ModelAndView saveTicket(@CurrentUserDetails CustomUserDetails userDetails, @ModelAttribute("ticket") @Valid Ticket ticket,
-			BindingResult result, RedirectAttributes redirectAttributes, @PathVariable Long projectId) {
-		// TODO check project id spring style
+			BindingResult result, RedirectAttributes redirectAttributes) {
+		// TODO check project id existe et droit spring style
 		if (userDetails == null) {
 			return new ModelAndView("accessDenied");
 		}
 		if (result.hasErrors()) {
-			// TODO pas de redirect, return le addTicket ?
+			String redirect;
+			// If ticket doesn't exist redirect to add page, else redirect to edit page
+			if (ticket.getId() == null)
+				redirect = "new/" + ticket.getProject().getId();
+			else
+				redirect = "edit/" + ticket.getId();
 			redirectAttributes.addFlashAttribute("ticket", ticket);
-			redirectAttributes.addFlashAttribute("errors", result.getAllErrors());
-			return new ModelAndView("redirect:/ticket/new/" + ticket.getProject().getId());
+			redirectAttributes.addFlashAttribute(BindingResult.MODEL_KEY_PREFIX + "ticket", result);
+			return new ModelAndView("redirect:/ticket/" + redirect);
 		}
 		// TODO check des permissions, check si les ID sont valides
 		User user = userService.findUserById(userDetails.getId());
 		ticket.setUser(user);
-		ticketService.saveTicket(ticket);
+		// If ticket doesn't exist save, else update
+		if (ticket.getId() == null)
+			ticketService.saveTicket(ticket);
+		else
+			ticketService.updateTicket(ticket);
+
 		return new ModelAndView("redirect:" + "/ticket/" + ticket.getId() + "/messages");
 	}
 
@@ -218,13 +254,11 @@ public class TicketController {
 	}
 
 	@RequestMapping(value = "/delete", method = RequestMethod.POST)
-	public ModelAndView deleteTicket(@CurrentUserDetails CustomUserDetails userDetails,
-			@RequestParam Long ticketId) {
+	public ModelAndView deleteTicket(@CurrentUserDetails CustomUserDetails userDetails, @RequestParam Long ticketId) {
 		Ticket ticket = ticketService.findTicketById(ticketId);
-		
+
 		// TODO ticket null -> not found
-		if (userDetails == null
-				|| ticket == null
+		if (userDetails == null || ticket == null
 				|| (userDetails.getUserRole() != UserRole.ROLE_ADMIN && !userDetails.getId().equals(ticket.getUser().getId()))) {
 			return new ModelAndView("accessDenied");
 		}

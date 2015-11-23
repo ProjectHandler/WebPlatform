@@ -2,6 +2,7 @@ package fr.projecthandler.service;
 
 import java.util.List;
 
+import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
 import fr.projecthandler.model.TicketPriority;
@@ -56,16 +57,18 @@ public interface TicketService {
 	public TicketPriority findTicketPriorityById(Long ticketPriorityId);
 
 	public List<TicketPriority> getAllTicketPriorities();
-	
+
 	public Ticket findTicketByIdAndFetchUser(Long ticketIdd);
-	
+
 	public Ticket findTicketByIdAndFetchAuthor(Long ticketId);
 
 	public Ticket findTicketByIdAndFetchAuthorAndProject(Long ticketId);
 
-	public List<TicketMessage>  getTicketMessagesByTicketIdAndFetchUser(Long ticketId);
+	public List<TicketMessage> getTicketMessagesByTicketIdAndFetchUser(Long ticketId);
 
 	public Ticket findTicketByIdAndFetchAuthorAndProjectAndUsers(Long ticketId);
 
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId);
+
+	public List<TicketStatus> getAllTicketStatuses();
 }

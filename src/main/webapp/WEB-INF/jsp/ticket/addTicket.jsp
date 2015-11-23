@@ -6,6 +6,9 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@taglib prefix="e" uri="https://www.owasp.org/index.php/OWASP_Java_Encoder_Project" %>
 
+<%-- Boolean to check if we are on the edit or new ticket page --%>
+<c:set var="isNewTicketPage" value="${ticket.id == null}" />
+
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<jsp:include page="../template/head.jsp" />
@@ -35,17 +38,17 @@
 		</c:if>
 
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/tokeninput/token-input-facebook.css">
-		<title>Nouveau ticket</title>
+		<c:if test="${isNewTicketPage}">
+			<title>Nouveau ticket</title>
+		</c:if>
+		<c:if test="${not isNewTicketPage}">
+			<title>Edition ticket</title>
+		</c:if>
+		
 		<script type="text/javascript">
 		$(document).ready(function () {
 			var textEditor = CKEDITOR.replace( 'text-ckeditor' );
 
-/* 			$("#users").tokenInput("${pageContext.request.contextPath}/ajax/search/${ticket.project.id}/user", {
-                theme: "facebook",
-                excludeCurrent: true,
-                enableHTML:true
-            }); */
-		    
 			$.fn.selectivityUser({
 				userElement: '#userSelection'
 			});
@@ -80,11 +83,18 @@
 <body>
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
-	<h1>Nouveau ticket</h1>
+	<c:if test="${isNewTicketPage}">
+		<h1 class="text-h2 util1-primary-text float-left">Nouveau ticket</h1>
+	</c:if>
+	<c:if test="${not isNewTicketPage}">
+		<h1 class="text-h2 util1-primary-text float-left">Editer le ticket</h1>
+	</c:if>
 	<form:form method="POST" id="ticket-form"
-		action="${pageContext.request.contextPath}/ticket/new/${ticket.project.id}"
+		action="${pageContext.request.contextPath}/ticket/save"
 		modelAttribute="ticket">
-	<form:errors path="*" cssClass="error" />
+		
+		<form:errors path="*" cssClass="error" />
+		<form:input type="hidden" path="id" />
 
 		<div>
 			<form:label path="title">Titre</form:label>
@@ -92,13 +102,6 @@
 			<form:errors path="title" cssClass="error" />
 		</div>
 
-<%--
-					<form:label path="project">Projet</form:label>
-						<form:select path="project">
-							<form:options items="${projectList}" itemValue="id" itemLabel="name" />
-						</form:select>
-						<span class="help-inline"><form:errors path="project" /></span>
- --%>
 		<form:hidden path="project.id" />
 		<div>
 			<form:label path="ticketTracker">Tracker</form:label>
@@ -117,12 +120,16 @@
 			</form:select>
 		</div>
 
-
-<%-- 		<div>
-			<form:label path="users">Users</form:label>
-			<form:input path="users"></form:input>
-		</div>
- --%>
+		<c:if test="${not isNewTicketPage}">
+			<div>
+				<form:label path="ticketStatus">Ticket status</form:label>
+	
+				<form:select path="ticketStatus">
+					<form:options items="${ticketStatusList}"
+						itemLabel="value" />
+				</form:select>
+			</div>
+		</c:if>
 
 		<div class="small-margin-bottom">
 			<div class="display-table-cell vertical-align fixedwidth-128">
@@ -133,7 +140,7 @@
 				<form:select path="users" class="userSelection" id="userSelection">
 					<c:forEach var='userInList' items='${usersInProject}'>
 						<c:set var="found" value="false" />
-						<c:if test="${project.users != null}">
+						<c:if test="${ticket.users != null}">
 							<c:forEach var="userInTicket" items="${ticket.users}">
 								<c:if test="${userInTicket.id == userInList.id}">
 									<c:set var="found" value="true" />
@@ -143,13 +150,13 @@
 						<c:choose>
 							<c:when test="${found eq true}">
 								<form:option selected="selected" value="${userInList.id}">
-													${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
-												</form:option>
+									${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
+								</form:option>
 							</c:when>
 							<c:otherwise>
 								<form:option value="${userInList.id}">
-													${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
-												</form:option>
+									${e:forHtml(userInList.firstName)} ${e:forHtml(userInList.lastName)}
+								</form:option>
 							</c:otherwise>
 						</c:choose>
 					</c:forEach>

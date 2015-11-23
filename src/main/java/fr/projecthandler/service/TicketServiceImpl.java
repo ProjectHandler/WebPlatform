@@ -1,5 +1,6 @@
 package fr.projecthandler.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import fr.projecthandler.dao.TicketDao;
 import fr.projecthandler.dao.TicketMessageDao;
 import fr.projecthandler.dao.TicketPriorityDao;
 import fr.projecthandler.dao.TicketTrackerDao;
+import fr.projecthandler.enums.TicketStatus;
 import fr.projecthandler.model.Ticket;
 import fr.projecthandler.model.TicketMessage;
 import fr.projecthandler.model.TicketPriority;
@@ -177,4 +179,9 @@ public class TicketServiceImpl implements TicketService {
 	public List<Ticket> getTicketsByProjectIdAndUser(Long projectId, Long userId) {
 		return ticketDao.getTicketsByProjectIdAndUser(projectId, userId);
 	}
+
+	public List<TicketStatus> getAllTicketStatuses() {
+		return Arrays.asList(TicketStatus.values());
+	}
+
 }

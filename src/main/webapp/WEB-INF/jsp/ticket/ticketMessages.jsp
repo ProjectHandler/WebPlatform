@@ -9,6 +9,39 @@
 	<head>
 		<jsp:include page="../template/head.jsp" />
 		<title>Ticket</title>
+		<spring:url value="/resources/libs/jquery-validation/jquery.validate.min.js" var="jqueryValidate"/>
+		<script type="text/javascript" src="${jqueryValidate}"></script>
+		<script>
+		$(document).ready(function() {
+			var textEditor = CKEDITOR.replace( 'ticket-new-message' );
+
+			var validator = $("#ticketMessage").validate({
+		    	rules: {
+		    		title: {
+		    			required: true,
+			    		minlength: <c:out value="${ticket.titleMinSize}"/>,
+			    		maxlength: <c:out value="${ticket.titleMaxSize}"/>
+		    		},
+			   		text: {
+			   			required: true,
+			   		}
+		    	}
+	    	});
+			
+			<%-- If ticket text is empty, submit is canceled --%>
+			$("#ticketMessage").submit(function(event) {
+		    	var textEditorData = textEditor.getData();
+		    	var stripped = $("<div/>").html(textEditorData).text();
+		        if (!stripped.length) {
+		        	validator.showErrors({
+		        		  "text": "Ce champ est obligatoire."
+		        	});
+		            event.preventDefault();
+		        }
+			});
+		});
+
+		</script>
 		<style>
 			.ticket-message-fisrt {
 			border: solid 5px #262529;
@@ -37,7 +70,7 @@
 		.ticket-messages {
 			margin-left: 40px;
 		}
-		.ticket-new-message {
+		#ticket-new-message {
 			border: solid 2px #262529;
 			-moz-border-radius: 7px;
 			-webkit-border-radius: 7px;
@@ -50,7 +83,7 @@
 			display: block;
 			margin-bottom:20px;
 		}
-		.ticket-new-message:focus {
+		#ticket-new-message:focus {
 			outline:0px none transparent;
 		}
 		.ticket-message-info {
@@ -67,7 +100,13 @@
 <body>
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
-	<span><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a></span>
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/ticket/list/project/${ticket.project.id}">Retour vers la liste des tickets du projet</a></li>
+		<li><a href="${pageContext.request.contextPath}/project/viewProject/${ticket.project.id}">Vue du projet</a></li>
+		<c:if test="${user.id == ticket.user.id || pageContext.request.isUserInRole('ROLE_ADMIN')}">
+			<li><a href="${pageContext.request.contextPath}/ticket/edit/${ticket.id}">Editer Ticket</a></li>
+		</c:if>
+	</ul>
 	<h1>Ticket</h1>
 	<h2>Titre: ${e:forHtml(ticket.title)}</h2>
 	<div class="ticket-message-fisrt">
@@ -88,13 +127,18 @@
 			</div>
 		</c:forEach>
 		<%-- Test if ticket is open --%>
-		<c:if test="${ticket.ticketStatus == 'OPEN'}">
-		 	<form:form class="message-form" method="POST" action="${pageContext.request.contextPath}/ticket/${ticket.id}/message/save" modelAttribute="ticketMessage">
-				<form:label path="text">Nouveau message</form:label>
-				<form:textarea class="ticket-new-message" maxlength="${ticket.textMaxSize}" path="text"></form:textarea>
-				<input class="new-message-submit" value="Submit" type="submit">
-			</form:form>
-		</c:if>
+		<c:choose>
+			<c:when test="${ticket.ticketStatus == 'OPEN'}">
+			 	<form:form id="ticketMessage" class="message-form" method="POST" action="${pageContext.request.contextPath}/ticket/${ticket.id}/message/save" modelAttribute="ticketMessage">
+					<form:label path="text">Nouveau message</form:label>
+					<form:textarea id="ticket-new-message" maxlength="${ticket.textMaxSize}" path="text"></form:textarea>
+					<input class="new-message-submit" value="Submit" type="submit">
+				</form:form>
+			</c:when>
+			<c:otherwise>
+				<p>Ticket fermé</p>
+			</c:otherwise>
+		</c:choose>
 	</div>
    	<jsp:include page="../template/footer.jsp" />
 </body>

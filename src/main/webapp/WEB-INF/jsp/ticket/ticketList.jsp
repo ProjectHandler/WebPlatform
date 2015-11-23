@@ -12,6 +12,8 @@
 		<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/ticket/tablesorter.css">
 		<title>Liste des tickets</title>
 		<script type="text/javascript">
+		var deleteTicketMessage = '<spring:message javaScriptEscape="true" code="projecthandler.ticket.deleteConfirm"/>';
+
 		$(document).ready(function()
 			    {
 			        $("#ticketTable").tablesorter({
@@ -21,7 +23,7 @@
 			              }
  */			        });
 					$(".comfirm-delete").submit(function () {
-						return confirm('<spring:message code="projecthandler.project.edit.deleteConfirm"/>');
+						return confirm(deleteTicketMessage);
 					});
 			    }
 		);
@@ -41,7 +43,10 @@
 <body>
 	<jsp:include page="../template/header.jsp" />
 	<jsp:include page="../template/menu.jsp" />
-	<a href="${pageContext.request.contextPath}/ticket/new/${projectId}">Créer un nouveau ticket</a>
+	<ul>
+		<li><a href="${pageContext.request.contextPath}/ticket/new/${projectId}">Créer un nouveau ticket</a></li>
+		<li><a href="${pageContext.request.contextPath}/project/viewProject/${projectId}">Vue du projet</a></li>
+	</ul>
 	<h1>Liste des tickets du projet</h1>
 	<div class="center">
 		<table id="ticketTable"  class="tablesorter" style="">
@@ -60,11 +65,19 @@
 						<td>${e:forHtml(ticket.user.firstName)} ${e:forHtml(ticket.user.lastName)}</td>
 						<td><fmt:formatDate value="${ticket.createdAt}" type="both" pattern="MM-dd-yyyy HH:mm" /></td>
 						<td><spring:message code="projecthandler.ticket.status.${ticket.ticketStatus.value}"/></td>
+						<td>
+							<c:if test="${user.id == ticket.user.id || pageContext.request.isUserInRole('ROLE_ADMIN')}">
+								<a href="${pageContext.request.contextPath}/ticket/edit/${ticket.id}">Editer</a>
+							</c:if>
+						</td>
 						<td colspan="2">
+						<!-- TODO call ajax -->
+						<c:if test="${user.id == ticket.user.id || pageContext.request.isUserInRole('ROLE_ADMIN')}">
 							<form method="POST" class="comfirm-delete" action="${pageContext.request.contextPath}/ticket/delete">
 									<input type="hidden" name="ticketId" id="ticketId" value="${ticket.id}"/>
 									<input value="Delete" type="submit">
 							</form>
+						</c:if>
 						</td>
 					</tr>
 				</c:forEach>
