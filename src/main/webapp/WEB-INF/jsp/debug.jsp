@@ -39,8 +39,8 @@
 		</form>
 		<h2>Download database schema</h2>
 		<ul>
-			<li><a href="${pageContext.request.contextPath}/debug/get/schema?dialect=postgresql&just_create=true">postgreSQL database schema</a></li>
-			<li><a href="${pageContext.request.contextPath}/debug/get/schema?dialect=mysql&just_create=true">MySQL database schema</a></li>
+			<li><a href="${pageContext.request.contextPath}/debug/schema/download?dialect=postgresql&just_create=true">postgreSQL database schema</a></li>
+			<li><a href="${pageContext.request.contextPath}/debug/schema/download?dialect=mysql&just_create=true">MySQL database schema</a></li>
 		</ul>
 		<jsp:include page="template/footer.jsp" />
 	</body>

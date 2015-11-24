@@ -84,7 +84,7 @@ public class DebugController {
 		return new ModelAndView("redirect:/");
 	}
 
-	@RequestMapping(value = "get/schema", method = RequestMethod.GET)
+	@RequestMapping(value = "schema/download", method = RequestMethod.GET)
 	public ModelAndView getSchema(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails,
 			ModelMap model, @RequestParam String dialect, @RequestParam(required = false) String just_create) throws Exception {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))
