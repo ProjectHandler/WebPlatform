@@ -65,3 +65,8 @@ CREATE TABLE IF NOT EXISTS `application_settings` (
 -- populating application settings table (22/11/2015)
 INSERT INTO `application_settings` (`id`, `setting_key`, `setting_value`, `description`) VALUES (10, 'avatar_max_size', '1048576', 'projecthandler.applicationSettings.description.avatarMaxSize');
 INSERT INTO `application_settings` (`id`, `setting_key`, `setting_value`, `description`) VALUES (11, 'document_max_size', '20000000', 'projecthandler.applicationSettings.description.documentMaxSize');
+
+-- remove address field from users table (24/11/2015)
+ALTER TABLE users DROP FOREIGN KEY users_ibfk_1;
+
+ALTER TABLE `users` DROP `address`;
