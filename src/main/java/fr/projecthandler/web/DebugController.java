@@ -37,7 +37,7 @@ public class DebugController {
 	@Autowired
 	private ApplicationContext appContext;
 
-	@RequestMapping(value = "reset-db", method = RequestMethod.GET)
+	@RequestMapping(value = "reset-db/my-sql", method = RequestMethod.GET)
 	public ModelAndView resetDatabaseConfirmation(HttpServletRequest request, HttpServletResponse response,
 			@CurrentUserDetails CustomUserDetails userDetails) {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))
@@ -45,7 +45,7 @@ public class DebugController {
 		return new ModelAndView("resetDBconfirmation");
 	}
 
-	@RequestMapping(value = "reset-db/execute", method = RequestMethod.POST)
+	@RequestMapping(value = "reset-db/my-sql/execute", method = RequestMethod.POST)
 	public ModelAndView resetDatabase(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails,
 			ModelMap model) throws ScriptException, SQLException {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))

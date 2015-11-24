@@ -147,7 +147,7 @@
 								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/signup"/>">								<spring:message code="projecthandler.menu.personalInformation"/></a></li>
 								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/project/projectsList"/>">projects list</a></li>
 								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/gantt"/>">test Gantt</a></li>
-								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/debug/reset-db"/>">Reset database</a></li>
+								<li><a class="display-block full-width theme1-primary-text default-btn-style5" href="<c:url value="/debug/reset-db/my-sql"/>">Reset database</a></li>
 							</ul>
 
 							<div class="clearfix">

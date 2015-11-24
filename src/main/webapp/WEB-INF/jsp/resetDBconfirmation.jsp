@@ -33,8 +33,8 @@
 	<body>
 		<jsp:include page="template/header.jsp" />
 		<h1>Reset Database</h1>
-		<form  method="POST" action="${pageContext.request.contextPath}/debug/reset-db/execute">
-			<p>Are you sure you want to permanently delete and repopulate the database ?</p>
+		<form  method="POST" action="${pageContext.request.contextPath}/debug/reset-db/my-sql/execute">
+			<p>Are you sure you want to permanently delete and repopulate the database ? (only works with MySQL)</p>
 			<input id="confirm-button" class="confirm" value="Yes" type="submit">
 		</form>
 
