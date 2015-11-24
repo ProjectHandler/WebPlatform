@@ -31,17 +31,17 @@ USE project_handler;
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `address`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
-(2, 'Guillard', 'Arthur', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'arthur.guillard@example.com', NULL, '0123456789', '0123456789', 1, 0, 1, 'tttttff', '09:00 AM - 05:00 PM', '2_4a2a6d25-9637-4d93-a81c-134382c0e502.png'),
-(3, 'Cyril', 'Fillatre', '$2a$10$/i5TEbxZmgODzVJOmodsH.VWCH.isLvHM7/hEsl.DPQrDUY89zUAy', 'cyril.fillatre@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'ttttttf', '09:00 AM - 05:00 PM', '3_ef03093e-deed-4243-97ed-f7d150e80281.jpg'),
-(4, 'Lukas', 'Fauser', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'lukas.fauser@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '4_27f215c6-9c92-40ee-9065-3f9fb831ff52.png'),
-(5, 'Guillaume', 'Roncari', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'guillaume.roncari@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '5_5bd1238d-3b04-4886-9129-64873e2e7a8e.png'),
-(6, 'Paul', 'Peyrefitte', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'paul.peyrefitte@example.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '6_e5cb6525-d2f8-4a10-bc21-c84107c3f5a5.png'),
-(7, 'Cortex', 'CORTEX', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'cortex@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '7_5f1aa936-fee2-4a14-ab8c-a8ea99134b74.jpg'),
-(8, 'Minus', 'MINUS', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'minus@example.com', NULL, '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '8_8fb621b5-872c-4ab9-b9ab-1bc37ef18415.jpg'),
-(51, 'test', 'test', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'test@test.com', NULL, '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(52, NULL, NULL, NULL, 'test2@example.com', NULL, NULL, NULL, 1, 0, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL),
-(53, NULL, NULL, NULL, 'test3@example.com', NULL, NULL, NULL, 1, 2, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL);
+INSERT INTO `users` (`id`, `first_name`, `last_name`, `password`, `email`, `phone`, `mobile_phone`, `user_role`, `account_status`, `civility_id`, `work_day`, `daily_hour`, `avatar_file_name`) VALUES
+(2, 'Guillard', 'Arthur', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'arthur.guillard@example.com', '0123456789', '0123456789', 1, 0, 1, 'tttttff', '09:00 AM - 05:00 PM', '2_4a2a6d25-9637-4d93-a81c-134382c0e502.png'),
+(3, 'Cyril', 'Fillatre', '$2a$10$/i5TEbxZmgODzVJOmodsH.VWCH.isLvHM7/hEsl.DPQrDUY89zUAy', 'cyril.fillatre@example.com', '0123456789', '0123456789', 1, 1, 1, 'ttttttf', '09:00 AM - 05:00 PM', '3_ef03093e-deed-4243-97ed-f7d150e80281.jpg'),
+(4, 'Lukas', 'Fauser', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'lukas.fauser@example.com', '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '4_27f215c6-9c92-40ee-9065-3f9fb831ff52.png'),
+(5, 'Guillaume', 'Roncari', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'guillaume.roncari@example.com', '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '5_5bd1238d-3b04-4886-9129-64873e2e7a8e.png'),
+(6, 'Paul', 'Peyrefitte', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'paul.peyrefitte@example.com', '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '6_e5cb6525-d2f8-4a10-bc21-c84107c3f5a5.png'),
+(7, 'Cortex', 'CORTEX', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'cortex@example.com', '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '7_5f1aa936-fee2-4a14-ab8c-a8ea99134b74.jpg'),
+(8, 'Minus', 'MINUS', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'minus@example.com', '0123456789', '0123456789', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', '8_8fb621b5-872c-4ab9-b9ab-1bc37ef18415.jpg'),
+(51, 'test', 'test', '$2a$10$fFP2m2eUoiC4AKusRtbeI.8BQBe4vToDLsiH0YP745w7CrYbTDtWG', 'test@test.com', '0101020304', '0102030405', 1, 1, 1, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(52, NULL, NULL, NULL, 'test2@example.com', NULL, NULL, 1, 0, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL),
+(53, NULL, NULL, NULL, 'test3@example.com', NULL, NULL, 1, 2, NULL, 'tttttff', '09:00 AM - 05:00 PM', NULL);
 
 
 -- --------------------------------------------------------
