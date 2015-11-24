@@ -32,12 +32,16 @@
 	</style>
 	<body>
 		<jsp:include page="template/header.jsp" />
-		<h1>Reset Database</h1>
+		<h2>Reset Database</h2>
 		<form  method="POST" action="${pageContext.request.contextPath}/debug/reset-db/my-sql/execute">
-			<p>Are you sure you want to permanently delete and repopulate the database ? (only works with MySQL)</p>
+			<p>Are you sure you want to permanently delete and repopulate the database ?<br /><strong class="bold" style="color:red;">(only works with MySQL)</strong></p>
 			<input id="confirm-button" class="confirm" value="Yes" type="submit">
 		</form>
-
+		<h2>Download database schema</h2>
+		<ul>
+			<li><a href="${pageContext.request.contextPath}/debug/get/schema?dialect=postgresql&just_create=true">postgreSQL database schema</a></li>
+			<li><a href="${pageContext.request.contextPath}/debug/get/schema?dialect=mysql&just_create=true">MySQL database schema</a></li>
+		</ul>
 		<jsp:include page="template/footer.jsp" />
 	</body>
 </html>

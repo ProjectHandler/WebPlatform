@@ -55,16 +55,17 @@ public class DebugController {
 	@Autowired
 	private ApplicationContext appContext;
 
-	@RequestMapping(value = "reset-db/my-sql", method = RequestMethod.GET)
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView resetDatabaseConfirmation(HttpServletRequest request, HttpServletResponse response,
 			@CurrentUserDetails CustomUserDetails userDetails) {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))
 			return new ModelAndView("accessDenied");
-		return new ModelAndView("resetDBconfirmation");
+		return new ModelAndView("debug");
 	}
 
 	@RequestMapping(value = "reset-db/my-sql/execute", method = RequestMethod.POST)
-	public ModelAndView resetDatabase(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails) throws Exception {
+	public ModelAndView resetDatabase(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails)
+			throws Exception {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))
 			return new ModelAndView("accessDenied");
 
@@ -85,11 +86,12 @@ public class DebugController {
 
 	@RequestMapping(value = "get/schema", method = RequestMethod.GET)
 	public ModelAndView getSchema(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails,
-			ModelMap model, @RequestParam String dialect, @RequestParam String noDrop) throws Exception {
+			ModelMap model, @RequestParam String dialect, @RequestParam(required = false) String just_create) throws Exception {
 		if (userDetails == null || !userDetails.hasRole(UserRole.ROLE_ADMIN))
 			return new ModelAndView("accessDenied");
 
-		// Set configuration based on get parameters
+		// Set configuration parameters based on GET parameters
+		boolean justCreate = just_create.equals("true");
 		String dialectClass;
 		switch (dialect) {
 		case "mysql":
@@ -121,7 +123,7 @@ public class DebugController {
 		String filebasename = dialect + "_" + date + ".sql";
 		export.setOutputFile(Paths.get(path, filebasename).toString());
 		// Generate the DDL and copy it to the output file. The script is not executed on the database.
-		export.execute(true, false, false, true);
+		export.execute(true, false, false, justCreate);
 
 		// Copy script to the response stream and delete it afterwards
 		File file = new File(path, filebasename);
@@ -130,7 +132,6 @@ public class DebugController {
 		if (!file.delete()) {
 			log.error("getSchema: delete operation failed");
 		}
-
-		return new ModelAndView("redirect:/", model);
+		return null;
 	}
 }
