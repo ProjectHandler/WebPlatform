@@ -6,7 +6,6 @@ import java.util.Set;
 import org.springframework.stereotype.Component;
 
 import fr.projecthandler.model.ApplicationSetting;
-import fr.projecthandler.model.TaskDocument;
 import fr.projecthandler.util.Utilities;
 
 @Component

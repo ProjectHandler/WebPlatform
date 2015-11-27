@@ -384,12 +384,13 @@ public class TaskController {
 
 		TaskDocument document = taskDocumentService.findTaskDocumentById(documentId);
 
-		File directory = new File(path, document.getProjectId() + "_" + document.getTaskId());
-
-		if (document != null && directory.exists()) {
-			File file = new File(directory, document.getDatabaseName());
-			if (file != null)
-				Utilities.writeFileAsResponseStreamWithFileName(file, response, document.getName());
+		if (document != null) {
+			File directory = new File(path, document.getProjectId() + "_" + document.getTaskId());
+			if (directory.exists()) {
+				File file = new File(directory, document.getDatabaseName());
+				if (file != null)
+					Utilities.writeFileAsResponseStreamWithFileName(file, response, document.getName());
+			}
 		}
 	}
 

@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -42,7 +41,6 @@ import fr.projecthandler.enums.TaskLevel;
 import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.Project;
 import fr.projecthandler.model.Task;
-import fr.projecthandler.model.TaskDocument;
 import fr.projecthandler.model.TaskPriority;
 import fr.projecthandler.model.User;
 import fr.projecthandler.service.ProjectService;

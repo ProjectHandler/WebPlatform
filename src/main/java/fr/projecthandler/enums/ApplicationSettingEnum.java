@@ -30,7 +30,7 @@ public enum ApplicationSettingEnum {
 	public static String findById(Integer id) {
 		if (id != null) {
 			for (ApplicationSettingEnum appSetting : ApplicationSettingEnum.values()) {
-				if (id == appSetting.getId()) {
+				if (appSetting.getId().equals(id)) {
 					return appSetting.getKey();
 				}
 			}

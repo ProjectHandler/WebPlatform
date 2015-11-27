@@ -156,10 +156,12 @@ public class Utilities {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		if (directory.exists()) {
 			String[] files = directory.list();
-			for (String file : files) {
-				if (file.endsWith(".class")) {
-					// removes the .class extension
-					classes.add(Class.forName(packageName + '.' + file.substring(0, file.length() - 6)));
+			if (files != null) {
+				for (String file : files) {
+					if (file.endsWith(".class")) {
+						// removes the .class extension
+						classes.add(Class.forName(packageName + '.' + file.substring(0, file.length() - 6)));
+					}
 				}
 			}
 		} else {

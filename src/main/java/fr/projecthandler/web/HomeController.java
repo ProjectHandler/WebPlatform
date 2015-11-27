@@ -1,28 +1,18 @@
 package fr.projecthandler.web;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import fr.projecthandler.dto.HomeContentWrapperDTO;
-import fr.projecthandler.model.Event;
-import fr.projecthandler.model.Task;
-import fr.projecthandler.model.User;
 import fr.projecthandler.service.EventService;
 import fr.projecthandler.service.TaskService;
 import fr.projecthandler.service.UserService;
-import fr.projecthandler.session.CustomUserDetails;
 
 @Controller
 public class HomeController {

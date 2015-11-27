@@ -2,11 +2,9 @@ package fr.projecthandler.api;
 
 import fr.projecthandler.annotation.CurrentUserDetails;
 import fr.projecthandler.api.exception.ApiAccessDeniedException;
-import fr.projecthandler.api.exception.ApiInternalErrorException;
 import fr.projecthandler.api.exception.ApiNotFoundException;
 import fr.projecthandler.dto.MobileSubTaskDTO;
 import fr.projecthandler.dto.MobileTaskDTO;
-import fr.projecthandler.model.Project;
 import fr.projecthandler.model.SubTask;
 import fr.projecthandler.model.Task;
 import fr.projecthandler.service.ProjectService;
