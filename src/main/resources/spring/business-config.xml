@@ -20,7 +20,7 @@
 	<!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
 	<!-- (and Mail server related settings -->
 	<context:property-placeholder location="classpath:jdbc/jdbc.properties, classpath:mail.properties" />
-	<!-- <context:property-placeholder location="classpath:jdbc/jdbc.properties.postgresql, classpath:mail.properties" />-->
+	<!-- <context:property-placeholder location="classpath:jdbc/jdbc.properties.postgresql, classpath:mail.properties" /> -->
 
 	<!-- import the dataSource definition -->
 	<import resource="../jdbc/datasource-config.xml" />
@@ -68,11 +68,15 @@
 				<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"
 					p:database="${jpa.database}" p:showSql="${jpa.showSql}" />
 			</property>
+			
 			<!-- BOTH Persistence Unit and Packages to Scan are NOT compatible, persistenceUnit will win -->
 			<property name="persistenceUnitName" value="projecthandler" />
 			<property name="packagesToScan" value="fr.projecthandler" />
 			<property name="jpaProperties">
 				<props>
+				    <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+            		<prop key="hibernate.dialect">${hibernate.dialect}</prop>
+            
 					<prop key="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory</prop>
 					<prop key="hibernate.cache.use_second_level_cache">true</prop>
 					<prop key="hibernate.cache.use_query_cache">false</prop>

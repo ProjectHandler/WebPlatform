@@ -43,12 +43,13 @@
 		<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
 		<maven-resources-plugin.version>2.7</maven-resources-plugin.version>
+		<maven-war-plugin.version>2.6</maven-war-plugin.version>
 		<codehaus-mojo.version>1.2.1</codehaus-mojo.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
 	</properties>
 
 	<dependencies>
-
 		<!-- Apache Commons -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
@@ -462,6 +463,7 @@
 			<artifactId>owasp-java-html-sanitizer</artifactId>
 			<version>r239</version>
 		</dependency>
+		
 	</dependencies>
 
 
@@ -491,6 +493,14 @@
 					<compilerArgument>-Xlint:all</compilerArgument>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>${maven-war-plugin.version}</version>
+				<configuration>
+					<warName>projecthandler</warName>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -530,7 +540,8 @@
 						</fileset>
 					</filesets>
 				</configuration>
-			</plugin>
+			</plugin>	
+			
 		</plugins>
 
 	</build>

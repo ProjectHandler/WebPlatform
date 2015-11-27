@@ -13,6 +13,7 @@ jdbc.password=1234
 # Property that determines which Hibernate dialect to use
 # (only applied with "applicationContext-hibernate.xml")
 hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+hibernate.hbm2ddl.auto=create-drop
 
 # Property that determines which database to use with an AbstractJpaVendorAdapter
 jpa.database=POSTGRESQL
