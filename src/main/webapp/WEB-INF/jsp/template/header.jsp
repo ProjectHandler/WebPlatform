@@ -151,16 +151,6 @@
 							<span class="icon-home"></span>
 						</a>
 					</li>
-					<li>
-						<!-- TODO move it to user settings or profilebox ? -->
-						<sec:authentication var="locale" property="principal.locale" />
-						<c:set var="language" value="${empty locale ? '' : locale.language}"/>
-						<select id="languageSelection">
-							<c:set var="selected" value='selected="selected"'/>
-							<option value="fr" ${(language == 'fr' || empty language) ? selected : ''}>Français</option>
-							<option value="en" ${language == 'en' ? selected : ''}>English</option>
-						</select>
-					</li>
 					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/project/projectsList"/>" title="projects">
 							<span class="icon-folder"></span>
@@ -229,10 +219,18 @@
 								</div>
 								<div class="container inverted-bg clearfix">
 									<div class="float-right">
-										<a class="default-btn-shape default-btn-style5 theme3-primary-boxshadow-raising-out small-margin-right" href="#">
+										<sec:authentication var="locale" property="principal.locale" />
+										<c:set var="language" value="${empty locale ? '' : locale.language}"/>
+										<select id="languageSelection">
+											<c:set var="selected" value='selected="selected"'/>
+											<option value="fr" ${(language == 'fr' || empty language) ? selected : ''}>Français</option>
+											<option value="en" ${language == 'en' ? selected : ''}>English</option>
+										</select>
+<!-- 										<a class="default-btn-shape default-btn-style5 theme3-primary-boxshadow-raising-out small-margin-right" href="#">
 											<span class="icon-cog small-margin-right"></span>Settings
 										</a>
-										<a class="default-btn-shape theme1-primary-btn-style1 animating-event" data-action="open-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
+ -->
+ 										<a class="default-btn-shape theme1-primary-btn-style1 animating-event" data-action="open-event" data-animation="pop-event" data-target="mainmenu-leavevalidation" href="#">
 											<span class="icon-switch small-margin-right"></span>Sign out
 										</a>
 									</div>

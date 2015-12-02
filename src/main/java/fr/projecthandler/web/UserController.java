@@ -775,7 +775,6 @@ public class UserController {
 			if (ResourceBundle.getBundle("messages/messages", locale) == null)
 				return "KO";
 			u.setLocale(locale);
-			System.out.println("change lang" + locale.getLanguage());
 			userService.saveUser(u);
 			// TODO move to local resolver
 			userDetails.setLocale(locale);
