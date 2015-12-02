@@ -70,3 +70,6 @@ INSERT INTO `application_settings` (`id`, `setting_key`, `setting_value`, `descr
 ALTER TABLE users DROP FOREIGN KEY users_ibfk_1;
 
 ALTER TABLE `users` DROP `address`;
+
+-- add locale field to users table (30/11/2015)
+ALTER TABLE `users` ADD locale varchar(20);

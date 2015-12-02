@@ -143,6 +143,7 @@ public class TicketRestController {
 		return new ResponseEntity<String>(json, HttpStatus.OK);
 	}
 
+	@ApiIgnore
 	@RequestMapping(value = { "/dataForNewTicket" }, method = RequestMethod.GET)
 	public ResponseEntity<String> getDataForNewTicket(@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails) {
 		try {

@@ -144,6 +144,7 @@ public class UserRestController {
 
 	// TODO check why validation isn't triggered
 	// TODO check if email is already taken
+	// TODO remove field raw password and check manually ?
 	@RequestMapping(value = "/save", method = RequestMethod.POST)
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new user and returns the user details", notes = "If the password is empty, an email will be sent to the new user for him to complete his registration.")
@@ -176,6 +177,7 @@ public class UserRestController {
 		}
 		else {
 			user.setPassword(passwordEncoder.encode(user.getRawPassword()));
+			user.setRawPassword(null);
 			user.setAccountStatus(AccountStatus.ACTIVE);
 		}
 		userService.saveUser(user);

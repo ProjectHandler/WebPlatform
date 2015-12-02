@@ -70,48 +70,30 @@
 	            }
 			});
 	
-			$("#text-draft-toggle").click(function(){
-				$("#text-draft-section").toggle(400, function() {
-					if ($("#text-draft-section").is(":hidden")) {
-						Cookies.set("draft-toggle", "hide");
-					} else {
-						Cookies.set("draft-toggle", "show");
-					}
-				});
-			});
-	
 			$(window).bind('beforeunload', function(event) {
 				if (savedDraftData !== null && draftEditor.getData() != savedDraftData) {
 					// Custom message not displayed on Firefox
 					return "Vous n'avez pas sauvegardé vos notes.";
 				}
 			});
+			
+			$("#languageSelection").on("change", function() {
+				var locale = $('#languageSelection').find(":selected").val();
+				$.ajax({
+					url: CONTEXT_PATH + '/profile/changeLanguage',
+					type: 'POST',
+					data: {'locale': locale},
+					success: function (result) {
+					if (result == "KO")
+						alert("error");
+					else
+						location.reload();
+					}
+				});
+			});
 		}
 	});
 </script>
-<style>
-#text-draft {
-	margin-right: 18px;
-}
-#text-draft-toggle {
-	display: inline-block;
-	padding: 6px 12px;
-	margin-bottom: 0px;
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 1.42857;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	cursor: pointer;
-	-moz-user-select: none;
-	background-image: none;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	background-color: #FFF;
-	border-color: #CCC;
-}
-</style>
 <div class="">
 	<div class="small-padding-top theme1-primary-bg"></div>
 	<div class="display-table full-width inverted-bg underlined theme3-lighten1-bdr">
@@ -168,6 +150,16 @@
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
 						</a>
+					</li>
+					<li>
+						<!-- TODO move it to user settings or profilebox ? -->
+						<sec:authentication var="locale" property="principal.locale" />
+						<c:set var="language" value="${empty locale ? '' : locale.language}"/>
+						<select id="languageSelection">
+							<c:set var="selected" value='selected="selected"'/>
+							<option value="fr" ${(language == 'fr' || empty language) ? selected : ''}>Français</option>
+							<option value="en" ${language == 'en' ? selected : ''}>English</option>
+						</select>
 					</li>
 					<li class="super-redcss position-relative vertical-top display-table-cell padding-right">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/project/projectsList"/>" title="projects">

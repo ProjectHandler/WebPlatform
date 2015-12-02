@@ -2,6 +2,7 @@ package fr.projecthandler.model;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -78,28 +79,34 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Column(name = "avatar_file_name")
 	private String avatarFileName;
-	
+
 	@Column(name = "draft_message", length = 500)
 	private String draftMessage;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "groups_id", referencedColumnName = "id") })
+	@JoinTable(name = "users_groups", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "groups_id", referencedColumnName = "id") })
 	private List<Group> groups;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "project_id", referencedColumnName = "id") })
+	@JoinTable(name = "users_projects", joinColumns = { @JoinColumn(name = "user_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "project_id", referencedColumnName = "id") })
 	private List<Project> projects;
 
 	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = { @JoinColumn(name = "tasks_id", referencedColumnName = "id") })
+	@JoinTable(name = "users_tasks", joinColumns = { @JoinColumn(name = "users_id", referencedColumnName = "id") }, inverseJoinColumns = {
+			@JoinColumn(name = "tasks_id", referencedColumnName = "id") })
 	private List<Task> tasks;
+
+	@Column(name = "locale", length = 20)
+	private Locale locale;
 
 	@Transient
 	@Size(min = PASSWORD_MIN_SIZE)
 	private String rawPassword;
 
 	public User() {
-		//Default settings for a new user
+		// Default settings for a new user
 		this.setAccountStatus(AccountStatus.INACTIVE);
 		this.setUserRole(UserRole.ROLE_SIMPLE_USER);
 		this.setDailyHour("09:00 AM - 05:00 PM");
@@ -241,11 +248,11 @@ public class User extends BaseEntity implements java.io.Serializable {
 	public void setTasks(List<Task> tasks) {
 		this.tasks = tasks;
 	}
-	
+
 	public void setDrafMessage(String msg) {
 		this.draftMessage = Utilities.truncate(HtmlSanitizer.sanitizeDrafMessage(msg), 500);
 	}
-	
+
 	public String getDraftMessage() {
 		return this.draftMessage;
 	}
@@ -256,6 +263,14 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	public void setRawPassword(String rawPassword) {
 		this.rawPassword = rawPassword;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 
 	@Override
@@ -297,8 +312,7 @@ public class User extends BaseEntity implements java.io.Serializable {
 
 	@Override
 	public String toString() {
-		return "User is : [civility=" + civility + ", firstName=" + firstName + ", lastName=" + lastName +
-				 ", email=" + email + "]";
+		return "User is : [civility=" + civility + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
 	}
 
 }

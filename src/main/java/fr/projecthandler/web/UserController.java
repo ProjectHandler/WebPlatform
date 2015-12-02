@@ -14,7 +14,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.Set;
 import java.util.UUID;
 
@@ -39,6 +41,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationToken;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -46,7 +50,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.google.gson.Gson;
 
@@ -117,6 +123,9 @@ public class UserController {
 
 	@Autowired
 	private UserDetailsService customUserDetailsService;
+
+	@Autowired
+	private LocaleResolver localeResolver;
 
 	private static final Long maximumTokenValidity = 10368000l; // 2 jours ms
 
@@ -745,5 +754,35 @@ public class UserController {
 		
 		return new ModelAndView("user/changePassword", myModel);
 	}
-	
+
+	@Transactional
+	@RequestMapping(value = "profile/changeLanguage", method = RequestMethod.POST)
+	public @ResponseBody String resetPassword(HttpServletRequest request, HttpServletResponse response, @CurrentUserDetails CustomUserDetails userDetails, @RequestParam(value="locale") String localeString) {
+		try {
+			User u = userService.findUserById(userDetails.getId());
+			Locale locale = null;
+
+			try {
+				locale = StringUtils.parseLocaleString(localeString);
+			} catch (IllegalArgumentException e) {
+				// invalid locale string
+				return ("KO");
+			}
+			// Check if the locale is valid by trying to get the bundle for this locale.
+			// If the bundle doesn't exist, an exception will be thrown.
+			// TODO use validator ?
+			// TODO create property basename in configuration
+			if (ResourceBundle.getBundle("messages/messages", locale) == null)
+				return "KO";
+			u.setLocale(locale);
+			System.out.println("change lang" + locale.getLanguage());
+			userService.saveUser(u);
+			// TODO move to local resolver
+			userDetails.setLocale(locale);
+		} catch (Exception e) {
+			log.error("changeLanguage error", e);
+			return ("KO");
+		}
+		return "";
+	}
 }

@@ -1,6 +1,7 @@
 package fr.projecthandler.session;
 
 import java.util.Collection;
+import java.util.Locale;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,10 +27,11 @@ public class CustomUserDetails implements UserDetails {
 	private boolean enabled;
 	private AccountStatus accountStatus;
 	private UserRole userRole;
+	private Locale locale;
 
 	public CustomUserDetails(Long id, String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired,
 			boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities, String firstName, String lastName,
-			AccountStatus accountStatus, UserRole userRole, String avatarFileName) {
+			AccountStatus accountStatus, UserRole userRole, String avatarFileName, Locale locale) {
 		this.id = id;
 		this.authorities = authorities;
 		this.accountNonExpired = accountNonExpired;
@@ -43,6 +45,7 @@ public class CustomUserDetails implements UserDetails {
 		this.username = username;
 		this.accountStatus = accountStatus;
 		this.setUserRole(userRole);
+		this.setLocale(locale);
 	}
 
 	public Long getId() {
@@ -118,6 +121,14 @@ public class CustomUserDetails implements UserDetails {
 
 	public boolean hasRole(UserRole role) {
 		return this.userRole == role;
+	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
 	}
 
 }

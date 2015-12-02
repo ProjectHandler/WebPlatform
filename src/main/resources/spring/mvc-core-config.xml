@@ -86,7 +86,7 @@
 		<!-- needed otherwise exceptions won't be logged anywhere -->
 	</bean>
 	
-	<bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
+	<bean id="localeResolver" class="fr.projecthandler.session.UserSettingsLocaleResolver">
 		<property name="defaultLocale" value="fr_FR" />
 	</bean>
 
