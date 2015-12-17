@@ -54,3 +54,21 @@
 <script type="text/javascript" src="${jsCookie}"></script>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/resources/libs/ckeditor/ckeditor.js"></script>
+
+<spring:url value="/resources/js/alertize.js" var="alertize"/>
+<script type="text/javascript" src="${alertize}"></script>
+
+<style>
+	.popup-information {
+		background:#0071bc;
+	}
+	.popup-success {
+		background:#8cc63f;
+	}
+	.popup-warning {
+		background:#f15a24;
+	}
+	.popup-error {
+		background:#ed1c24;
+	}	
+</style>

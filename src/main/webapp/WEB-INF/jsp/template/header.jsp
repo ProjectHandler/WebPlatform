@@ -146,6 +146,27 @@
 							<textarea id="text-draft-ckeditor"></textarea>
 						</div>
 					</li>-->
+					<script>
+						function runAlertTest() {
+							var error = "";
+							var error1 = "ceci est ma premiere erreur<br/>";
+							var error2 = "ceci est ma deuxieme erreur<br/>";
+							var error3 = "ceci est ma troisieme erreur<br/>";
+							var error4 = "ceci est ma quatrieme erreur<br/>";
+							var error5 = "ceci est ma cinquieme erreur<br/>";
+							var error6 = "ceci est ma sixieme erreur";
+							error += error1 + error2 + error3 + error4 + error5 + error6;
+							alertize.info(error);
+							alertize.valid(error);
+							alertize.warn(error);
+							alertize.err(error);
+						}
+					</script>
+					<li class="super-redcss position-relative vertical-top not-display-table-cell padding-right">
+						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="#" onclick="runAlertTest();">
+							<span class="icon-star-full"></span>
+						</a>
+					</li>
 					<li class="super-redcss position-relative vertical-top not-display-table-cell padding-right display-none">
 						<a class="default-box-p display-table-cell vertical-align default-btn-style5 theme1-primary-text text-h1 text-center radius" href="<c:url value="/"/>" title="home">
 							<span class="icon-home"></span>
