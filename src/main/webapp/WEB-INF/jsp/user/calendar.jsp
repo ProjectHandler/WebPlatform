@@ -31,31 +31,10 @@
 		<spring:url value="/resources/css/daterangepicker/daterangepicker-bs3.css" var="daterangepickerBs3"/>
 		<link href="${daterangepickerBs3}" rel='stylesheet'/>
 
-<style>
-	#external-subtask {
-		float: left;
-		width: 150px;
-		padding: 0 10px;
-		border: 1px solid #ccc;
-		background: #eee;
-		text-align: left;
-	}
-		
-	#external-subtask h4 {
-		font-size: 16px;
-		margin-top: 0;
-		padding-top: 1em;
-	}
-		
+<style>		
 	#external-subtask .fc-event {
 		margin: 10px 0;
 		cursor: pointer;
-	}
-		
-	#external-subtask p {
-		margin: 1.5em 0;
-		font-size: 11px;
-		color: #666;
 	}
 		
 	#external-subtask p input {
@@ -64,18 +43,39 @@
 	}
 
 	#calendar {
-		max-width: 80%;
+		max-width: 100%;
 		margin: 0 auto;
 	}
 </style>
 
 	</head>
 	<body>
-		<jsp:include page="../template/header.jsp" />
-		
-			<div id='external-subtask'>
-				<h4><spring:message code="projecthandler.calendar.basket" /></h4>
+	<div class="display-table full-width full-height">
+		<div class="display-table-row">
+			<jsp:include page="../template/header.jsp" />		
+		</div>
+		<div class="display-table full-width full-height">
+			<div class="display-table-cell full-height theme1-primary-bg">
+				<div class="fixedwidth-320">
+					<h1 class="text-h2 container inverted-text"><span class="icon-calendar margin-right"></span>Calendar</h1>
+					<hr class="inverted-bg">
+					<div class="container inverted-text">
+						<p class="margin-bottom"><spring:message code="projecthandler.calendar.basket" /></p>
+						<div id='external-subtask' class="small-container radius inverted-bg" style="min-height:100px;">
+							
+						</div>
+					</div>
+					<hr class="inverted-bg">
+				</div>
 			</div>
+			<div class="display-table-cell full-width full-height">
+				
+				<div class="full-width full-height position-relative">
+					
+					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
+						<div class="container">
+							<div>
+							
 			<div id='calendar'></div>
 			
 			<div id="eventModal" style="display:none;">
@@ -176,7 +176,7 @@
 				$(this).data('eventObject', eventObject);
 				// make the event draggable using jQuery UI
 				$(this).draggable({
-					zIndex: 999,
+					zIndex: 999999,
 					scroll: false,		// prevent overflow issue
 					revert: true,      	// will cause the event to go back to its
 					revertDuration: 0  	//  original position after the drag
@@ -263,7 +263,7 @@
                        	$('#calendar').fullCalendar('removeEvents', event._id);
                         var el = $("<div data-subtask-id='" + event._id + "' data-type='subtask' class='fc-event'>").appendTo('#external-subtask').text(event.title);
                         el.draggable({
-                          zIndex: 999,
+                          zIndex: 9999999,
                           revert: true, 
                           revertDuration: 0
                         });
@@ -550,6 +550,14 @@
 			
 		}
 		</script>
+		
+							</div>
+						</div>	
+					</div>	
+			
+				</div>
+			</div>
+		</div>		
 		
 	</body>
 </html>
