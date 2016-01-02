@@ -217,7 +217,7 @@
                         },
                 firstDay:1,
                 defaultView: 'agendaWeek',
-                theme: false,
+                theme: true,
                 selectable: true,
                 selectHelper: true,
                 editable: true,
