@@ -55,15 +55,6 @@ public class UserDaoTest {
 	
 	@Test
 	@Transactional
-	public void testSaveUser() {
-		User user = new User();
-		
-		setUserData(user);		
-		userDao.saveUser(user);
-	}
-	
-	@Test
-	@Transactional
 	//Test if the saved fields are equal to the loaded fields.
 	public void testSaveAndFindUserById() {
 		User user = new User();
@@ -97,7 +88,7 @@ public class UserDaoTest {
 	@Test
 	@Transactional
 	public void testDeleteUsersByIds() {
-		List<Long> userIdList = new ArrayList<Long>(); ;
+		List<Long> userIdList = new ArrayList<Long>();
 		
 		for (int i = 0; i < 10; i++) {
 			User user = new User();
