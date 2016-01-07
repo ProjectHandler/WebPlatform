@@ -31,7 +31,7 @@ public class ProjectDaoTest {
 
 	@Test
 	@Transactional
-	public void findProjectByProjectIdAndUserId() {
+	public void testFindProjectByProjectIdAndUserId() {
 		User u = DataProvider.getUser1Data();
 
 		Long idTmp = userDao.saveUser(u);
@@ -63,7 +63,7 @@ public class ProjectDaoTest {
 
 	@Test
 	@Transactional
-	public void getAllProjects() {
+	public void testGetAllProjects() {
 		Project p1 = DataProvider.getProject1Data();
 		Project p2 = DataProvider.getProject2Data();
 
@@ -81,7 +81,7 @@ public class ProjectDaoTest {
 
 	@Test
 	@Transactional
-	public void getProjectsByUserId() {
+	public void testGetProjectsByUserId() {
 		User u = DataProvider.getUser1Data();
 
 		Long idTmp = userDao.saveUser(u);
@@ -107,7 +107,7 @@ public class ProjectDaoTest {
 
 	@Test
 	@Transactional
-	public void getUsersByProjectId() {
+	public void testGetUsersByProjectId() {
 		User u1 = DataProvider.getUser1Data();
 		User u2 = DataProvider.getUser2Data();
 
