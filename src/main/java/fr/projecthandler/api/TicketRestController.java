@@ -38,6 +38,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import springfox.documentation.annotations.ApiIgnore;
@@ -129,6 +130,7 @@ public class TicketRestController {
 	}
 
 	@RequestMapping(value = { "/saveNewTicketMessage/{ticketId}" }, method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<String> saveNewTicketMessage(@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails, @PathVariable Long ticketId,
 			@RequestBody String jsonObject) {
 		Gson gson = new Gson();
@@ -178,6 +180,7 @@ public class TicketRestController {
 	}
 
 	@RequestMapping(value = { "/saveNewTicket" }, method = RequestMethod.POST)
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<String> saveNewTicket(@ApiIgnore @CurrentUserDetails CustomUserDetails userDetails, @RequestBody String jsonObject) {
 		System.out.println("strTicket: " + jsonObject);
 		Gson gson = new Gson();

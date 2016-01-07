@@ -86,7 +86,7 @@ public class UserRestController {
 
 	// TODO Return token object
 	@RequestMapping(value = "/authenticate", method = RequestMethod.GET)
-	@ApiOperation(value = "Checks the email and password. If succesful, returns the token used to authenticate the user", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Checks the email and password. If succesful, returns the token used to authenticate the user", produces=MediaType.APPLICATION_JSON_VALUE, response=Token.class)
 	@ApiResponses(value = {
 		    @ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful operation"),
 		    @ApiResponse(code = HttpServletResponse.SC_UNAUTHORIZED, message = "Invalid email/password supplied")

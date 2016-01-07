@@ -48,9 +48,9 @@
 					<div class="fixedwidth-320">
 						<h1 class="text-h2 container inverted-text"><span class="icon-folder margin-right"></span>Projets</h1>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/edit"/>"><span class="icon-folder-plus margin-right"></span>Creer un nouveau projet</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/edit"/>"><span class="icon-folder-plus margin-right"></span><spring:message code="projecthandler.projectsList.buttonNew"/></a>
 						<hr class="inverted-bg">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/projectsList"/>"><span class="icon-folder-open margin-right"></span>Liste des projets</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/projectsList"/>"><span class="icon-folder-open margin-right"></span><spring:message code="projecthandler.projectsList.title"/></a>
 						<hr class="inverted-bg">	
 					</div>
 				</div>

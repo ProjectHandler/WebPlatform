@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 /*
@@ -31,6 +32,7 @@ public class BaseEntity {
 		return id;
 	}
 
+	@JsonIgnore
 	public boolean isNew() {
 		return (this.id == null);
 	}

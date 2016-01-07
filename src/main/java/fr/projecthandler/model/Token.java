@@ -7,6 +7,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fr.projecthandler.util.TokenGenerator;
 
 @Entity
@@ -18,9 +20,11 @@ public class Token extends BaseEntity implements java.io.Serializable {
 	@Column(name = "token", length = 50)
 	private String token;
 
+	@JsonIgnore
 	@Column(name = "time_stamp")
 	private Long timeStamp;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id")
 	private User user;

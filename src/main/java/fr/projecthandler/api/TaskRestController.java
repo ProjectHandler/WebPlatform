@@ -85,7 +85,7 @@ public class TaskRestController {
 		return new ResponseEntity<String>(json, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = { "/allByProjectAndUser/{projectId}", "/allByProjectAndCurrentUser/{projectId}" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/allByProjectAndCurrentUser/{projectId}" }, method = RequestMethod.GET)
 	@ApiOperation(value = "Gets tasks assigned to the authenticated user by project id", notes = "Returns the list of tasks linked to the project and assigned to the current user", response = MobileTaskDTO.class)
 	@ApiResponses(value = {
 			@ApiResponse(code = HttpServletResponse.SC_OK, message = "Successful retrieval of tasks", response = MobileTaskDTO.class),

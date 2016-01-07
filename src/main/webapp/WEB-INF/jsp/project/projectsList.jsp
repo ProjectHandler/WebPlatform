@@ -31,10 +31,10 @@
 					<h1 class="text-h2 container inverted-text"><span class="icon-folder margin-right"></span>Projets</h1>
 					<hr class="inverted-bg">
 					<sec:authorize access="hasRole('ROLE_ADMIN')">
-						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/edit"/>"><span class="icon-folder-plus margin-right"></span>Creer un nouveau projet</a>
+						<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/edit"/>"><span class="icon-folder-plus margin-right"></span><spring:message code="projecthandler.projectsList.buttonNew"/></a>
 						<hr class="inverted-bg">
 					</sec:authorize>
-					<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/projectsList"/>"><span class="icon-folder-open margin-right"></span>Liste des projets</a>
+					<a class="container display-block full-width inverted-text default-btn-style5" href="<c:url value="/project/projectsList"/>"><span class="icon-folder-open margin-right"></span><spring:message code="projecthandler.projectsList.title"/></a>
 					<hr class="inverted-bg">	
 				</div>
 			</div>
@@ -45,7 +45,7 @@
 					<div class="position-absolute position-top position-left full-width full-height overflow-auto">
 						<div class="container">
 							<div class="margin-bottom clearfix">
-								<h1 class="text-h2 util1-primary-text float-left">Liste des projets</h1>
+								<h1 class="text-h2 util1-primary-text float-left"><spring:message code="projecthandler.projectsList.title"/></h1>
 								<div class="text-h2 text-h1 float-right"><span class="icon-folder-open"></span></div>
 							</div>
 							<div>

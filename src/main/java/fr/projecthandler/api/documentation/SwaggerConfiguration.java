@@ -23,7 +23,7 @@ public class SwaggerConfiguration {
 	}
 
 	private ApiInfo getApiInfo() {
-		ApiInfo info = new ApiInfo("ProjectHandler Rest API", "API Documentation", "0.1.0", "", "", "", "");
+		ApiInfo info = new ApiInfo("ProjectHandler Rest API", "API Documentation", "0.1.1", "", "", "", "");
 		return info;
 	}
 
