@@ -23,9 +23,9 @@ import static org.junit.Assert.*;
 
 
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/spring/test-config.xml"})
-@TransactionConfiguration(defaultRollback = true)
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(locations = { "/spring/test-config.xml"})
+//@TransactionConfiguration(defaultRollback = true)
 public class TicketDaoTest {
 	
 //	@Autowired

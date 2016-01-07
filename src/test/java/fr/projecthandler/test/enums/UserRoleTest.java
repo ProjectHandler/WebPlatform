@@ -20,6 +20,6 @@ public class UserRoleTest {
 	@Test
 	public void testFind() {
 		assertEquals(UserRole.ROLE_ADMIN, UserRole.find(0));
-		assertEquals(UserRole.ROLE_SIMPLE_USER, UserRole.find(3));
+		assertEquals(UserRole.ROLE_SIMPLE_USER, UserRole.find(1));
 	}
 }

@@ -107,17 +107,32 @@ public class DataProvider {
 		return group;
 	}
 	
-	public static Project getProjectData() {
+	public static Project getProject1Data() {
 		Project project = new Project();
-		project.setName("Project test");
+		project.setName("Project test 1");
 		project.setDuration(365l);
 		Calendar cal = Calendar.getInstance();
 		cal.set(2015, 1, 1, 0, 0, 0);
 		project.setDateBegin(cal.getTime());
 		cal.set(2016, 1, 1, 0, 0, 0);
 		project.setDateEnd(cal.getTime());
-		project.setDescription("description test");
+		project.setDescription("description test 1");
 		project.setProgress(0l);
+		project.setStatus(ProjectStatus.ACTIVE.getValue());
+		return project;
+	}
+	
+	public static Project getProject2Data() {
+		Project project = new Project();
+		project.setName("Project test 2");
+		project.setDuration(365l);
+		Calendar cal = Calendar.getInstance();
+		cal.set(2014, 1, 1, 0, 0, 0);
+		project.setDateBegin(cal.getTime());
+		cal.set(2015, 1, 1, 0, 0, 0);
+		project.setDateEnd(cal.getTime());
+		project.setDescription("description test 2");
+		project.setProgress(100l);
 		project.setStatus(ProjectStatus.ACTIVE.getValue());
 		return project;
 	}

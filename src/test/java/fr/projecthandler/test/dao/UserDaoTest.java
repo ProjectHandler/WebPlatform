@@ -17,8 +17,6 @@ import fr.projecthandler.enums.UserRole;
 import fr.projecthandler.model.User;
 import static org.junit.Assert.*;
 
-
-
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/spring/test-config.xml"})
 @TransactionConfiguration(defaultRollback = true)
@@ -80,9 +78,9 @@ public class UserDaoTest {
 		User user = new User();
 
 		setUserData(user);
-		userDao.saveUser(user);
+		Long userId = userDao.saveUser(user);
 		User result = userDao.findByEmail(email);
-		assertEquals(user.getId(), result.getId());
+		assertEquals(userId, result.getId());
 	}
 	
 	@Test
