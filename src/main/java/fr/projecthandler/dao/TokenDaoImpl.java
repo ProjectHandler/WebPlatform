@@ -35,4 +35,7 @@ public class TokenDaoImpl extends AbstractDao implements TokenDao {
 				.setParameter("token", token));
 	}
 
+	public Token updateToken(Token token) {
+		return em.merge(token);
+	}
 }

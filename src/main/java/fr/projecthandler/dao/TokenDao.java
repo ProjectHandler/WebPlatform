@@ -6,6 +6,8 @@ import fr.projecthandler.model.User;
 public interface TokenDao {
 	public Long saveToken(Token token);
 
+	public Token updateToken(Token token);
+
 	public Token findTokenByUserId(Long userId);
 
 	public void deleteTokenByUserId(Long id);

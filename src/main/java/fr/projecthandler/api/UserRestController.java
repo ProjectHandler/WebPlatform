@@ -121,6 +121,8 @@ public class UserRestController {
 			tokenService.saveToken(token);
 		}
 
+//		return new ResponseEntity<String>("{\"token\":\"" + token.getToken() + "\"}", HttpStatus.OK);
+		// Invalid Json: missing double quotes
 		return new ResponseEntity<String>("{\"token\":" + token.getToken() + "}", HttpStatus.OK);
 	}
 
